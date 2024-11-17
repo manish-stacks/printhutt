@@ -2,8 +2,8 @@
 import React, { ReactNode, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Aos from "aos";
-import AppLayout from "./app";
-import AdminLayout from "./admin";
+import AppLayout from "./App";
+import AdminLayout from "./Admin";
 
 
 
