@@ -1,35 +1,59 @@
 import mongoose from "mongoose";
-import { unique } from "next/dist/build/utils";
+import bcryptjs from "bcryptjs";
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema(
+  {
     username: {
-        type: String,
-        required: [true, "Please provide username"],
-        unique: true
+      type: String,
+      required: [true, "Please provide username"],
     },
     email: {
-        type: String,
-        required: [true, "Please provide email"],
-        unique: true
+      type: String,
+      required: [true, "Please provide email"],
+      unique: true,
     },
     password: {
-        type: String,
-        required: [true, "Please provide password"]
+      type: String,
+      required: [true, "Please provide password"],
+    },
+    number: {
+      type: Number,
+      required: true,
+      unique: true,
     },
     isVerified: {
-        type: Boolean,
-        default: false
+      type: Boolean,
+      default: false,
     },
-    isAdmin: {
-        type: Boolean,
-        default: false
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
     },
+    otpVerification: Number,
+    otpVerificationExpiry: Date,
     forgotPasswordToken: String,
     forgotPasswordTokenExpiry: Date,
     verifyToken: String,
-    verifyTokenExpiry: Date
+    verifyTokenExpiry: Date,
+  },
+  { timestamps: true }
+);
 
-})
+userSchema.pre("save", async function (next) {
+  const salt = await bcryptjs.genSalt(10);
+  const hashedPassword = await bcryptjs.hash(this.password.toString(), salt);
+  this.password = hashedPassword;
+  next();
+});
 
-const User = mongoose.models.users || mongoose.model("users", userSchema)
-export default User
+userSchema.methods.comparePassword = async function (usePassword) {
+  try {
+    return await bcryptjs.compare(usePassword, this.password);
+  } catch (error) {
+    throw new Error("Password comparison failed", error);
+  }
+};
+
+const User = mongoose.models.users || mongoose.model("users", userSchema);
+export default User;

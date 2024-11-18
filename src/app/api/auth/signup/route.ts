@@ -1,47 +1,51 @@
 import { connect } from '@/dbConfig/dbConfig'
 import UserModel from '@/models/userModel'
-import { NextRequest as req, NextResponse as res } from 'next/server'
-import bcryptjs from 'bcryptjs'
+import { NextRequest, NextResponse } from 'next/server'
 import { sendEmail } from '@/helpers/mailer'
 
-connect()
+connect();
 
-export async function POST(request: req) {
+export async function POST(request: NextRequest) {
     try {
-        const reqBody = request.json()
-        console.log(reqBody)
-        const { username, email, password } = reqBody
 
+        const reqBody = await request.json()
+        const { username, email, password,number} = reqBody
+        
+        if (!username || !email || !password || !number) {
+            return NextResponse.json({
+                message: "All fields are required",
+                success: false,
+            },{ status: 400 });
+        }
+        
         const user = await UserModel.findOne({ email })
+
         if (user) {
-            return res.json({
+            return NextResponse.json({
                 error: 'User already exit',
             }, { status: 400 })
         }
-
-        const salt = await bcryptjs.genSalt(10)
-        const hashedPassword = await bcryptjs.hash(password, salt)
-
         const newUser = new UserModel({
             username,
             email,
-            password: hashedPassword
+            number,
+            password
         })
 
         const saveUser = await newUser.save()
-        console.log(saveUser)
-        await sendEmail({ email, emailType: 'emailType', userId: saveUser._id })
+        
+        await sendEmail({ email, emailType: 'VERIFY', userId: saveUser._id })
 
-        //    send email vetificaiton
-        return res.json({
-            message:"user registered successfully",
-            success:true,
-            saveUser
+        return NextResponse.json({
+            message: "user registered successfully",
+            success: true,
+            // saveUser
         })
+    
 
     } catch (error: any) {
-        return res.json({
-            error: error.message
-        }, { status: 500 })
+        return NextResponse.json({
+            error: error.message || 'Internal server error',
+        },{ status: 500 });
     }
 }
