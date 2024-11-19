@@ -55,12 +55,7 @@ export const POST = async (NextRequest: NextRequest) => {
             httpOnly: true
         })
         return reponse
-        // return NextResponse.json({
-        //     message: "login successfully",
-        //     success: true,
-        //     user
-        // }, { status: 200 })
-
+       
     } catch (error: any) {
         return NextResponse.json({
             error: error.message || 'Internal server error'
