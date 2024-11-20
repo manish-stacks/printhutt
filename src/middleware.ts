@@ -11,17 +11,17 @@ export function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/admin/dashbpard', request.url))
     }
     if(!isPublicPath && !token){
-        return NextResponse.redirect(new URL('/login', request.url))
+        return NextResponse.redirect(new URL('/', request.url))
     }
 }
 
 // See "Matching Paths" below to learn more
 export const config = {
-    // matcher: '/about/:path*',
-    matcher:[
-        '/',
-        '/signup',
-        '/profile',
-        '/verifyemail'
-    ]
+    matcher: '/admin/:path*',
+    // matcher:[
+    //     '/',
+    //     '/signup',
+    //     '/profile',
+    //     '/verifyemail'
+    // ]
 }

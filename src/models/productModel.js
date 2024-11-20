@@ -11,7 +11,8 @@ const dimensionsSchema = new mongoose.Schema(
 
 const productSchema = new mongoose.Schema(
   {
-    title: { type: String, required: true },
+    title: { type: String, required: true, trim: true },
+    slug: String,
     description: String,
     category: {
       type: mongoose.Schema.Types.ObjectId,
@@ -20,6 +21,7 @@ const productSchema = new mongoose.Schema(
     },
     price: Number,
     discountPercentage: Number,
+    discountPrice: Number,
     rating: Number,
     stock: Number,
     tags: [String],
@@ -32,14 +34,45 @@ const productSchema = new mongoose.Schema(
     availabilityStatus: String,
     returnPolicy: String,
     minimumOrderQuantity: Number,
+
     meta: {
       discription: String,
-      keywords: String,
+      keywords: [String],
     },
-    images: [String],
+    files: [
+      {
+        url: {},
+        public_id: {},
+        fileType: {},
+      },
+    ],
     reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }], // Reference to Reviews
   },
   { timestamps: true }
 );
 
-export default mongoose.models.Product || mongoose.model("Product", productSchema);
+export default mongoose.models.Product ||
+  mongoose.model("Product", productSchema);
+
+
+
+//   size: accoding price|(stock)
+// verient status 
+
+// offer->cat and product
+//  warrantyInformation relation
+//  shippingInformation->relation
+// returnPolicy ->relation
+
+// shipping  -> true
+// shipping fee -> 10
+
+// discription->limi 160
+
+
+// status 
+// ishome
+// tranding
+// hot 
+// sale 
+// new

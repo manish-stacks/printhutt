@@ -7,6 +7,8 @@ export const metadata = {
 const LoginPage = () => {
   
   return <Login />
+
+
 }
 
 export default LoginPage

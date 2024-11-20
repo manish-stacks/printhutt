@@ -36,7 +36,7 @@ export const sendEmail = async ({ email, emailType, userId }: mallerType) => {
             subject: emailType === 'VERIFY' ? 'Verify your email' : 'Reset your password',
             html: `
                 click <a href="${process.env.APP_URL}/verifyemail?token=${hashedToken}">here</a>
-                to ${emailType=== 'VERIFY' ? "verify your email":"reset your password"}
+                to ${emailType === 'VERIFY' ? "verify your email" : "reset your password"}
                 or copy and paste the link below in your browser.</p>
             `,
         }
@@ -47,4 +47,31 @@ export const sendEmail = async ({ email, emailType, userId }: mallerType) => {
     } catch (error: any) {
         throw new Error(error.message)
     }
+}
+
+export const sendOtpByEmail = async (email: string, otp: string) => {
+    const transporter = nodemailer.createTransport({
+        service: 'gmail', // Replace with your email provider
+        auth: {
+            user: process.env.EMAIL_USER, // Your email
+            pass: process.env.EMAIL_PASSWORD, // Your email password
+        },
+    });
+
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: 'Your OTP Code',
+        text: `Your OTP is ${otp}`,
+    };
+
+    return transporter.sendMail(mailOptions);
+}
+
+export const sendOtpBySms = async (mobile: string, otp: string) => {
+    // Replace with your SMS service logic
+    // return someSmsService.send({
+    //     to: mobile,
+    //     message: `Your OTP is ${otp}`,
+    // });
 }
