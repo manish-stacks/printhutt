@@ -5,9 +5,10 @@ import axios from "axios";
 import { toast } from 'react-toastify';
 import { useRouter } from "next/navigation";
 
-
-
 const Login = () => {
+
+  const router = useRouter();
+
   const [loading, setLoading] = useState<boolean>(false);
   const [isOtpSent, setIsOtpSent] = useState<boolean>(false);
   const [emailOrMobile, setEmailOrMobile] = useState<string>("");
@@ -20,7 +21,7 @@ const Login = () => {
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<string>("");
 
-  const router = useRouter()
+
 
 
   const [timer, setTimer] = useState<number>(30);
@@ -61,9 +62,6 @@ const Login = () => {
       setLoading(false);
     }
   };
-
-
-
 
 
 

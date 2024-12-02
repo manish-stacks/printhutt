@@ -1,8 +1,9 @@
 import { connect } from '@/dbConfig/dbConfig'
 import UserModel from '@/models/userModel'
 import { NextRequest, NextResponse } from 'next/server'
-import jwt from 'jsonwebtoken'
 import { isEmail } from '@/helpers/helpers'
+import { SignJWT } from 'jose';
+
 
 connect()
 
@@ -52,21 +53,25 @@ export const POST = async (request: NextRequest) => {
             id: user._id,
             username: user.username,
             email: user.email,
-            role: user.role 
+            role: user.role
         };
 
-        const token = jwt.sign(tokenData, process.env.TOKEN_SECRET!, { expiresIn: '7d' });
+        const secret = new TextEncoder().encode(process.env.TOKEN_SECRET!); 
+        const token = await new SignJWT(tokenData)
+            .setProtectedHeader({ alg: 'HS256' }) 
+            .sign(secret); 
 
         const response = NextResponse.json({
             message: "OTP verified successfully.",
             success: true,
-            role: user.role, 
+            role: user.role,
         }, { status: 200 });
 
+        // Set the token in cookies
         response.cookies.set("token", token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production', 
-            maxAge: 7 * 24 * 60 * 60, 
+            secure: process.env.NODE_ENV === 'production',
+            maxAge: 7 * 24 * 60 * 60,
             path: '/',
         });
 

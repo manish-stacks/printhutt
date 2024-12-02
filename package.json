@@ -16,7 +16,7 @@
     "axios": "^1.7.7",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.5.1",
-    "jsonwebtoken": "^9.0.2",
+    "jose": "^5.9.6",
     "mongoose": "^8.8.1",
     "multer": "^1.4.5-lts.1",
     "next": "^15.0.3",

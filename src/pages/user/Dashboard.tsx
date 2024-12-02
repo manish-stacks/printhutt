@@ -1,8 +1,36 @@
+"use client";
 import Breadcrumb from "@/components/Breadcrumb";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 import React from "react";
-import { RiBankCard2Fill, RiHeart2Fill, RiHome2Fill, RiLogoutCircleFill, RiLogoutCircleRFill, RiMessage2Fill, RiShoppingCartFill, RiStarHalfFill, RiUser2Fill } from "react-icons/ri";
+import {
+  RiBankCard2Fill,
+  RiHeart2Fill,
+  RiHome2Fill,
+  RiLogoutCircleRFill,
+  RiMessage2Fill,
+  RiShoppingCartFill,
+  RiStarHalfFill,
+  RiUser2Fill,
+} from "react-icons/ri";
+import { toast } from "react-toastify";
 
 const Dashboard = () => {
+
+  const router = useRouter();
+
+  const logOut = async () => {
+    try {
+      await axios.get("/api/auth/logout");
+      toast("logout successfully");
+      router.push("/login");
+    } catch (error) {
+      toast.error("Whoops Server error");
+    }
+  };
+
+
+
   return (
     <>
       <Breadcrumb title={"Dashboard"} />
@@ -16,23 +44,32 @@ const Dashboard = () => {
                 <p className="text-gray-500">Welcome, Michle Obema</p>
               </div>
               <nav className="space-y-2 text-lg leading-9">
-                <a 
+                <a
                   href="#"
                   className="flex items-center text-purple-600 font-semibold"
                 >
-                  <span className="mr-2"><RiHome2Fill/></span> Dashboard
+                  <span className="mr-2">
+                    <RiHome2Fill />
+                  </span>{" "}
+                  Dashboard
                 </a>
                 <a
                   href="#"
                   className="flex items-center text-gray-600 hover:text-purple-600"
                 >
-                  <span className="mr-2"><RiUser2Fill/></span> My Profile
+                  <span className="mr-2">
+                    <RiUser2Fill />
+                  </span>{" "}
+                  My Profile
                 </a>
                 <a
                   href="#"
                   className="flex items-center text-gray-600 hover:text-purple-600"
                 >
-                  <span className="mr-2"><RiMessage2Fill/></span> Message
+                  <span className="mr-2">
+                    <RiMessage2Fill />
+                  </span>{" "}
+                  Message
                   <span className="ml-auto bg-purple-600 text-white text-xs rounded-full px-2 py-1">
                     12
                   </span>
@@ -41,35 +78,50 @@ const Dashboard = () => {
                   href="#"
                   className="flex items-center text-gray-600 hover:text-purple-600"
                 >
-                  <span className="mr-2"><RiHeart2Fill/></span> Wishlist
+                  <span className="mr-2">
+                    <RiHeart2Fill />
+                  </span>{" "}
+                  Wishlist
                 </a>
                 <a
                   href="#"
                   className="flex items-center text-gray-600 hover:text-purple-600"
                 >
-                  <span className="mr-2"><RiStarHalfFill/></span> Reviews
+                  <span className="mr-2">
+                    <RiStarHalfFill />
+                  </span>{" "}
+                  Reviews
                 </a>
                 <a
                   href="#"
                   className="flex items-center text-gray-600 hover:text-purple-600"
                 >
-                  <span className="mr-2"><RiBankCard2Fill/></span> Payment
+                  <span className="mr-2">
+                    <RiBankCard2Fill />
+                  </span>{" "}
+                  Payment
                 </a>
                 <a
                   href="#"
                   className="flex items-center text-gray-600 hover:text-purple-600"
                 >
-                  <span className="mr-2"><RiShoppingCartFill/></span> Order History
+                  <span className="mr-2">
+                    <RiShoppingCartFill />
+                  </span>{" "}
+                  Order History
                 </a>
               </nav>
               <div className="mt-8 border-t pt-4 text-lg">
                 <p className="text-gray-400 text-sm">Seting</p>
-                <a
-                  href="#"
-                  className="flex items-center text-gray-600 hover:text-purple-600 mt-2"
+                <button
+                  onClick={logOut}
+                  className="flex items-center text-gray-600 hover:text-purple-600 mt-2 cursor-pointer"
                 >
-                  <span className="mr-2"><RiLogoutCircleRFill/></span> Log-out
-                </a>
+                  <span className="mr-2">
+                    <RiLogoutCircleRFill />
+                  </span>{" "}
+                  Log-out
+                </button>
               </div>
             </aside>
             {/* Main Content */}
@@ -109,7 +161,7 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="p-5 rounded-lg shadow-md bg-slate-100">
                   <div className="flex gap-4 md:px-3 md:py-4">
                     <div>

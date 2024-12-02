@@ -441,7 +441,7 @@ const Header = () => {
                             x={0}
                             y={0}
                             viewBox="0 0 64 64"
-                            style={{ enableBackground: "new 0 0 512 512" }}
+                            // style={{ enableBackground: "new 0 0 512 512" }}
                             xmlSpace="preserve"
                             className="w-[20px] h-[25px] mr-[5px] leading-[18px] align-middle"
                           >

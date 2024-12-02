@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema(
     number: {
       type: Number,
       // required: true,
-      unique: true,
+      //unique: true,
     },
     isVerified: {
       type: Boolean,
