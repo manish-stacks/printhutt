@@ -1,16 +1,42 @@
 'use client'
-import React, { useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
 import axios from "axios";
 import { toast } from 'react-toastify';
+import { useRouter } from "next/navigation";
+
+
 
 const Login = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [isOtpSent, setIsOtpSent] = useState<boolean>(false);
+  const [emailOrMobile, setEmailOrMobile] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
-  const [isOtpSent, setIsOtpSent] = useState(false);
-  const [emailOrMobile, setEmailOrMobile] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = async () => {
+  // verify otp
+  const [otp, setOtp] = useState<string[]>(new Array(6).fill(""));
+  const [loadingOtp, setLoadingOtp] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+  const [success, setSuccess] = useState<string>("");
+
+  const router = useRouter()
+
+
+  const [timer, setTimer] = useState<number>(30);
+  const [isResendEnabled, setIsResendEnabled] = useState<boolean>(false);
+
+
+
+  const handleInputChange = (e: any) => {
+    setEmailOrMobile(e.target.value);
+    if (errorMessage) {
+      setErrorMessage("");
+    }
+  };
+
+  const handleSubmitSendOtp = async (e: FormEvent) => {
+    e.preventDefault();
     if (!emailOrMobile) {
       setErrorMessage("Please enter a valid Email ID/Mobile number");
       toast.error("Please enter a valid Email ID/Mobile number");
@@ -18,24 +44,106 @@ const Login = () => {
     }
 
     try {
-      const {data} = await axios.post("/api/auth/request-otp", {
+      setLoading(true);
+      const { data } = await axios.post("/api/auth/login", {
         emailOrMobile,
       });
+      setTimer(30);
+      setIsResendEnabled(false);
+
       console.log(data);
-      // setIsOtpSent(true);
-    } catch (error) {
+      toast.success(`Otp send ${emailOrMobile}`);
+      setIsOtpSent(true);
+    } catch (error: any) {
+      toast.error(error.message);
       console.error("Failed to send OTP:", error);
-    }
-  };
-
-  const handleInputChange = (e) => {
-    setEmailOrMobile(e.target.value);
-    if (errorMessage) {
-      setErrorMessage("");
+    } finally {
+      setLoading(false);
     }
   };
 
 
+
+
+
+
+  const handleChangeOtp = (value: string, index: number) => {
+    if (/^[0-9]?$/.test(value)) {
+      const updatedOtp = [...otp];
+      updatedOtp[index] = value;
+      setOtp(updatedOtp);
+
+      if (value && index < 5) {
+        const nextInput = document.getElementById(`otp-input-${index + 1}`);
+        nextInput?.focus();
+      }
+    }
+  };
+
+
+  const handleSubmitVerifyOtp = async (e: FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+
+    const otpValue = otp.join("");
+    if (otpValue.length !== 6) {
+      setError("Please enter a 6-digit OTP.");
+      return;
+    }
+
+    try {
+      setLoadingOtp(true);
+      const { data } = await axios.post("/api/auth/verify-otp", {
+        otp: otpValue,
+        emailOrMobile: emailOrMobile
+      });
+
+      if (data.role === 'user') {
+        setSuccess(data.message);
+        router.push('/user/dashboard');
+        toast.success(data.message);
+      } else {
+        toast.error('Unauthorized access');
+        router.push('/login');
+      }
+
+    } catch (err: any) {
+      setError(err.response?.data?.error || "Failed to verify/expired OTP.");
+    } finally {
+      setLoadingOtp(false);
+    }
+  };
+
+
+
+  useEffect(() => {
+    if (timer === 0) {
+      setIsResendEnabled(true);
+      return;
+    }
+
+    const interval = setInterval(() => {
+      setTimer((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [timer]);
+
+
+  const sendOTP = async () => {
+    try {
+      setTimer(60);
+      setIsResendEnabled(false);
+      const { data } = await axios.post("/api/auth/login", {
+        emailOrMobile,
+      });
+      console.log(data)
+      toast.success(`Otp send ${emailOrMobile}`);
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  }
   return (
     <>
 
@@ -63,7 +171,7 @@ const Login = () => {
             </div>
             {/* Right Panel */}
             <div className="w-1/2 max-[991px]:w-full bg-white flex flex-col justify-center items-center p-6">
-              <form className="w-full">
+              <form className="w-full" onSubmit={handleSubmitSendOtp}>
                 <label
                   htmlFor="email"
                   className="block text-lg font-medium mb-2 text-gray-700"
@@ -92,20 +200,26 @@ const Login = () => {
                   </a>
                   .
                 </p>
+
                 <button
-                  onClick={handleSubmit}
-                  type="button"
-                  className="w-full bg-rose-600 text-white py-3 rounded-md text-lg font-semibold hover:bg-orange-600"
+                  type="submit"
+                  disabled={loading}
+                  className={`w-full py-3 rounded-md text-lg font-semibold ${loading
+                    ? "bg-rose-950 cursor-not-allowed"
+                    : "bg-rose-600 text-white hover:bg-orange-600"
+                    }`}
                 >
-                  Request OTP
+                  {loading ? "Send Otp..." : "Request OTP"}
                 </button>
+
+
               </form>
-              <p className="mt-6">
+              {/* <p className="mt-6">
                 New to Print Hutt?{" "}
                 <a href="#" className="text-blue-600 font-medium">
                   Create an account
                 </a>
-              </p>
+              </p> */}
             </div>
           </div>
         </div>
@@ -132,39 +246,59 @@ const Login = () => {
             <div className="w-1/2 bg-white flex flex-col justify-center items-center p-6">
               <p className="text-center text-gray-800 text-sm mb-6">
                 Please enter the OTP sent to <br />
-                <span className="font-semibold">mks957678@gmail.com.</span>{" "}
-                <a href="#" className="text-blue-600 font-medium">
+                <span className="font-semibold">{emailOrMobile}</span>{" "}
+                <button onClick={() => window.location.reload()} className="text-blue-600 font-medium">
                   Change
-                </a>
+                </button>
               </p>
 
               {/* OTP Input Fields */}
-              <div className="flex justify-center mb-6 space-x-3">
-                {Array(6)
-                  .fill("")
-                  .map((_, index) => (
+              <form onSubmit={handleSubmitVerifyOtp}>
+                <div className="flex justify-center mb-6 space-x-3">
+                  {otp.map((digit, index) => (
                     <input
                       key={index}
+                      id={`otp-input-${index}`}
                       type="text"
                       maxLength={1}
+                      value={digit}
+                      onChange={(e) => handleChangeOtp(e.target.value, index)}
                       className="w-10 h-12 text-center text-2xl border-0 rounded-none border-b-2 border-gray-300 focus:outline-none focus:border-blue-500"
                     />
                   ))}
-              </div>
-
-              {/* Verify Button */}
-              <button
-                type="button"
-                className="w-full bg-blue-500 text-white py-3 rounded-md text-lg font-semibold hover:bg-blue-600"
-              >
-                Verify
-              </button>
+                </div>
+                {error && <p className="text-red-500 text-center mb-3">{error}</p>}
+                {success && <p className="text-green-500 text-center mb-3">{success}</p>}
+                {/* Verify Button */}
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className={`w-full py-3 rounded-md text-lg font-semibold ${loadingOtp
+                    ? "bg-blue-950 cursor-not-allowed"
+                    : "bg-blue-500 text-white hover:bg-blue-600"
+                    }`}
+                >
+                  {loadingOtp ? "Verifying..." : "Verify"}
+                </button>
+              </form>
 
               {/* Resend Timer */}
               <p className="text-sm text-gray-500 mt-6">
                 Not received your code?{" "}
-                <span className="text-black font-semibold">00:13</span>
+                <span className="text-black font-semibold">
+                  {timer > 0 ? `00:${timer < 10 ? `0${timer}` : timer}` : '00:00'}
+                </span>
               </p>
+
+              {isResendEnabled && (
+                <button
+                  onClick={sendOTP}
+                  className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg"
+                >
+                  Resend OTP
+                </button>
+              )}
+
             </div>
           </div>
         </div>

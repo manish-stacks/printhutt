@@ -15,14 +15,30 @@ const Layout = ({ children }: LayoutProps) => {
   const pathname = usePathname();
   const isAdminRoute = pathname!.startsWith("/admin");
 
+
   useEffect(() => {
     Aos.init({
-      duration: 1000, // Animation duration in ms
-      once: true, // Run animation only once
+      duration: 1000, 
+      once: true, 
     });
   }, []);
  
   
+  
+  const blacklists = [
+    "/admin",
+    "/admin/login"
+  ]
+
+  const isBlacklist = blacklists.includes(pathname!)
+  
+  if(isBlacklist){
+    return (<>{children}</>)
+  }
+
+  
+
+
   if (isAdminRoute) {
     return (
       <>

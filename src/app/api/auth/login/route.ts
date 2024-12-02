@@ -1,64 +1,60 @@
 import { connect } from '@/dbConfig/dbConfig'
-import UserModal from '@/models/userModel'
+import { sendOtpByEmail, sendOtpBySms } from '@/helpers/mailer';
 import { NextRequest, NextResponse } from 'next/server'
-import jwt from 'jsonwebtoken'
+import UserModel from '@/models/userModel'
+import { isEmail } from '@/helpers/helpers';
 
 connect()
-export const POST = async (NextRequest: NextRequest) => {
+
+export async function POST(request: NextRequest) {
     try {
+        const reqBody = await request.json();
+        const { emailOrMobile } = reqBody;
 
-        const reqBody = await NextRequest.json();
-        const { email, password } = reqBody
-
-        if (!email || !password) {
-            return NextResponse.json({
-                message: "All fields are required",
-                success: false,
-            }, { status: 400 });
+        if (!emailOrMobile) {
+            return NextResponse.json(
+                { error: 'emailOrMobile is required' },
+                { status: 400 }
+            );
         }
-        const user = await UserModal.findOne({ email })
+
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        const otpExpiry = Date.now() + 3600000; // OTP expiry time: 1 hour
+
+        const isEmailInput = isEmail(emailOrMobile);
+        const queryKey = isEmailInput ? 'email' : 'number';
+
+        let user = await UserModel.findOne({ [queryKey]: emailOrMobile });
 
         if (!user) {
-            return NextResponse.json({
-                error: 'User does not exists',
-            }, { status: 400 })
+            user = new UserModel({
+                [queryKey]: emailOrMobile,
+                otpVerification: otp,
+                otpVerificationExpiry: otpExpiry,
+            });
+            await user.save();
+        } else {
+            user.otpVerification = otp;
+            user.otpVerificationExpiry = otpExpiry;
+            await user.save();
         }
 
-        if (!user.isVerified) {
-            return NextResponse.json({
-                message: "User not verify",
-                success: false,
-            }, { status: 400 });
+        if (isEmailInput) {
+            // await sendOtpByEmail(emailOrMobile, otp);
+        } else {
+            await sendOtpBySms(emailOrMobile, otp);
         }
 
-        const passwordMatch = await user.comparePassword(password)
-        if (!passwordMatch) {
-            return NextResponse.json({
-                success: false,
-                message: "Check your credentials"
-            }, { status: 401 })
-        }
-        const tokenData = {
-            id: user._id,
-            username: user.username,
-            email: user.email
-        }
-
-        const token = await jwt.sign(tokenData, process.env.TOKEN_SECRET!, { expiresIn: '1d' })
-
-        const reponse = NextResponse.json({
-            message: "Logged In Success",
-            success: true,
-        })
-
-        reponse.cookies.set("token", token, {
-            httpOnly: true
-        })
-        return reponse
-       
+        return NextResponse.json(
+            { message: 'OTP sent successfully',otp:otp },
+            { status: 200 }
+        );
     } catch (error: any) {
-        return NextResponse.json({
-            error: error.message || 'Internal server error'
-        }, { status: 500 })
+        console.error('Error in OTP generation:', error);
+        return NextResponse.json(
+            { error: error.message || 'Internal server error' },
+            { status: 500 }
+        );
     }
 }
+

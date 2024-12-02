@@ -5,25 +5,25 @@ const userSchema = new mongoose.Schema(
   {
     username: {
       type: String,
-      required: [true, "Please provide username"],
+      // required: [true, "Please provide username"],
     },
     email: {
       type: String,
-      required: [true, "Please provide email"],
+      // required: [true, "Please provide email"],
       unique: true,
     },
     password: {
       type: String,
-      required: [true, "Please provide password"],
+      // required: [true, "Please provide password"],
     },
     number: {
       type: Number,
-      required: true,
+      // required: true,
       unique: true,
     },
     isVerified: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     role: {
       type: String,
@@ -40,12 +40,12 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-userSchema.pre("save", async function (next) {
-  const salt = await bcryptjs.genSalt(10);
-  const hashedPassword = await bcryptjs.hash(this.password.toString(), salt);
-  this.password = hashedPassword;
-  next();
-});
+// userSchema.pre("save", async function (next) {
+//   const salt = await bcryptjs.genSalt(10);
+//   const hashedPassword = await bcryptjs.hash(this.password.toString(), salt);
+//   this.password = hashedPassword;
+//   next();
+// });
 
 userSchema.methods.comparePassword = async function (usePassword) {
   try {

@@ -51,21 +51,25 @@ export const sendEmail = async ({ email, emailType, userId }: mallerType) => {
 
 export const sendOtpByEmail = async (email: string, otp: string) => {
     const transporter = nodemailer.createTransport({
-        service: 'gmail', // Replace with your email provider
+        host: process.env.MAIL_HOST,
+        port: process.env.MAIL_PORT,
         auth: {
-            user: process.env.EMAIL_USER, // Your email
-            pass: process.env.EMAIL_PASSWORD, // Your email password
+            user: process.env.MAIL_USERNAME,
+            pass: process.env.MAIL_PASSWORD,
         },
     });
 
-    const mailOptions = {
-        from: process.env.EMAIL_USER,
+    const mailOption = {
+        from: '"' + process.env.APP_NAME + '" ' + process.env.MAIL_FROM_ADDRESS,
         to: email,
         subject: 'Your OTP Code',
-        text: `Your OTP is ${otp}`,
-    };
+        html: `Your OTP is ${otp}`
+    }
 
-    return transporter.sendMail(mailOptions);
+
+    const mailResponce = await transporter.sendMail(mailOption)
+    return mailResponce;
+
 }
 
 export const sendOtpBySms = async (mobile: string, otp: string) => {

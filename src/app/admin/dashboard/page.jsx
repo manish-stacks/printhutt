@@ -1,8 +1,8 @@
 import AdminDashboard from "@/pages/admin/Dashboard"
 
 export const metadata = {
-  title: 'Product',
-  description: 'Product-page',
+  title: 'dashboard',
+  description: 'dashboard-page',
 }
 
 const LoginPage = () => {
