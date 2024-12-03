@@ -1,25 +1,20 @@
-import AdminHeader from '@/components/admin/Header';
-import AdminSidebar from '@/components/admin/Sidebar';
-import React, { ReactNode } from 'react'
+import Header from '@/components/admin/Header';
+import { Sidebar } from '@/components/admin/Sidebar';
+import React, { ReactNode, useState } from 'react'
 
 interface LayoutProps {
     children: ReactNode;
 }
 
 const Admin = ({ children }: LayoutProps) => {
-
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     return (
         <>
-            <div className="flex h-screen">
-                {/* Sidebar */}
-                <AdminSidebar />
-                {/* Main Content Area */}
-                <div className="flex-1 flex flex-col">
-                    {/* Navbar */}
-                    <AdminHeader />
-                    {/* Main Content */}
-                    {children}
-                </div>
+
+            <div className="min-h-screen bg-gray-50">
+                <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+                <Header onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)} />
+                {children}
             </div>
         </>
     )
