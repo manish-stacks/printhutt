@@ -1,5 +1,6 @@
-import Header from '@/components/admin/Header';
-import { Sidebar } from '@/components/admin/Sidebar';
+import Header from '@/components/admin/header/Header';
+import { MainContent } from '@/components/admin/MainContent';
+import { Sidebar } from '@/components/admin/sidebar/Sidebar';
 import React, { ReactNode, useState } from 'react'
 
 interface LayoutProps {
@@ -7,14 +8,24 @@ interface LayoutProps {
 }
 
 const Admin = ({ children }: LayoutProps) => {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
     return (
         <>
 
-            <div className="min-h-screen bg-gray-50">
-                <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
-                <Header onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)} />
-                {children}
+            <div className="min-h-screen bg-gray-100">
+                <Header isSidebarCollapsed={sidebarCollapsed} onMenuClick={() => setSidebarOpen(true)} />
+
+                <Sidebar
+                    isOpen={sidebarOpen}
+                    onClose={() => setSidebarOpen(false)}
+                    onCollapsedChange={setSidebarCollapsed}
+                />
+
+                <MainContent isSidebarCollapsed={sidebarCollapsed}>
+                    {children}
+                </MainContent>
             </div>
         </>
     )

@@ -1,15 +1,32 @@
+import mongoose from "mongoose";
+
 const offerSchema = new mongoose.Schema(
-    {
-      offerTitle: String, // e.g., "Buy 1 Get 1 Free"
-      offerDescription: String, // details of the offer
-      applicableTo: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Category",
-        },
-      ], // could link to categories or individual products
-      discountPercentage: Number, // optional discount percentage
+  {
+    offerTitle: {
+      type: String,
+      required: true,
     },
-    { timestamps: true }
-  );
-  
+    offerDescription: String,
+    applicableTo: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category",
+      },
+    ],
+    discountPercentage: {
+      type: Number,
+    },
+    validFrom: {
+      type: Date,
+    },
+    validTo: {
+      type: Date,
+    },
+  },
+  { timestamps: true }
+);
+
+
+
+const Offer = mongoose.models.Offer || mongoose.model("Offer", offerSchema);
+export default Offer

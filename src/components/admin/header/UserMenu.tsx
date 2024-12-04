@@ -48,27 +48,26 @@ export function UserMenu() {
             </button>
 
             {isOpen && (
-                <div className="absolute right-0 mt-2 w-48 rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5">
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 z-50">
+                    <div className="px-4 py-2 border-b">
+                        <p className="font-medium">John Doe</p>
+                        <p className="text-sm text-gray-500">john@example.com</p>
+                    </div>
+
                     <a
-                        href="/profile"
-                        className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        href="#"
+                        className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
                     >
-                        <FaUser className="h-4 w-4" />
-                        Profile
+                        <RiSettings2Fill size={16} />
+                        <span>Profile Settings</span>
                     </a>
-                    <a
-                        href="/settings"
-                        className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                        <RiSettings2Fill className="h-4 w-4" />
-                        Settings
-                    </a>
+
                     <button
                         onClick={logOut}
-                        className="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                        className="flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-gray-100 transition-colors"
                     >
-                        <RiLogoutBoxFill className="h-4 w-4" />
-                        Logout
+                        <RiLogoutBoxFill size={16} />
+                        <span>Logout</span>
                     </button>
                 </div>
             )}

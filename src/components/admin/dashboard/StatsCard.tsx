@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { ElementType } from 'react';
 
 
 interface StatsCardProps {
   title: string;
   value: string;
   trend: number;
-  Icon: string;
+  Icon: ElementType;
   color: string;
 }
 

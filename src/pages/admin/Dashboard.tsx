@@ -15,7 +15,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <main className="pt-16 lg:pl-64">
+      {/* <main className="pt-16 lg:pl-64"> */}
         <div className="p-4 sm:p-6 lg:p-8">
           <div className="mb-8">
             <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
@@ -123,7 +123,7 @@ const Dashboard = () => {
             <RecentActivity />
           </div>
         </div>
-      </main>
+      {/* </main> */}
     </>
   )
 }
