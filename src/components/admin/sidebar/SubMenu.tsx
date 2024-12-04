@@ -1,7 +1,6 @@
 import React, { ElementType } from 'react';
 import { SidebarItem } from './SidebarItem';
 
-
 interface SubMenuItem {
   id: string;
   label: string;
@@ -42,14 +41,14 @@ export function SubMenu({
       {!isCollapsed && isExpanded && (
         <div className="ml-6 mt-1">
           {items.map((item) => (
-            <button
+            <SidebarItem
               key={item.id}
-              onClick={() => onItemClick(item.path)}
-              className={`w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors
-                ${activeItem === item.path ? 'bg-gray-700 text-white' : ''}`}
-            >
-              {item.label}
-            </button>
+              icon={() => <div style={{ width: 20 }} />} // Empty icon
+              label={item.label}
+              path={item.path}
+              isActive={activeItem === item.path}
+              isCollapsed={isCollapsed}
+            />
           ))}
         </div>
       )}

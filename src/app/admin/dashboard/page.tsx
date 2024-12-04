@@ -5,9 +5,9 @@ export const metadata = {
   description: 'dashboard-page',
 }
 
-const LoginPage = () => {
+const dashboardPage = () => {
   
   return <AdminDashboard />
 }
 
-export default LoginPage
+export default dashboardPage

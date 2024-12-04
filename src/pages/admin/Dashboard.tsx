@@ -17,7 +17,7 @@ const Dashboard = () => {
     <>
       {/* <main className="pt-16 lg:pl-64"> */}
         <div className="p-4 sm:p-6 lg:p-8">
-          <div className="mb-8">
+          <div className="my-8">
             <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
             <p className="mt-1 text-gray-500">Welcome back, here's what's happening today.</p>
           </div>

@@ -3,7 +3,7 @@ import { SidebarItem } from './SidebarItem';
 import { SubMenu } from './SubMenu';
 import { mainMenuItems } from './menuItems';
 import { RiContractLeftLine, RiContractRightLine } from 'react-icons/ri';
-import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -12,25 +12,13 @@ interface SidebarProps {
 }
 
 export function Sidebar({ isOpen, onClose, onCollapsedChange }: SidebarProps) {
-  const pathname = window.location.pathname||'';
-
-  const router = useRouter();
-  // const  {pathname}  = router;
-
-
-  console.log(pathname)
+  const pathname = usePathname() as string;
   const [collapsed, setCollapsed] = useState(false);
-  const [activeItem, setActiveItem] = useState(pathname);
 
   const handleCollapse = () => {
     const newCollapsed = !collapsed;
     setCollapsed(newCollapsed);
     onCollapsedChange(newCollapsed);
-  };
-
-  const handleItemClick = (path: string) => {
-    setActiveItem(path);
-    // Add your routing logic here
   };
 
   return (
@@ -66,17 +54,18 @@ export function Sidebar({ isOpen, onClose, onCollapsedChange }: SidebarProps) {
                 label={item.label}
                 items={item.submenu}
                 isCollapsed={collapsed}
-                activeItem={activeItem}
-                onItemClick={handleItemClick}
+                activeItem={pathname}
+                onItemClick={(path) => console.log(`Navigating to ${path}`)}
               />
             ) : (
               <SidebarItem
                 key={item.id}
                 icon={item.icon}
                 label={item.label}
-                isActive={activeItem === item.path}
+                path={item.path}
+                isActive={pathname === item.path}
                 isCollapsed={collapsed}
-                onClick={() => handleItemClick(item.path!)}
+                onClick={() => console.log(`Navigating to ${item.path}`)}
               />
             )
           ))}

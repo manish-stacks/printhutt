@@ -13,6 +13,7 @@ import "slick-carousel/slick/slick-theme.css";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 
+
 export const metadata: Metadata = {
   title: "Shop made for everyone’s dream Decoration - Print Hutt",
   description:
