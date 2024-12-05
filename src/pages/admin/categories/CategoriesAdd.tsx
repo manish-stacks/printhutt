@@ -1,29 +1,64 @@
 'use client'
+import { add_new_category } from '@/_services/admin/category';
+import { useRouter } from 'next/navigation';
+
 import React, { useState, useCallback } from 'react';
+import { FaImage } from 'react-icons/fa';
 import { RiLoader2Line } from 'react-icons/ri';
+import { toast } from 'react-toastify';
 
 interface CategoryFormData {
+  parentCategory: string;
   name: string;
+  slug: string;
   description: string;
-  imageUrl: string;
+  metaKeywords: string;
+  metaDescription: string;
+  level: string;
+  imageUrl: File | null;
+}
+
+const maxSize = (value: File) => {
+  const fileSize = value.size / 1024 / 1024;
+  return fileSize < 1 ? false : true
 }
 
 
 const CategoriesAdd = () => {
 
-  const [formData, setFormData] = useState<CategoryFormData>({
-    name: '',
-    description: '',
-    imageUrl: '',
-  });
-
   const [previewUrl, setPreviewUrl] = useState<string>();
   const [isUploading, setIsUploading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const [formData, setFormData] = useState<CategoryFormData>({
+    parentCategory: '',
+    name: '',
+    slug: '',
+    description: '',
+    metaKeywords: '',
+    metaDescription: '',
+    level: '',
+    imageUrl: null,
+  });
+
+  const router = useRouter();
+
+
   const handleImageChange = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
+
     const file = event.target.files?.[0];
+    console.log(file)
     if (!file) return;
+    const CheckFileSize = maxSize(file);
+    if (CheckFileSize) {
+      event.target.value = ''
+      return toast.error('Image size must be less then 1MB')
+    }
+    setFormData((prev) => ({
+      ...prev,
+      imageUrl: file,
+    }));
+
 
     const reader = new FileReader();
     reader.onloadend = () => {
@@ -43,17 +78,57 @@ const CategoriesAdd = () => {
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!formData.imageUrl) return toast.error('Please select an image');
+    if (!formData.name) return toast.error('Please enter a name');
+    if (!formData.slug) return toast.error('Please enter a slug');
+    if (!formData.description) return toast.error('Please enter a description');
+    if (!formData.metaKeywords) return toast.error('Please enter meta keywords');
+    if (!formData.metaDescription) return toast.error('Please enter meta description');
+    if (!formData.level) return toast.error('Please enter level');
+
     setIsSubmitting(true);
-    console.log('Form submitted:', formData);
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    setIsSubmitting(false);
+    // console.log('Form submitted:', formData);
+    // await new Promise(resolve => setTimeout(resolve, 5000));
+
+
+    const data = new FormData()
+    data.append('name', formData.name)
+    data.append('slug', formData.slug)
+    data.append('description', formData.description)
+    data.append('metaKeywords', formData.metaKeywords)
+    data.append('metaDescription', formData.metaDescription)
+    data.append('level', formData.level)
+    data.append('imageUrl', formData.imageUrl)
+
+
+    try {
+      const res = await add_new_category(data)
+      if (res.success) {
+        toast.success(res?.message);
+        setTimeout(() => {
+          router.push('/admin/categories')
+        }, 2000);
+        setIsSubmitting(false);
+      } else {
+        toast.error(res?.message)
+        setIsSubmitting(false);
+      }
+    } catch (error: any) {
+      toast.error(error?.message)
+    } finally {
+      setIsSubmitting(false);
+    }
+
+
+
   }, [formData]);
 
 
   return (
     <>
       <div className="max-w-10xl mx-auto lg:px-10 py-20">
-        <form className="space-y-6 bg-white p-6 rounded-lg shadow-sm">
+        <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow-sm" encType={'multipart/form-data'}>
           <div className="space-y-2">
             <h2 className="text-2xl font-bold text-gray-900">Add New Category</h2>
             <p className="text-gray-600">
@@ -69,24 +144,19 @@ const CategoriesAdd = () => {
                 </label>
                 <div className="flex flex-col sm:flex-row gap-4 items-start">
                   <div className="flex-1">
-                    <div className="flex items-center justify-center w-44 h-40 bg-gray-100 rounded-lg">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width={24}
-                        height={24}
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="lucide lucide-image w-12 h-12 text-gray-400"
-                      >
-                        <rect width={18} height={18} x={3} y={3} rx={2} ry={2} />
-                        <circle cx={9} cy={9} r={2} />
-                        <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
-                      </svg>
-                    </div>
+                    {previewUrl ? (
+                      <div className="relative aspect-video w-48 h-48 rounded-lg overflow-hidden">
+                        <img
+                          src={previewUrl}
+                          alt="Preview"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-center w-48 h-48 bg-gray-100 rounded-lg">
+                        <FaImage className="w-12 h-12 text-gray-400" />
+                      </div>
+                    )}
                     <p>Image Size Should Be 60 x 60.</p>
                   </div>
                 </div>
@@ -112,11 +182,9 @@ const CategoriesAdd = () => {
                 <select
                   className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
                   id="name"
-                  name="name"
-                  required
-                  defaultValue=""
+                  name="parentCategory"
                 >
-                  <option value="dummy">dummy</option>
+                  <option value="">dummy</option>
                 </select>
               </div>
               <div>
@@ -127,13 +195,14 @@ const CategoriesAdd = () => {
                   Category Name
                 </label>
                 <input
-                  className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
                   id="name"
                   name="name"
                   type="text"
                   required
+                  value={formData.name}
+                  onChange={handleChange}
                   placeholder="Enter category name"
-                  defaultValue=""
+                  className="mt-1 flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 />
               </div>
               <div>
@@ -145,12 +214,13 @@ const CategoriesAdd = () => {
                 </label>
                 <input
                   className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
-                  id="name"
-                  name="name"
+                  id="slug"
+                  name="slug"
                   type="text"
                   required
+                  value={formData.slug}
+                  onChange={handleChange}
                   placeholder="Enter category name"
-                  defaultValue=""
                 />
               </div>
               <div>
@@ -165,8 +235,9 @@ const CategoriesAdd = () => {
                   id="description"
                   name="description"
                   type="text"
+                  value={formData.description}
+                  onChange={handleChange}
                   placeholder="Enter category description"
-                  defaultValue=""
                 />
               </div>
               <div>
@@ -178,12 +249,13 @@ const CategoriesAdd = () => {
                 </label>
                 <input
                   className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
-                  id="name"
-                  name="name"
+                  id="metaKeywords"
+                  name="metaKeywords"
                   type="text"
                   required
+                  value={formData.metaKeywords}
+                  onChange={handleChange}
                   placeholder="Enter Meta Keywords"
-                  defaultValue=""
                 />
               </div>
               <div>
@@ -195,14 +267,14 @@ const CategoriesAdd = () => {
                 </label>
                 <textarea
                   className="flex  w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
-                  id="name"
-                  name="name"
+                  id="metaDescription"
+                  name="metaDescription"
                   rows={5}
                   required
+                  value={formData.metaDescription}
+                  onChange={handleChange}
                   placeholder="Enter Meta Description"
-                  defaultValue=""
-                >
-                </textarea>
+                />
 
               </div>
 
@@ -216,12 +288,13 @@ const CategoriesAdd = () => {
                 </label>
                 <input
                   className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
-                  id="name"
-                  name="name"
-                  type="text"
+                  id="level"
+                  name="level"
+                  type="number"
                   required
+                  value={formData.level}
+                  onChange={handleChange}
                   placeholder="Enter Serial"
-                  defaultValue=""
                 />
               </div>
             </div>
