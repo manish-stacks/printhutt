@@ -8,7 +8,7 @@ interface MainContentProps {
 export function MainContent({ isSidebarCollapsed, children }: MainContentProps) {
   return (
     <main className={`transition-all duration-300 ${isSidebarCollapsed ? 'lg:pl-16' : 'lg:pl-64'} p-8`}>
-      <div className=" mx-auto">
+      <div className="container mx-auto">
         {children}
       </div>
     </main>

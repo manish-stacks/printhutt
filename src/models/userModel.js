@@ -47,10 +47,10 @@ const userSchema = new mongoose.Schema(
 //   next();
 // });
 
-userSchema.methods.comparePassword = async function (usePassword:string) {
+userSchema.methods.comparePassword = async function (usePassword) {
   try {
     return await bcryptjs.compare(usePassword, this.password);
-  } catch (error:any) {
+  } catch (error) {
     throw new Error("Password comparison failed", error);
   }
 };

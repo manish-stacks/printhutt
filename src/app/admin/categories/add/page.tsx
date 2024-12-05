@@ -1,11 +1,12 @@
+import CategoriesAdd from '@/pages/admin/categories/CategoriesAdd'
+import React from 'react'
 
-const dashboardPage = () => {
-
+const page = () => {
   return (
-  <>
-    category
-  </>
+    <>
+      <CategoriesAdd />
+    </>
   )
 }
 
-export default dashboardPage
+export default page

@@ -100,6 +100,10 @@ const productSchema = new mongoose.Schema(
         );
       },
     },
+    isCustomize: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

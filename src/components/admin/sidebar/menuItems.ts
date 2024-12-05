@@ -4,7 +4,7 @@ import { FaHome, FaLayerGroup, FaTag } from "react-icons/fa";
 export const menuItems = {
   categories: [
     { id: 'categories', label: 'Categories', path: '/admin/categories' },
-    { id: 'subcategories', label: 'Sub Categories', path: '/admin/subcategories' },
+    { id: 'addcategories', label: 'Add Categories', path: '/admin/categories/add' },
   ],
   products: [
     { id: 'products-list', label: 'Products List', path: '/admin/products' },
