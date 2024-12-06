@@ -10,7 +10,7 @@ connect();
 export async function POST(req: NextRequest) {
   try {
     const { role } = await getDataFromToken(req)
-    if (role !== 'admin') return NextResponse.json({ success: false, message: 'Something went wrong. Please try again!' }, { status: 401 });
+    if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
 
 
     const formData = await req.formData();

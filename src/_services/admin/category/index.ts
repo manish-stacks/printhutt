@@ -52,9 +52,9 @@ export const get_category_by_id = async (id: string) => {
   }
 }
 
-export const update_a_category = async (id: string, formData: any) => {
+export const update_category = async (id: string, formData: any) => {
   try {
-    const { data } = await axios.post(`/api/Admin/category/${id}`, formData)
+    const { data } = await axios.put(`/api/category/${id}`, formData)
     return data;
   } catch (error) {
     console.log('Error in updating Categories (service) =>', error)

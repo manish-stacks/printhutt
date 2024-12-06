@@ -26,3 +26,14 @@ export interface PaginationData {
     limit: number;
   }
   
+
+ export interface CategoryFormData {
+    parentCategory: string;
+    name: string;
+    slug: string;
+    description: string;
+    metaKeywords: string;
+    metaDescription: string;
+    level: string;
+    imageUrl: File | null;
+  }
