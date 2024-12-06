@@ -7,7 +7,7 @@ export const getDataFromToken = async (request: NextRequest) => {
 
         const secret = new TextEncoder().encode(process.env.TOKEN_SECRET!);  
         const { payload } = await jwtVerify(token, secret);  
-        return payload.id;  
+        return payload;  
     } catch (error: any) {
         throw new Error(error.message);  
     }

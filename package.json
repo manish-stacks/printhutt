@@ -29,6 +29,7 @@
     "react-toastify": "^10.0.6",
     "remixicon": "^4.5.0",
     "slick-carousel": "^1.8.1",
+    "sweetalert2": "^11.14.5",
     "uuid": "^11.0.3"
   },
   "devDependencies": {

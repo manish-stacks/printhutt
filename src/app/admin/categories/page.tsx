@@ -1,11 +1,12 @@
+import Categories from "@/pages/admin/categories/CategoryList"
 
-const dashboardPage = () => {
+const Page = () => {
 
   return (
-  <>
-    category
-  </>
+    <>
+      <Categories />
+    </>
   )
 }
 
-export default dashboardPage
+export default Page;

@@ -10,6 +10,7 @@ const categorySchema = new mongoose.Schema(
     image: {
       url: {},
       public_id: {},
+      fileType:{}
     },
     parentCategory: {
       type: mongoose.Schema.Types.ObjectId,

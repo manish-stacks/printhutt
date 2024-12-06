@@ -1,12 +1,7 @@
+import CategoriesEdit from "@/pages/admin/categories/CategoriesEdit"
 
-
-const dashboardPage = () => {
-
-  return (
-  <>
-    category
-  </>
-  )
+const Page = () => {
+  return <CategoriesEdit />
 }
 
-export default dashboardPage
+export default Page

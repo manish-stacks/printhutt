@@ -1,11 +1,18 @@
 'use client'
-import { add_new_category } from '@/_services/admin/category';
+import { add_new_category, get_parent_categories } from '@/_services/admin/category';
+import { generateSlug } from '@/helpers/helpers';
 import { useRouter } from 'next/navigation';
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { FaImage } from 'react-icons/fa';
 import { RiLoader2Line } from 'react-icons/ri';
 import { toast } from 'react-toastify';
+
+
+interface Category {
+  _id: string; 
+  name: string;
+}
 
 interface CategoryFormData {
   parentCategory: string;
@@ -29,7 +36,7 @@ const CategoriesAdd = () => {
   const [previewUrl, setPreviewUrl] = useState<string>();
   const [isUploading, setIsUploading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const [categories, setCategories] = useState<Category[]>([]);
   const [formData, setFormData] = useState<CategoryFormData>({
     parentCategory: '',
     name: '',
@@ -47,7 +54,7 @@ const CategoriesAdd = () => {
   const handleImageChange = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
 
     const file = event.target.files?.[0];
-    console.log(file)
+
     if (!file) return;
     const CheckFileSize = maxSize(file);
     if (CheckFileSize) {
@@ -71,15 +78,22 @@ const CategoriesAdd = () => {
     setIsUploading(false);
   }, []);
 
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  }, []);
+    setFormData((prevData) => {
+      const updatedData = { ...prevData, [name]: value };
+      if (name === 'name') {
+        updatedData.slug = generateSlug(value);
+      }
+      return updatedData;
+    });
+  };
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!formData.imageUrl) return toast.error('Please select an image');
+   
+    if (!formData.imageUrl) return toast.error('Please choose an image');
     if (!formData.name) return toast.error('Please enter a name');
     if (!formData.slug) return toast.error('Please enter a slug');
     if (!formData.description) return toast.error('Please enter a description');
@@ -87,6 +101,7 @@ const CategoriesAdd = () => {
     if (!formData.metaDescription) return toast.error('Please enter meta description');
     if (!formData.level) return toast.error('Please enter level');
 
+    
     setIsSubmitting(true);
     // console.log('Form submitted:', formData);
     // await new Promise(resolve => setTimeout(resolve, 5000));
@@ -100,6 +115,7 @@ const CategoriesAdd = () => {
     data.append('metaDescription', formData.metaDescription)
     data.append('level', formData.level)
     data.append('imageUrl', formData.imageUrl)
+    data.append('parentCategory', formData.parentCategory)
 
 
     try {
@@ -108,7 +124,7 @@ const CategoriesAdd = () => {
         toast.success(res?.message);
         setTimeout(() => {
           router.push('/admin/categories')
-        }, 2000);
+        }, 1000);
         setIsSubmitting(false);
       } else {
         toast.error(res?.message)
@@ -123,6 +139,23 @@ const CategoriesAdd = () => {
 
 
   }, [formData]);
+
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const data = await get_parent_categories();
+        console.log(data)
+        setCategories(data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+        toast.error("Error fetching categories");
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
 
 
   return (
@@ -183,8 +216,19 @@ const CategoriesAdd = () => {
                   className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
                   id="name"
                   name="parentCategory"
+                  value={formData.parentCategory}
+                  onChange={handleChange}
                 >
-                  <option value="">dummy</option>
+                  <option value="">Select Category</option>
+                  
+                  {categories.length === 0 ? (
+                    <option>Loading...</option>
+                  ) : (
+                    categories.map((category) => (
+                      <option key={category._id} value={category._id}>{category.name}</option>
+                    ))
+                  )}
+
                 </select>
               </div>
               <div>
@@ -217,7 +261,6 @@ const CategoriesAdd = () => {
                   id="slug"
                   name="slug"
                   type="text"
-                  required
                   value={formData.slug}
                   onChange={handleChange}
                   placeholder="Enter category name"
@@ -252,7 +295,6 @@ const CategoriesAdd = () => {
                   id="metaKeywords"
                   name="metaKeywords"
                   type="text"
-                  required
                   value={formData.metaKeywords}
                   onChange={handleChange}
                   placeholder="Enter Meta Keywords"
@@ -270,7 +312,6 @@ const CategoriesAdd = () => {
                   id="metaDescription"
                   name="metaDescription"
                   rows={5}
-                  required
                   value={formData.metaDescription}
                   onChange={handleChange}
                   placeholder="Enter Meta Description"
@@ -291,7 +332,6 @@ const CategoriesAdd = () => {
                   id="level"
                   name="level"
                   type="number"
-                  required
                   value={formData.level}
                   onChange={handleChange}
                   placeholder="Enter Serial"

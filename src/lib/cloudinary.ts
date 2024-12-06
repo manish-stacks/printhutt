@@ -6,14 +6,23 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-export const uploadImage = async (file: string): Promise<{ url: string; public_id: string }> => {
+export const uploadImage = async (file:any,folderName='common'): Promise<{ url: string; public_id: string;fileType:string }> => {
   try {
-    const result = await cloudinary.uploader.upload(file, {
-      folder: 'categories',
+
+    const buffer = await file.arrayBuffer();
+    const base64File = Buffer.from(buffer).toString('base64');
+    const dataUri = `data:${file.type};base64,${base64File}`;
+
+    const result = await cloudinary.uploader.upload(dataUri, {
+      folder: folderName,
+      // transformation: [
+      //   { width: 500, height: 500, crop: "fill", gravity: "center" }
+      // ]
     });
     return {
       url: result.secure_url,
       public_id: result.public_id,
+      fileType:result.format
     };
   } catch (error) {
     console.error('Error uploading to Cloudinary:', error);
@@ -29,3 +38,5 @@ export const deleteImage = async (public_id: string): Promise<void> => {
     throw new Error('Failed to delete image');
   }
 };
+
+
