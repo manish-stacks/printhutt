@@ -1,11 +1,11 @@
 'use client'
-import { add_new_category, get_category_by_id, get_parent_categories, update_category } from '@/_services/admin/category';
+import { get_category_by_id, get_parent_categories, update_category } from '@/_services/admin/category';
 import { generateSlug } from '@/helpers/helpers';
 import { CategoryFormData } from '@/lib/types';
+import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 
-import React, { useState, useCallback, useEffect, ChangeEvent } from 'react';
-import { FaImage } from 'react-icons/fa';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import { RiLoader2Line } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 
@@ -42,7 +42,8 @@ const CategoriesEdit = () => {
         metaKeywords: '',
         metaDescription: '',
         level: '',
-        imageUrl: null,
+        imageUrl: '',
+        status: true,
     });
     const router = useRouter();
 
@@ -51,7 +52,7 @@ const CategoriesEdit = () => {
         const fetchCategory = async () => {
             try {
                 const data = await get_category_by_id(id);
-                console.log(data)
+                // console.log(data)
                 if (data) {
                     setFormData({
                         parentCategory: data.parentCategory || "",
@@ -61,7 +62,8 @@ const CategoriesEdit = () => {
                         metaKeywords: data.metaKeywords || "",
                         metaDescription: data.metaDescription || "",
                         level: data.level || "",
-                        imageUrl: data?.image?.url,
+                        imageUrl: data?.image?.url || "",
+                        status: data?.status || false,
                     });
                 } else {
                     toast.error("Category not found.");
@@ -82,7 +84,7 @@ const CategoriesEdit = () => {
         const fetchCategories = async () => {
             try {
                 const data = await get_parent_categories();
-                console.log(data)
+                // console.log(data)
                 setCategories(data);
             } catch (error) {
                 console.error("Error fetching categories:", error);
@@ -134,16 +136,17 @@ const CategoriesEdit = () => {
         });
     };
 
-    const handleSubmit = useCallback(async (e: React.FormEvent) => {
+    const handleSubmit = (async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!formData.imageUrl) return toast.error('Please choose an image');
+        // if (!formData.imageUrl) return toast.error('Please choose an image');
         if (!formData.name) return toast.error('Please enter a name');
         if (!formData.slug) return toast.error('Please enter a slug');
         if (!formData.description) return toast.error('Please enter a description');
         if (!formData.metaKeywords) return toast.error('Please enter meta keywords');
         if (!formData.metaDescription) return toast.error('Please enter meta description');
         if (!formData.level) return toast.error('Please enter level');
+        if (!formData.status) return toast.error('Please enter level');
 
 
         setIsSubmitting(true);
@@ -158,12 +161,13 @@ const CategoriesEdit = () => {
         data.append('metaKeywords', formData.metaKeywords)
         data.append('metaDescription', formData.metaDescription)
         data.append('level', formData.level)
-        // data.append('imageUrl', formData.imageUrl)
+        data.append('imageUrl', formData.imageUrl)
         data.append('parentCategory', formData.parentCategory)
+        data.append('status', formData.status.toString())
 
 
         try {
-            const res = await update_category(id,data)
+            const res = await update_category(id, data)
             if (res.success) {
                 toast.success(res?.message);
                 setTimeout(() => {
@@ -182,64 +186,37 @@ const CategoriesEdit = () => {
 
 
 
-    }, [formData]);
+    });
 
 
-   
 
+
+    const handleStatusToggle = () => {
+        setFormData((prevData) => ({ ...prevData, status: !prevData.status }));
+    };
 
     return (
         <>
-            <div className="max-w-10xl mx-auto lg:px-10 py-20">
-                <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow-sm" encType={'multipart/form-data'}>
-                    <div className="space-y-2">
-                        <h2 className="text-2xl font-bold text-gray-900">Add New Category</h2>
-                        <p className="text-gray-600">
-                            update category with an image and description.
-                        </p>
+            <form onSubmit={handleSubmit} encType={'multipart/form-data'}>
+                <div className="flex flex-wrap mt-20 mb-52">
+                    {/* top row */}
+                    <div className="w-full md:w-12/12 lg:w-12/12 px-4 mb-5">
+                        <div className=" bg-white text-black flex justify-between align-middle p-6 rounded-lg shadow-md shadow-black-300">
+                            <div>
+                                <h2 className="text-2xl font-bold text-gray-900">Edit Category</h2>
+                                <p className="text-gray-600">
+                                    Edit a category with an image and description.
+                                </p>
+                            </div>
+                            <div>
+                                <button onClick={router.back} className="bg-blue-500 text-white py-1 px-6 rounded">Back</button>
+                            </div>
+                        </div>
                     </div>
-                    <div className="space-y-6">
-                        <div className="space-y-5">
+                    {/* left side */}
 
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Category Image
-                                </label>
-                                <div className="flex flex-col sm:flex-row gap-4 items-start">
-                                    <div className="flex-1">
-                                        {previewUrl ? (
-                                            <div className="relative aspect-video w-48 h-48 rounded-lg overflow-hidden">
-                                                <img
-                                                    src={previewUrl}
-                                                    alt="Preview"
-                                                    className="w-full h-full object-cover"
-                                                />
-                                            </div>
-                                        ) : (
-                                            <div className="flex items-center justify-center w-48 h-48 bg-gray-100 rounded-lg">
-                                                {/* <FaImage className="w-12 h-12 text-gray-400" />*/}
-                                                <img
-                                                    src={formData.imageUrl}
-                                                    alt="Preview"
-                                                    className="w-full h-full object-cover rounded-lg"
-                                                /> 
-                                            </div>
-                                        )}
-                                        <p>Image Size Should Be 60 x 60.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div>
-                                <input
-                                    className="flex h-10 w-[400px] rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={handleImageChange}
-                                />
-                            </div>
-
+                    <div className="w-full md:w-8/12 lg:w-8/12 px-4 space-y-6">
+                        <div className="bg-white text-black p-6 rounded-lg space-y-5 shadow-md shadow-black-300">
                             <div>
                                 <label
                                     htmlFor="name"
@@ -301,6 +278,54 @@ const CategoriesEdit = () => {
                                     placeholder="Enter category name"
                                 />
                             </div>
+                        </div>
+
+                        <div className="bg-white text-black p-6 rounded-lg space-y-5 shadow-md shadow-black-300">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Category Image
+                                </label>
+                                <div className="flex flex-col sm:flex-row gap-4 items-start">
+                                    <div className="flex-1">
+                                        {previewUrl ? (
+                                            <div className="relative aspect-video w-40 h-40 rounded-lg overflow-hidden">
+                                                <img
+                                                    src={previewUrl}
+                                                    alt="Preview"
+                                                    className="h-full object-cover"
+                                                />
+                                            </div>
+                                        ) : (
+                                            <div className="flex items-center justify-center w-40 h-40 bg-gray-100 rounded-lg">
+                                                {formData.imageUrl ? (
+                                                    <img
+                                                        src={typeof formData.imageUrl === 'string' ? formData.imageUrl : URL.createObjectURL(formData.imageUrl)}
+                                                        alt="Preview"
+                                                        className="w-full h-full object-cover rounded-lg"
+                                                    />
+                                                ) : (
+                                                    <div className="flex items-center justify-center w-full h-full bg-gray-200 text-gray-400">
+                                                        No Image
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+                                        <p>Image Size Should Be 60 x 60.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Image *</label>
+                                <input
+                                    className="flex h-10 w-[400px] rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleImageChange}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="bg-white text-black p-6 rounded-lg space-y-5 shadow-md shadow-black-300">
                             <div>
                                 <label
                                     htmlFor="description"
@@ -308,16 +333,73 @@ const CategoriesEdit = () => {
                                 >
                                     Description
                                 </label>
-                                <input
-                                    className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
+                                <textarea
+                                    className="flex w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
                                     id="description"
                                     name="description"
-                                    type="text"
+                                    rows={5}
                                     value={formData.description}
                                     onChange={handleChange}
                                     placeholder="Enter category description"
                                 />
                             </div>
+                        </div>
+                    </div>
+
+                    {/* right side */}
+                    <div className="w-full md:w-4/12 lg:w-4/12 px-4 space-y-6">
+                        <div className="bg-white text-black p-6 rounded-lg space-x-3 shadow-md shadow-black-300">
+                            <button
+                                type="submit"
+                                disabled={isSubmitting || isUploading}
+                                className="bg-green-500 text-white py-2 px-7 rounded gap-1"
+                            >
+                                {(isSubmitting || isUploading) && (
+                                    <RiLoader2Line className="mr-2 h-4 w-4 animate-spin" />
+                                )}
+                                {isSubmitting ? 'Creating...' : 'Update'}
+                            </button>
+                            <Link href={'/admin/categories'} className="bg-blue-500 text-white py-[.7rem] px-7 rounded gap-1">Show all</Link>
+                        </div>
+                        <div className="bg-white text-black p-6 rounded-lg space-x-3 shadow-md shadow-black-300">
+                            <label className="flex items-center cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    checked={formData.status}
+                                    onChange={handleStatusToggle}
+                                    className="sr-only peer"
+                                />
+                                <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600" />
+                                <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                    {formData.status ? "Active" : "Inactive"}
+                                </span>
+                            </label>
+
+                        </div>
+
+
+
+                        <div className="bg-white text-black p-6 rounded-lg space-x-3 shadow-md shadow-black-300">
+                            <div>
+                                <label
+                                    htmlFor="name"
+                                    className="block text-sm font-medium text-gray-700"
+                                >
+                                    Serial *
+                                </label>
+                                <input
+                                    className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
+                                    id="level"
+                                    name="level"
+                                    type="number"
+                                    value={formData.level}
+                                    onChange={handleChange}
+                                    placeholder="Enter Serial"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="bg-white text-black p-6 rounded-lg space-y-5 shadow-md shadow-black-300">
                             <div>
                                 <label
                                     htmlFor="name"
@@ -353,39 +435,12 @@ const CategoriesEdit = () => {
                                 />
 
                             </div>
-
-
-                            <div>
-                                <label
-                                    htmlFor="name"
-                                    className="block text-sm font-medium text-gray-700"
-                                >
-                                    Serial *
-                                </label>
-                                <input
-                                    className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
-                                    id="level"
-                                    name="level"
-                                    type="number"
-                                    value={formData.level}
-                                    onChange={handleChange}
-                                    placeholder="Enter Serial"
-                                />
-                            </div>
                         </div>
-                        <button
-                            type="submit"
-                            disabled={isSubmitting || isUploading}
-                            className="inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 focus-visible:ring-blue-600"
-                        >
-                            {(isSubmitting || isUploading) && (
-                                <RiLoader2Line className="mr-2 h-4 w-4 animate-spin" />
-                            )}
-                            {isSubmitting ? 'Creating Category...' : 'Update Category'}
-                        </button>
+
+
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </>
     )
 }

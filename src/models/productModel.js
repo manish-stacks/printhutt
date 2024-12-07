@@ -1,4 +1,14 @@
 import mongoose from "mongoose";
+const variantSchema = new mongoose.Schema(
+  {
+    size: { type: String, required: true }, 
+    color: { type: String },
+    price: { type: Number, required: true },
+    stock: { type: Number, required: true },
+    discountPercentage: { type: Number },
+    discountPrice: { type: Number },
+  }
+);
 
 const productSchema = new mongoose.Schema(
   {
@@ -23,6 +33,7 @@ const productSchema = new mongoose.Schema(
     brand: String,
     sku: String,
     weight: Number,
+    varient:[variantSchema],
     availabilityStatus: String,
     minimumOrderQuantity: Number,
     dimensions: {

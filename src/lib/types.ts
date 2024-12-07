@@ -14,6 +14,7 @@ export interface Category {
         _id: string;
         name: string;
     };
+    status:boolean,
     createdAt: string;
 }
 
@@ -35,5 +36,6 @@ export interface PaginationData {
     metaKeywords: string;
     metaDescription: string;
     level: string;
-    imageUrl: File | null;
+    imageUrl: File | string;
+    status: boolean;
   }

@@ -59,7 +59,7 @@ const Page = () => {
 
           <div className="bg-white text-black p-6 rounded-lg space-y-5 shadow-md shadow-black-300">
             <div><label className="block text-sm font-medium text-gray-700">Gallery image *</label>
-              <input className="w-50 flex mt-5 h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" id="name" required placeholder="Product name" type="file" value="" name="attachment" />
+              <input className="w-50 flex mt-5 h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" id="name" required placeholder="Product name" type="file"  name="attachment" />
               <button className="bg-green-500 text-white py-1 px-5 rounded gap-1 mt-4">+ Add More</button>
             </div>
           </div>
@@ -67,17 +67,17 @@ const Page = () => {
           <div className="bg-white text-black p-6 rounded-lg space-y-5 shadow-md shadow-black-300">
             <div><label className="block text-sm font-medium text-gray-700">Short description *</label>
 
-              <textarea className="w-50 flex mt-5 h-10 w-full mb-5 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" id="name" placeholder="Product name"  value="" name="attachment" />
+              <textarea className="w-50 flex mt-5 h-10 w-full mb-5 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" id="name" placeholder="Product name"  name="attachment" />
 
               {/* ck editor */}
-              <JoditEditor
+              {/* <JoditEditor
                 className="h-28"
                 ref={editor}
                 value={content}
                 config={config}
                 onBlur={(newContent) => setContent(newContent)}
                 onChange={(newContent) => { }}
-              />
+              /> */}
             </div>
           </div>
 
@@ -212,7 +212,7 @@ const Page = () => {
           </div>
           <div className="bg-white text-black p-6 rounded-lg space-x-3 shadow-md shadow-black-300">
             <label className="flex items-center cursor-pointer ml-3">
-              <input type="checkbox" defaultValue="" className="sr-only peer" />
+              <input type="checkbox"  className="sr-only peer" />
               <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600" />
               <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
                 Status
@@ -220,14 +220,14 @@ const Page = () => {
             </label>
 
             <label className="flex items-center cursor-pointer mt-3">
-              <input type="checkbox" defaultValue="" className="sr-only peer" />
+              <input type="checkbox"  className="sr-only peer" />
               <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600" />
               <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
                 Display On Home Screen
               </span>
             </label>
             <label className="flex items-center cursor-pointer mt-3">
-              <input type="checkbox" defaultValue="" className="sr-only peer" />
+              <input type="checkbox"  className="sr-only peer" />
               <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600" />
               <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
                 Tranding Product
@@ -235,7 +235,7 @@ const Page = () => {
             </label>
 
             <label className="flex items-center cursor-pointer mt-3">
-              <input type="checkbox" defaultValue="" className="sr-only peer" />
+              <input type="checkbox"  className="sr-only peer" />
               <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600" />
               <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
                 Hot Deals
@@ -243,7 +243,7 @@ const Page = () => {
             </label>
 
             <label className="flex items-center cursor-pointer mt-3">
-              <input type="checkbox" defaultValue="" className="sr-only peer" />
+              <input type="checkbox"  className="sr-only peer" />
               <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600" />
               <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
                 Sale
@@ -251,7 +251,7 @@ const Page = () => {
             </label>
 
             <label className="flex items-center cursor-pointer mt-3">
-              <input type="checkbox" defaultValue="" className="sr-only peer" />
+              <input type="checkbox"  className="sr-only peer" />
               <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600" />
               <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
                 New
@@ -259,7 +259,7 @@ const Page = () => {
             </label>
 
             <label className="flex items-center cursor-pointer mt-3">
-              <input type="checkbox" defaultValue="" className="sr-only peer" />
+              <input type="checkbox"  className="sr-only peer" />
               <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600" />
               <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
                 Customise
@@ -268,7 +268,7 @@ const Page = () => {
           </div>
 
           <div className="bg-white text-black p-6 rounded-lg space-x-3 shadow-md shadow-black-300">
-           <label className="block font-medium text-gray-700 ml-3">Offers On</label>
+            <label className="block font-medium text-gray-700 ml-3">Offers On</label>
             <select id="brand" name="stock" className="block h-10 w-full rounded-md bg-white px-3 py-1.5 text-base border-gray-300 text-gray-900 outline-1 -outline-offset-1 outline-gray-900 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
               <option>Option 1</option>
               <option>Option 2</option>
@@ -284,7 +284,7 @@ const Page = () => {
           </div>
 
           <div className="bg-white text-black p-6 rounded-lg space-x-3 shadow-md shadow-black-300">
-           <label className="block font-medium text-gray-700 ml-3">Select Category</label>
+            <label className="block font-medium text-gray-700 ml-3">Select Category</label>
             <select id="brand" name="stock" className="block h-10 w-full rounded-md bg-white px-3 py-1.5 text-base border-gray-300 text-gray-900 outline-1 -outline-offset-1 outline-gray-900 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
               <option>Select one</option>
               <option>Category 1</option>

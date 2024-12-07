@@ -33,7 +33,8 @@ export async function POST(req: NextRequest) {
       metaDescription: formData.get('metaDescription'),
       parentCategory: formData.get('parentCategory') || null,
       level: formData.get('level'),
-      image: uploadResponse
+      status: formData.get('status') || true,
+      image: uploadResponse,
     });
     await category.save()
 

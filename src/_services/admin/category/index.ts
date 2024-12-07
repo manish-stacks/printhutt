@@ -46,7 +46,7 @@ export const get_category_by_id = async (id: string) => {
   try {
     const { data } = await axios.get(`/api/category/${id}`)
     return data;
-  } catch (error:any) {
+  } catch (error: any) {
     console.log('Error in getting Categories by ID (service) =>', error)
     throw new Error(error?.message || 'An error occurred while deleting the category');
   }
@@ -60,6 +60,19 @@ export const update_category = async (id: string, formData: any) => {
     console.log('Error in updating Categories (service) =>', error)
   }
 }
+
+
+export const update_category_status = async (categoryId: string, newStatus: any) => {
+  try {
+    const { data } = await axios.patch(`/api/category/${categoryId}`, {
+      status: newStatus,
+    });
+    return data;
+  } catch (error) {
+    console.log('Error in updating Categories (service) =>', error)
+  }
+}
+
 
 
 

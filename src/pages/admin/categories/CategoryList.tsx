@@ -4,11 +4,12 @@ import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { FaSearch } from 'react-icons/fa';
-import { RiArrowDropLeftLine, RiArrowDropRightLine, RiDeleteBackLine, RiDeleteBin2Line, RiEdit2Fill, RiLoader2Line, RiSkipLeftLine, RiSkipRightLine } from 'react-icons/ri';
+import { RiArrowDropLeftLine, RiArrowDropRightLine, RiDeleteBin2Line, RiEdit2Fill, RiLoader2Line, RiSkipLeftLine, RiSkipRightLine } from 'react-icons/ri';
 import Swal from 'sweetalert2';
-import { delete_categories } from '@/_services/admin/category';
+import { delete_categories, update_category_status } from '@/_services/admin/category';
 import { toast } from 'react-toastify';
 import { Category, PaginationData } from '@/lib/types';
+import Link from 'next/link';
 
 
 export default function CategoryList() {
@@ -96,15 +97,53 @@ export default function CategoryList() {
   const editCategory = async (id: string) => {
     router.push(`/admin/categories/edit/${id}`);
   }
+
+
+  const handleStatusToggle = (categoryId: string, currentStatus: boolean) => {
+    const newStatus = !currentStatus;
+
+    setCategories((prevCategories) =>
+      prevCategories.map((category) =>
+        category._id === categoryId ? { ...category, status: newStatus } : category
+      )
+    );
+    updateCategoryStatus(categoryId, newStatus);
+  };
+
+
+
+
+  const updateCategoryStatus = async (categoryId: string, newStatus: boolean) => {
+    try {
+      setIsLoading(true);
+      await update_category_status(categoryId, newStatus)
+      toast.success('Status updated successfully')
+    } catch (error) {
+      console.error('Error updating category status:', error);
+      toast.error('Error updating category status');
+    }finally{
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="max-w-10xl mx-auto lg:px-10 py-20">
-      <div className="bg-white px-5 py-10">
-        <div className="space-y-0">
-          <h2 className="text-2xl font-bold text-gray-900">All Categories</h2>
-          <p className="text-gray-600">
-            List a new category with an image and description.
-          </p>
+
+      <div className="w-full md:w-12/12 lg:w-12/12 mb-5">
+        <div className=" bg-white text-black flex justify-between align-middle p-6 rounded-lg shadow-md shadow-black-300">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">All Category</h2>
+            <p className="text-gray-600">
+              List a new category with an image and description.
+            </p>
+          </div>
+          <div>
+            <Link href={'/admin/categories/add'} className="bg-blue-500 text-white py-1 px-6 rounded">Add</Link>
+          </div>
         </div>
+      </div>
+
+      <div className="bg-white px-5 py-10">
 
         {/* Search Section */}
         <div className="mb-6 flex justify-between items-center">
@@ -135,6 +174,7 @@ export default function CategoryList() {
                   <th className="py-3 px-4 font-semibold">Slug</th>
                   <th className="py-3 px-4 font-semibold">Parent</th>
                   <th className="py-3 px-4 font-semibold">Level</th>
+                  <th className="py-3 px-4 font-semibold">Status</th>
                   <th className="py-3 px-4 font-semibold">Action</th>
                 </tr>
               </thead>
@@ -163,11 +203,25 @@ export default function CategoryList() {
                     <td className="py-3 px-4">{category.name}</td>
                     <td className="py-3 px-4">{category.slug}</td>
                     <td className="py-3 px-4">
-                      {category.parentCategory?.name || 'None'}
+                      -{category.parentCategory?.name || '-'}
                     </td>
                     <td className="py-3 px-4">{category.level}</td>
                     <td>
-                      <div className='flex justify-center space-x-2'>
+                      <label className="flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={category.status}
+                          onChange={() => handleStatusToggle(category._id, category.status)}
+                          className="sr-only peer"
+                        />
+                        <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600" />
+                        <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                          {category.status ? "Active" : "Inactive"}
+                        </span>
+                      </label>
+                    </td>
+                    <td>
+                      <div className='flex space-x-2'>
                         <button
                           onClick={() => editCategory(category._id)}
                           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-full">
