@@ -14,10 +14,9 @@ export interface Category {
         _id: string;
         name: string;
     };
-    status:boolean,
+    status: boolean,
     createdAt: string;
 }
-
 
 
 export interface PaginationData {
@@ -25,10 +24,10 @@ export interface PaginationData {
     pages: number;
     page: number;
     limit: number;
-  }
-  
+}
 
- export interface CategoryFormData {
+
+export interface CategoryFormData {
     parentCategory: string;
     name: string;
     slug: string;
@@ -38,4 +37,23 @@ export interface PaginationData {
     level: string;
     imageUrl: File | string;
     status: boolean;
-  }
+}
+
+export interface Warranty {
+    _id: string;
+    warrantyType: string;
+    durationMonths: string;
+    coverage: string;
+    claimProcess: string;
+}
+
+
+export interface ShippingInformation {
+    _id: string;
+    shippingMethod: string;
+    shippingFee: number;
+    shippingTime: string;
+    isFreeShipping: boolean;
+    createdAt?: string;
+    updatedAt?: string;
+}

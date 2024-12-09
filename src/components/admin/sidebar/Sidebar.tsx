@@ -30,11 +30,13 @@ export function Sidebar({ isOpen, onClose, onCollapsedChange }: SidebarProps) {
         />
       )}
 
-      <aside
-        className={`bg-gray-800 text-white h-screen transition-all duration-300 
-          ${collapsed ? 'w-16' : 'w-64'} fixed left-0 top-0 
-          ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 z-10`}
-      >
+<aside
+  className={`bg-gray-800 text-white h-screen transition-all duration-300 
+    ${collapsed ? 'w-16' : 'w-64'} fixed left-0 top-0 
+    ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 z-10
+    overflow-auto
+  `}
+>
         <div className="p-4 flex items-center justify-between">
           {!collapsed && <h2 className="text-xl font-bold">Admin</h2>}
           <button

@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connect } from '@/dbConfig/dbConfig'
-import Category from '@/models/categoryModel';
-import { uploadImage } from '@/lib/cloudinary';
-import { File } from 'buffer';
 import { getDataFromToken } from '@/helpers/getDataFromToken';
+import WarrantyInformation from '@/models/warrantyInformationModel';
 
 connect();
 
@@ -13,36 +11,21 @@ export async function POST(req: NextRequest) {
     if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
 
 
-    const formData = await req.formData();
-    // console.log(formData)
-    const file = formData.get('imageUrl');
-    if (!file || !(file instanceof File)) {
-      return NextResponse.json(
-        { error: 'No valid file uploaded' },
-        { status: 400 }
-      );
-    }
+    const { warrantyType, durationMonths, coverage, claimProcess } = await req.json();
 
-    const uploadResponse = await uploadImage(file, 'categories')
-
-    const category = new Category({
-      name: formData.get('name'),
-      slug: formData.get('slug'),
-      description: formData.get('description'),
-      metaKeywords: formData.get('metaKeywords'),
-      metaDescription: formData.get('metaDescription'),
-      parentCategory: formData.get('parentCategory') || null,
-      level: formData.get('level'),
-      status: formData.get('status') || true,
-      image: uploadResponse,
+    const warranty = new WarrantyInformation({
+      warrantyType,
+      durationMonths,
+      coverage,
+      claimProcess,
     });
-    await category.save()
+    await warranty.save()
 
     return NextResponse.json(
       {
         success: true,
         message: 'Data inserted successfully',
-        data: category
+        data: warranty
       },
       { status: 201 }
     );
@@ -59,22 +42,21 @@ export async function GET(req: NextRequest) {
     const search = url.searchParams.get('search') || '';
 
     const query = search
-      ? { name: { $regex: search, $options: 'i' } }
+      ? { warrantyType: { $regex: search, $options: 'i' } }
       : {};
 
     const skip = (page - 1) * limit;
 
-    const [categories, total] = await Promise.all([
-      Category.find(query)
-        .populate('parentCategory', 'name')
+    const [warranty, total] = await Promise.all([
+      WarrantyInformation.find(query)
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit),
-      Category.countDocuments(query)
+      WarrantyInformation.countDocuments(query)
     ]);
 
     return NextResponse.json({
-      categories,
+      warranty,
       pagination: {
         total,
         pages: Math.ceil(total / limit),

@@ -51,7 +51,7 @@ export const mainMenuItems = [
   {
     id: 'categories',
     icon: FaTag,
-    label: 'Manage Categories',
+    label: 'Categories',
     submenu: menuItems.categories,
   },
   {
