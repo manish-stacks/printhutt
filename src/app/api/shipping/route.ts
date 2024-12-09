@@ -41,7 +41,7 @@ export async function GET(req: NextRequest) {
     const search = url.searchParams.get('search') || '';
 
     const query = search
-      ? { warrantyType: { $regex: search, $options: 'i' } }
+      ? { shippingMethod: { $regex: search, $options: 'i' } }
       : {};
 
     const skip = (page - 1) * limit;

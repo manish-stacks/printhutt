@@ -7,12 +7,6 @@ const offerSchema = new mongoose.Schema(
       required: true,
     },
     offerDescription: String,
-    applicableTo: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Category",
-      },
-    ],
     discountPercentage: {
       type: Number,
     },
