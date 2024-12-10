@@ -15,7 +15,7 @@ export const menuItems = {
   ecommerce: [
     { id: 'warranty', label: 'Warranty', path: '/admin/warranty' },
     { id: 'shipping', label: 'Shipping', path: '/admin/shipping' },
-    { id: 'return', label: 'Return', path: '/admin/return' },
+    { id: 'return', label: 'Return', path: '/admin/return-policy' },
     { id: 'offers', label: 'Offers', path: '/admin/offers' },
     { id: 'coupons', label: 'Coupons', path: '/admin/coupons' },
   ],

@@ -57,3 +57,24 @@ export interface ShippingInformation {
     createdAt?: string;
     updatedAt?: string;
 }
+
+
+export interface ReturnPolicy {
+    _id: string;
+    returnPeriod: string;
+    restockingFee: string;
+    policyDetails: string;
+    createdAt?: string;
+    updatedAt?: string;
+}
+
+export interface Offer {
+    _id: string;
+    offerTitle: string;
+    offerDescription: string;
+    discountPercentage: number | string;
+    validFrom: string;
+    validTo: string;
+    createdAt?: string;
+    updatedAt?: string;
+}
