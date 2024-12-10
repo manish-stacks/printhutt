@@ -206,7 +206,7 @@ export default function ShippingPage() {
                                         </tr>
                                     ) : (shippingMethods.map((shipping) => (
                                         <tr key={shipping._id} className="border-b hover:bg-gray-50">
-                                            <td className="py-3 px-4">{shipping.shippingMethod.toLocaleUpperCase()}</td>
+                                            <td className="py-3 px-4">{shipping.shippingMethod}</td>
                                             <td className="py-3 px-4">{shipping.shippingFee} months</td>
                                             <td className="py-3 px-4">{shipping.shippingTime}</td>
                                             <td>
