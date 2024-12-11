@@ -51,6 +51,31 @@ export const update_warranty = async (id: string, formData: any) => {
 }
 
 
+/*
+
+import { axiosInstance } from '@/lib/axios';
+import { Warranty } from '@/types/warranty';
+
+export async function getAllWarrantyPagination(page: string, search: string) {
+  return axiosInstance.get(`/warranty`, {
+    params: { page, search },
+  });
+}
+
+export async function addNewWarranty(data: Partial<Warranty>) {
+  return axiosInstance.post('/warranty', data);
+}
+
+export async function updateWarranty(id: string, data: Partial<Warranty>) {
+  return axiosInstance.put(`/warranty/${id}`, data);
+}
+
+export async function deleteWarranty(id: string) {
+  return axiosInstance.delete(`/warranty/${id}`);
+}
+  */
+
+
 
 
 

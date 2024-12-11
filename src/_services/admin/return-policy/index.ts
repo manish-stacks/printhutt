@@ -40,3 +40,30 @@ export async function removeReturnPolicy(id: string) {
         throw new Error(error?.message || 'An error occurred while deleting the return-policy');
     }
 }
+
+
+/*
+
+
+import { axiosInstance } from '@/lib/axios';
+import { ReturnPolicy } from '@/types/return-policy';
+
+export async function getAllReturnPoliciesPagination(page: string, search: string) {
+  return axiosInstance.get(`/return-policy`, {
+    params: { page, search },
+  });
+}
+
+export async function addNewReturnPolicy(data: Partial<ReturnPolicy>) {
+  return axiosInstance.post('/return-policy', data);
+}
+
+export async function updateReturnPolicy(id: string, data: Partial<ReturnPolicy>) {
+  return axiosInstance.put(`/return-policy/${id}`, data);
+}
+
+export async function deleteReturnPolicy(id: string) {
+  return axiosInstance.delete(`/return-policy/${id}`);
+}
+
+*/

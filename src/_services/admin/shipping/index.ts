@@ -40,3 +40,48 @@ export async function deleteShipping(id: string) {
         throw new Error(error?.message || 'An error occurred while deleting the shipping');
     }
 }
+
+
+/*
+
+import { ShippingInformation } from '@/types/shipping';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
+
+export async function getAllShippingPagination(page: string, search: string) {
+  const response = await fetch(
+    `${API_URL}/shipping?page=${page}&search=${search}`,
+    { cache: 'no-store' }
+  );
+  if (!response.ok) throw new Error('Failed to fetch shipping methods');
+  return response.json();
+}
+
+export async function addNewShipping(data: Partial<ShippingInformation>) {
+  const response = await fetch(`${API_URL}/shipping`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error('Failed to add shipping method');
+  return response.json();
+}
+
+export async function updateShipping(id: string, data: Partial<ShippingInformation>) {
+  const response = await fetch(`${API_URL}/shipping/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error('Failed to update shipping method');
+  return response.json();
+}
+
+export async function deleteShipping(id: string) {
+  const response = await fetch(`${API_URL}/shipping/${id}`, {
+    method: 'DELETE',
+  });
+  if (!response.ok) throw new Error('Failed to delete shipping method');
+  return response.json();
+}
+*/

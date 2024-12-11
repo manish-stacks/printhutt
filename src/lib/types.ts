@@ -78,3 +78,25 @@ export interface Offer {
     createdAt?: string;
     updatedAt?: string;
 }
+
+export interface Coupon {
+    _id: string;
+    code: string;
+    description: string;
+    discountType: 'percentage' | 'fixed' | 'free_shipping';
+    discountValue: number;
+    minimumPurchaseAmount: number;
+    maxDiscountAmount?: number;
+    validFrom: string;
+    validUntil: string;
+    usageLimit: number | null;
+    usedCount: number;
+    applicableProducts: string[];
+    applicableCategories: string[];
+    isActive: boolean;
+    createdAt?: string;
+    updatedAt?: string;
+  }
+  
+  
+  export type CouponFormData = Omit<Coupon, '_id' | 'createdAt' | 'updatedAt' | 'usedCount'>;

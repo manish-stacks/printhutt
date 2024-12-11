@@ -115,6 +115,9 @@ const productSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    demoVideo: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

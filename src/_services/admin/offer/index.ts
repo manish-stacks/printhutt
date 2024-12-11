@@ -40,3 +40,31 @@ export async function removeOffer(id: string) {
         throw new Error(error?.message || 'An error occurred while deleting the return-policy');
     }
 }
+
+
+/*
+
+
+import { axiosInstance } from '@/lib/axios';
+import { Offer } from '@/types/offer';
+
+export async function getAllOffersPagination(page: string, search: string) {
+  return axiosInstance.get(`/offer`, {
+    params: { page, search },
+  });
+}
+
+export async function addNewOffer(data: Partial<Offer>) {
+  return axiosInstance.post('/offer', data);
+}
+
+export async function updateOffer(id: string, data: Partial<Offer>) {
+  return axiosInstance.put(`/offer/${id}`, data);
+}
+
+export async function deleteOffer(id: string) {
+  return axiosInstance.delete(`/offer/${id}`);
+}
+
+
+*/

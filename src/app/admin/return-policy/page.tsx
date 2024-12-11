@@ -250,3 +250,185 @@ export default function ReturnPolicyPage() {
         </div>
     );
 }
+
+
+
+/*
+
+
+'use client';
+
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { FaSearch } from 'react-icons/fa';
+import { useReturnPolicy } from '@/hooks/useReturnPolicy';
+import { ReturnPolicyForm } from '@/components/return-policy/ReturnPolicyForm';
+import { ReturnPolicyTable } from '@/components/return-policy/ReturnPolicyTable';
+import { Pagination } from '@/components/warranty/Pagination';
+
+export default function ReturnPolicyPage() {
+  const {
+    returnPolicies,
+    pagination,
+    isLoading,
+    fetchReturnPolicies,
+    createReturnPolicy,
+    modifyReturnPolicy,
+    removeReturnPolicy,
+  } = useReturnPolicy();
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [formData, setFormData] = useState({
+    returnPeriod: '',
+    restockingFee: '',
+    policyDetails: '',
+  });
+
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const page = searchParams?.get('page') || '1';
+  const search = searchParams?.get('search') || '';
+
+  useEffect(() => {
+    fetchReturnPolicies(page, search);
+  }, [fetchReturnPolicies, page, search]);
+
+  const handleSearch = (value: string) => {
+    const params = new URLSearchParams(searchParams!);
+    if (value) {
+      params.set('search', value);
+    } else {
+      params.delete('search');
+    }
+    params.set('page', '1');
+    router.push(`?${params.toString()}`);
+  };
+
+  const handlePageChange = (newPage: number) => {
+    const params = new URLSearchParams(searchParams!);
+    params.set('page', newPage.toString());
+    router.push(`?${params.toString()}`);
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    try {
+      const success = editingId
+        ? await modifyReturnPolicy(editingId, formData)
+        : await createReturnPolicy(formData);
+      
+      if (success) {
+        fetchReturnPolicies(page, search);
+        handleCloseModal();
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleEdit = (id: string) => {
+    const policyToEdit = returnPolicies.find(policy => policy._id === id);
+    if (policyToEdit) {
+      setFormData({
+        returnPeriod: policyToEdit.returnPeriod,
+        restockingFee: policyToEdit.restockingFee.toString(),
+        policyDetails: policyToEdit.policyDetails,
+      });
+      setEditingId(id);
+      setIsOpen(true);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    const success = await removeReturnPolicy(id);
+    if (success) {
+      fetchReturnPolicies(page, search);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setIsOpen(false);
+    setEditingId(null);
+    setFormData({
+      returnPeriod: '',
+      restockingFee: '',
+      policyDetails: '',
+    });
+  };
+
+  return (
+    <div className="max-w-10xl mx-auto lg:px-10 py-20">
+      <div className="w-full md:w-12/12 lg:w-12/12 mb-5">
+        <div className="bg-white text-black flex justify-between align-middle p-6 rounded-lg shadow-md">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">Return Policies</h2>
+            <p className="text-gray-600">Manage return policies and conditions</p>
+          </div>
+          <div>
+            <button
+              className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+              onClick={() => setIsOpen(true)}
+            >
+              Add Policy
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-white px-5 py-10">
+        <div className="mb-6 flex justify-between items-center">
+          <div className="relative hidden sm:block mt-4">
+            <FaSearch className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+            <input
+              type="search"
+              placeholder="Search return policies..."
+              value={search}
+              onChange={(e) => handleSearch(e.target.value)}
+              className="w-80 rounded-lg border border-gray-200 py-2 pl-10 pr-4 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            />
+          </div>
+        </div>
+
+        <div className="overflow-x-auto bg-white shadow-md rounded-lg">
+          <ReturnPolicyTable
+            returnPolicies={returnPolicies}
+            isLoading={isLoading}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+        </div>
+
+        {pagination && (
+          <Pagination
+            pagination={pagination}
+            onPageChange={handlePageChange}
+          />
+        )}
+      </div>
+
+      {isOpen && (
+        <ReturnPolicyForm
+          formData={formData}
+          isSubmitting={isSubmitting}
+          onSubmit={handleSubmit}
+          onChange={handleChange}
+          onClose={handleCloseModal}
+          mode={editingId ? 'edit' : 'add'}
+        />
+      )}
+    </div>
+  );
+}
+
+*/
