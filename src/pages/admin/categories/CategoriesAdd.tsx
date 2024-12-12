@@ -111,7 +111,7 @@ const CategoriesAdd = () => {
 
 
     try {
-      const res = await add_new_category(data)
+      const res = await add_new_category(data) as any;
       if (res.success) {
         toast.success(res?.message);
         setTimeout(() => {
@@ -136,9 +136,8 @@ const CategoriesAdd = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const data = await get_parent_categories();
-        console.log(data)
-        setCategories(data);
+        const data = await get_parent_categories() as any;
+        setCategories(data.category);
       } catch (error) {
         console.error("Error fetching categories:", error);
         toast.error("Error fetching categories");

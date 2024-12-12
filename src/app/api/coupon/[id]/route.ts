@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connect } from '@/dbConfig/dbConfig'
 import { getDataFromToken } from '@/helpers/getDataFromToken';
-import Offer from '@/models/offerModel';
+import Coupon from '@/models/couponModel';
 
 
 connect()
@@ -15,7 +15,7 @@ export async function GET(
         if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
 
 
-        const post = await Offer.findById(params.id);
+        const post = await Coupon.findById(params.id);
         if (!post) {
             return NextResponse.json(
                 { error: "Post not found" },
@@ -44,30 +44,45 @@ export async function PUT(
             );
         }
 
-        const { offerTitle, offerDescription, discountPercentage, validFrom, validTo } = await request.json();
+        const { 
+            code, 
+            description, 
+            discountType, 
+            discountValue, 
+            minimumPurchaseAmount, 
+            maxDiscountAmount, 
+            validFrom, 
+            validUntil, 
+            usageLimit, 
+            isActive } = await request.json();
 
 
-        const existing = await Offer.findById(params.id);
+        const existing = await Coupon.findById(params.id);
 
         if (!existing) {
             return NextResponse.json(
-                { error: 'Offer not found' },
+                { error: 'Coupon not found' },
                 { status: 404 }
             );
         }
 
-        existing.offerTitle = offerTitle || existing.offerTitle;
-        existing.offerDescription = offerDescription || existing.offerDescription;
-        existing.discountPercentage = discountPercentage || existing.discountPercentage;
+        existing.code = code || existing.code;
+        existing.description = description || existing.description;
+        existing.discountType = discountType || existing.discountType;
+        existing.discountValue = discountValue || existing.discountValue;
+        existing.minimumPurchaseAmount = minimumPurchaseAmount || existing.minimumPurchaseAmount;
+        existing.maxDiscountAmount = maxDiscountAmount || existing.maxDiscountAmount;
         existing.validFrom = validFrom || existing.validFrom;
-        existing.validTo = validTo || existing.validTo;
-
+        existing.validUntil = validUntil || existing.validUntil;
+        existing.usageLimit = usageLimit || existing.usageLimit;
+        existing.isActive = isActive || existing.isActive;
+        
         await existing.save();
 
         return NextResponse.json(
             {
                 success: true,
-                message: 'Offer updated successfully',
+                message: 'Coupon updated successfully',
                 data: existing,
             },
             { status: 201 }
@@ -91,7 +106,7 @@ export async function DELETE(
         const { role } = await getDataFromToken(request)
         if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
 
-        const deleteData = await Offer.findByIdAndDelete(params.id);
+        const deleteData = await Coupon.findByIdAndDelete(params.id);
 
         if (!deleteData) {
             return NextResponse.json({ error: "Return not found" }, { status: 404 });

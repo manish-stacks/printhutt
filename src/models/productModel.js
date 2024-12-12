@@ -36,11 +36,7 @@ const productSchema = new mongoose.Schema(
     varient:[variantSchema],
     availabilityStatus: String,
     minimumOrderQuantity: Number,
-    dimensions: {
-      width: Number,
-      height: Number,
-      depth: Number,
-    },
+    dimensions: String,
     warrantyInformation: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "WarrantyInformation",
@@ -118,6 +114,9 @@ const productSchema = new mongoose.Schema(
     demoVideo: {
       type: String,
     },
+    imgAlt: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
@@ -125,3 +124,4 @@ const productSchema = new mongoose.Schema(
 const Product =
   mongoose.models.Product || mongoose.model("Product", productSchema);
 export default Product;
+ 

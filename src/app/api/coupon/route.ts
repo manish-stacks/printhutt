@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connect } from '@/dbConfig/dbConfig'
 import { getDataFromToken } from '@/helpers/getDataFromToken';
-import Offer from '@/models/offerModel';
+import Coupon from '@/models/couponModel';
 
 connect();
 
@@ -9,17 +9,12 @@ export async function POST(req: NextRequest) {
   try {
     const { role } = await getDataFromToken(req)
     if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+    const { code, description, discountType, discountValue, minimumPurchaseAmount, maxDiscountAmount, validFrom, validUntil, usageLimit, isActive } = await req.json();
 
-
-    const { offerTitle, offerDescription, discountPercentage, validFrom, validTo } = await req.json();
-
-    const returnData = new Offer({
-      offerTitle,
-      offerDescription,
-      discountPercentage,
-      validFrom,
-      validTo
+    const returnData = new Coupon({
+      code, description, discountType, discountValue, minimumPurchaseAmount, maxDiscountAmount, validFrom, validUntil, usageLimit, isActive
     });
+
     await returnData.save()
 
     return NextResponse.json(
@@ -48,16 +43,16 @@ export async function GET(req: NextRequest) {
 
     const skip = (page - 1) * limit;
 
-    const [returndata, total] = await Promise.all([
-      Offer.find(query)
+    const [coupons, total] = await Promise.all([
+      Coupon.find(query)
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit),
-      Offer.countDocuments(query)
+      Coupon.countDocuments(query)
     ]);
 
     return NextResponse.json({
-      returndata,
+      coupons,
       pagination: {
         total,
         pages: Math.ceil(total / limit),

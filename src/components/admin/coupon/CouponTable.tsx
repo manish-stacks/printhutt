@@ -32,7 +32,7 @@ export function CouponTable({
       case 'percentage':
         return `${coupon.discountValue}%`;
       case 'fixed':
-        return `$${coupon.discountValue}`;
+        return `₹ ${coupon.discountValue}`;
       case 'free_shipping':
         return 'Free Shipping';
       default:

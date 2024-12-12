@@ -1,83 +1,22 @@
-import axios from "axios";
+import { axiosInstance } from "@/utils/axios";
 
-
-export const get_all_warranty_pagination = async (page:string,search:string) => {
-    try {
-      const { data } = await axios.get(`/api/warranty?page=${page}&search=${search}&limit=10`);
-      return data;
-    } catch (error: any) {
-      console.log('Error in getting all warranty (service) =>', error)
-      throw new Error(error || error.message)
-    }
-  }
+export const get_all_warranty_pagination = async (page: string, search: string) => {
+  return axiosInstance.get(`/warranty?page=${page}&search=${search}&limit=10`);
+}
 
 export const add_new_warranty = async (formData: any) => {
-  try {
-    const { data } = await axios.post(`/api/warranty`, formData)
-    return data;
-  } catch (error: any) {
-    console.log('Error in Add New warranty (service) =>', error);
-    throw new Error(error || error.message)
-  }
+  return axiosInstance.post(`/warranty`, formData)
 }
 
 export const delete_warranty = async (id: string) => {
-  try {
-    const { data } = await axios.delete(`/api/warranty/${id}`);
-    return data;
-  } catch (error: any) {
-    console.log('Error in delete warranty (service) =>', error);
-    throw new Error(error?.message || 'An error occurred while deleting the warranty');
-  }
+  return axiosInstance.delete(`/warranty/${id}`);
 };
 
 // export const get_warranty_by_id = async (id: string) => {
-//   try {
-//     const { data } = await axios.get(`/api/warranty/${id}`)
-//     return data;
-//   } catch (error: any) {
-//     console.log('Error in getting warranty by ID (service) =>', error)
-//     throw new Error(error?.message || 'An error occurred while deleting the warranty');
-//   }
-// }
+//     return axiosInstance..get(`/warranty/${id}`)
+// };
 
 export const update_warranty = async (id: string, formData: any) => {
-  try {
-    const { data } = await axios.put(`/api/warranty/${id}`, formData)
-    return data;
-  } catch (error) {
-    console.log('Error in updating warranty (service) =>', error)
-  }
+  return axiosInstance.put(`/warranty/${id}`, formData)
 }
-
-
-/*
-
-import { axiosInstance } from '@/lib/axios';
-import { Warranty } from '@/types/warranty';
-
-export async function getAllWarrantyPagination(page: string, search: string) {
-  return axiosInstance.get(`/warranty`, {
-    params: { page, search },
-  });
-}
-
-export async function addNewWarranty(data: Partial<Warranty>) {
-  return axiosInstance.post('/warranty', data);
-}
-
-export async function updateWarranty(id: string, data: Partial<Warranty>) {
-  return axiosInstance.put(`/warranty/${id}`, data);
-}
-
-export async function deleteWarranty(id: string) {
-  return axiosInstance.delete(`/warranty/${id}`);
-}
-  */
-
-
-
-
-
-
 

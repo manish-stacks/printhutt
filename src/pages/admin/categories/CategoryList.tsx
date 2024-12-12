@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { FaSearch } from 'react-icons/fa';
 import { RiArrowDropLeftLine, RiArrowDropRightLine, RiDeleteBin2Line, RiEdit2Fill, RiLoader2Line, RiSkipLeftLine, RiSkipRightLine } from 'react-icons/ri';
 import Swal from 'sweetalert2';
-import { delete_categories, update_category_status } from '@/_services/admin/category';
+import { delete_categories, getAllCatPagination, update_category_status } from '@/_services/admin/category';
 import { toast } from 'react-toastify';
 import { Category, PaginationData } from '@/lib/types';
 import Link from 'next/link';
@@ -29,10 +29,7 @@ export default function CategoryList() {
   async function fetchCategories() {
     try {
       setIsLoading(true);
-      const response = await fetch(
-        `/api/category?page=${page}&search=${search}&limit=10`
-      );
-      const data = await response.json();
+      const data = await getAllCatPagination(page, search) as any
       setCategories(data.categories);
       setPagination(data.pagination);
     } catch (error) {

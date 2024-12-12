@@ -3,17 +3,15 @@ import { axiosInstance } from "@/utils/axios";
 
 
 export async function getAllCouponsPagination(page: string, search: string) {
-  return axiosInstance.get(`/coupon`, {
-    params: { page, search },
-  });
-}
- 
-export async function addNewCoupon(data: Partial<Coupon>) {
-  return axiosInstance.post('/coupon', data);
+  return axiosInstance.get(`/coupon?page=${page}&search=${search}&limit=10`);
 }
 
-export async function updateCoupon(id: string, data: Partial<Coupon>) {
-  return axiosInstance.put(`/coupon/${id}`, data);
+export async function addNewCoupon(formData: Partial<Coupon>) {
+  return axiosInstance.post(`/coupon`, formData)
+}
+
+export async function updateCoupon(id: string, formData: Partial<Coupon>) {
+  return axiosInstance.put(`/coupon/${id}`, formData);
 }
 
 export async function deleteCoupon(id: string) {

@@ -1,28 +1,26 @@
 'use client'
-
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { FaSearch } from 'react-icons/fa';
-import { useCoupon } from '@/hooks/useCoupon';
 import { CouponTable } from '@/components/admin/coupon/CouponTable';
 import { Pagination } from '@/components/admin/Pagination';
 import { CouponForm } from '@/components/admin/coupon/CouponForm';
+import { Coupon } from '@/lib/types';
+import Swal from 'sweetalert2';
+import { addNewCoupon, deleteCoupon, getAllCouponsPagination, updateCoupon } from '@/_services/admin/coupon';
+import { toast } from 'react-toastify';
 
 
 export default function CouponPage() {
-  const {
-    coupons,
-    pagination,
-    isLoading,
-    fetchCoupons,
-    createCoupon,
-    modifyCoupon,
-    removeCoupon,
-  } = useCoupon();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+
+  const [coupons, setCoupons] = useState<Coupon[]>([]);
+  const [pagination, setPagination] = useState<any>();
+  const [isLoading, setIsLoading] = useState(true);
+
   const [formData, setFormData] = useState({
     code: '',
     description: '',
@@ -42,8 +40,23 @@ export default function CouponPage() {
   const search = searchParams?.get('search') || '';
 
   useEffect(() => {
-    fetchCoupons(page, search);
-  }, [fetchCoupons, page, search]);
+    fetchCoupons();
+  }, [page, search]);
+
+
+  async function fetchCoupons() {
+    try {
+      setIsLoading(true);
+      const data = await getAllCouponsPagination(page, search) as any;
+      setCoupons(data.coupons);
+      setPagination(data.pagination);
+    } catch (error) {
+      console.error('Failed to fetch return methods:', error);
+      toast.error('Failed to fetch return methods');
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   const handleSearch = (value: string) => {
     const params = new URLSearchParams(searchParams!);
@@ -75,11 +88,11 @@ export default function CouponPage() {
     setIsSubmitting(true);
     try {
       const success = editingId
-        ? await modifyCoupon(editingId, formData)
-        : await createCoupon(formData);
-      
+        ? await updateCoupon(editingId, formData)
+        : await addNewCoupon(formData);
+
       if (success) {
-        fetchCoupons(page, search);
+        fetchCoupons();
         handleCloseModal();
       }
     } finally {
@@ -108,9 +121,32 @@ export default function CouponPage() {
   };
 
   const handleDelete = async (id: string) => {
-    const success = await removeCoupon(id);
-    if (success) {
-      fetchCoupons(page, search);
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await deleteCoupon(id);
+        setCoupons(prev => prev.filter(coupon => coupon._id !== id));
+        Swal.fire({
+          title: "Deleted!",
+          text: "Coupon has been deleted.",
+          icon: "success"
+        });
+      } catch (error) {
+        Swal.fire({
+          title: "Error!",
+          text: "There was an issue deleting the coupon.",
+          icon: "error"
+        });
+      }
     }
   };
 

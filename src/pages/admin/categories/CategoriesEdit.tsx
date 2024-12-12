@@ -51,8 +51,7 @@ const CategoriesEdit = () => {
     useEffect(() => {
         const fetchCategory = async () => {
             try {
-                const data = await get_category_by_id(id);
-                // console.log(data)
+                const data = await get_category_by_id(id) as any;
                 if (data) {
                     setFormData({
                         parentCategory: data.parentCategory || "",
@@ -83,9 +82,8 @@ const CategoriesEdit = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const data = await get_parent_categories();
-                // console.log(data)
-                setCategories(data);
+                const data = await get_parent_categories() as any;
+                setCategories(data.category);
             } catch (error) {
                 console.error("Error fetching categories:", error);
                 toast.error("Error fetching categories");

@@ -38,7 +38,7 @@ export default function Warranty() {
     async function fetchWarranty() {
         try {
             setIsLoading(true);
-            const data = await get_all_warranty_pagination(page, search)
+            const data = await get_all_warranty_pagination(page, search) as any
             setWarranties(data.warranty);
             setPagination(data.pagination);
         } catch (error) {
