@@ -41,6 +41,7 @@ export async function GET(req: NextRequest) {
     const limit = parseInt(url.searchParams.get('limit') || '10');
     const search = url.searchParams.get('search') || '';
 
+   
     const query = search
       ? { warrantyType: { $regex: search, $options: 'i' } }
       : {};
@@ -68,5 +69,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
 
 

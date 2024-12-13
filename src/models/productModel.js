@@ -25,12 +25,15 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
     price: Number,
-    discountPercentage: Number,
+    discountType: Number,
     discountPrice: Number,
     rating: Number,
     stock: Number,
     tags: [String],
-    brand: String,
+    brand: {
+      type: String,
+      default:'PrintHutt'
+    },
     sku: String,
     weight: Number,
     varient:[variantSchema],

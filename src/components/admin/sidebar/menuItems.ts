@@ -9,7 +9,7 @@ export const menuItems = {
   ],
   products: [
     { id: 'products-list', label: 'Products List', path: '/admin/products' },
-    { id: 'add-product', label: 'Add Product', path: '/admin/products/add' },
+    { id: 'add-product', label: 'Add Product', path: '/admin/products/new' },
     { id: 'product-reviews', label: 'Product Reviews', path: '/admin/products/reviews' },
   ],
   ecommerce: [

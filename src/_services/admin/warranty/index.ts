@@ -20,3 +20,7 @@ export const update_warranty = async (id: string, formData: any) => {
   return axiosInstance.put(`/warranty/${id}`, formData)
 }
 
+
+export const get_all_warranty = async () => {
+  return axiosInstance.get(`/warranty/get-all`)
+}

@@ -100,3 +100,41 @@ export interface Coupon {
 
 
 export type CouponFormData = Omit<Coupon, '_id' | 'createdAt' | 'updatedAt' | 'usedCount'>;
+
+export interface ProductImage {
+    url: string;
+    public_id: string;
+    fileType: string;
+  }
+  
+  export interface ProductFormData {
+    title: string;
+    slug: string;
+    description: string;
+    category: string;
+    price: number;
+    discountType: number;
+    discountPrice: number;
+    rating: number;
+    stock: number;
+    tags: string[];
+    //brand: string;
+    sku: string;
+    weight: number;
+    availabilityStatus: string;
+    minimumOrderQuantity: number;
+    dimensions: string;
+    warrantyInformation: string;
+    shippingInformation: string;
+    returnPolicy: string;
+    demoVideo: string;
+    imgAlt: string;
+    status: boolean;
+    ishome: boolean;
+    tranding: boolean;
+    hot: boolean;
+    sale: boolean;
+    new: boolean;
+    isCustomize: boolean;
+    files: ProductImage[];
+  }
