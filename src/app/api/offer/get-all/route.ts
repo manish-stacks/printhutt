@@ -1,20 +1,17 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { connect } from '@/dbConfig/dbConfig'
-import Category from '@/models/categoryModel';
-import { uploadImage } from '@/lib/cloudinary';
-import { File } from 'buffer';
-
+import Offer from '@/models/offerModel';
 connect();
 
 
 export async function GET() {
     try {
-        const category = await Category.find().populate('parentCategory')
-        // console.log(category)
+        const returnData = await Offer.find().select('_id offerTitle');
+
         return NextResponse.json(
             {
                 message: 'data fetch',
-                category: category
+                returnData: returnData
             },
             { status: 201 }
         );

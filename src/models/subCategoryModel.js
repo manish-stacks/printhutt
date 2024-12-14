@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const categorySchema = new mongoose.Schema(
+const subCategorySchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     slug: { type: String, required: true },
@@ -12,6 +12,11 @@ const categorySchema = new mongoose.Schema(
       public_id: {},
       fileType: {},
     },
+    parentCategory: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+      default: null,
+    },
     level: { type: Number, default: 0 },
     status: {
       type: Boolean,
@@ -22,5 +27,6 @@ const categorySchema = new mongoose.Schema(
 );
 
 const Category =
-  mongoose.models.Category || mongoose.model("Category", categorySchema);
+  mongoose.models.SubCategory ||
+  mongoose.model("SubCategory", subCategorySchema);
 export default Category;

@@ -5,7 +5,11 @@ import { RiLuggageCartFill, RiReceiptFill } from "react-icons/ri";
 export const menuItems = {
   categories: [
     { id: 'categories', label: 'Categories', path: '/admin/categories' },
-    { id: 'addcategories', label: 'Add Categories', path: '/admin/categories/add' },
+    { id: 'sub-categories', label: 'Sub Categories', path: '/admin/sub-categories' },
+  ],
+  subcategories: [
+    { id: 'categories', label: 'Categories', path: '/admin/sub-categories' },
+    { id: 'addcategories', label: 'Add Categories', path: '/admin/sub-categories/add' },
   ],
   products: [
     { id: 'products-list', label: 'Products List', path: '/admin/products' },

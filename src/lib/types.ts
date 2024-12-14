@@ -1,24 +1,5 @@
 
 
-export interface Category {
-    _id: string;
-    name: string;
-    slug: string;
-    description: string;
-    level: number;
-    image?: {
-        url: string;
-        public_id: string;
-    };
-    parentCategory?: {
-        _id: string;
-        name: string;
-    };
-    status: boolean,
-    createdAt: string;
-}
-
-
 export interface PaginationData {
     total: number;
     pages: number;
@@ -28,6 +9,7 @@ export interface PaginationData {
 
 
 export interface CategoryFormData {
+    _id: string;
     parentCategory: string;
     name: string;
     slug: string;
@@ -37,6 +19,7 @@ export interface CategoryFormData {
     level: string;
     imageUrl: File | string;
     status: boolean;
+    image:ProductImage[];
 }
 
 export interface Warranty {
@@ -105,13 +88,29 @@ export interface ProductImage {
     url: string;
     public_id: string;
     fileType: string;
-  }
-  
-  export interface ProductFormData {
+}
+
+// interface Variant {
+//     size: string;
+//     color: string;
+//     price: string;
+//     stock: string;
+// }
+
+interface Variant {
+    size: string;
+    color: string;
+    price: number;
+    stock: number;
+}
+
+
+export interface ProductFormData {
     title: string;
     slug: string;
     description: string;
     category: string;
+    subcategory: string;
     price: number;
     discountType: number;
     discountPrice: number;
@@ -136,5 +135,13 @@ export interface ProductImage {
     sale: boolean;
     new: boolean;
     isCustomize: boolean;
-    files: ProductImage[];
-  }
+    images: ProductImage[];
+    thumbnail: string;
+    keywords: string;
+    discription: string;
+    meta_discription: string;
+    shippingFee: string;
+    offer: string;
+    isVarientStatus: boolean
+    varient: Variant[]
+}

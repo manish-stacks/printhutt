@@ -1,14 +1,13 @@
 import mongoose from "mongoose";
-const variantSchema = new mongoose.Schema(
-  {
-    size: { type: String, required: true }, 
-    color: { type: String },
-    price: { type: Number, required: true },
-    stock: { type: Number, required: true },
-    discountPercentage: { type: Number },
-    discountPrice: { type: Number },
-  }
-);
+
+const variantSchema = new mongoose.Schema({
+  size: { type: String, required: true },
+  color: { type: String },
+  price: { type: Number, required: true },
+  stock: { type: Number, required: true },
+  // discountPercentage: { type: Number },
+  // discountPrice: { type: Number },
+});
 
 const productSchema = new mongoose.Schema(
   {
@@ -24,6 +23,11 @@ const productSchema = new mongoose.Schema(
       ref: "Category",
       required: true,
     },
+    subcategory: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+      required: true,
+    },
     price: Number,
     discountType: Number,
     discountPrice: Number,
@@ -32,11 +36,12 @@ const productSchema = new mongoose.Schema(
     tags: [String],
     brand: {
       type: String,
-      default:'PrintHutt'
+      default: "PrintHutt",
     },
     sku: String,
     weight: Number,
-    varient:[variantSchema],
+    isVarientStatus: Boolean,
+    varient: [variantSchema],
     availabilityStatus: String,
     minimumOrderQuantity: Number,
     dimensions: String,
@@ -59,7 +64,12 @@ const productSchema = new mongoose.Schema(
       },
       keywords: [String],
     },
-    files: [
+    thumbnail: {
+      url: String,
+      public_id: String,
+      fileType: String,
+    },
+    images: [
       {
         url: {},
         public_id: {},
@@ -127,4 +137,3 @@ const productSchema = new mongoose.Schema(
 const Product =
   mongoose.models.Product || mongoose.model("Product", productSchema);
 export default Product;
- 

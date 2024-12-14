@@ -15,6 +15,9 @@ export async function modifyOffer(id: string, formData: Partial<ReturnPolicy>) {
 }
 
 export async function removeOffer(id: string) {
-    return axiosInstance.delete(`/api/offer/${id}`);
+    return axiosInstance.delete(`/offer/${id}`);
 }
 
+export const get_all_offer = async () => {
+    return axiosInstance.get(`/offer/get-all`)
+}
