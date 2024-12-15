@@ -118,7 +118,7 @@ export default function CategoryList() {
     } catch (error) {
       console.error('Error updating category status:', error);
       toast.error('Error updating category status');
-    }finally{
+    } finally {
       setIsLoading(false);
     }
   };
@@ -169,7 +169,6 @@ export default function CategoryList() {
                   <th className="py-3 px-4 font-semibold">Image</th>
                   <th className="py-3 px-4 font-semibold">Name</th>
                   <th className="py-3 px-4 font-semibold">Slug</th>
-                  <th className="py-3 px-4 font-semibold">Parent</th>
                   <th className="py-3 px-4 font-semibold">Level</th>
                   <th className="py-3 px-4 font-semibold">Status</th>
                   <th className="py-3 px-4 font-semibold">Action</th>
@@ -199,16 +198,13 @@ export default function CategoryList() {
                     </td>
                     <td className="py-3 px-4">{category.name}</td>
                     <td className="py-3 px-4">{category.slug}</td>
-                    <td className="py-3 px-4">
-                      -{category.parentCategory?.name || '-'}
-                    </td>
                     <td className="py-3 px-4">{category.level}</td>
                     <td>
                       <label className="flex items-center cursor-pointer">
                         <input
                           type="checkbox"
                           checked={category.status}
-                          onChange={() => handleStatusToggle(category._id, category.status)}
+                          onChange={() => handleStatusToggle(category._id || '', category.status)}
                           className="sr-only peer"
                         />
                         <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600" />
@@ -220,12 +216,12 @@ export default function CategoryList() {
                     <td>
                       <div className='flex space-x-2'>
                         <button
-                          onClick={() => editCategory(category._id)}
+                          onClick={() => editCategory(category._id || '')}
                           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-full">
                           <RiEdit2Fill />
                         </button>
                         <button
-                          onClick={() => deleteCategory(category._id)}
+                          onClick={() => deleteCategory(category._id || '')}
                           className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 rounded-full">
                           <RiDeleteBin2Line />
                         </button>

@@ -9,7 +9,7 @@ connect();
 
 export async function GET() {
     try {
-        const category = await Category.find().populate('parentCategory')
+        const category = await Category.find().select('_id name')
         // console.log(category)
         return NextResponse.json(
             {

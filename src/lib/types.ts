@@ -1,4 +1,8 @@
-
+export interface ImageType {
+    url: string;
+    public_id: string;
+    fileType: string;
+}
 
 export interface PaginationData {
     total: number;
@@ -9,17 +13,17 @@ export interface PaginationData {
 
 
 export interface CategoryFormData {
-    _id: string;
-    parentCategory: string;
+    _id?: string | undefined;
     name: string;
     slug: string;
     description: string;
     metaKeywords: string;
     metaDescription: string;
     level: string;
-    imageUrl: File | string;
+    imageUrl: string | File;
     status: boolean;
-    image:ProductImage[];
+    parentCategory?: string;
+    image?: ImageType;
 }
 
 export interface Warranty {
@@ -34,7 +38,7 @@ export interface Warranty {
 export interface ShippingInformation {
     _id: string;
     shippingMethod: string;
-    shippingFee: number;
+    shippingFee: string | number;
     shippingTime: string;
     isFreeShipping: boolean;
     createdAt?: string;
@@ -84,18 +88,8 @@ export interface Coupon {
 
 export type CouponFormData = Omit<Coupon, '_id' | 'createdAt' | 'updatedAt' | 'usedCount'>;
 
-export interface ProductImage {
-    url: string;
-    public_id: string;
-    fileType: string;
-}
 
-// interface Variant {
-//     size: string;
-//     color: string;
-//     price: string;
-//     stock: string;
-// }
+
 
 interface Variant {
     size: string;
@@ -135,7 +129,7 @@ export interface ProductFormData {
     sale: boolean;
     new: boolean;
     isCustomize: boolean;
-    images: ProductImage[];
+    images: ImageType[];
     thumbnail: string;
     keywords: string;
     discription: string;

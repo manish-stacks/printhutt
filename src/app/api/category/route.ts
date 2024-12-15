@@ -14,7 +14,6 @@ export async function POST(req: NextRequest) {
 
 
     const formData = await req.formData();
-    // console.log(formData)
     const file = formData.get('imageUrl');
     if (!file || !(file instanceof File)) {
       return NextResponse.json(
@@ -31,7 +30,6 @@ export async function POST(req: NextRequest) {
       description: formData.get('description'),
       metaKeywords: formData.get('metaKeywords'),
       metaDescription: formData.get('metaDescription'),
-      parentCategory: formData.get('parentCategory') || null,
       level: formData.get('level'),
       status: formData.get('status') || true,
       image: uploadResponse,
@@ -66,7 +64,6 @@ export async function GET(req: NextRequest) {
 
     const [categories, total] = await Promise.all([
       Category.find(query)
-        .populate('parentCategory', 'name')
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit),

@@ -1,25 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connect } from '@/dbConfig/dbConfig'
-import Category from '@/models/categoryModel';
-import { uploadImage } from '@/lib/cloudinary';
-import { File } from 'buffer';
+import SubCategory from '@/models/subCategoryModel';
 
 connect();
 
 
-export async function GET() {
+export async function POST(request: NextRequest) {
     try {
-        const category = await Category.find().populate('parentCategory')
-        // console.log(category)
+        const { id } = await request.json();
+
+        if (!id) {
+            return NextResponse.json({ error: 'Missing `id` in request body' }, { status: 400 });
+        }
+
+        const categories = await SubCategory.find({ parentCategory: id }).select('_id name').exec();
+
         return NextResponse.json(
             {
-                message: 'data fetch',
-                category: category
+                message: 'Data fetched successfully',
+                category:categories, 
             },
-            { status: 201 }
+            { status: 200 } 
         );
-
     } catch (error: any) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        return NextResponse.json(
+            { error: error.message || 'An unexpected error occurred' },
+            { status: 500 }
+        );
     }
 }

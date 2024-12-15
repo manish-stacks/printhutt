@@ -5,12 +5,12 @@ const subCategorySchema = new mongoose.Schema(
     name: { type: String, required: true },
     slug: { type: String, required: true },
     description: { type: String },
-    metaKeywords: String,
-    metaDescription: String,
+    metaKeywords: { type: String },
+    metaDescription: { type: String },
     image: {
-      url: {},
-      public_id: {},
-      fileType: {},
+      url: { type: String },
+      public_id: { type: String },
+      fileType: { type: String },
     },
     parentCategory: {
       type: mongoose.Schema.Types.ObjectId,
@@ -26,7 +26,7 @@ const subCategorySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Category =
-  mongoose.models.SubCategory ||
-  mongoose.model("SubCategory", subCategorySchema);
-export default Category;
+const SubCategory =
+  mongoose.models.SubCategory || mongoose.model("SubCategory", subCategorySchema);
+
+export default SubCategory;

@@ -6,10 +6,10 @@ import Image from 'next/image';
 import { FaSearch } from 'react-icons/fa';
 import { RiArrowDropLeftLine, RiArrowDropRightLine, RiDeleteBin2Line, RiEdit2Fill, RiLoader2Line, RiSkipLeftLine, RiSkipRightLine } from 'react-icons/ri';
 import Swal from 'sweetalert2';
-import { delete_categories, getAllCatPagination, update_category_status } from '@/_services/admin/category';
 import { toast } from 'react-toastify';
 import { CategoryFormData, PaginationData } from '@/lib/types';
 import Link from 'next/link';
+import { delete_sub_categories, getAllsub_CatPagination, update_sub_category_status } from '@/_services/admin/sub-category';
 
 
 export default function CategoryList() {
@@ -29,7 +29,7 @@ export default function CategoryList() {
   async function fetchCategories() {
     try {
       setIsLoading(true);
-      const data = await getAllCatPagination(page, search) as any
+      const data = await getAllsub_CatPagination(page, search) as any
       setCategories(data.categories);
       setPagination(data.pagination);
     } catch (error) {
@@ -72,7 +72,7 @@ export default function CategoryList() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await delete_categories(id);
+          await delete_sub_categories(id);
           setCategories(prevCategories => prevCategories.filter(category => category._id !== id));
           Swal.fire({
             title: "Deleted!",
@@ -92,7 +92,7 @@ export default function CategoryList() {
 
 
   const editCategory = async (id: string) => {
-    router.push(`/admin/categories/edit/${id}`);
+    router.push(`/admin/sub-categories/edit/${id}`);
   }
 
 
@@ -113,12 +113,12 @@ export default function CategoryList() {
   const updateCategoryStatus = async (categoryId: string, newStatus: boolean) => {
     try {
       setIsLoading(true);
-      await update_category_status(categoryId, newStatus)
+      await update_sub_category_status(categoryId, newStatus)
       toast.success('Status updated successfully')
     } catch (error) {
       console.error('Error updating category status:', error);
       toast.error('Error updating category status');
-    }finally{
+    } finally {
       setIsLoading(false);
     }
   };
@@ -129,13 +129,13 @@ export default function CategoryList() {
       <div className="w-full md:w-12/12 lg:w-12/12 mb-5">
         <div className=" bg-white text-black flex justify-between align-middle p-6 rounded-lg shadow-md shadow-black-300">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">All Category</h2>
+            <h2 className="text-2xl font-bold text-gray-900">All Sub Category</h2>
             <p className="text-gray-600">
               List a new category with an image and description.
             </p>
           </div>
           <div>
-            <Link href={'/admin/categories/add'} className="bg-blue-500 text-white py-1 px-6 rounded">Add</Link>
+            <Link href={'/admin/sub-categories/add'} className="bg-blue-500 text-white py-1 px-6 rounded">Add</Link>
           </div>
         </div>
       </div>
@@ -200,7 +200,7 @@ export default function CategoryList() {
                     <td className="py-3 px-4">{category.name}</td>
                     <td className="py-3 px-4">{category.slug}</td>
                     <td className="py-3 px-4">
-                      -{category.parentCategory?.name || '-'}
+                      -{category?.parentCategory?.name || '-'}
                     </td>
                     <td className="py-3 px-4">{category.level}</td>
                     <td>
@@ -208,7 +208,7 @@ export default function CategoryList() {
                         <input
                           type="checkbox"
                           checked={category.status}
-                          onChange={() => handleStatusToggle(category._id, category.status)}
+                          onChange={() => handleStatusToggle(category._id || '', category.status)}
                           className="sr-only peer"
                         />
                         <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600" />
@@ -220,12 +220,12 @@ export default function CategoryList() {
                     <td>
                       <div className='flex space-x-2'>
                         <button
-                          onClick={() => editCategory(category._id)}
+                          onClick={() => editCategory(category._id || '')}
                           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-full">
                           <RiEdit2Fill />
                         </button>
                         <button
-                          onClick={() => deleteCategory(category._id)}
+                          onClick={() => deleteCategory(category._id || '')}
                           className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 rounded-full">
                           <RiDeleteBin2Line />
                         </button>

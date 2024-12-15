@@ -3,6 +3,7 @@ import { get_parent_categories } from '@/_services/admin/category';
 import { get_all_offer } from '@/_services/admin/offer';
 import { get_all_return } from '@/_services/admin/return-policy';
 import { get_all_shipping } from '@/_services/admin/shipping';
+import { get_parent_sub_categories } from '@/_services/admin/sub-category';
 import { get_all_warranty } from '@/_services/admin/warranty';
 import { ImageUpload } from '@/components/admin/products/ImageUpload';
 import { generateSlug } from '@/helpers/helpers';
@@ -59,6 +60,7 @@ export default function AddProduct() {
   const [shippings, setShippings] = useState<ShippingInformation[]>([]);
   const [returns, setReturns] = useState<ReturnPolicy[]>([]);
   const [categories, setCategories] = useState<CategoryFormData[]>([]);
+  const [subcategories, setSubCategories] = useState<CategoryFormData[]>([]);
   const [offers, setOffers] = useState<Offer[]>([]);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [image, setImage] = useState(null);
@@ -105,11 +107,24 @@ export default function AddProduct() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    if (name === 'title') {
-      formData.slug = generateSlug(value);
-    }
+
+    setFormData(prev => {
+      const updatedData = { ...prev, [name]: value };
+
+      if (name === 'title') {
+        updatedData.slug = generateSlug(value);
+      }
+
+      if (name === 'shippingInformation') {
+        const shipping = shippings.find(ship => ship._id === value) as any;
+        updatedData.shippingFee = shipping ? shipping.shippingFee : 0;
+      }
+
+      return updatedData;
+    });
+
   };
+
 
   const handleVariantChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -151,7 +166,7 @@ export default function AddProduct() {
       ]
     }));
   };
-  
+
   const handleRemoveVariant = (index: number) => {
     setFormData((prevFormData: any) => {
       const updatedVarient = prevFormData.varient.filter((_: unknown, i: number) => i !== index);
@@ -173,7 +188,13 @@ export default function AddProduct() {
     }
   };
 
-
+  const handleCategoryChange = async (event: any) => {
+    const { value } = event.target;
+    formData.category = value
+    console.log(value)
+    const categoryData = await get_parent_sub_categories(value)
+    setSubCategories(categoryData.category)
+  }
   return (
     <>
       <form onSubmit={handleSubmit} encType={'multipart/form-data'}>
@@ -734,7 +755,7 @@ export default function AddProduct() {
                 id="category"
                 name="category"
                 value={formData.category || ''}
-                onChange={handleInputChange}
+                onChange={handleCategoryChange}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               >
                 <option>Choose Category</option>
@@ -757,14 +778,14 @@ export default function AddProduct() {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               >
                 <option>Choose SubCategory</option>
-                {/* {
+                {
                   subcategories.length === 0 ? (
                     <option>No data found</option>
                   ) :
                     subcategories.map((category) => (
                       <option key={category._id} value={category._id}>{category.name.toUpperCase()}</option>
                     ))
-                } */}
+                }
               </select>
             </div>
 

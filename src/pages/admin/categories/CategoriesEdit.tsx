@@ -1,10 +1,9 @@
 'use client'
-import { get_category_by_id, get_parent_categories, update_category } from '@/_services/admin/category';
+import { get_category_by_id, update_category } from '@/_services/admin/category';
 import { generateSlug } from '@/helpers/helpers';
 import { CategoryFormData } from '@/lib/types';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
-
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import { RiLoader2Line } from 'react-icons/ri';
 import { toast } from 'react-toastify';
@@ -35,7 +34,6 @@ const CategoriesEdit = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [categories, setCategories] = useState<Category[]>([]);
     const [formData, setFormData] = useState<CategoryFormData>({
-        parentCategory: '',
         name: '',
         slug: '',
         description: '',
@@ -54,7 +52,6 @@ const CategoriesEdit = () => {
                 const data = await get_category_by_id(id) as any;
                 if (data) {
                     setFormData({
-                        parentCategory: data.parentCategory || "",
                         name: data.name || "",
                         slug: data.slug || "",
                         description: data.description || "",
@@ -77,21 +74,6 @@ const CategoriesEdit = () => {
 
     }, [id]);
 
-
-
-    useEffect(() => {
-        const fetchCategories = async () => {
-            try {
-                const data = await get_parent_categories() as any;
-                setCategories(data.category);
-            } catch (error) {
-                console.error("Error fetching categories:", error);
-                toast.error("Error fetching categories");
-            }
-        };
-
-        fetchCategories();
-    }, [id]);
 
 
 
@@ -137,7 +119,6 @@ const CategoriesEdit = () => {
     const handleSubmit = (async (e: React.FormEvent) => {
         e.preventDefault();
 
-        // if (!formData.imageUrl) return toast.error('Please choose an image');
         if (!formData.name) return toast.error('Please enter a name');
         if (!formData.slug) return toast.error('Please enter a slug');
         if (!formData.description) return toast.error('Please enter a description');
@@ -148,10 +129,7 @@ const CategoriesEdit = () => {
 
 
         setIsSubmitting(true);
-        // console.log('Form submitted:', formData);
-        // await new Promise(resolve => setTimeout(resolve, 5000));
-
-
+    
         const data = new FormData()
         data.append('name', formData.name)
         data.append('slug', formData.slug)
@@ -160,29 +138,19 @@ const CategoriesEdit = () => {
         data.append('metaDescription', formData.metaDescription)
         data.append('level', formData.level)
         data.append('imageUrl', formData.imageUrl)
-        data.append('parentCategory', formData.parentCategory)
         data.append('status', formData.status.toString())
 
 
         try {
-            const res = await update_category(id, data)
-            if (res.success) {
-                toast.success(res?.message);
-                setTimeout(() => {
-                    router.push('/admin/categories')
-                }, 1000);
-                setIsSubmitting(false);
-            } else {
-                toast.error(res?.message)
-                setIsSubmitting(false);
-            }
+            const res = await update_category(id, data) as any
+            toast.success(res?.message);
+            router.push('/admin/categories')
+            setIsSubmitting(false);
         } catch (error: any) {
             toast.error(error?.message)
         } finally {
             setIsSubmitting(false);
         }
-
-
 
     });
 

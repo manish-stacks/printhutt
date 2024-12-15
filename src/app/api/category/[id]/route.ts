@@ -74,7 +74,6 @@ export async function PUT(
         existingCategory.description = formData.get('description') || existingCategory.description;
         existingCategory.metaKeywords = formData.get('metaKeywords') || existingCategory.metaKeywords;
         existingCategory.metaDescription = formData.get('metaDescription') || existingCategory.metaDescription;
-        existingCategory.parentCategory = formData.get('parentCategory') || existingCategory.parentCategory;
         existingCategory.level = formData.get('level') || existingCategory.level;
         existingCategory.status = formData.get('status') || existingCategory.status;
         existingCategory.image = imageUrl;

@@ -14,9 +14,9 @@ export const get_parent_categories = async () => {
   return axiosInstance.get('/category/fetch-category');
 }
 
-export const get_all_categories = async () => {
-  return axiosInstance.get('/category');
-}
+// export const get_all_categories = async () => {
+//   return axiosInstance.get('/category');
+// }
 
 export const delete_categories = async (id: string) => {
   return axiosInstance.delete(`/category/${id}`);

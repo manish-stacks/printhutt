@@ -1,5 +1,5 @@
 'use client'
-import { add_new_category, get_parent_categories } from '@/_services/admin/category';
+import { add_new_category } from '@/_services/admin/category';
 import { generateSlug } from '@/helpers/helpers';
 import { CategoryFormData } from '@/lib/types';
 import { useRouter } from 'next/navigation';
@@ -27,9 +27,7 @@ const CategoriesAdd = () => {
   const [previewUrl, setPreviewUrl] = useState<string>();
   const [isUploading, setIsUploading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [categories, setCategories] = useState<Category[]>([]);
   const [formData, setFormData] = useState<CategoryFormData>({
-    parentCategory: '',
     name: '',
     slug: '',
     description: '',
@@ -106,7 +104,6 @@ const CategoriesAdd = () => {
     data.append('metaDescription', formData.metaDescription)
     data.append('level', formData.level)
     data.append('imageUrl', formData.imageUrl)
-    data.append('parentCategory', formData.parentCategory)
     data.append('status', formData.status.toString())
 
 
@@ -133,19 +130,6 @@ const CategoriesAdd = () => {
   });
 
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const data = await get_parent_categories() as any;
-        setCategories(data.category);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-        toast.error("Error fetching categories");
-      }
-    };
-
-    fetchCategories();
-  }, []);
 
   const handleStatusToggle = () => {
     setFormData((prevData) => ({ ...prevData, status: !prevData.status }));
@@ -173,32 +157,7 @@ const CategoriesAdd = () => {
 
           <div className="w-full md:w-8/12 lg:w-8/12 px-4 space-y-6">
             <div className="bg-white text-black p-6 rounded-lg space-y-5 shadow-md shadow-black-300">
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Parent Category
-                </label>
-                <select
-                  className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
-                  id="parentCategory"
-                  name="parentCategory"
-                  value={formData.parentCategory}
-                  onChange={handleChange}
-                >
-                  <option value="">Select Category</option>
-
-                  {categories.length === 0 ? (
-                    <option>Loading...</option>
-                  ) : (
-                    categories.map((category) => (
-                      <option key={category._id} value={category._id}>{category.name}</option>
-                    ))
-                  )}
-
-                </select>
-              </div>
+              
               <div>
                 <label
                   htmlFor="name"

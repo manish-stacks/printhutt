@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connect } from '@/dbConfig/dbConfig'
-import Category from '@/models/categoryModel';
+// import Category from '@/models/categoryModel';
 
 import { getDataFromToken } from '@/helpers/getDataFromToken';
 import { deleteImage, uploadImage } from '@/lib/cloudinary';
+import SubCategory from '@/models/subCategoryModel';
 
 connect()
 
@@ -16,7 +17,7 @@ export async function GET(
         if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
 
 
-        const post = await Category.findById(params.id);
+        const post = await SubCategory.findById(params.id);
         if (!post) {
             return NextResponse.json(
                 { error: "Post not found" },
@@ -49,7 +50,7 @@ export async function PUT(
 
         const file = formData.get('imageUrl');
 
-        const existingCategory = await Category.findById(params.id);
+        const existingCategory = await SubCategory.findById(params.id);
 
         if (!existingCategory) {
             return NextResponse.json(
@@ -108,9 +109,9 @@ export async function DELETE(
         const { role } = await getDataFromToken(request)
         if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
 
-        const deleteData = await Category.findByIdAndDelete(params.id);
+        const deleteData = await SubCategory.findByIdAndDelete(params.id);
         await deleteImage(deleteData.image.public_id);
-       
+
         if (!deleteData) {
             return NextResponse.json({ error: "Category not found" }, { status: 404 });
         }
@@ -143,10 +144,10 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
 
         const { status } = await request.json();
 
-        const updatedCategory = await Category.findByIdAndUpdate(
+        const updatedCategory = await SubCategory.findByIdAndUpdate(
             params.id,
             { status },
-            { new: true } 
+            { new: true }
         );
 
         if (!updatedCategory) {

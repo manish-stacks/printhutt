@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connect } from '@/dbConfig/dbConfig'
-import Category from '@/models/categoryModel';
+import SubCategory from '@/models/subCategoryModel';
 import { uploadImage } from '@/lib/cloudinary';
 import { File } from 'buffer';
 import { getDataFromToken } from '@/helpers/getDataFromToken';
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
 
     const uploadResponse = await uploadImage(file, 'categories')
 
-    const category = new Category({
+    const category = new SubCategory({
       name: formData.get('name'),
       slug: formData.get('slug'),
       description: formData.get('description'),
@@ -65,12 +65,12 @@ export async function GET(req: NextRequest) {
     const skip = (page - 1) * limit;
 
     const [categories, total] = await Promise.all([
-      Category.find(query)
+      SubCategory.find(query)
         .populate('parentCategory', 'name')
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit),
-      Category.countDocuments(query)
+      SubCategory.countDocuments(query)
     ]);
 
     return NextResponse.json({

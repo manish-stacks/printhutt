@@ -6,7 +6,7 @@ connect();
 
 export async function GET() {
     try {
-        const shipping = await ShippingInformation.find().select('_id shippingMethod');
+        const shipping = await ShippingInformation.find().select('_id shippingMethod shippingFee');
 
         return NextResponse.json(
             {
