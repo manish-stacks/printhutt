@@ -1,14 +1,12 @@
-"use client";
-
-import { useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
-import { ProductImage } from "@/lib/types";
-import {FaTrash } from "react-icons/fa";
+import type { ImageType } from "@/lib/types";
+import { FaTrash } from "react-icons/fa";
 import { RiImageAddFill } from "react-icons/ri";
 
 interface ImageUploadProps {
-  onImagesChange: (images: ProductImage[]) => void;
-  images: ProductImage[];
+  onImagesChange: (images: ImageType[]) => void;
+  images: ImageType[];
 }
 
 export function ImageUpload({ onImagesChange, images }: ImageUploadProps) {
@@ -44,8 +42,6 @@ export function ImageUpload({ onImagesChange, images }: ImageUploadProps) {
       public_id: Math.random().toString(36).substring(7),
       fileType: file.type,
     }));
-
-    // console.log(newImages)
 
     onImagesChange([...images, ...newImages]);
   };
@@ -114,4 +110,4 @@ export function ImageUpload({ onImagesChange, images }: ImageUploadProps) {
       )}
     </div>
   );
-}
+} 

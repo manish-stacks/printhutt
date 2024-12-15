@@ -86,18 +86,18 @@ export interface Coupon {
 }
 
 
-export type CouponFormData = Omit<Coupon, '_id' | 'createdAt' | 'updatedAt' | 'usedCount'>;
+export interface ImageType {
+    url: string;
+    public_id: string;
+    fileType: string;
+}
 
-
-
-
-interface Variant {
+export interface ProductVariant {
     size: string;
     color: string;
     price: number;
     stock: number;
 }
-
 
 export interface ProductFormData {
     title: string;
@@ -111,7 +111,6 @@ export interface ProductFormData {
     rating: number;
     stock: number;
     tags: string[];
-    //brand: string;
     sku: string;
     weight: number;
     availabilityStatus: string;
@@ -130,12 +129,11 @@ export interface ProductFormData {
     new: boolean;
     isCustomize: boolean;
     images: ImageType[];
-    thumbnail: string;
+    thumbnail: any;
     keywords: string;
-    discription: string;
-    meta_discription: string;
-    shippingFee: string;
+    meta_description: string;
+    shippingFee: string|number;
     offer: string;
-    isVarientStatus: boolean
-    varient: Variant[]
+    isVarientStatus: boolean;
+    varient: ProductVariant[];
 }

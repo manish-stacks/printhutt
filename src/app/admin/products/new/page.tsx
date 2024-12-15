@@ -1,6 +1,7 @@
 "use client"
 import { get_parent_categories } from '@/_services/admin/category';
 import { get_all_offer } from '@/_services/admin/offer';
+import { add_new_product } from '@/_services/admin/product';
 import { get_all_return } from '@/_services/admin/return-policy';
 import { get_all_shipping } from '@/_services/admin/shipping';
 import { get_parent_sub_categories } from '@/_services/admin/sub-category';
@@ -8,8 +9,10 @@ import { get_all_warranty } from '@/_services/admin/warranty';
 import { ImageUpload } from '@/components/admin/products/ImageUpload';
 import { generateSlug } from '@/helpers/helpers';
 import { CategoryFormData, Offer, ProductFormData, ReturnPolicy, ShippingInformation, Warranty } from '@/lib/types';
+import { validateProductForm } from '@/utils/form';
 import { useEffect, useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 
 
@@ -45,9 +48,8 @@ const initialFormData: ProductFormData = {
   images: [],
   thumbnail: '',
   keywords: '',
-  meta_discription: '',
-  discription: '',
-  shippingFee: '',
+  meta_description: '',
+  shippingFee: 0,
   offer: '',
   isVarientStatus: false,
   varient: []
@@ -64,6 +66,7 @@ export default function AddProduct() {
   const [offers, setOffers] = useState<Offer[]>([]);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [image, setImage] = useState(null);
+  const [errors, setErrors] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -116,8 +119,9 @@ export default function AddProduct() {
       }
 
       if (name === 'shippingInformation') {
-        const shipping = shippings.find(ship => ship._id === value) as any;
-        updatedData.shippingFee = shipping ? shipping.shippingFee : 0;
+        const shippingfilter = shippings.find(ship => ship._id === value) as any;
+        updatedData.shippingFee = shippingfilter?.shippingFee ? shippingfilter?.shippingFee : 0;
+        // console.log(updatedData.shippingFee)
       }
 
       return updatedData;
@@ -147,10 +151,6 @@ export default function AddProduct() {
     setFormData(prev => ({ ...prev, images }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log(formData);
-  };
 
   const handleAddVarient = () => {
     setFormData((prev: ProductFormData) => ({
@@ -159,7 +159,7 @@ export default function AddProduct() {
         ...prev.varient,
         {
           size: '',
-          color: '',
+          color: '#000000',
           price: 0,
           stock: 0,
         }
@@ -179,7 +179,7 @@ export default function AddProduct() {
   const handleFileChange = (event: any) => {
     const file = event.target.files[0];
     if (file) {
-      formData.thumbnail = file;
+      formData.thumbnail = URL.createObjectURL(file);
       const reader = new FileReader() as any;
       reader.onloadend = () => {
         setImage(reader.result);
@@ -191,13 +191,62 @@ export default function AddProduct() {
   const handleCategoryChange = async (event: any) => {
     const { value } = event.target;
     formData.category = value
-    console.log(value)
-    const categoryData = await get_parent_sub_categories(value)
+    const categoryData = await get_parent_sub_categories(value) as any;
     setSubCategories(categoryData.category)
   }
+
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const validationErrors = validateProductForm(formData);
+    if (validationErrors.length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    setErrors([]);
+
+    console.log('Form data:', formData);
+
+    const formDataToSend = new FormData();
+
+    Object.entries(formData).forEach(([key, value]) => {
+      // if (key === 'images') {
+      //   // Handle images separately if needed
+      //   return;
+      // }
+      // if (key === 'thumbnail' && value instanceof File) {
+      //   formDataToSend.append('thumbnail', value);
+      // } else {
+      //   formDataToSend.append(key, JSON.stringify(value));
+      // }
+      formDataToSend.append(key, value);
+
+    });
+
+
+    try {
+      const data = await add_new_product(formDataToSend);
+      console.log(data);
+      return
+      // Reset form on success
+      setFormData(initialFormData);
+      setImage(null);
+
+      toast('Product created successfully!');
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setErrors(['Failed to create product. Please try again.']);
+    }
+
+  };
+
   return (
     <>
       <form onSubmit={handleSubmit} encType={'multipart/form-data'}>
+
+
         <div className="flex flex-wrap mt-20 mb-52">
           {/* top row */}
           <div className="w-full md:w-12/12 lg:w-12/12 px-4 mb-5">
@@ -205,6 +254,27 @@ export default function AddProduct() {
               <h3 className="text-lg font-bold">Create Product</h3>
               <button className="bg-blue-500 text-white py-1 px-7 rounded">Back</button>
             </div>
+          </div>
+          <div className="w-full md:w-12/12 lg:w-12/12 px-4 mb-5">
+            {errors.length > 0 && (
+              <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <div className="ml-3">
+                    <h3 className="text-sm font-medium text-red-800">Please correct the following errors:</h3>
+                    <ul className="mt-2 text-sm text-red-700 list-disc list-inside">
+                      {errors.map((error, index) => (
+                        <li key={index}>{error}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
           {/* left side */}
           <div className="w-full md:w-8/12 lg:w-8/12 px-4 space-y-6">
@@ -218,8 +288,6 @@ export default function AddProduct() {
                   value={formData.title}
                   onChange={handleInputChange}
                   placeholder="Enter product name"
-                  required
-
                 />
               </div>
               <div>
@@ -230,7 +298,6 @@ export default function AddProduct() {
                   value={formData.slug}
                   onChange={handleInputChange}
                   placeholder="product-name"
-                  required
                 />
               </div>
             </div>
@@ -294,14 +361,14 @@ export default function AddProduct() {
 
             {/* <div className="bg-white text-black p-6 rounded-lg space-y-5 shadow-md shadow-black-300">
             <div><label className="block text-sm font-medium text-gray-700">Gallery image *</label>
-              <input className="w-50 flex mt-5 h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" id="name" required placeholder="Product name" type="file" name="attachment" />
+              <input className="w-50 flex mt-5 h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" id="name"  placeholder="Product name" type="file" name="attachment" />
               <button className="bg-green-500 text-white py-1 px-5 rounded gap-1 mt-4">+ Add More</button>
             </div>
           </div> */}
 
             <div className="bg-white text-black p-6 rounded-lg space-y-5 shadow-md shadow-black-300">
               <div>
-                <label className="block text-sm font-medium text-gray-700">Short description *</label>
+                <label className="block text-sm font-medium text-gray-700">Description *</label>
 
                 <textarea
                   className="flex w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
@@ -352,12 +419,11 @@ export default function AddProduct() {
                       value={formData.discountType || ''}
                       onChange={handleInputChange}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                      required
+
                     >
                       <option value="">Select discount type</option>
                       <option value="percentage">Percentage</option>
                       <option value="fixed">Fixed Amount</option>
-                      <option value="free_shipping">Free Shipping</option>
                     </select>
 
                   </div>
@@ -446,7 +512,7 @@ export default function AddProduct() {
                         value={formData.availabilityStatus || ''}
                         onChange={handleInputChange}
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        required
+
                       >
                         <option value="">Availability Status</option>
                         <option value="in_stock">In Stock</option>
@@ -483,7 +549,24 @@ export default function AddProduct() {
                         placeholder='w x h x d' />
                     </div>
                   </div>
+
                 </div>
+                <div className='flex justify-between gap-3'>
+                  <div className="w-4/12 mt-4">
+                    <label className="block font-medium text-gray-700">Product weight</label>
+                    <div className="mt-2">
+                      <input
+                        type="text"
+                        name="weight"
+                        id="weight"
+                        value={formData.weight || ''}
+                        onChange={handleInputChange}
+                        className="block w-full h-10 rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                        placeholder='weight' />
+                    </div>
+                  </div>
+                </div>
+
                 <div className='flex justify-between gap-3'>
                   <div className="w-8/12 mt-4">
                     <label className="block font-medium text-gray-700">Preview Video</label>
@@ -805,10 +888,10 @@ export default function AddProduct() {
                 <label className="block text-sm font-medium text-gray-700">Meta Description</label>
                 <textarea
                   className="flex h-28 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
-                  placeholder="Meta Discription"
-                  id='meta_discription'
-                  name='meta_discription'
-                  value={formData.meta_discription || ''}
+                  placeholder="Meta Description"
+                  id='meta_description'
+                  name='meta_description'
+                  value={formData.meta_description || ''}
                   onChange={handleInputChange}
                 />
               </div>

@@ -63,7 +63,7 @@ export async function PUT(
 
         if (file && file instanceof File) {
             imageUrl = await uploadImage(file, 'categories');
-            await deleteImage(existingCategory.image);
+            await deleteImage(existingCategory.image.public_id);
         } else {
             imageUrl = existingCategory.image;
         }
