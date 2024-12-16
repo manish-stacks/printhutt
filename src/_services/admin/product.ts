@@ -5,8 +5,8 @@ export const add_new_product = async (formData: any) => {
 }
 
 
-export const get_all_products = async () => {
-  return axiosInstance.get(`/product`);
+export const get_all_products = async (page: string, search: string) => {
+  return axiosInstance.get(`/product?page=${page}&search=${search}&limit=10`);
 }
 
 
@@ -26,4 +26,10 @@ export const get_product_by_id = async (id: string) => {
 
 export const get_product_by_category_id = async (id: string) => {
   return axiosInstance.get(`/product/by_category/${id}`);
+}
+
+export const update_product_status = async (categoryId: string, newStatus: any) => {
+  return axiosInstance.patch(`/product/${categoryId}`, {
+    status: newStatus,
+  });
 }

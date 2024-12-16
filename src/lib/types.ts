@@ -2,6 +2,7 @@ export interface ImageType {
     url: string;
     public_id: string;
     fileType: string;
+    file?: File;
 }
 
 export interface PaginationData {
@@ -133,7 +134,7 @@ export interface ProductFormData {
     keywords: string;
     meta_description: string;
     shippingFee: string|number;
-    offer: string;
+    offers: string;
     isVarientStatus: boolean;
     varient: ProductVariant[];
 }

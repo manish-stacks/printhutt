@@ -82,7 +82,7 @@ const CategoriesAdd = () => {
 
   const handleSubmit = (async (e: React.FormEvent) => {
     e.preventDefault();
-   
+
     if (!formData.imageUrl) return toast.error('Please choose an image');
     if (!formData.name) return toast.error('Please enter a name');
     if (!formData.slug) return toast.error('Please enter a slug');
@@ -157,7 +157,7 @@ const CategoriesAdd = () => {
 
           <div className="w-full md:w-8/12 lg:w-8/12 px-4 space-y-6">
             <div className="bg-white text-black p-6 rounded-lg space-y-5 shadow-md shadow-black-300">
-              
+
               <div>
                 <label
                   htmlFor="name"
@@ -259,17 +259,20 @@ const CategoriesAdd = () => {
                 disabled={isSubmitting || isUploading}
                 className="bg-green-500 text-white py-2 px-7 rounded gap-1"
               >
-                {(isSubmitting || isUploading) && (
-                  <RiLoader2Line className="mr-2 h-4 w-4 animate-spin" />
-                )}
-                {isSubmitting ? 'Creating...' : 'Save'}
+                <span className='flex'>
+                  {(isSubmitting || isUploading) && (
+                    <RiLoader2Line className="mr-2 h-4 w-4 animate-spin" />
+                  )}
+                  {isSubmitting ? 'Creating...' : 'Save'}
+                </span>
               </button>
               <button type="submit" className="bg-blue-500 text-white py-2 px-7 rounded gap-1">
-                
-                {(isSubmitting || isUploading) && (
-                  <RiLoader2Line className="mr-2 h-4 w-4 animate-spin" />
-                )}
-                {isSubmitting ? 'Creating...' : 'Save & Edit'}
+                <span className='flex'>
+                  {(isSubmitting || isUploading) && (
+                    <RiLoader2Line className="mr-2 h-4 w-4 animate-spin" />
+                  )}
+                  {isSubmitting ? 'Creating...' : 'Save & Edit'}
+                </span>
               </button>
             </div>
             <div className="bg-white text-black p-6 rounded-lg space-x-3 shadow-md shadow-black-300">

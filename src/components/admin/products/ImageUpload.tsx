@@ -41,6 +41,7 @@ export function ImageUpload({ onImagesChange, images }: ImageUploadProps) {
       url: URL.createObjectURL(file),
       public_id: Math.random().toString(36).substring(7),
       fileType: file.type,
+      file: file,
     }));
 
     onImagesChange([...images, ...newImages]);

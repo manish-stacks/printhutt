@@ -5,19 +5,25 @@ const variantSchema = new mongoose.Schema({
   color: { type: String },
   price: { type: Number, required: true },
   stock: { type: Number, required: true },
-  // discountPercentage: { type: Number },
-  // discountPrice: { type: Number },
 });
 
 const productSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: true,
+      required: [true, "Please add a title"],
       trim: true,
+      maxlength: [100, "Title cannot be more than 100 characters"],
     },
-    slug: String,
-    description: String,
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    description: {
+      type: String,
+      required: [true, "Please add a description"],
+    },
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
@@ -25,26 +31,52 @@ const productSchema = new mongoose.Schema(
     },
     subcategory: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Category",
-      required: true,
+      ref: "SubCategory",
     },
-    price: Number,
-    discountType: Number,
-    discountPrice: Number,
-    rating: Number,
-    stock: Number,
+    price: {
+      type: Number,
+      required: [true, "Please add a price"],
+      min: [0, "Price cannot be negative"],
+    },
+    discountType: {
+      type: String,
+    },
+    discountPrice: {
+      type: Number,
+      default: 0,
+    },
+    rating: {
+      type: Number,
+      default: 0,
+    },
+    stock: {
+      type: Number,
+      required: [true, "Please add stock quantity"],
+      min: [0, "Stock cannot be negative"],
+    },
     tags: [String],
     brand: {
       type: String,
       default: "PrintHutt",
     },
-    sku: String,
+    sku: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     weight: Number,
+    dimensions: String,
     isVarientStatus: Boolean,
     varient: [variantSchema],
-    availabilityStatus: String,
-    minimumOrderQuantity: Number,
-    dimensions: String,
+    availabilityStatus: {
+      type: String,
+      enum: ["in_stock", "low_stock", "out_of_stock"],
+      default: "in_stock",
+    },
+    minimumOrderQuantity: {
+      type: Number,
+      default: 1,
+    },
     warrantyInformation: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "WarrantyInformation",
@@ -58,11 +90,11 @@ const productSchema = new mongoose.Schema(
       ref: "ReturnPolicy",
     },
     meta: {
-      discription: {
+      keywords: [String],
+      meta_description: {
         type: String,
         max: [160, "Meta discription 160"],
       },
-      keywords: [String],
     },
     thumbnail: {
       url: String,
@@ -71,9 +103,10 @@ const productSchema = new mongoose.Schema(
     },
     images: [
       {
-        url: {},
-        public_id: {},
-        fileType: {},
+        url: String,
+        public_id: String,
+        fileType: String,
+        _id:false
       },
     ],
     reviews: [

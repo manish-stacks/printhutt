@@ -10,8 +10,10 @@ import { ImageUpload } from '@/components/admin/products/ImageUpload';
 import { generateSlug } from '@/helpers/helpers';
 import { CategoryFormData, Offer, ProductFormData, ReturnPolicy, ShippingInformation, Warranty } from '@/lib/types';
 import { validateProductForm } from '@/utils/form';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
+import { RiLoader2Line } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 
 
@@ -50,7 +52,7 @@ const initialFormData: ProductFormData = {
   keywords: '',
   meta_description: '',
   shippingFee: 0,
-  offer: '',
+  offers: '',
   isVarientStatus: false,
   varient: []
 };
@@ -67,10 +69,14 @@ export default function AddProduct() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [image, setImage] = useState(null);
   const [errors, setErrors] = useState<string[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const [
           warrantyData,
           shippingData,
@@ -94,6 +100,8 @@ export default function AddProduct() {
         setOffers(offerData.returnData);
       } catch (error) {
         console.error('Error fetching data:', error);
+      }finally {
+        setLoading(false);
       }
     };
 
@@ -179,7 +187,8 @@ export default function AddProduct() {
   const handleFileChange = (event: any) => {
     const file = event.target.files[0];
     if (file) {
-      formData.thumbnail = URL.createObjectURL(file);
+      // formData.thumbnail = URL.createObjectURL(file);
+      formData.thumbnail = file;
       const reader = new FileReader() as any;
       reader.onloadend = () => {
         setImage(reader.result);
@@ -209,38 +218,65 @@ export default function AddProduct() {
 
     console.log('Form data:', formData);
 
-    const formDataToSend = new FormData();
-
-    Object.entries(formData).forEach(([key, value]) => {
-      // if (key === 'images') {
-      //   // Handle images separately if needed
-      //   return;
-      // }
-      // if (key === 'thumbnail' && value instanceof File) {
-      //   formDataToSend.append('thumbnail', value);
-      // } else {
-      //   formDataToSend.append(key, JSON.stringify(value));
-      // }
-      formDataToSend.append(key, value);
-
-    });
-
-
     try {
-      const data = await add_new_product(formDataToSend);
-      console.log(data);
-      return
-      // Reset form on success
-      setFormData(initialFormData);
-      setImage(null);
+      setIsSubmitting(true);
+      const formDataToSend = new FormData();
 
-      toast('Product created successfully!');
+      if (formData.thumbnail instanceof File) {
+        formDataToSend.append('thumbnail', formData.thumbnail);
+      }
+
+      if (formData.images && formData.images.length > 0) {
+        formData.images.forEach((image, index) => {
+          if (image.file instanceof File) {
+            formDataToSend.append(`images`, image.file);
+          }
+        });
+      }
+
+      Object.entries(formData).forEach(([key, value]) => {
+        if (key !== 'thumbnail' && key !== 'images') {
+          if (typeof value === 'object') {
+            formDataToSend.append(key, JSON.stringify(value));
+          } else {
+            formDataToSend.append(key, String(value));
+          }
+        }
+      });
+
+      const response = await add_new_product(formDataToSend) as any;
+
+      if (response.success) {
+        toast.success('Product created successfully!');
+        setFormData(initialFormData);
+        setImage(null);
+        router.push('/admin/products')
+      } else {
+        toast.error(response.message || 'Failed to create product');
+      }
     } catch (error) {
       console.error('Error submitting form:', error);
+      toast.error('Failed to create product. Please try again.');
       setErrors(['Failed to create product. Please try again.']);
+    } finally {
+      setIsSubmitting(false);
     }
-
   };
+
+  if (loading) {
+    return (
+      <div className="flex flex-wrap mt-20 mb-52 justify-center items-center">
+        <div className="text-center h-screen mx-auto">
+          <p className="font-serif text-4xl text-brown-800">Loading...</p>
+          <div className="flex justify-center mt-4">
+            <RiLoader2Line className="mr-2 h-12 w-12 animate-spin" />
+          </div>
+        
+        </div>
+      </div>
+    );
+  }
+
 
   return (
     <>
@@ -672,8 +708,26 @@ export default function AddProduct() {
           {/* right side */}
           <div className="w-full md:w-4/12 lg:w-4/12 px-4 space-y-6">
             <div className="bg-white text-black p-6 rounded-lg space-x-3 shadow-md shadow-black-300">
-              <button className="bg-green-500 text-white py-2 px-7 rounded gap-1"> Save</button>
-              <button className="bg-blue-500 text-white py-2 px-7 rounded gap-1">Save & Edit</button>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="bg-green-500 text-white py-2 px-7 rounded gap-1"
+              >
+                <span className='flex'>
+                  {isSubmitting && (
+                    <RiLoader2Line className="mr-2 h-4 w-4 animate-spin" />
+                  )}
+                  {isSubmitting ? 'Creating...' : 'Save'}
+                </span>
+              </button>
+              <button type="submit" className="bg-blue-500 text-white py-2 px-7 rounded gap-1">
+                <span className='flex'>
+                  {isSubmitting && (
+                    <RiLoader2Line className="mr-2 h-4 w-4 animate-spin" />
+                  )}
+                  {isSubmitting ? 'Creating...' : 'Save & Edit'}
+                </span>
+              </button>
             </div>
 
             <div className="bg-white p-6 rounded-lg shadow-md">
@@ -803,9 +857,9 @@ export default function AddProduct() {
             <div className="bg-white text-black p-6 rounded-lg space-x-3 shadow-md shadow-black-300">
               <label className="block font-medium text-gray-700 ml-3">Offers On</label>
               <select
-                id="offer"
-                name="offer"
-                value={formData.offer || ''}
+                id="offers"
+                name="offers"
+                value={formData.offers || ''}
                 onChange={handleInputChange}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               >

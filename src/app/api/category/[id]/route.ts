@@ -108,12 +108,12 @@ export async function DELETE(
         if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
 
         const deleteData = await Category.findByIdAndDelete(params.id);
-        await deleteImage(deleteData.image.public_id);
-       
+        
         if (!deleteData) {
             return NextResponse.json({ error: "Category not found" }, { status: 404 });
         }
-
+        
+        await deleteImage(deleteData.image.public_id);
         return NextResponse.json({
             success: true,
             message: "Category Deleted successfully!",
