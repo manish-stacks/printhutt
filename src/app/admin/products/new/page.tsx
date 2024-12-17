@@ -412,6 +412,7 @@ export default function AddProduct() {
                 <ImageUpload
                   images={formData.images}
                   onImagesChange={handleImagesChange}
+                  productId={''}
                 />
               </div>
             </div>
@@ -905,7 +906,7 @@ export default function AddProduct() {
                 name="offers"
                 value={formData.offers || ''}
                 onChange={handleInputChange}
-                multiple
+                multiple={true}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               >
                 <option>Chhose offers</option>
