@@ -27,9 +27,9 @@ const ProductList: React.FC = () => {
       const response = await get_all_products(page, search) as any;
       setProducts(response.products);
       setPagination(response.pagination);
-      setLoading(false);
     } catch (error) {
       toast.error('Failed to fetch products');
+    } finally {
       setLoading(false);
     }
   };
@@ -70,6 +70,7 @@ const ProductList: React.FC = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
+          setLoading(true)
           await delete_a_product(id);
           setProducts(prev => prev.filter(product => product._id !== id));
           Swal.fire({
@@ -83,6 +84,8 @@ const ProductList: React.FC = () => {
             text: "There was an issue deleting the category.",
             icon: "error"
           });
+        } finally {
+          setLoading(false)
         }
       }
     });

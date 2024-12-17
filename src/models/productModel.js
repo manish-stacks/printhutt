@@ -123,7 +123,7 @@ const productSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    tranding: {
+    trending: {
       type: Boolean,
       default: false,
     },

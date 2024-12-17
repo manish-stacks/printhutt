@@ -124,7 +124,7 @@ export interface ProductFormData {
     imgAlt: string;
     status: boolean;
     ishome: boolean;
-    tranding: boolean;
+    trending: boolean;
     hot: boolean;
     sale: boolean;
     new: boolean;

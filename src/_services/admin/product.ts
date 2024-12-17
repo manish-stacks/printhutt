@@ -33,3 +33,11 @@ export const update_product_status = async (categoryId: string, newStatus: any) 
     status: newStatus,
   });
 }
+
+export const removeProductImage = async (productId: string, imageToRemove: object) => {
+  return axiosInstance.post(`/product/image-delate`, {
+    productId: productId,
+    image: imageToRemove, 
+  });
+};
+

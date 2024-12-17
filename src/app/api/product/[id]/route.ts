@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connect } from '@/dbConfig/dbConfig'
 import { getDataFromToken } from '@/helpers/getDataFromToken';
-import Offer from '@/models/offerModel';
 import ProductModel from '@/models/productModel';
 import { deleteImage } from '@/lib/cloudinary';
 
@@ -17,14 +16,14 @@ export async function GET(
         if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
 
 
-        const post = await Offer.findById(params.id);
-        if (!post) {
+        const product = await ProductModel.findById(params.id);
+        if (!product) {
             return NextResponse.json(
-                { error: "Post not found" },
+                { error: "Product not found" },
                 { status: 404 }
             );
         }
-        return NextResponse.json(post);
+        return NextResponse.json(product);
     } catch (error) {
         return NextResponse.json(
             { error: "Failed to fetch post" },
@@ -39,38 +38,14 @@ export async function PUT(
 ) {
     try {
         const { role } = await getDataFromToken(request);
-        if (role !== 'admin') {
-            return NextResponse.json(
-                { success: false, message: 'Unauthorized' },
-                { status: 401 }
-            );
-        }
-
-        const { offerTitle, offerDescription, discountPercentage, validFrom, validTo } = await request.json();
-
-
-        const existing = await ProductModel.findById(params.id);
-
-        if (!existing) {
-            return NextResponse.json(
-                { error: 'Offer not found' },
-                { status: 404 }
-            );
-        }
-
-        existing.offerTitle = offerTitle || existing.offerTitle;
-        existing.offerDescription = offerDescription || existing.offerDescription;
-        existing.discountPercentage = discountPercentage || existing.discountPercentage;
-        existing.validFrom = validFrom || existing.validFrom;
-        existing.validTo = validTo || existing.validTo;
-
-        await existing.save();
-
+        if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+        const formData = await request.formData();
+        console.log(formData)
         return NextResponse.json(
             {
                 success: true,
                 message: 'Offer updated successfully',
-                data: existing,
+                // data: existing,
             },
             { status: 201 }
         );
@@ -94,7 +69,6 @@ export async function DELETE(
         if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
 
         const product = await ProductModel.findById(params.id);
-        console.log(product)
 
         if (!product) {
             return NextResponse.json({ error: "Return not found" }, { status: 404 });
@@ -105,7 +79,10 @@ export async function DELETE(
         for (const image of images) {
             await deleteImage(image.public_id);
         }
+
         await deleteImage(product.thumbnail.public_id);
+
+        await product.delete();
 
         return NextResponse.json({
             success: true,

@@ -1,16 +1,27 @@
-import React, { useState } from "react";
-import Image from "next/image";
-import type { ImageType } from "@/lib/types";
-import { FaTrash } from "react-icons/fa";
-import { RiImageAddFill } from "react-icons/ri";
+import React, { useState } from 'react';
+import Image from 'next/image';
+import { FaTrash } from 'react-icons/fa';
+import { RiImageAddFill, RiLoader2Line } from 'react-icons/ri';
+import { toast } from 'react-toastify';
+import { removeProductImage } from '@/_services/admin/product';
+
+
+interface ImageType {
+  url: string;
+  public_id: string;
+  fileType: string;
+  file?: File;
+}
 
 interface ImageUploadProps {
   onImagesChange: (images: ImageType[]) => void;
   images: ImageType[];
+  productId: string;
 }
 
-export function ImageUpload({ onImagesChange, images }: ImageUploadProps) {
+export function ImageUpload({ onImagesChange, images, productId }: ImageUploadProps) {
   const [dragActive, setDragActive] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -18,26 +29,33 @@ export function ImageUpload({ onImagesChange, images }: ImageUploadProps) {
     setDragActive(e.type === "dragenter" || e.type === "dragover");
   };
 
-  const handleDrop = async (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
+  const validateFile = (file: File): boolean => {
+    const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    const maxSize = 5 * 1024 * 1024; // 5MB
 
-    const files = Array.from(e.dataTransfer.files);
-    if (files.length) {
-      await handleFiles(files);
+    if (!validTypes.includes(file.type)) {
+      toast.error('File type not supported. Please upload JPG, PNG, or GIF images.');
+      return false;
     }
+
+    if (file.size > maxSize) {
+      toast.error('File size must be less than 5MB');
+      return false;
+    }
+
+    return true;
   };
 
-  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-    if (files.length) {
-      await handleFiles(files);
+  const processFiles = async (files: File[]) => {
+    const maxImages = 10;
+    if (images.length + files.length > maxImages) {
+      toast.error(`Maximum ${maxImages} images allowed`);
+      return;
     }
-  };
 
-  const handleFiles = async (files: File[]) => {
-    const newImages = files.map((file) => ({
+    const validFiles = files.filter(validateFile);
+
+    const newImages = validFiles.map((file) => ({
       url: URL.createObjectURL(file),
       public_id: Math.random().toString(36).substring(7),
       fileType: file.type,
@@ -47,16 +65,50 @@ export function ImageUpload({ onImagesChange, images }: ImageUploadProps) {
     onImagesChange([...images, ...newImages]);
   };
 
-  const removeImage = (public_id: string) => {
+  const handleDrop = async (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+
+    const files = Array.from(e.dataTransfer.files);
+    if (files.length) {
+      await processFiles(files);
+    }
+  };
+
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length) {
+      await processFiles(files);
+    }
+  };
+
+  const removeImage = async (public_id: string) => {
+    const imageToRemove = images.find(img => img.public_id === public_id);
+    
+    if (imageToRemove?.url && productId) {
+      try {
+        setLoading(true)
+        const data = await removeProductImage(productId, imageToRemove) as any;
+        if (data.success) {
+          toast(data.message)
+        }
+      } catch (error) {
+        console.log('Error removing image')
+      } finally {
+        setLoading(false)
+      }
+
+      URL.revokeObjectURL(imageToRemove.url);
+    }
     onImagesChange(images.filter((img) => img.public_id !== public_id));
   };
 
   return (
     <div className="space-y-4">
       <div
-        className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
-          dragActive ? "border-primary" : "border-gray-200"
-        }`}
+        className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${dragActive ? "border-primary" : "border-gray-200"
+          }`}
         onDragEnter={handleDrag}
         onDragLeave={handleDrag}
         onDragOver={handleDrag}
@@ -73,7 +125,7 @@ export function ImageUpload({ onImagesChange, images }: ImageUploadProps) {
                 id="image-upload"
                 type="file"
                 multiple
-                accept="image/*"
+                accept="image/jpeg,image/png,image/gif"
                 className="hidden"
                 onChange={handleChange}
               />
@@ -84,31 +136,43 @@ export function ImageUpload({ onImagesChange, images }: ImageUploadProps) {
           </p>
         </div>
       </div>
+      {
+        loading ? (
+          <div className='flex justify-center text-center'>
+            <RiLoader2Line className="mr-2 h-12 w-12 animate-spin" />
+          </div>
+        ) : (
 
-      {images.length > 0 && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {images.map((image) => (
-            <div key={image.public_id} className="relative group">
-              <div className="aspect-square relative rounded-lg overflow-hidden">
-                <Image
-                  src={image.url}
-                  alt="Product image"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <button
-                type="button"
-                onClick={() => removeImage(image.public_id)}
-                className="absolute -top-2 -right-2 bg-red-500 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                aria-label="Remove image"
-              >
-                <FaTrash className="h-4 w-4" />
-              </button>
+          images.length > 0 && (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {images.map((image) => (
+                <div key={image.public_id} className="relative group">
+                  <div className="aspect-square relative rounded-lg overflow-hidden">
+                    <Image
+                      src={image.url}
+                      alt="Product image"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-cover"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => removeImage(image.public_id)}
+                    className="absolute -top-2 -right-2 bg-red-500 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                    aria-label="Remove image"
+                  >
+                    <FaTrash className="h-4 w-4" />
+                  </button>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      )}
+          )
+
+        )
+
+      }
+
     </div>
   );
-} 
+}

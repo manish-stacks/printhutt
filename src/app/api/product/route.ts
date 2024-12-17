@@ -17,11 +17,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Parse FormData
     const formData = await req.formData();
 
-    // Retrieve images and thumbnail from FormData
-    const imagesRaw = formData.getAll('images'); // Use `getAll` for arrays
+    const imagesRaw = formData.getAll('images');
     const thumbnail = formData.get('thumbnail');
 
     if (!thumbnail || !(thumbnail instanceof File)) {
@@ -31,22 +29,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Validate and upload images
-    const uploadedImages = await Promise.all(
-      imagesRaw.map(async (image) => {
-        if (image instanceof File) {
-          const uploadResponse = await uploadImage(image, 'products');
-          return uploadResponse;
-        } else {
-          throw new Error('Invalid image file provided.');
-        }
-      })
-    );
-
-    // Upload thumbnail
-    const thumbnailResponse = await uploadImage(thumbnail, 'products/thumbnails');
-
-    // Parse and validate product details from FormData
     const productData = {
       title: formData.get('title')?.toString() || '',
       slug: formData.get('slug')?.toString() || '',
@@ -70,13 +52,11 @@ export async function POST(req: NextRequest) {
       imgAlt: formData.get('imgAlt')?.toString() || '',
       status: formData.get('status') === 'true',
       ishome: formData.get('ishome') === 'true',
-      trending: formData.get('tranding') === 'true',
+      trending: formData.get('trending') === 'true',
       hot: formData.get('hot') === 'true',
       sale: formData.get('sale') === 'true',
       new: formData.get('new') === 'true',
       isCustomize: formData.get('isCustomize') === 'true',
-      images: uploadedImages,
-      thumbnail: thumbnailResponse,
       meta: {
         keywords: formData.get('keywords')?.toString() || '',
         meta_description: formData.get('meta_description')?.toString() || '',
@@ -87,8 +67,23 @@ export async function POST(req: NextRequest) {
       varient: JSON.parse(formData.get('varient')?.toString() || '[]'),
     };
 
-    // Save product to the database
     const product = new ProductModel(productData);
+
+    const uploadedImages = await Promise.all(
+      imagesRaw.map(async (image) => {
+        if (image instanceof File) {
+          return uploadImage(image, 'products');
+        } else {
+          throw new Error('Invalid image file provided.');
+        }
+      })
+    );
+
+    const thumbnailResponse = await uploadImage(thumbnail, 'products/thumbnails');
+
+    product.images = uploadedImages;
+    product.thumbnail = thumbnailResponse;
+
     const savedProduct = await product.save();
 
     return NextResponse.json(
@@ -100,12 +95,14 @@ export async function POST(req: NextRequest) {
       { status: 201 }
     );
   } catch (error: any) {
+    console.error('Product creation error:', error);  
     return NextResponse.json(
       { success: false, message: error.message },
       { status: 500 }
     );
   }
 }
+
 
 
 export async function GET(req: NextRequest) {

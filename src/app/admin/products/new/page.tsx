@@ -42,7 +42,7 @@ const initialFormData: ProductFormData = {
   imgAlt: '',
   status: false,
   ishome: false,
-  tranding: false,
+  trending: false,
   hot: false,
   sale: false,
   new: false,
@@ -100,7 +100,7 @@ export default function AddProduct() {
         setOffers(offerData.returnData);
       } catch (error) {
         console.error('Error fetching data:', error);
-      }finally {
+      } finally {
         setLoading(false);
       }
     };
@@ -204,6 +204,27 @@ export default function AddProduct() {
     setSubCategories(categoryData.category)
   }
 
+  const handleTagsChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const inputValue = e.currentTarget.value.trim();
+
+    if (e.key === 'Enter' || e.key === ',') {
+      e.preventDefault();
+      if (inputValue && !formData.tags.includes(inputValue)) {
+        setFormData((prev) => ({
+          ...prev,
+          tags: [...prev.tags, inputValue],
+        }));
+        e.currentTarget.value = '';
+      }
+    }
+  };
+
+  const removeTag = (tag: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      tags: prev.tags.filter((t) => t !== tag),
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -271,7 +292,7 @@ export default function AddProduct() {
           <div className="flex justify-center mt-4">
             <RiLoader2Line className="mr-2 h-12 w-12 animate-spin" />
           </div>
-        
+
         </div>
       </div>
     );
@@ -481,7 +502,7 @@ export default function AddProduct() {
                 <div className="w-12/12 mt-4">
                   <label className="block font-medium text-gray-700">Tags</label>
                   <div className="mt-2">
-                    <input
+                    {/* <input
                       className="block w-full h-10 rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                       type="text"
                       name="tags"
@@ -489,6 +510,29 @@ export default function AddProduct() {
                       value={formData.tags || ''}
                       onChange={handleInputChange}
                       placeholder='Tags'
+                    /> */}
+                    {formData.tags.map((tag, index) => (
+                      <span
+                        key={index}
+                        className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-700"
+                      >
+                        {tag}
+                        <button
+                          type="button"
+                          onClick={() => removeTag(tag)}
+                          className="ml-2 text-red-500 hover:text-red-700"
+                          aria-label="Remove tag"
+                        >
+                          &times;
+                        </button>
+                      </span>
+                    ))}
+                    <input
+                      className="flex-grow bg-white px-2 py-1 text-base text-gray-900 outline-none placeholder-gray-400 focus:ring-0"
+                      type="text"
+                      id="tags"
+                      placeholder="Add a tag"
+                      onKeyDown={handleTagsChange} // Handle tags on key press
                     />
                   </div>
                 </div>
@@ -736,7 +780,7 @@ export default function AddProduct() {
                 {[
                   { key: 'status', label: 'Active' },
                   { key: 'ishome', label: 'Show on Home' },
-                  { key: 'tranding', label: 'Trending' },
+                  { key: 'trending', label: 'Trending' },
                   { key: 'hot', label: 'Hot Deal' },
                   { key: 'sale', label: 'On Sale' },
                   { key: 'new', label: 'New Arrival' },
@@ -861,6 +905,7 @@ export default function AddProduct() {
                 name="offers"
                 value={formData.offers || ''}
                 onChange={handleInputChange}
+                multiple
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               >
                 <option>Chhose offers</option>
