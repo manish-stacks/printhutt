@@ -2,20 +2,23 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connect } from '@/dbConfig/dbConfig'
 import { getDataFromToken } from '@/helpers/getDataFromToken';
 import Coupon from '@/models/couponModel';
-
+import mongoose from 'mongoose';
 
 connect()
 
-export async function GET(
-    request: NextRequest,
-    { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest, context: { params: { id: string } }) {
     try {
+       const { id } = await context.params;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return NextResponse.json({ success: false, message: "Invalid Product ID" }, { status: 400 });
+        }
+
         const { role } = await getDataFromToken(request)
         if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
 
 
-        const post = await Coupon.findById(params.id);
+        const post = await Coupon.findById(id);
         if (!post) {
             return NextResponse.json(
                 { error: "Post not found" },
@@ -31,19 +34,17 @@ export async function GET(
     }
 }
 
-export async function PUT(
-    request: NextRequest,
-    { params }: { params: { id: string } }
-) {
+export async function PUT(request: NextRequest, context: { params: { id: string } }) {
     try {
-        const { role } = await getDataFromToken(request);
-        if (role !== 'admin') {
-            return NextResponse.json(
-                { success: false, message: 'Unauthorized' },
-                { status: 401 }
-            );
+       const { id } = await context.params;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return NextResponse.json({ success: false, message: "Invalid Product ID" }, { status: 400 });
         }
 
+        const { role } = await getDataFromToken(request);
+        if (role !== 'admin') return NextResponse.json( { success: false, message: 'Unauthorized' }, { status: 401 });
+    
         const { 
             code, 
             description, 
@@ -57,7 +58,7 @@ export async function PUT(
             isActive } = await request.json();
 
 
-        const existing = await Coupon.findById(params.id);
+        const existing = await Coupon.findById(id);
 
         if (!existing) {
             return NextResponse.json(
@@ -88,7 +89,6 @@ export async function PUT(
             { status: 201 }
         );
     } catch (error) {
-        // console.error(error);
         return NextResponse.json(
             { error: 'Failed to update' },
             { status: 500 }
@@ -97,16 +97,17 @@ export async function PUT(
 }
 
 
-export async function DELETE(
-    request: NextRequest,
-    { params }: { params: { id: string } }
-) {
+export async function DELETE(request: NextRequest, context: { params: { id: string } }) {
     try {
+       const { id } = await context.params;
 
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return NextResponse.json({ success: false, message: "Invalid Product ID" }, { status: 400 });
+        }
         const { role } = await getDataFromToken(request)
         if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
 
-        const deleteData = await Coupon.findByIdAndDelete(params.id);
+        const deleteData = await Coupon.findByIdAndDelete(id);
 
         if (!deleteData) {
             return NextResponse.json({ error: "Return not found" }, { status: 404 });

@@ -1,21 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connect } from '@/dbConfig/dbConfig'
 import { getDataFromToken } from '@/helpers/getDataFromToken';
-import { deleteImage, uploadImage } from '@/lib/cloudinary';
 import WarrantyInformation from '@/models/warrantyInformationModel';
+import mongoose from 'mongoose';
 
 connect()
 
-export async function GET(
-    request: NextRequest,
-    { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest, context: { params: { id: string } }) {
     try {
+       const { id } = await context.params;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return NextResponse.json({ success: false, message: "Invalid Product ID" }, { status: 400 });
+        }
+
         const { role } = await getDataFromToken(request)
         if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
 
 
-        const post = await WarrantyInformation.findById(params.id);
+        const post = await WarrantyInformation.findById(id);
         if (!post) {
             return NextResponse.json(
                 { error: "Post not found" },
@@ -31,23 +34,22 @@ export async function GET(
     }
 }
 
-export async function PUT(
-    request: NextRequest,
-    { params }: { params: { id: string } }
-) {
+export async function PUT(request: NextRequest, context: { params: { id: string } }) {
     try {
-        const { role } = await getDataFromToken(request);
-        if (role !== 'admin') {
-            return NextResponse.json(
-                { success: false, message: 'Unauthorized' },
-                { status: 401 }
-            );
+       const { id } = await context.params;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return NextResponse.json({ success: false, message: "Invalid Product ID" }, { status: 400 });
         }
+
+        const { role } = await getDataFromToken(request);
+        if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+
 
         const { warrantyType, durationMonths, coverage, claimProcess } = await request.json();
 
 
-        const existingWarranty = await WarrantyInformation.findById(params.id);
+        const existingWarranty = await WarrantyInformation.findById(id);
 
         if (!existingWarranty) {
             return NextResponse.json(
@@ -82,16 +84,18 @@ export async function PUT(
 }
 
 
-export async function DELETE(
-    request: NextRequest,
-    { params }: { params: { id: string } }
-) {
+export async function DELETE(request: NextRequest, context: { params: { id: string } }) {
     try {
+       const { id } = await context.params;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return NextResponse.json({ success: false, message: "Invalid Product ID" }, { status: 400 });
+        }
 
         const { role } = await getDataFromToken(request)
         if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
 
-        const deleteData = await WarrantyInformation.findByIdAndDelete(params.id);
+        const deleteData = await WarrantyInformation.findByIdAndDelete(id);
 
         if (!deleteData) {
             return NextResponse.json({ error: "Warranty not found" }, { status: 404 });
@@ -111,22 +115,21 @@ export async function DELETE(
 }
 
 
-export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(request: NextRequest, context: { params: { id: string } }) {
     try {
-        const { role } = await getDataFromToken(request);
+       const { id } = await context.params;
 
-        // Check for admin role
-        if (role !== 'admin') {
-            return NextResponse.json(
-                { success: false, message: 'Unauthorized' },
-                { status: 401 }
-            );
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return NextResponse.json({ success: false, message: "Invalid Product ID" }, { status: 400 });
         }
 
+        const { role } = await getDataFromToken(request);
+        if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+       
         const { status } = await request.json();
 
         const updatedWarranty = await WarrantyInformation.findByIdAndUpdate(
-            params.id,
+            id,
             { status },
             { new: true }
         );

@@ -4,52 +4,62 @@ import { getDataFromToken } from '@/helpers/getDataFromToken';
 import ProductModel from '@/models/productModel';
 import { deleteImage, uploadImage } from '@/lib/cloudinary';
 import mongoose from 'mongoose';
-const { ObjectId } = mongoose.Types;
+import { ProductUpdateData } from '@/lib/types';
 
 connect()
 
-export async function GET(
-    request: NextRequest,
-    { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest, context: { params: { id: string } }) {
     try {
-        const { role } = await getDataFromToken(request)
+        const { id } = await context.params;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return NextResponse.json({ success: false, message: "Invalid Product ID" }, { status: 400 });
+        }
+
+        const { role } = await getDataFromToken(request);
+        if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+
+        const product = await ProductModel.findById(id);
+        if (!product) return NextResponse.json({ error: "Product not found" }, { status: 404 });
+
+        return NextResponse.json(product);
+
+    } catch (error) {
+        return NextResponse.json({ error: "Failed to fetch product" }, { status: 500 });
+    }
+
+
+}
+
+export async function PUT(request: NextRequest, context: { params: { id: string } }) {
+    try {
+        const { id } = await context.params;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return NextResponse.json({ success: false, message: "Invalid Product ID" }, { status: 400 });
+        }
+
+
+        const { role } = await getDataFromToken(request);
         if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
 
 
-        const product = await ProductModel.findById(params.id);
-        if (!product) {
-            return NextResponse.json(
-                { error: "Product not found" },
-                { status: 404 }
-            );
-        }
-        return NextResponse.json(product);
-    } catch (error) {
-        return NextResponse.json(
-            { error: "Failed to fetch post" },
-            { status: 500 }
-        );
-    }
-}
-
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
-    try {
-        const { role } = await getDataFromToken(request);
-        if (role !== 'admin') {
-            return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
-        }
 
         const formData = await request.formData();
-console.log(formData)
-        // Fetch existing product
-        const product = await ProductModel.findById(params.id);
-        if (!product) {
-            return NextResponse.json({ success: false, message: 'Product not found' }, { status: 404 });
-        }
+        console.log(formData)
+
+        const product = await ProductModel.findById(id);
+        if (!product) return NextResponse.json({ success: false, message: "Product not found" }, { status: 404 });
+
+
+        const offers = JSON.parse(formData.get('offers')); // Parse the stringified array
+        const offersAsObjectIds = offers.map((id: string) => new mongoose.Types.ObjectId(id)); // Convert to ObjectId array
+
+        const tags = JSON.parse(formData.get('tags')); // Parse the stringified array
+        const tagsAsObject = tags.map((id: string) => id); // Convert to ObjectId array
 
         // Parse and update product fields
-        const updatedData = {
+        const updatedData: ProductUpdateData = {
             title: formData.get('title')?.toString() || product.title,
             slug: formData.get('slug')?.toString() || product.slug,
             description: formData.get('description')?.toString() || product.description,
@@ -60,7 +70,7 @@ console.log(formData)
             discountPrice: parseFloat(formData.get('discountPrice')?.toString() || product.discountPrice),
             rating: parseInt(formData.get('rating')?.toString() || product.rating),
             stock: parseInt(formData.get('stock')?.toString() || product.stock),
-            tags: formData.get('tags')?.toString() || product.tags,
+            tags: tagsAsObject || product.tags,
             sku: formData.get('sku')?.toString() || product.sku,
             weight: parseFloat(formData.get('weight')?.toString() || product.weight),
             availabilityStatus: formData.get('availabilityStatus')?.toString() || product.availabilityStatus,
@@ -82,14 +92,7 @@ console.log(formData)
                 meta_description: formData.get('meta_description')?.toString() || product.meta.meta_description,
             },
             shippingFee: parseFloat(formData.get('shippingFee')?.toString() || product.shippingFee),
-            // offers: formData.getAll('offers').map((offer) => offer.toString()) || product.offers,
-            offers: formData.getAll('offers').map((offer) => {
-                try {
-                    return new ObjectId(offer.toString()); // Convert to ObjectId
-                } catch {
-                    throw new Error(`Invalid ObjectId: ${offer}`);
-                }
-            }) || product.offers,
+            offers: offersAsObjectIds || product.offers,
             isVarientStatus: formData.get('isVarientStatus') === 'true' || product.isVarientStatus,
             varient: JSON.parse(formData.get('varient')?.toString() || JSON.stringify(product.varient)),
         };
@@ -118,7 +121,6 @@ console.log(formData)
             updatedData.images = [...(product.images || []), ...uploadedImages];
         }
 
-        // Update product in database
         Object.assign(product, updatedData);
         const savedProduct = await product.save();
 
@@ -133,16 +135,17 @@ console.log(formData)
 }
 
 
-export async function DELETE(
-    request: NextRequest,
-    { params }: { params: { id: string } }
-) {
+export async function DELETE(request: NextRequest, context: { params: { id: string } }) {
     try {
+        const { id } = await context.params;
 
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return NextResponse.json({ success: false, message: "Invalid Product ID" }, { status: 400 });
+        }
         const { role } = await getDataFromToken(request)
         if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
 
-        const product = await ProductModel.findById(params.id);
+        const product = await ProductModel.findById(id);
 
         if (!product) {
             return NextResponse.json({ error: "Return not found" }, { status: 404 });
@@ -171,8 +174,13 @@ export async function DELETE(
     }
 }
 
-export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(request: NextRequest, context: { params: { id: string } }) {
     try {
+        const { id } = await context.params;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return NextResponse.json({ success: false, message: "Invalid Product ID" }, { status: 400 });
+        }
         const { role } = await getDataFromToken(request);
         if (role !== 'admin') {
             return NextResponse.json(
@@ -184,7 +192,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
         const { status } = await request.json();
 
         const updatedCategory = await ProductModel.findByIdAndUpdate(
-            params.id,
+            id,
             { status },
             { new: true }
         );

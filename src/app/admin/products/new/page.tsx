@@ -52,7 +52,7 @@ const initialFormData: ProductFormData = {
   keywords: '',
   meta_description: '',
   shippingFee: 0,
-  offers: '',
+  offers: [],
   isVarientStatus: false,
   varient: []
 };

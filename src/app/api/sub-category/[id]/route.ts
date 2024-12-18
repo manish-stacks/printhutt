@@ -1,23 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connect } from '@/dbConfig/dbConfig'
-// import Category from '@/models/categoryModel';
-
 import { getDataFromToken } from '@/helpers/getDataFromToken';
 import { deleteImage, uploadImage } from '@/lib/cloudinary';
 import SubCategory from '@/models/subCategoryModel';
+import mongoose from 'mongoose';
 
 connect()
 
-export async function GET(
-    request: NextRequest,
-    { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest, context: { params: { id: string } }) {
     try {
+       const { id } = await context.params;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return NextResponse.json({ success: false, message: "Invalid Product ID" }, { status: 400 });
+        }
+
         const { role } = await getDataFromToken(request)
         if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
 
 
-        const post = await SubCategory.findById(params.id);
+        const post = await SubCategory.findById(id);
         if (!post) {
             return NextResponse.json(
                 { error: "Post not found" },
@@ -33,24 +35,23 @@ export async function GET(
     }
 }
 
-export async function PUT(
-    request: NextRequest,
-    { params }: { params: { id: string } }
-) {
+export async function PUT(request: NextRequest, context: { params: { id: string } }) {
     try {
-        const { role } = await getDataFromToken(request);
-        if (role !== 'admin') {
-            return NextResponse.json(
-                { success: false, message: 'Unauthorized' },
-                { status: 401 }
-            );
+       const { id } = await context.params;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return NextResponse.json({ success: false, message: "Invalid Product ID" }, { status: 400 });
         }
+
+        const { role } = await getDataFromToken(request);
+        if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+
 
         const formData = await request.formData();
 
         const file = formData.get('imageUrl');
 
-        const existingCategory = await SubCategory.findById(params.id);
+        const existingCategory = await SubCategory.findById(id);
 
         if (!existingCategory) {
             return NextResponse.json(
@@ -100,16 +101,18 @@ export async function PUT(
 }
 
 
-export async function DELETE(
-    request: NextRequest,
-    { params }: { params: { id: string } }
-) {
+export async function DELETE(request: NextRequest, context: { params: { id: string } }) {
     try {
+       const { id } = await context.params;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return NextResponse.json({ success: false, message: "Invalid Product ID" }, { status: 400 });
+        }
 
         const { role } = await getDataFromToken(request)
         if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
 
-        const deleteData = await SubCategory.findByIdAndDelete(params.id);
+        const deleteData = await SubCategory.findByIdAndDelete(id);
         await deleteImage(deleteData.image.public_id);
 
         if (!deleteData) {
@@ -130,22 +133,22 @@ export async function DELETE(
 }
 
 
-export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(request: NextRequest, context: { params: { id: string } }) {
     try {
-        const { role } = await getDataFromToken(request);
+       const { id } = await context.params;
 
-        // Check for admin role
-        if (role !== 'admin') {
-            return NextResponse.json(
-                { success: false, message: 'Unauthorized' },
-                { status: 401 }
-            );
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return NextResponse.json({ success: false, message: "Invalid Product ID" }, { status: 400 });
         }
+
+        const { role } = await getDataFromToken(request);
+        if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+
 
         const { status } = await request.json();
 
         const updatedCategory = await SubCategory.findByIdAndUpdate(
-            params.id,
+            id,
             { status },
             { new: true }
         );

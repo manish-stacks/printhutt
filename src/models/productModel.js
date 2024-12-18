@@ -90,7 +90,7 @@ const productSchema = new mongoose.Schema(
       ref: "ReturnPolicy",
     },
     meta: {
-      keywords: [String],
+      keywords: String,
       meta_description: {
         type: String,
         max: [160, "Meta discription 160"],

@@ -133,8 +133,52 @@ export interface ProductFormData {
     thumbnail: any;
     keywords: string;
     meta_description: string;
-    shippingFee: string|number;
-    offers: string;
+    shippingFee: string | number;
+    offers: string[];
     isVarientStatus: boolean;
     varient: ProductVariant[];
 }
+
+export type ProductUpdateData = {
+    title: string;
+    slug: string;
+    description: string;
+    category: string;
+    subcategory: string;
+    price: number;
+    discountType: string;
+    discountPrice: number;
+    rating: number;
+    stock: number;
+    tags: [];
+    sku: string;
+    weight: number;
+    availabilityStatus: string;
+    dimensions: string;
+    warrantyInformation: string;
+    shippingInformation: string;
+    returnPolicy: string;
+    demoVideo: string;
+    imgAlt: string;
+    status: boolean;
+    ishome: boolean;
+    trending: boolean;
+    hot: boolean;
+    sale: boolean;
+    new: boolean;
+    isCustomize: boolean;
+    meta: {
+        keywords: string;
+        meta_description: string;
+    };
+    shippingFee: number;
+    isVarientStatus: boolean;
+    varient: any;
+    images: any[];
+    offers:[];
+    thumbnail?: {
+        url: String,
+        public_id: String,
+        fileType: String,
+    }; // Optional thumbnail property
+};

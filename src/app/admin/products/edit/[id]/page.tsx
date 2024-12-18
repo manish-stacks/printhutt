@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import { RiLoader2Line } from 'react-icons/ri';
 import { toast } from 'react-toastify';
-
+import Select from 'react-select';
 
 
 const initialFormData: ProductFormData = {
@@ -52,7 +52,7 @@ const initialFormData: ProductFormData = {
   keywords: '',
   meta_description: '',
   shippingFee: 0,
-  offers: '',
+  offers: [],
   isVarientStatus: false,
   varient: []
 };
@@ -157,8 +157,8 @@ export default function EditProduct() {
       if (name === 'shippingInformation') {
         const shippingfilter = shippings.find(ship => ship._id === value) as any;
         updatedData.shippingFee = shippingfilter?.shippingFee ? shippingfilter?.shippingFee : 0;
-        // console.log(updatedData.shippingFee)
       }
+
 
       return updatedData;
     });
@@ -254,7 +254,7 @@ export default function EditProduct() {
           ...prev,
           tags: [...prev.tags, inputValue],
         }));
-        e.currentTarget.value = ''; 
+        e.currentTarget.value = '';
       }
     }
   };
@@ -265,6 +265,21 @@ export default function EditProduct() {
       tags: prev.tags.filter((t) => t !== tag),
     }));
   };
+
+  const options = offers.map((offer) => ({
+    value: offer._id,
+    label: offer.offerTitle.toUpperCase(),
+  }));
+
+  const handleSelectChangeOffer = (selectedOptions) => {
+    const selectedOffers = selectedOptions ? selectedOptions.map(option => option.value) : [];
+    setFormData({
+      ...formData,
+      offers: selectedOffers,
+    });
+  };
+  const selectedOffers = options.filter(option => formData.offers.includes(option.value));
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -943,25 +958,31 @@ export default function EditProduct() {
             ))}
             <div className="bg-white text-black p-6 rounded-lg space-x-3 shadow-md shadow-black-300">
               <label className="block font-medium text-gray-700 ml-3">Offers On</label>
-              <select
+              {/* <select
                 id="offers"
                 name="offers"
-                value={formData.offers || ''}
+                value={formData.offers || []}
                 onChange={handleInputChange}
                 multiple
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               >
-                <option>Chhose offers</option>
-                {
-                  offers.length === 0 ? (
-                    <option>No data found</option>
-                  ) :
-                    offers.map((offer) => (
-                      <option key={offer._id} value={offer._id}>{offer.offerTitle.toUpperCase()}</option>
-                    ))
-                }
-
-              </select>
+                <option disabled>Choose offers</option>
+                {offers.length === 0 ? (
+                  <option>No data found</option>
+                ) : (
+                  offers.map((offer) => (
+                    <option key={offer._id} value={offer._id}>
+                      {offer.offerTitle.toUpperCase()}
+                    </option>
+                  ))
+                )}
+              </select> */}
+              <Select
+                options={options}
+                isMulti
+                value={selectedOffers}
+                onChange={handleSelectChangeOffer}
+              />
 
               <label className="block font-medium text-gray-700 ml-3 mt-3">Shipping Fee</label>
               <input
