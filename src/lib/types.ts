@@ -99,7 +99,10 @@ export interface ProductVariant {
     price: number;
     stock: number;
 }
-
+export interface Option {
+    value: string;
+    label: string;
+}
 export interface ProductFormData {
     title: string;
     slug: string;
@@ -174,8 +177,8 @@ export type ProductUpdateData = {
     shippingFee: number;
     isVarientStatus: boolean;
     varient: any;
-    images: any[];
-    offers:[];
+    images?: string[];
+    offers: [];
     thumbnail?: {
         url: String,
         public_id: String,

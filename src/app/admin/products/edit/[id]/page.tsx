@@ -8,14 +8,14 @@ import { get_parent_sub_categories } from '@/_services/admin/sub-category';
 import { get_all_warranty } from '@/_services/admin/warranty';
 import { ImageUpload } from '@/components/admin/products/ImageUpload';
 import { generateSlug } from '@/helpers/helpers';
-import { CategoryFormData, Offer, ProductFormData, ReturnPolicy, ShippingInformation, Warranty } from '@/lib/types';
+import { CategoryFormData, Offer, Option, ProductFormData, ReturnPolicy, ShippingInformation, Warranty } from '@/lib/types';
 import { validateProductForm } from '@/utils/form';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import { RiLoader2Line } from 'react-icons/ri';
 import { toast } from 'react-toastify';
-import Select from 'react-select';
+import Select, { MultiValue } from 'react-select';
 
 
 const initialFormData: ProductFormData = {
@@ -271,13 +271,15 @@ export default function EditProduct() {
     label: offer.offerTitle.toUpperCase(),
   }));
 
-  const handleSelectChangeOffer = (selectedOptions) => {
+  
+  const handleSelectChangeOffer = (selectedOptions: MultiValue<Option> | null) => {
     const selectedOffers = selectedOptions ? selectedOptions.map(option => option.value) : [];
     setFormData({
       ...formData,
       offers: selectedOffers,
     });
   };
+
   const selectedOffers = options.filter(option => formData.offers.includes(option.value));
 
 

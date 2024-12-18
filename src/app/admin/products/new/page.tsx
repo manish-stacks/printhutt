@@ -8,13 +8,14 @@ import { get_parent_sub_categories } from '@/_services/admin/sub-category';
 import { get_all_warranty } from '@/_services/admin/warranty';
 import { ImageUpload } from '@/components/admin/products/ImageUpload';
 import { generateSlug } from '@/helpers/helpers';
-import { CategoryFormData, Offer, ProductFormData, ReturnPolicy, ShippingInformation, Warranty } from '@/lib/types';
+import { CategoryFormData, Offer, Option, ProductFormData, ReturnPolicy, ShippingInformation, Warranty } from '@/lib/types';
 import { validateProductForm } from '@/utils/form';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import { RiLoader2Line } from 'react-icons/ri';
 import { toast } from 'react-toastify';
+import Select, { MultiValue } from 'react-select';
 
 
 
@@ -226,6 +227,22 @@ export default function AddProduct() {
     }));
   };
 
+
+
+  const options = offers.map((offer) => ({
+    value: offer._id,
+    label: offer.offerTitle.toUpperCase(),
+  }));
+
+
+  const handleSelectChangeOffer = (selectedOptions: MultiValue<Option> | null) => {
+    const selectedOffers = selectedOptions ? selectedOptions.map(option => option.value) : [];
+    setFormData({
+      ...formData,
+      offers: selectedOffers,
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -365,6 +382,7 @@ export default function AddProduct() {
             <div className="bg-white text-black p-6 rounded-lg space-y-5 shadow-md shadow-black-300">
               <div>
                 <label className="block text-sm font-medium text-gray-700">Thumbnail *</label>
+                <p className="text-xs/5 text-gray-600">Image Size Should Be 800 x 800.</p>
                 <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
                   <div className="text-center">
                     {image ? (
@@ -409,6 +427,7 @@ export default function AddProduct() {
             <div className="bg-white text-black p-6 rounded-lg space-y-5 shadow-md shadow-black-300">
               <div>
                 <label className="block text-sm font-medium text-gray-700">Gallery Images *</label>
+                <p className="text-xs/5 text-gray-600">Image Size Should Be 800 x 800.</p>
                 <ImageUpload
                   images={formData.images}
                   onImagesChange={handleImagesChange}
@@ -901,7 +920,7 @@ export default function AddProduct() {
             ))}
             <div className="bg-white text-black p-6 rounded-lg space-x-3 shadow-md shadow-black-300">
               <label className="block font-medium text-gray-700 ml-3">Offers On</label>
-              <select
+              {/* <select
                 id="offers"
                 name="offers"
                 value={formData.offers || ''}
@@ -919,7 +938,13 @@ export default function AddProduct() {
                     ))
                 }
 
-              </select>
+              </select> */}
+
+              <Select
+                options={options}
+                isMulti
+                onChange={handleSelectChangeOffer}
+              />
 
               <label className="block font-medium text-gray-700 ml-3 mt-3">Shipping Fee</label>
               <input

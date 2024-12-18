@@ -3,19 +3,17 @@ import { connect } from '@/dbConfig/dbConfig'
 import { getDataFromToken } from '@/helpers/getDataFromToken';
 import { uploadImage } from '@/lib/cloudinary';
 import ProductModel from '@/models/productModel';
+import mongoose from 'mongoose';
 
 connect();
 
 
 export async function POST(req: NextRequest) {
   try {
+
     const { role } = await getDataFromToken(req);
-    if (role !== 'admin') {
-      return NextResponse.json(
-        { success: false, message: 'Unauthorized' },
-        { status: 401 }
-      );
-    }
+    if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+
 
     const formData = await req.formData();
 
@@ -29,6 +27,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const offers = formData.get('offers');
+    const offersAsObjectIds = offers ? JSON.parse(offers as string).map((id: string) => new mongoose.Types.ObjectId(id)) : [];
+
+    const tags = formData.get('tags');
+    const tagsAsObject = tags ? JSON.parse(tags as string).map((id: string) => id) : [];
+
+
     const productData = {
       title: formData.get('title')?.toString() || '',
       slug: formData.get('slug')?.toString() || '',
@@ -40,7 +45,7 @@ export async function POST(req: NextRequest) {
       discountPrice: parseFloat(formData.get('discountPrice')?.toString() || '0'),
       rating: parseInt(formData.get('rating')?.toString() || '0', 10),
       stock: parseInt(formData.get('stock')?.toString() || '0', 10),
-      tags: formData.get('tags')?.toString() || '',
+      tags: tagsAsObject || '',
       sku: formData.get('sku')?.toString() || '',
       weight: parseFloat(formData.get('weight')?.toString() || '0'),
       availabilityStatus: formData.get('availabilityStatus')?.toString() || 'in_stock',
@@ -62,10 +67,11 @@ export async function POST(req: NextRequest) {
         meta_description: formData.get('meta_description')?.toString() || '',
       },
       shippingFee: parseFloat(formData.get('shippingFee')?.toString() || '0'),
-      offers: formData.getAll('offers').map((offer) => offer.toString()),
+      offers: offersAsObjectIds || '',
       isVarientStatus: formData.get('isVarientStatus') === 'true',
       varient: JSON.parse(formData.get('varient')?.toString() || '[]'),
     };
+
 
     const product = new ProductModel(productData);
 
@@ -95,7 +101,7 @@ export async function POST(req: NextRequest) {
       { status: 201 }
     );
   } catch (error: any) {
-    console.error('Product creation error:', error);  
+    console.error('Product creation error:', error);
     return NextResponse.json(
       { success: false, message: error.message },
       { status: 500 }
@@ -117,7 +123,7 @@ export async function GET(req: NextRequest) {
       : {};
 
     const skip = (page - 1) * limit;
-    
+
     //const products = await ProductModel.find().populate({path: 'category', Model: Category }).populate({path: 'subcategory', Model: SubCategory });;
 
     const [products, total] = await Promise.all([

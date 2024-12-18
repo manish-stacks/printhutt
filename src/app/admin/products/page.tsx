@@ -156,6 +156,7 @@ const ProductList: React.FC = () => {
                   <th className="py-3 px-4 font-semibold">Price</th>
                   <th className="py-3 px-4 font-semibold">Category</th>
                   <th className="py-3 px-4 font-semibold">Stock</th>
+                  <th className="py-3 px-4 font-semibold">Type</th>
                   <th className="py-3 px-4 font-semibold">Status</th>
                   <th className="py-3 px-4 font-semibold">Action</th>
                 </tr>
@@ -194,6 +195,9 @@ const ProductList: React.FC = () => {
                       )}
                     </td>
                     <td className="py-3 px-4">{product.stock}</td>
+                    <td className="py-3 px-4" style={{ color: product.isCustomize ? 'green' : 'blue' }}>
+                      {product.isCustomize ? 'Customize' : <span>Pre</span>}
+                    </td>
                     <td>
                       <label className="flex items-center cursor-pointer">
                         <input

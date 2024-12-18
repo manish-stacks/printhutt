@@ -52,11 +52,12 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
         if (!product) return NextResponse.json({ success: false, message: "Product not found" }, { status: 404 });
 
 
-        const offers = JSON.parse(formData.get('offers')); // Parse the stringified array
-        const offersAsObjectIds = offers.map((id: string) => new mongoose.Types.ObjectId(id)); // Convert to ObjectId array
+        const offers = formData.get('offers');
+        const offersAsObjectIds = offers ? JSON.parse(offers as string).map((id: string) => new mongoose.Types.ObjectId(id)) : [];
 
-        const tags = JSON.parse(formData.get('tags')); // Parse the stringified array
-        const tagsAsObject = tags.map((id: string) => id); // Convert to ObjectId array
+        const tags = formData.get('tags');
+        const tagsAsObject = tags ? JSON.parse(tags as string).map((id: string) => id) : [];
+
 
         // Parse and update product fields
         const updatedData: ProductUpdateData = {
