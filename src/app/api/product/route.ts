@@ -4,6 +4,8 @@ import { getDataFromToken } from '@/helpers/getDataFromToken';
 import { uploadImage } from '@/lib/cloudinary';
 import ProductModel from '@/models/productModel';
 import mongoose from 'mongoose';
+import Category from '@/models/categoryModel';
+import SubCategory from '@/models/subCategoryModel';
 
 connect();
 
@@ -11,8 +13,8 @@ connect();
 export async function POST(req: NextRequest) {
   try {
 
-    const { role } = await getDataFromToken(req);
-    if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+    // const { role } = await getDataFromToken(req);
+    // if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
 
 
     const formData = await req.formData();
@@ -128,8 +130,8 @@ export async function GET(req: NextRequest) {
 
     const [products, total] = await Promise.all([
       ProductModel.find(query)
-        .populate('category', 'name')
-        .populate('subcategory', 'name')
+        .populate({ path: 'category', model: Category })
+        .populate({path: 'subcategory', model: SubCategory })
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit),

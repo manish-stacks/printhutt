@@ -207,7 +207,7 @@ export default function ShippingPage() {
                                     ) : (shippingMethods.map((shipping) => (
                                         <tr key={shipping._id} className="border-b hover:bg-gray-50">
                                             <td className="py-3 px-4">{shipping.shippingMethod}</td>
-                                            <td className="py-3 px-4">{shipping.shippingFee} months</td>
+                                            <td className="py-3 px-4">{shipping.shippingFee==0?'Free':shipping.shippingFee}</td>
                                             <td className="py-3 px-4">{shipping.shippingTime}</td>
                                             <td>
                                                 <div className="flex space-x-2">

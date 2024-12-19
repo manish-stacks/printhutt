@@ -326,9 +326,9 @@ export default function EditProduct() {
 
       if (response.success) {
         toast.success('Product created successfully!');
-        // setFormData(initialFormData);
-        // setImage(null);
-        //router.push('/admin/products')
+        setFormData(initialFormData);
+        setImage(null);
+        router.push('/admin/products')
       } else {
         toast.error(response.message || 'Failed to Update product');
       }

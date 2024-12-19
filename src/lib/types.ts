@@ -110,7 +110,7 @@ export interface ProductFormData {
     category: string;
     subcategory: string;
     price: number;
-    discountType: number;
+    discountType: string;
     discountPrice: number;
     rating: number;
     stock: number;
@@ -185,3 +185,5 @@ export type ProductUpdateData = {
         fileType: String,
     }; // Optional thumbnail property
 };
+
+

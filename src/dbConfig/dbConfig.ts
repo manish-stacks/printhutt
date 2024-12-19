@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+mongoose.connection.setMaxListeners(20);
 
 export async function connect() {
     try {
