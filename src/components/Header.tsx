@@ -12,6 +12,8 @@ import {
   RiTwitterFill,
 } from "react-icons/ri";
 import Image from "next/image";
+import siteLogo from '/public/print-hutt-logo.webp';
+
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -83,27 +85,28 @@ const Header = () => {
                         className="bb-toggle-menu flex max-[991px]:flex max-[991px]:mr-[6px] sm:hidden"
                       >
                         <div className="header-icon">
-                        <RiMenu2Fill className="text-[22px] text-[#6c7fd8]" />
+                          <RiMenu2Fill className="text-[22px] text-[#6c7fd8]" />
                         </div>
                       </a>
                       <Link href="/">
                         <Image
-                          src="/print-hutt-logo.webp"
+                          src={siteLogo}
                           alt="logo"
                           width={180}
                           height={56}
                           className="light w-[180px] max-[991px]:w-[115px] block"
-                          loading="lazy"
+                          priority={true}
                         />
                         <Image
-                          src="/print-hutt-logo.webp"
+                          src={siteLogo}
                           alt="logo"
                           width={180}
                           height={56}
                           className="dark w-[180px] max-[991px]:w-[115px] hidden"
-                          loading="lazy"
+                          priority={true}
                         />
                       </Link>
+
                     </div>
                     {/* Header Logo End */}
                     <a
@@ -185,7 +188,7 @@ const Header = () => {
                             </div>
                           </a>
                           <ul className="bb-dropdown-menu min-w-[150px] py-[10px] px-[5px] transition-all duration-[0.3s] ease-in-out mt-[25px] absolute z-[16] text-left opacity-[0] right-[auto] bg-[#fff] border-[1px] border-solid border-[#eee] block rounded-[10px]">
-                            
+
                             <li className="py-[4px] px-[15px] m-[0] font-Poppins text-[15px] text-[#686e7d] font-light leading-[28px] tracking-[0.03rem]">
                               <Link
                                 className="dropdown-item transition-all duration-[0.3s] ease-in-out font-Poppins text-[13px] hover:text-[#6c7fd8] leading-[22px] block w-full font-normal tracking-[0.03rem]"
@@ -512,9 +515,8 @@ const Header = () => {
 
         <div
           id="bb-mobile-menu"
-          className={`bb-mobile-menu transition-all duration-[0.3s] ease-in-out w-[340px] h-full pt-[15px] px-[20px] pb-[20px] fixed top-[0] right-[auto] left-[0] bg-[#fff] ${
-            isMobileMenu ? "translate-x-0" : "translate-x-[-100%]"
-          } flex flex-col z-[17] overflow-auto max-[480px]:w-[300px]`}
+          className={`bb-mobile-menu transition-all duration-[0.3s] ease-in-out w-[340px] h-full pt-[15px] px-[20px] pb-[20px] fixed top-[0] right-[auto] left-[0] bg-[#fff] ${isMobileMenu ? "translate-x-0" : "translate-x-[-100%]"
+            } flex flex-col z-[17] overflow-auto max-[480px]:w-[300px]`}
         >
           <div className="bb-menu-title w-full pb-[10px] flex flex-wrap justify-between">
             <span className="menu_title font-Poppins flex items-center text-[16px] text-[#3d4750] font-semibold leading-[26px] tracking-[0.02rem]">
@@ -548,9 +550,8 @@ const Header = () => {
                     Categories
                   </a>
                   <ul
-                    className={`sub-menu w-full min-w-[auto] p-[0] mb-[10px] static ${
-                      isOpenCategory ? "block" : "hidden"
-                    } visible opacity-[1]`}
+                    className={`sub-menu w-full min-w-[auto] p-[0] mb-[10px] static ${isOpenCategory ? "block" : "hidden"
+                      } visible opacity-[1]`}
                   >
                     {/* <ul className={`sub-menu w-full min-w-[auto] p-[0] mb-[10px] ${isOpen ? 'block' : 'hidden'}`}></ul> */}
                     <li className="relative">
@@ -565,9 +566,8 @@ const Header = () => {
                         Classic
                       </a>
                       <ul
-                        className={`sub-menu w-full min-w-[auto] p-[0] mb-[10px] static ${
-                          isOpenSubCategory ? "block" : "hidden"
-                        } opacity-[1]`}
+                        className={`sub-menu w-full min-w-[auto] p-[0] mb-[10px] static ${isOpenSubCategory ? "block" : "hidden"
+                          } opacity-[1]`}
                       >
                         <li className="relative">
                           <a

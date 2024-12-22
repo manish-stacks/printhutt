@@ -25,7 +25,7 @@ const initialFormData: ProductFormData = {
   category: '',
   subcategory: '',
   price: 0,
-  discountType: 0,
+  discountType: '',
   discountPrice: 0,
   rating: 0,
   stock: 0,

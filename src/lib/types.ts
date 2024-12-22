@@ -186,4 +186,35 @@ export type ProductUpdateData = {
     }; // Optional thumbnail property
 };
 
+export type FilterState = {
+    categories: string[]
+    priceRange: [number, number]
+    rating: number | null
+    tags: string[]
+}
 
+export type Product = {
+    _id: string
+    title: string
+    price: number
+    category: {
+        id: string
+        name: string
+    }
+    rating: number
+    tags?: string[]
+    thumbnail: {
+        url: string
+    },
+    new: boolean
+    sale: boolean
+    hot: boolean
+    trending: boolean
+    images: [{url: string}]
+    discountType: string
+    discountPrice: number
+    stock: number
+    slug: string
+    isVarientStatus: boolean
+
+}
