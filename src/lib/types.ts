@@ -216,5 +216,13 @@ export type Product = {
     stock: number
     slug: string
     isVarientStatus: boolean
-
+    meta?: {
+        keywords: string
+        meta_description: string
+    };
+    reviews?: number;
+    short_description?: string;
+    quantity?: number;
+    sku?: string;
+   
 }

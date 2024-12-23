@@ -19,7 +19,7 @@ export function ProductGrid({ products, viewMode }: ProductGridProps) {
         addToCart(product);
         toast('Added to cart');
     };
-    
+
 
     if (products.length === 0) {
         return (
@@ -127,7 +127,6 @@ export function ProductGrid({ products, viewMode }: ProductGridProps) {
                                     ))}
                                 </span>
 
-
                             </div>
                             <h4 className="bb-pro-title mb-[8px] text-[16px] leading-[18px]">
                                 <Link href={`/product-details/${product.slug}`}
@@ -137,10 +136,7 @@ export function ProductGrid({ products, viewMode }: ProductGridProps) {
                                 </Link>
                             </h4>
                             <p className="hidden font-Poppins text-[14px] text-[#686e7d] font-light leading-[28px] tracking-[0.03rem]">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing
-                                elit. Cumque consectetur sit mollitia nihil magnam
-                                perspiciatis eos atque qui cupiditate delectus.
-                                Provident totam optio sapiente nam.
+                                {product?.short_description}
                             </p>
                             <div className="bb-price flex flex-wrap justify-between">
                                 <div className="inner-price mx-[-3px]">

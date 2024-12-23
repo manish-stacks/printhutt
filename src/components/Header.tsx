@@ -13,6 +13,7 @@ import {
 } from "react-icons/ri";
 import Image from "next/image";
 import siteLogo from '/public/print-hutt-logo.webp';
+import { useCartStore } from "@/store/useCartStore";
 
 
 const Header = () => {
@@ -32,6 +33,10 @@ const Header = () => {
 
   const [isOpenSubCategory, setIsOpenSubCategory] = useState(false);
   const toggleMenuMobileSubcat = () => setIsOpenSubCategory((prev) => !prev);
+
+
+  const { getTotalItems } = useCartStore();
+
 
   return (
     <>
@@ -256,21 +261,21 @@ const Header = () => {
                           </div>
                           <div className="bb-btn-desc flex flex-col ml-[10px] max-[1199px]:hidden">
                             <span className="bb-btn-title font-Poppins transition-all duration-[0.3s] ease-in-out text-[12px] leading-[1] text-[#3d4750] mb-[4px] tracking-[0.6px] capitalize font-medium whitespace-nowrap">
-                              <b className="bb-cart-count">4</b> items
+                              <b className="bb-cart-count">{getTotalItems()}</b> items
                             </span>
                             <span className="bb-btn-stitle font-Poppins transition-all duration-[0.3s] ease-in-out text-[14px] leading-[16px] font-semibold text-[#3d4750]  tracking-[0.03rem] whitespace-nowrap">
                               Cart
                             </span>
                           </div>
                         </a>
-                        <a
+                        <button
                           onClick={toggleMenu}
                           className="bb-toggle-menu hidden max-[991px]:flex max-[991px]:ml-[20px]"
                         >
                           <div className="header-icon">
                             <RiMenu3Fill className="text-[22px] text-[#6c7fd8]" />
                           </div>
-                        </a>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -279,6 +284,7 @@ const Header = () => {
             </div>
           </div>
         </div>
+
         <div className="bb-main-menu-desk bg-[#fff] py-[5px] border-t-[1px] border-solid border-[#eee] max-[991px]:hidden">
           <div className="flex flex-wrap justify-between relative items-center mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">
             <div className="flex flex-wrap w-full">

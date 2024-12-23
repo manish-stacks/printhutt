@@ -5,12 +5,12 @@ import Breadcrumb from "@/components/Breadcrumb";
 import { useCartStore } from "@/store/useCartStore";
 import Image from "next/image";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const Cart = () => {
-
+  const router = useRouter();
   const [totalPrice, setTotalPrice] = useState<number>(0);
-
-  const { items, updateQuantity, removeFromCart, getTotalItems, getTotalPrice } = useCartStore();
+  const { items, updateQuantity, removeFromCart, getTotalPrice } = useCartStore();
 
   const handleQuantityChange = (productId: string, newQuantity: number) => {
     if (newQuantity < 1) {
@@ -28,9 +28,9 @@ const Cart = () => {
 
 
 
-  const itemss = useCartStore(state => state.items);
-  console.log(itemss)
-
+  const gotoCheckout = () => {
+    router.push('/checkout');
+  }
 
 
 
@@ -169,33 +169,15 @@ const Cart = () => {
                         </li>
                         <li className="mb-[12px] flex justify-between leading-[28px]">
                           <span className="text-left font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] text-[#686e7d] font-medium">
-                            Coupon Discount
+                            Discount
                           </span>
                           <span className="text-right font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] text-[#686e7d] font-semibold">
                             <a className="bb-coupon drop-coupon font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] font-medium text-[#ff0000] cursor-pointer">
-                              Apply Coupon
+                              0
                             </a>
                           </span>
                         </li>
-                        <li className="mb-[12px] flex justify-between leading-[28px]">
-                          <div className="coupon-down-box w-full">
-                            <form method="post" className="relative mb-[15px]">
-                              <input
-                                className="bb-coupon w-full p-[10px] text-[14px] font-normal text-[#686e7d] border-[1px] border-solid border-[#eee] outline-[0] rounded-[10px]"
-                                type="text"
-                                placeholder="Enter Your coupon Code"
-                                name="bb-coupon"
 
-                              />
-                              <button
-                                className="bb-btn-2 transition-all duration-[0.3s] ease-in-out my-[8px] mr-[8px] flex justify-center items-center absolute right-[0] top-[0] bottom-[0] font-Poppins leading-[28px] tracking-[0.03rem] py-[2px] px-[12px] text-[13px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
-                                type="submit"
-                              >
-                                Apply
-                              </button>
-                            </form>
-                          </div>
-                        </li>
                       </ul>
                     </div>
                     <div className="summary-total border-t-[1px] border-solid border-[#eee] pt-[15px]">
@@ -216,7 +198,7 @@ const Cart = () => {
                       data-aos="fade-up"
                       data-aos-duration={1000}
                       data-aos-delay={400}
-                      onClick={() => alert('Checkout functionality would go here!')}
+                      onClick={gotoCheckout}
                     >
                       Proceed to Checkout
                     </button>

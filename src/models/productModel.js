@@ -20,6 +20,10 @@ const productSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    short_description: {
+      type: String,
+      required: [true, "Please add a description"],
+    },
     description: {
       type: String,
       required: [true, "Please add a description"],
@@ -65,6 +69,8 @@ const productSchema = new mongoose.Schema(
       unique: true,
     },
     weight: Number,
+    colors: String,
+    inBox: String,
     dimensions: String,
     isVarientStatus: Boolean,
     varient: [variantSchema],
