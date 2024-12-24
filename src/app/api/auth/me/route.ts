@@ -8,8 +8,7 @@ connect()
 export const POST = async (request: NextRequest) => {
     try {
         const { id } = await getDataFromToken(request)
-
-        const user = await UserModel.findOne({ _id: id }).select("email role username number");
+        const user = await UserModel.findOne({ _id: id });
 
         return NextResponse.json({
             message: "User Found",
