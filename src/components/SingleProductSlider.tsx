@@ -1,7 +1,26 @@
 import React, { useState } from "react";
 import Slider from "react-slick";
 
-const SingleProductSlider = () => {
+
+interface SingleProductSliderProps {
+  product: {
+    slug: string;
+    imgAlt: string;
+    thumbnail: {
+      url: string;
+    };
+    images: [{
+      url: string;
+    }];
+  };
+}
+
+
+const SingleProductSlider = ({ product }: SingleProductSliderProps) => {
+
+  const { thumbnail, images, imgAlt, slug } = product;
+
+
   const [navSlider, setNavSlider] = useState(null);
   const [mainSlider, setMainSlider] = useState(null);
   const [zoomStyle, setZoomStyle] = useState(null);
@@ -12,7 +31,7 @@ const SingleProductSlider = () => {
     arrows: false,
     fade: false,
     asNavFor: navSlider,
-    ref: (slider:any) => setMainSlider(slider), // Bind the main slider
+    ref: (slider: any) => setMainSlider(slider), // Bind the main slider
   };
 
   const navSliderSettings = {
@@ -22,18 +41,17 @@ const SingleProductSlider = () => {
     dots: false,
     arrows: true,
     focusOnSelect: true,
-    ref: (slider:any) => setNavSlider(slider), // Bind the nav slider
+    ref: (slider: any) => setNavSlider(slider), // Bind the nav slider
   };
 
-  const images = [
-    "https://printhutt.com/media/product/283713037_LED%20Name%20Plate%20For%20Home.jpg",
-    "https://printhutt.com/media/product/709876482_Untitled%20design.png",
-    "https://printhutt.com/media/product/125520269_Jai%20Shri%20Ram.jpg",
-    "https://printhutt.com/media/product/386235202_800658968_74.jpg",
-    "https://printhutt.com/media/product/671800533_3d-good-vibe.jpg",
+
+
+  const productImages = [
+    thumbnail.url,
+    ...images.map((image) => image.url),
   ];
 
-  const handleMouseMove = (e:any, image :any) => {
+  const handleMouseMove = (e: any, image: any) => {
     const { left, top, width, height } = e.target.getBoundingClientRect();
     const x = ((e.clientX - left) / width) * 100;
     const y = ((e.clientY - top) / height) * 100;
@@ -54,7 +72,7 @@ const SingleProductSlider = () => {
       {/* Main Product Slider */}
       <div className="single-product-cover relative">
         <Slider {...mainSliderSettings}>
-          {images.map((image, index) => (
+          {productImages.map((image, index) => (
             <div
               key={index}
               className="single-slide zoom-container rounded-tl-[15px] rounded-tr-[15px] overflow-hidden relative"
@@ -64,7 +82,7 @@ const SingleProductSlider = () => {
               <img
                 className="img-responsive rounded-tl-[15px] rounded-tr-[15px]"
                 src={image}
-                alt={`product-${index + 1}`}
+                alt={index === 0 ? imgAlt : (`${slug}-${index + 1}`)}
               />
               {zoomStyle && (
                 <div
@@ -89,12 +107,12 @@ const SingleProductSlider = () => {
       {/* Thumbnail Navigation Slider */}
       <div className="single-nav-thumb w-full overflow-hidden">
         <Slider {...navSliderSettings}>
-          {images.map((image, index) => (
+          {productImages.map((image, index) => (
             <div key={index} className="single-slide px-[10px] block">
               <img
                 className="img-responsive border-[1px] border-solid border-transparent transition-all duration-[0.3s] ease delay-[0s] cursor-pointer rounded-[15px]"
                 src={image}
-                alt={`product-thumb-${index + 1}`}
+                alt={`${slug}-thumb-${index + 1}`}
               />
             </div>
           ))}

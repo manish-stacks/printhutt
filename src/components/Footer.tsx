@@ -8,6 +8,7 @@ import {
 } from "react-icons/fa";
 
 import BackToTop from "./BackToTop";
+import Image from "next/image";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -26,15 +27,21 @@ const Footer = () => {
               >
                 <div className="min-[992px]:w-[25%] max-[991px]:w-full w-full px-[12px] bb-footer-toggle bb-footer-cat">
                   <div className="bb-footer-widget bb-footer-company flex flex-col max-[991px]:mb-[24px]">
-                    <img
+                    <Image
                       src="/print-hutt-logo.webp"
                       className="bb-footer-logo max-w-[180px] mb-[30px] max-[767px]:max-w-[130px]"
                       alt="footer logo"
+                      width={180}
+                      height={56}
+                      priority={true}
                     />
-                    <img
+                    <Image
                       src="/print-hutt-logo.webp"
                       className="bb-footer-dark-logo max-w-[180px] mb-[30px] max-[767px]:max-w-[130px] hidden"
                       alt="footer logo"
+                      width={180}
+                      height={56}
+                      priority={true}
                     />
                     <p className="bb-footer-detail max-w-[400px] mb-[30px] p-[0] font-Poppins text-[14px] leading-[27px] font-normal text-[#686e7d] inline-block relative max-[1399px]:text-[15px] max-[1199px]:text-[14px]">
                       BlueBerry is the biggest market of grocery products. Get
@@ -330,14 +337,14 @@ const Footer = () => {
                           className="text-[#686e7d] text-[13px] tracking-[1px] text-center font-normal"
                           id="copyright_year"
                         />
-                        {currentYear} 
+                        {currentYear}
                         <Link
                           className="site-name transition-all duration-[0.3s] ease-in-out font-medium text-[#6c7fd8] hover:text-[#3d4750] font-Poppins text-[15px] leading-[28px] tracking-[0.03rem]"
                           href="/"
                         >
                           {""} HBS  {" "}
                         </Link>
-                         all rights reserved.
+                        all rights reserved.
                       </div>
                     </div>
                   </div>
@@ -615,7 +622,7 @@ const Footer = () => {
         </div>
       </div>
       {/* Back to top  */}
-      <BackToTop/>
+      <BackToTop />
     </>
   );
 };

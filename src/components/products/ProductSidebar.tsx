@@ -1,10 +1,28 @@
-import React from 'react'
+import { FilterState, Product } from '@/lib/types'
+import React, { useMemo } from 'react'
+import { CategoryFilter } from './filters/category-filter'
+import { PriceFilter } from './filters/price-filter'
+import { RatingFilter } from './filters/rating-filter'
+import { TagFilter } from './filters/tag-filter'
 
-const ProductSidebar = () => {
+interface ProductSidebarProps {
+    products: Product[]
+    filters: FilterState
+    onFilterChange: (filters: Partial<FilterState>) => void
+}
+
+export function ProductSidebar({ products, filters, onFilterChange }: ProductSidebarProps) {
+    const categories = useMemo(() => Array.from(new Set(products.map(p => p.category.name))), [products])
+    const priceRange = useMemo(() => ({
+        min: Math.min(...products.map(p => p.price)),
+        max: Math.max(...products.map(p => p.price))
+    }), [products])
+    const tags = useMemo(() => Array.from(new Set(products.flatMap(p => p.tags || []))), [products])
+
     return (
         <>
             <div className="bb-shop-wrap bg-[#f8f8fb] border-[1px] border-solid border-[#eee] rounded-[20px] sticky top-[0]">
-                <div className="bb-sidebar-block p-[20px] border-b-[1px] border-solid border-[#eee]">
+                {/* <div className="bb-sidebar-block p-[20px] border-b-[1px] border-solid border-[#eee]">
                     <div className="bb-sidebar-title mb-[20px]">
                         <h3 className="font-quicksand text-[18px] tracking-[0.03rem] leading-[1.2] font-bold text-[#3d4750]">
                             Category
@@ -237,10 +255,28 @@ const ProductSidebar = () => {
 
                         </ul>
                     </div>
-                </div>
+                </div> */}
+
+                <CategoryFilter
+                    categories={categories}
+                    selectedCategories={filters.categories}
+                    onChange={(categories) => onFilterChange({ categories })}
+                />
+                <PriceFilter
+                    range={priceRange}
+                    value={filters.priceRange}
+                    onChange={(priceRange) => onFilterChange({ priceRange })}
+                />
+                <RatingFilter
+                    selectedRating={filters.rating}
+                    onChange={(rating) => onFilterChange({ rating })}
+                />
+                <TagFilter
+                    tags={tags}
+                    selectedTags={filters.tags}
+                    onChange={(tags) => onFilterChange({ tags })}
+                />
             </div>
         </>
     )
 }
-
-export default ProductSidebar

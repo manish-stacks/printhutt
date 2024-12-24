@@ -57,7 +57,7 @@ const Login = () => {
                                         width={180}
                                         height={56}
                                         className="light w-[180px] max-[991px]:w-[115px] block"
-                                        loading="lazy"
+                                        priority={true}
                                     />
 
                                 </div>

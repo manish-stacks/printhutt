@@ -4,6 +4,7 @@ import Breadcrumb from "@/components/Breadcrumb";
 import axios from "axios";
 import { toast } from 'react-toastify';
 import { useRouter } from "next/navigation";
+import { useUserStore } from "@/store/useUserStore";
 
 const Login = () => {
 
@@ -26,7 +27,7 @@ const Login = () => {
 
   const [timer, setTimer] = useState<number>(30);
   const [isResendEnabled, setIsResendEnabled] = useState<boolean>(false);
-
+  const fetchUserDetails = useUserStore((state) => state.fetchUserDetails);
 
 
   const handleInputChange = (e: any) => {
@@ -97,6 +98,7 @@ const Login = () => {
         emailOrMobile: emailOrMobile
       });
 
+      fetchUserDetails();
       if (data.role === 'user') {
         setSuccess(data.message);
         router.push('/user/dashboard');

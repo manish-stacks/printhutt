@@ -1,3 +1,4 @@
+import { Product } from "@/lib/types";
 import { axiosInstance } from "@/utils/axios";
 
 export const add_new_product = async (formData: any) => {
@@ -19,8 +20,8 @@ export const update_a_product = async (id: string, formData: any) => {
   return axiosInstance.put(`/product/${id}`, formData)
 }
 
-export const get_product_by_id = async (id: string) => {
-  return axiosInstance.get(`/product/${id}`);
+export const get_product_by_slug = async (slug: string): Promise<Product> => {
+  return axiosInstance.get(`/product/details/${slug}`);
 }
 
 

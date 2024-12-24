@@ -1,7 +1,22 @@
+"use client";
 import Breadcrumb from "@/components/Breadcrumb";
-import React from "react";
+import { useCartStore } from "@/store/useCartStore";
+import { useUserStore } from "@/store/useUserStore";
+import Image from "next/image";
+import React, { useEffect, useState } from "react";
+import Login from "./Login";
 
 const Checkout = () => {
+  const [totalPrice, setTotalPrice] = useState<number>(0);
+  const { items, getTotalPrice } = useCartStore();
+  const isLoggedIn = useUserStore((state) => state.isLoggedIn);
+
+  useEffect(() => {
+    setTotalPrice(getTotalPrice());
+  }, [items]);
+
+  
+
   return (
     <>
       {/* Breadcrumb */}
@@ -12,105 +27,16 @@ const Checkout = () => {
       <section className="section-checkout py-[50px] max-[1199px]:py-[35px]">
         <div className="flex flex-wrap justify-between relative items-center mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">
           <div className="flex flex-wrap w-full mb-[-24px]">
-
-            <div className="min-[992px]:w-[66.66%] w-full px-[12px] mb-[24px]">
+{
+  isLoggedIn ? (
+    <div className="min-[992px]:w-[66.66%] w-full px-[12px] mb-[24px]">
               <div
                 className="bb-checkout-contact border-[1px] border-solid border-[#eee] p-[20px] rounded-[20px]"
                 data-aos="fade-up"
                 data-aos-duration={1000}
                 data-aos-delay={400}
               >
-                <div className="main-title mb-[20px]">
-                  <h4 className="font-quicksand tracking-[0.03rem] leading-[1.2] text-[20px] font-bold text-[#3d4750]">
-                    New Customer
-                  </h4>
-                </div>
-                <label className="inner-title font-Poppins leading-[26px] tracking-[0.02rem] mb-[6px] text-[16px] inline-block font-medium text-[#3d4750]">
-                  Checkout Options
-                </label>
-                <div className="checkout-radio flex mb-[10px] max-[480px]:flex-col">
-                  <div className="radio-itens mr-[20px]">
-                    <input
-                      type="radio"
-                      id="del1"
-                      name="account"
-                      className="w-auto mr-[2px] p-[10px] text-[14px] font-normal text-[#686e7d] border-[1px] border-solid border-[#eee] outline-[0] rounded-[10px]"
 
-                    />
-                    <label
-                      htmlFor="del1"
-                      className="text-[14px] font-normal text-[#686e7d] relative pl-[26px] cursor-pointer leading-[16px] inline-block tracking-[0]"
-                    >
-                      Register Account
-                    </label>
-                  </div>
-                  <div className="radio-itens">
-                    <input
-                      type="radio"
-                      id="del2"
-                      name="account"
-                      className="w-auto mr-[2px] p-[10px] text-[14px] font-normal text-[#686e7d] border-[1px] border-solid border-[#eee] outline-[0] rounded-[10px]"
-                    />
-                    <label
-                      htmlFor="del2"
-                      className="text-[14px] font-normal text-[#686e7d] relative pl-[26px] cursor-pointer leading-[16px] inline-block tracking-[0]"
-                    >
-                      Guest Account
-                    </label>
-                  </div>
-                </div>
-                <p className="font-Poppins leading-[28px] tracking-[0.03rem] mb-[16px] text-[14px] font-light text-[#686e7d]">
-                  By creating an account you will be able to shop faster, be up
-                  to date on an order's status, and keep track of the orders you
-                  have previously made.
-                </p>
-                <div className="inner-button mb-[20px]">
-                  <a
-                    href="javascript:void(0)"
-                    className="bb-btn-2 inline-block items-center justify-center check-btn transition-all duration-[0.3s] ease-in-out font-Poppins leading-[28px] tracking-[0.03rem] py-[4px] px-[25px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
-                  >
-                    Continue
-                  </a>
-                </div>
-                <div className="main-title mb-[20px]">
-                  <h4 className="font-quicksand tracking-[0.03rem] leading-[1.2] text-[20px] font-bold text-[#3d4750]">
-                    Returning Customer
-                  </h4>
-                </div>
-                <form method="post">
-                  <div className="input-item mb-[24px]">
-                    <label className="inline-block font-Poppins leading-[26px] tracking-[0.02rem] mb-[8px] text-[14px] font-medium text-[#3d4750]">
-                      Email Address
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      placeholder="Enter your email address"
-                      className="w-full p-[10px] text-[14px] font-normal text-[#686e7d] border-[1px] border-solid border-[#eee] outline-[0] leading-[26px] rounded-[10px]"
-
-                    />
-                  </div>
-                  <div className="input-item mb-[24px]">
-                    <label className="inline-block font-Poppins leading-[26px] tracking-[0.02rem] mb-[8px] text-[14px] font-medium text-[#3d4750]">
-                      Password
-                    </label>
-                    <input
-                      type="password"
-                      name="password"
-                      placeholder="Enter your password"
-                      className="w-full p-[10px] text-[14px] font-normal text-[#686e7d] border-[1px] border-solid border-[#eee] outline-[0] leading-[26px] rounded-[10px]"
-
-                    />
-                  </div>
-                  <div className="input-button mb-[20px]">
-                    <button
-                      type="button"
-                      className="bb-btn-2 inline-block items-center justify-center check-btn transition-all duration-[0.3s] ease-in-out font-Poppins leading-[28px] tracking-[0.03rem] py-[4px] px-[25px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
-                    >
-                      Login
-                    </button>
-                  </div>
-                </form>
                 <div className="main-title mb-[20px]">
                   <h4 className="font-quicksand tracking-[0.03rem] leading-[1.2] text-[20px] font-bold text-[#3d4750]">
                     Billing Details
@@ -269,6 +195,106 @@ const Checkout = () => {
                 </div>
               </div>
             </div>
+  ):(
+    <div className="min-h-screen bg-[#f1f3f6]">
+    {/* Header */}
+    <header className="bg-[#2874f0] py-4">
+      <div className="max-w-6xl mx-auto px-4">
+        <h1 className="text-white text-2xl font-bold">Flipkart</h1>
+      </div>
+    </header>
+
+    {/* Main Content */}
+    <main className="max-w-6xl mx-auto px-4 py-6">
+      {/* Progress Steps */}
+      <div className="bg-white mb-4 p-4 rounded shadow-sm">
+        <div className="flex justify-between">
+          <div className="flex items-center">
+            <span className="w-8 h-8 rounded-full bg-[#2874f0] text-white flex items-center justify-center text-sm">1</span>
+            <span className="ml-2 font-medium text-[#2874f0]">LOGIN OR SIGNUP</span>
+          </div>
+          <div className="flex items-center opacity-50">
+            <span className="w-8 h-8 rounded-full border-2 border-gray-300 text-gray-400 flex items-center justify-center text-sm">2</span>
+            <span className="ml-2 font-medium text-gray-400">DELIVERY ADDRESS</span>
+          </div>
+          <div className="flex items-center opacity-50">
+            <span className="w-8 h-8 rounded-full border-2 border-gray-300 text-gray-400 flex items-center justify-center text-sm">3</span>
+            <span className="ml-2 font-medium text-gray-400">ORDER SUMMARY</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Login Form */}
+        <div className="bg-white p-6 rounded shadow-sm">
+          <div className="mb-6">
+            <input
+              type="text"
+          
+              placeholder="Enter Email/Mobile number"
+              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#2874f0]"
+            />
+          </div>
+          <div className="text-xs text-gray-500 mb-6">
+            <div className="flex items-start">
+              <input type="checkbox" className="mt-1 mr-2" />
+              <span>
+                By continuing, you agree to Flipkart's{' '}
+                <a href="#" className="text-[#2874f0]">Terms of Use</a> and{' '}
+                <a href="#" className="text-[#2874f0]">Privacy Policy</a>.
+              </span>
+            </div>
+          </div>
+          <button className="w-full bg-[#fb641b] text-white py-3 rounded shadow-md hover:bg-[#fb641b]/90 font-medium">
+            CONTINUE
+          </button>
+        </div>
+
+        {/* Advantages Section */}
+        <div className="bg-white p-6 rounded shadow-sm">
+          <h2 className="text-base text-gray-500 mb-6">Advantages of our secure login</h2>
+          <div className="space-y-6">
+            <div className="flex items-start">
+              <div className="w-8 h-8 rounded-full bg-[#f1f3f6] flex items-center justify-center mr-3">
+                <svg className="w-4 h-4 text-[#2874f0]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 12H4m8-8v16" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="font-medium">Easily Track</h3>
+                <p className="text-sm text-gray-500">Orders, Hassle free Returns</p>
+              </div>
+            </div>
+            <div className="flex items-start">
+              <div className="w-8 h-8 rounded-full bg-[#f1f3f6] flex items-center justify-center mr-3">
+                <svg className="w-4 h-4 text-[#2874f0]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="font-medium">Get Relevant Alerts</h3>
+                <p className="text-sm text-gray-500">and Recommendation</p>
+              </div>
+            </div>
+            <div className="flex items-start">
+              <div className="w-8 h-8 rounded-full bg-[#f1f3f6] flex items-center justify-center mr-3">
+                <svg className="w-4 h-4 text-[#2874f0]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="font-medium">Wishlist, Reviews, Ratings</h3>
+                <p className="text-sm text-gray-500">and more.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  )}
+}
+            
             <div className="min-[992px]:w-[33.33%] w-full px-[12px] mb-[24px]">
               <div className="bb-checkout-sidebar mb-[-24px]">
                 <div
@@ -279,17 +305,17 @@ const Checkout = () => {
                 >
                   <div className="sub-title mb-[12px]">
                     <h4 className="font-quicksand tracking-[0.03rem] leading-[1.2] text-[20px] font-bold text-[#3d4750]">
-                      summary
+                      Summary
                     </h4>
                   </div>
                   <div className="checkout-summary mb-[20px] border-b-[1px] border-solid border-[#eee]">
                     <ul className="mb-[20px]">
                       <li className="flex justify-between leading-[28px] mb-[8px]">
                         <span className="left-item font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] font-medium text-[#686e7d]">
-                          sub-total
+                          Sub-total
                         </span>
                         <span className="font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] font-medium text-[#686e7d]">
-                          $56
+                          ₹{totalPrice.toFixed(2)}
                         </span>
                       </li>
                       <li className="flex justify-between leading-[28px] mb-[8px]">
@@ -297,7 +323,7 @@ const Checkout = () => {
                           Delivery Charges
                         </span>
                         <span className="font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] font-medium text-[#686e7d]">
-                          $56
+                          ₹{totalPrice.toFixed(2)}
                         </span>
                       </li>
                       <li className="flex justify-between leading-[28px] mb-[8px]">
@@ -335,278 +361,66 @@ const Checkout = () => {
                     </ul>
                   </div>
                   <div className="bb-checkout-pro mb-[-24px]">
-                    <div className="pro-items p-[15px] bg-[#f8f8fb] border-[1px] border-solid border-[#eee] rounded-[20px] flex mb-[24px] max-[420px]:flex-col">
-                      <div className="image mr-[15px] max-[420px]:mr-[0] max-[420px]:mb-[15px]">
-                        <img
-                          src="http://localhost/dashboard/printhutt/media/product/995600215_acrelic-frame.jpg"
-                          alt="new-product-1"
-                          className="max-w-max w-[100px] h-[100px] border-[1px] border-solid border-[#eee] rounded-[20px] max-[1399px]:h-[80px] max-[1399px]:w-[80px]"
-                        />
-                      </div>
-                      <div className="items-contact">
-                        <h4 className="text-[16px]">
-                          <a
-                            href="javascript:void(0)"
-                            className="font-Poppins tracking-[0.03rem] text-[15px] font-medium leading-[18px] text-[#3d4750]"
-                          >
-                            Ground Nuts Oil Pack
-                          </a>
-                        </h4>
-                        <span className="bb-pro-rating flex">
-                          <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
-                          <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
-                          <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
-                          <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
-                          <i className="ri-star-line float-left text-[15px] mr-[3px] text-[#777]" />
-                        </span>
-                        <div className="inner-price flex items-center justify-left mb-[4px]">
-                          <span className="new-price font-Poppins text-[#3d4750] font-semibold leading-[26px] tracking-[0.02rem] text-[15px]">
-                            $15
-                          </span>
-                          <span className="old-price ml-[10px] font-Poppins text-[#777] font-semibold leading-[26px] tracking-[0.02rem] text-[15px] line-through">
-                            $22
-                          </span>
+
+                    {items.length === 0 ? (
+                      <div>Your cart is empty</div>
+                    ) : (
+                      items.map(item => (
+                        <div key={item._id} className="pro-items p-[15px] bg-[#f8f8fb] border-[1px] border-solid border-[#eee] rounded-[20px] flex mb-[24px] max-[420px]:flex-col">
+                          <div className="image mr-[15px] max-[420px]:mr-[0] max-[420px]:mb-[15px]">
+                            <Image
+                              src={item.thumbnail.url}
+                              alt={item.title}
+                              width={100} height={100}
+                              className="max-w-max w-[100px] h-[100px] border-[1px] border-solid border-[#eee] rounded-[20px] max-[1399px]:h-[80px] max-[1399px]:w-[80px]"
+                            />
+                          </div>
+                          <div className="items-contact">
+                            <h4 className="text-[16px]">
+                              <a
+                                href="javascript:void(0)"
+                                className="font-Poppins tracking-[0.03rem] text-[15px] font-medium leading-[18px] text-[#3d4750]"
+                              >
+                                {item.title}
+                              </a>
+                            </h4>
+                            <span className="bb-pro-rating flex">
+                              <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
+                              <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
+                              <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
+                              <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
+                              <i className="ri-star-line float-left text-[15px] mr-[3px] text-[#777]" />
+                            </span>
+                            <div className="inner-price flex items-center justify-left mb-[4px]">
+                              <span className="new-price font-Poppins text-[#3d4750] font-semibold leading-[26px] tracking-[0.02rem] text-[15px]">
+                                ₹{item.price} x {item.quantity}
+                              </span>
+
+                            </div>
+                            <div className="bb-pro-variation">
+                              <ul className="flex flex-wrap m-[-2px]">
+                                <li className="h-[22px] m-[2px] py-[2px] px-[8px] cursor-pointer border-[1px] border-solid border-[#eee] text-[#777] flex items-center justify-center text-[12px] leading-[22px] rounded-[20px] font-normal active">
+                                  <span
+                                    className="bb-opt-sz font-Poppins text-[12px] leading-[22px] font-normal text-[#ff] tracking-[0.03rem]"
+                                    data-tooltip="Small"
+                                  >
+                                    ₹{item.quantity * item.price}
+                                  </span>
+                                </li>
+
+                              </ul>
+                            </div>
+                          </div>
                         </div>
-                        <div className="bb-pro-variation">
-                          <ul className="flex flex-wrap m-[-2px]">
-                            <li className="h-[22px] m-[2px] py-[2px] px-[8px] cursor-pointer border-[1px] border-solid border-[#eee] text-[#777] flex items-center justify-center text-[12px] leading-[22px] rounded-[20px] font-normal active">
-                              <a
-                                href="javascript:void(0)"
-                                className="bb-opt-sz font-Poppins text-[12px] leading-[22px] font-normal text-[#777] tracking-[0.03rem]"
-                                data-tooltip="Small"
-                              >
-                                250g
-                              </a>
-                            </li>
-                            <li className="h-[22px] m-[2px] py-[2px] px-[8px] cursor-pointer border-[1px] border-solid border-[#eee] text-[#777] flex items-center justify-center text-[12px] leading-[22px] rounded-[20px] font-normal">
-                              <a
-                                href="javascript:void(0)"
-                                className="bb-opt-sz font-Poppins text-[12px] leading-[22px] font-normal text-[#777] tracking-[0.03rem]"
-                                data-tooltip="Medium"
-                              >
-                                500g
-                              </a>
-                            </li>
-                            <li className="h-[22px] m-[2px] py-[2px] px-[8px] cursor-pointer border-[1px] border-solid border-[#eee] text-[#777] flex items-center justify-center text-[12px] leading-[22px] rounded-[20px] font-normal">
-                              <a
-                                href="javascript:void(0)"
-                                className="bb-opt-sz font-Poppins text-[12px] leading-[22px] font-normal text-[#777] tracking-[0.03rem]"
-                                data-tooltip="Large"
-                              >
-                                1kg
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="pro-items p-[15px] bg-[#f8f8fb] border-[1px] border-solid border-[#eee] rounded-[20px] flex mb-[24px] max-[420px]:flex-col">
-                      <div className="image mr-[15px] max-[420px]:mr-[0] max-[420px]:mb-[15px]">
-                        <img
-                          src="http://localhost/dashboard/printhutt/media/product/995600215_acrelic-frame.jpg"
-                          alt="new-product-2"
-                          className="max-w-max w-[100px] h-[100px] border-[1px] border-solid border-[#eee] rounded-[20px] max-[1399px]:h-[80px] max-[1399px]:w-[80px]"
-                        />
-                      </div>
-                      <div className="items-contact">
-                        <h4 className="text-[16px]">
-                          <a
-                            href="javascript:void(0)"
-                            className="font-Poppins tracking-[0.03rem] text-[15px] font-medium leading-[18px] text-[#3d4750]"
-                          >
-                            Organic Litchi Juice Pack
-                          </a>
-                        </h4>
-                        <span className="bb-pro-rating flex">
-                          <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
-                          <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
-                          <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
-                          <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
-                          <i className="ri-star-line float-left text-[15px] mr-[3px] text-[#777]" />
-                        </span>
-                        <div className="inner-price flex items-center justify-left mb-[4px]">
-                          <span className="new-price font-Poppins text-[#3d4750] font-semibold leading-[26px] tracking-[0.02rem] text-[15px]">
-                            $25
-                          </span>
-                          <span className="old-price ml-[10px] font-Poppins text-[#777] font-semibold leading-[26px] tracking-[0.02rem] text-[15px] line-through">
-                            $30
-                          </span>
-                        </div>
-                        <div className="bb-pro-variation">
-                          <ul className="flex flex-wrap m-[-2px]">
-                            <li className="h-[22px] m-[2px] py-[2px] px-[8px] cursor-pointer border-[1px] border-solid border-[#eee] text-[#777] flex items-center justify-center text-[12px] leading-[22px] rounded-[20px] font-normal active">
-                              <a
-                                href="javascript:void(0)"
-                                className="bb-opt-sz font-Poppins text-[12px] leading-[22px] font-normal text-[#777] tracking-[0.03rem]"
-                                data-tooltip="Small"
-                              >
-                                250g
-                              </a>
-                            </li>
-                            <li className="h-[22px] m-[2px] py-[2px] px-[8px] cursor-pointer border-[1px] border-solid border-[#eee] text-[#777] flex items-center justify-center text-[12px] leading-[22px] rounded-[20px] font-normal">
-                              <a
-                                href="javascript:void(0)"
-                                className="bb-opt-sz font-Poppins text-[12px] leading-[22px] font-normal text-[#777] tracking-[0.03rem]"
-                                data-tooltip="Medium"
-                              >
-                                500g
-                              </a>
-                            </li>
-                            <li className="h-[22px] m-[2px] py-[2px] px-[8px] cursor-pointer border-[1px] border-solid border-[#eee] text-[#777] flex items-center justify-center text-[12px] leading-[22px] rounded-[20px] font-normal">
-                              <a
-                                href="javascript:void(0)"
-                                className="bb-opt-sz font-Poppins text-[12px] leading-[22px] font-normal text-[#777] tracking-[0.03rem]"
-                                data-tooltip="Large"
-                              >
-                                1kg
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="pro-items p-[15px] bg-[#f8f8fb] border-[1px] border-solid border-[#eee] rounded-[20px] flex mb-[24px] max-[420px]:flex-col">
-                      <div className="image mr-[15px] max-[420px]:mr-[0] max-[420px]:mb-[15px]">
-                        <img
-                          src="http://localhost/dashboard/printhutt/media/product/995600215_acrelic-frame.jpg"
-                          alt="new-product-3"
-                          className="max-w-max w-[100px] h-[100px] border-[1px] border-solid border-[#eee] rounded-[20px] max-[1399px]:h-[80px] max-[1399px]:w-[80px]"
-                        />
-                      </div>
-                      <div className="items-contact">
-                        <h4 className="text-[16px]">
-                          <a
-                            href="javascript:void(0)"
-                            className="font-Poppins tracking-[0.03rem] text-[15px] font-medium leading-[18px] text-[#3d4750]"
-                          >
-                            Crunchy Banana Chips
-                          </a>
-                        </h4>
-                        <span className="bb-pro-rating flex">
-                          <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
-                          <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
-                          <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
-                          <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
-                          <i className="ri-star-line float-left text-[15px] mr-[3px] text-[#777]" />
-                        </span>
-                        <div className="inner-price flex items-center justify-left mb-[4px]">
-                          <span className="new-price font-Poppins text-[#3d4750] font-semibold leading-[26px] tracking-[0.02rem] text-[15px]">
-                            $01
-                          </span>
-                          <span className="old-price ml-[10px] font-Poppins text-[#777] font-semibold leading-[26px] tracking-[0.02rem] text-[15px] line-through">
-                            $02
-                          </span>
-                        </div>
-                        <div className="bb-pro-variation">
-                          <ul className="flex flex-wrap m-[-2px]">
-                            <li className="h-[22px] m-[2px] py-[2px] px-[8px] cursor-pointer border-[1px] border-solid border-[#eee] text-[#777] flex items-center justify-center text-[12px] leading-[22px] rounded-[20px] font-normal active">
-                              <a
-                                href="javascript:void(0)"
-                                className="bb-opt-sz font-Poppins text-[12px] leading-[22px] font-normal text-[#777] tracking-[0.03rem]"
-                                data-tooltip="Small"
-                              >
-                                250g
-                              </a>
-                            </li>
-                            <li className="h-[22px] m-[2px] py-[2px] px-[8px] cursor-pointer border-[1px] border-solid border-[#eee] text-[#777] flex items-center justify-center text-[12px] leading-[22px] rounded-[20px] font-normal">
-                              <a
-                                href="javascript:void(0)"
-                                className="bb-opt-sz font-Poppins text-[12px] leading-[22px] font-normal text-[#777] tracking-[0.03rem]"
-                                data-tooltip="Medium"
-                              >
-                                500g
-                              </a>
-                            </li>
-                            <li className="h-[22px] m-[2px] py-[2px] px-[8px] cursor-pointer border-[1px] border-solid border-[#eee] text-[#777] flex items-center justify-center text-[12px] leading-[22px] rounded-[20px] font-normal">
-                              <a
-                                href="javascript:void(0)"
-                                className="bb-opt-sz font-Poppins text-[12px] leading-[22px] font-normal text-[#777] tracking-[0.03rem]"
-                                data-tooltip="Large"
-                              >
-                                1kg
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
+                      )))}
                   </div>
                 </div>
+
                 <div
                   className="checkout-items border-[1px] border-solid border-[#eee] p-[20px] rounded-[20px] mb-[24px]"
                   data-aos="fade-up"
                   data-aos-duration={1000}
                   data-aos-delay={400}
-                >
-                  <div className="sub-title mb-[12px]">
-                    <h4 className="font-quicksand tracking-[0.03rem] leading-[1.2] text-[20px] font-bold text-[#3d4750]">
-                      Delivery Method
-                    </h4>
-                  </div>
-                  <div className="checkout-method mb-[24px]">
-                    <span className="details font-Poppins leading-[26px] tracking-[0.02rem] text-[15px] font-medium text-[#686e7d]">
-                      Please select the preferred shipping method to use on this
-                      order.
-                    </span>
-                    <div className="bb-del-option flex mt-[12px] max-[480px]:flex-col">
-                      <div className="inner-del w-[50%] max-[480px]:w-full max-[480px]:mb-[8px]">
-                        <span className="bb-del-head font-Poppins leading-[26px] tracking-[0.02rem] text-[15px] font-semibold text-[#3d4750]">
-                          Free Shipping
-                        </span>
-                        <div className="radio-itens">
-                          <input
-                            type="radio"
-                            id="rate1"
-                            name="rate"
-                            className="w-full text-[14px] font-normal text-[#686e7d] border-[1px] border-solid border-[#eee] outline-[0] rounded-[10px]"
-
-                          />
-                          <label
-                            htmlFor="rate1"
-                            className="relative pl-[26px] cursor-pointer leading-[16px] inline-block text-[#686e7d] tracking-[0]"
-                          >
-                            Rate - $0 .00
-                          </label>
-                        </div>
-                      </div>
-                      <div className="inner-del w-[50%] max-[480px]:w-full">
-                        <span className="bb-del-head font-Poppins leading-[26px] tracking-[0.02rem] text-[15px] font-semibold text-[#3d4750]">
-                          Flat Rate
-                        </span>
-                        <div className="radio-itens">
-                          <input
-                            type="radio"
-                            id="rate2"
-                            name="rate"
-                            className="w-full text-[14px] font-normal text-[#686e7d] border-[1px] border-solid border-[#eee] outline-[0] rounded-[10px]"
-                          />
-                          <label
-                            htmlFor="rate2"
-                            className="relative pl-[26px] cursor-pointer leading-[16px] inline-block text-[#686e7d] tracking-[0]"
-                          >
-                            Rate - $5.00
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="about-order">
-                    <h5 className="font-quicksand tracking-[0.03rem] leading-[1.2] mb-[12px] text-[15px] font-medium text-[#686e7d]">
-                      Add Comments About Your Order
-                    </h5>
-                    <textarea
-                      name="your-commemt"
-                      placeholder="Comments"
-                      className="w-full h-[100px] p-[10px] text-[14px] font-normal text-[#686e7d] border-[1px] border-solid border-[#eee] outline-[0] rounded-[10px]"
-                      defaultValue={""}
-                    />
-                  </div>
-                </div>
-                <div
-                  className="checkout-items border-[1px] border-solid border-[#eee] p-[20px] rounded-[20px] mb-[24px]"
-                  data-aos="fade-up"
-                  data-aos-duration={1000}
-                  data-aos-delay={600}
                 >
                   <div className="sub-title mb-[12px]">
                     <h4 className="font-quicksand tracking-[0.03rem] leading-[1.2] text-[20px] font-bold text-[#3d4750]">

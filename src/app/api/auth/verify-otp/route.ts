@@ -56,15 +56,16 @@ export const POST = async (request: NextRequest) => {
             role: user.role
         };
 
-        const secret = new TextEncoder().encode(process.env.TOKEN_SECRET!); 
+        const secret = new TextEncoder().encode(process.env.TOKEN_SECRET!);
         const token = await new SignJWT(tokenData)
-            .setProtectedHeader({ alg: 'HS256' }) 
-            .sign(secret); 
+            .setProtectedHeader({ alg: 'HS256' })
+            .sign(secret);
 
         const response = NextResponse.json({
             message: "OTP verified successfully.",
             success: true,
             role: user.role,
+            user: tokenData,
         }, { status: 200 });
 
         // Set the token in cookies

@@ -1,5 +1,6 @@
 "use client";
 import Breadcrumb from "@/components/Breadcrumb";
+import { useUserStore } from "@/store/useUserStore";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -18,15 +19,12 @@ import { toast } from "react-toastify";
 const Dashboard = () => {
 
   const router = useRouter();
+  const logoutStore = useUserStore((state) => state.logout);
 
   const logOut = async () => {
-    try {
-      await axios.get("/api/auth/logout");
-      toast("logout successfully");
-      router.push("/login");
-    } catch (error) {
-      toast.error("Whoops Server error");
-    }
+    await logoutStore();
+    toast("logout successfully");
+    router.push("/login");
   };
 
 

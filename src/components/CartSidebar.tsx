@@ -1,8 +1,13 @@
-import React, { useEffect, useRef } from "react";
+import { useCartStore } from "@/store/useCartStore";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useRef, useState } from "react";
+import { toast } from "react-toastify";
 
 const CartSidebar = ({ onClose }) => {
   const popupRef = useRef(null);
-
+  const router = useRouter();
   const handleClickOutside = (event) => {
     if (popupRef.current && !popupRef.current.contains(event.target)) {
       onClose();
@@ -16,6 +21,33 @@ const CartSidebar = ({ onClose }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const [totalPrice, setTotalPrice] = useState<number>(0);
+  const { items, updateQuantity, removeFromCart, getTotalPrice } = useCartStore();
+
+  const handleQuantityChange = (productId: string, newQuantity: number) => {
+    if (newQuantity < 1) {
+      removeFromCart(productId);
+    } else {
+      updateQuantity(productId, newQuantity);
+    }
+    toast.info('Updated quantity');
+  };
+
+
+  useEffect(() => {
+    setTotalPrice(getTotalPrice());
+  }, [handleQuantityChange]);
+
+  const cartPage = () => {
+    onClose();
+    router.push('/cart');
+  }
+  const checkoutPage = () => {
+    onClose();
+    router.push('/checkout');
+  }
+
 
   return (
     <>
@@ -145,7 +177,7 @@ const CartSidebar = ({ onClose }) => {
                       Neon &amp; Light
                     </h4>
                     <h3 className="font-quicksand font-semibold tracking-[0.03rem] text-[#fff] text-[22px] leading-[30px]">
-                      Customize 
+                      Customize
                     </h3>
                     <a
                       href="shop-left-sidebar-col-3.html"
@@ -174,169 +206,59 @@ const CartSidebar = ({ onClose }) => {
               </div>
               <div className="bb-cart-box item h-full flex flex-col max-[767px]:justify-start">
                 <ul className="bb-cart-items mb-[-24px]">
-                  <li className="cart-sidebar-list mb-[24px] p-[20px] flex bg-[#f8f8fb] rounded-[20px] border-[1px] border-solid border-[#eee] relative max-[575px]:p-[10px]">
-                    <a
-                      href="javascript:void(0)"
-                      className="cart-remove-item transition-all duration-[0.3s] ease-in-out bg-[#3d4750] w-[20px] h-[20px] text-[#fff] absolute top-[-3px] right-[-3px] rounded-[50%] flex items-center justify-center opacity-[0.5] text-[15px]"
-                    >
-                      <i className="ri-close-line" />
-                    </a>
-                    <a
-                      href="javascript:void(0)"
-                      className="bb-cart-pro-img flex grow-[1] shrink-[0] basis-[25%] items-center max-[575px]:flex-[initial]"
-                    >
-                      <img
-                        src="https://printhutt.com/media/custom-name-lemp.png"
-                        alt="product-img-1"
-                        className="w-[85px] rounded-[10px] border-[1px] border-solid border-[#eee] max-[575px]:w-[50px]"
-                      />
-                    </a>
-                    <div className="bb-cart-contact pl-[15px] relative grow-[1] shrink-[0] basis-[70%] overflow-hidden">
-                      <a
-                        href="product-left-sidebar.html"
-                        className="bb-cart-sub-title w-full mb-[8px] font-Poppins tracking-[0.03rem] text-[#3d4750] whitespace-nowrap overflow-hidden text-ellipsis block text-[14px] leading-[18px] font-medium"
-                      >
-                        Ground Nuts Oil Pack
-                      </a>
-                      <span className="cart-price mb-[8px] text-[14px] leading-[18px] block font-Poppins text-[#686e7d] font-light tracking-[0.03rem]">
-                        <span className="new-price px-[3px] text-[15px] leading-[18px] text-[#686e7d] font-bold">
-                          ₹15
-                        </span>
-                        x 500 g
-                      </span>
 
-                      <div className="qty-plus-minus h-[28px] w-[85px] py-[7px] border-[1px] border-solid border-[#eee] overflow-hidden relative flex items-center justify-between bg-[#fff] rounded-[10px]">
-                        <div className="dec bb-qtybtn">-</div>
-                        <input
-                          className="qty-input text-center"
-                          type="text"
-                          name="bb-qtybtn"
-                          defaultValue={1}
-                        />
-                        <div className="inc bb-qtybtn">+</div>
-                      </div>
-                    </div>
-                  </li>
-                  <li className="cart-sidebar-list mb-[24px] p-[20px] flex bg-[#f8f8fb] rounded-[20px] border-[1px] border-solid border-[#eee] relative max-[575px]:p-[10px]">
-                    <a
-                      href="javascript:void(0)"
-                      className="cart-remove-item transition-all duration-[0.3s] ease-in-out bg-[#3d4750] w-[20px] h-[20px] text-[#fff] absolute top-[-3px] right-[-3px] rounded-[50%] flex items-center justify-center opacity-[0.5] text-[15px]"
-                    >
-                      <i className="ri-close-line" />
-                    </a>
-                    <a
-                      href="javascript:void(0)"
-                      className="bb-cart-pro-img flex grow-[1] shrink-[0] basis-[25%] items-center max-[575px]:flex-[initial]"
-                    >
-                      <img
-                        src="https://printhutt.com/media/custom-name-lemp.png"
-                        alt="product-img-2"
-                        className="w-[85px] rounded-[10px] border-[1px] border-solid border-[#eee] max-[575px]:w-[50px]"
-                      />
-                    </a>
-                    <div className="bb-cart-contact pl-[15px] relative grow-[1] shrink-[0] basis-[70%] overflow-hidden">
-                      <a
-                        href="product-left-sidebar.html"
-                        className="bb-cart-sub-title w-full mb-[8px] font-Poppins tracking-[0.03rem] text-[#3d4750] whitespace-nowrap overflow-hidden text-ellipsis block text-[14px] leading-[18px] font-medium"
-                      >
-                        Organic Litchi Juice Pack
-                      </a>
-                      <span className="cart-price mb-[8px] text-[14px] leading-[18px] block font-Poppins text-[#686e7d] font-light tracking-[0.03rem]">
-                        <span className="new-price px-[3px] text-[15px] leading-[18px] text-[#686e7d] font-bold">
-                          ₹25
-                        </span>
-                        x 500 ml
-                      </span>
-                      <div className="qty-plus-minus h-[28px] w-[85px] py-[7px] border-[1px] border-solid border-[#eee] overflow-hidden relative flex items-center justify-between bg-[#fff] rounded-[10px]">
-                        <input
-                          className="qty-input text-center"
-                          type="text"
-                          name="bb-qtybtn"
-                          defaultValue={1}
-                        />
-                      </div>
-                    </div>
-                  </li>
-                  <li className="cart-sidebar-list mb-[24px] p-[20px] flex bg-[#f8f8fb] rounded-[20px] border-[1px] border-solid border-[#eee] relative max-[575px]:p-[10px]">
-                    <a
-                      href="javascript:void(0)"
-                      className="cart-remove-item transition-all duration-[0.3s] ease-in-out bg-[#3d4750] w-[20px] h-[20px] text-[#fff] absolute top-[-3px] right-[-3px] rounded-[50%] flex items-center justify-center opacity-[0.5] text-[15px]"
-                    >
-                      <i className="ri-close-line" />
-                    </a>
-                    <a
-                      href="javascript:void(0)"
-                      className="bb-cart-pro-img flex grow-[1] shrink-[0] basis-[25%] items-center max-[575px]:flex-[initial]"
-                    >
-                      <img
-                        src="https://printhutt.com/media/custom-name-lemp.png"
-                        alt="product-img-3"
-                        className="w-[85px] rounded-[10px] border-[1px] border-solid border-[#eee] max-[575px]:w-[50px]"
-                      />
-                    </a>
-                    <div className="bb-cart-contact pl-[15px] relative grow-[1] shrink-[0] basis-[70%] overflow-hidden">
-                      <a
-                        href="product-left-sidebar.html"
-                        className="bb-cart-sub-title w-full mb-[8px] font-Poppins tracking-[0.03rem] text-[#3d4750] whitespace-nowrap overflow-hidden text-ellipsis block text-[14px] leading-[18px] font-medium"
-                      >
-                        Crunchy Banana Chips
-                      </a>
-                      <span className="cart-price mb-[8px] text-[14px] leading-[18px] block font-Poppins text-[#686e7d] font-light tracking-[0.03rem]">
-                        <span className="new-price px-[3px] text-[15px] leading-[18px] text-[#686e7d] font-bold">
-                          ₹1
-                        </span>
-                        x 500 g
-                      </span>
-                      <div className="qty-plus-minus h-[28px] w-[85px] py-[7px] border-[1px] border-solid border-[#eee] overflow-hidden relative flex items-center justify-between bg-[#fff] rounded-[10px]">
-                        <input
-                          className="qty-input text-center"
-                          type="text"
-                          name="bb-qtybtn"
-                          defaultValue={1}
-                        />
-                      </div>
-                    </div>
-                  </li>
-                  <li className="cart-sidebar-list mb-[24px] p-[20px] flex bg-[#f8f8fb] rounded-[20px] border-[1px] border-solid border-[#eee] relative max-[575px]:p-[10px]">
-                    <a
-                      href="javascript:void(0)"
-                      className="cart-remove-item transition-all duration-[0.3s] ease-in-out bg-[#3d4750] w-[20px] h-[20px] text-[#fff] absolute top-[-3px] right-[-3px] rounded-[50%] flex items-center justify-center opacity-[0.5] text-[15px]"
-                    >
-                      <i className="ri-close-line" />
-                    </a>
-                    <a
-                      href="javascript:void(0)"
-                      className="bb-cart-pro-img flex grow-[1] shrink-[0] basis-[25%] items-center max-[575px]:flex-[initial]"
-                    >
-                      <img
-                        src="https://printhutt.com/media/custom-name-lemp.png"
-                        alt="product-img-3"
-                        className="w-[85px] rounded-[10px] border-[1px] border-solid border-[#eee] max-[575px]:w-[50px]"
-                      />
-                    </a>
-                    <div className="bb-cart-contact pl-[15px] relative grow-[1] shrink-[0] basis-[70%] overflow-hidden">
-                      <a
-                        href="product-left-sidebar.html"
-                        className="bb-cart-sub-title w-full mb-[8px] font-Poppins tracking-[0.03rem] text-[#3d4750] whitespace-nowrap overflow-hidden text-ellipsis block text-[14px] leading-[18px] font-medium"
-                      >
-                        Small Cardamom Spice Pack
-                      </a>
-                      <span className="cart-price mb-[8px] text-[14px] leading-[18px] block font-Poppins text-[#686e7d] font-light tracking-[0.03rem]">
-                        <span className="new-price px-[3px] text-[15px] leading-[18px] text-[#686e7d] font-bold">
-                          ₹4
-                        </span>
-                        x 500 g
-                      </span>
-                      <div className="qty-plus-minus h-[28px] w-[85px] py-[7px] border-[1px] border-solid border-[#eee] overflow-hidden relative flex items-center justify-between bg-[#fff] rounded-[10px]">
-                        <input
-                          className="qty-input text-center"
-                          type="text"
-                          name="bb-qtybtn"
-                          defaultValue={1}
-                        />
-                      </div>
-                    </div>
-                  </li>
+                  {items.length === 0 ? (
+                    <li className="cart-sidebar-list mb-[24px] p-[20px] flex bg-[#f8f8fb] rounded-[20px] border-[1px] border-solid border-[#eee] relative max-[575px]:p-[10px]">
+                      Your cart is empty
+                    </li>
+                  ) : (
+                    items.map(item => (
+                      <li className="cart-sidebar-list mb-[24px] p-[20px] flex bg-[#f8f8fb] rounded-[20px] border-[1px] border-solid border-[#eee] relative max-[575px]:p-[10px]" key={item._id}>
+                        <button
+                          onClick={() => removeFromCart(item._id)}
+                          className="cart-remove-item transition-all duration-[0.3s] ease-in-out bg-[#3d4750] w-[20px] h-[20px] text-[#fff] absolute top-[-3px] right-[-3px] rounded-[50%] flex items-center justify-center opacity-[0.5] text-[15px]"
+                        >
+                          <i className="ri-close-line" />
+                        </button>
+                        <Link href={`/product-details/${item.slug}`}
+
+                          className="bb-cart-pro-img flex grow-[1] shrink-[0] basis-[25%] items-center max-[575px]:flex-[initial]"
+                        >
+                          <Image
+                            src={item.thumbnail.url}
+                            alt={item.title}
+                            width={100} height={100}
+                            className="w-[85px] rounded-[10px] border-[1px] border-solid border-[#eee] max-[575px]:w-[50px]"
+                          />
+                        </Link>
+                        <div className="bb-cart-contact pl-[15px] relative grow-[1] shrink-[0] basis-[70%] overflow-hidden">
+                          <a
+                            href="product-left-sidebar.html"
+                            className="bb-cart-sub-title w-full mb-[8px] font-Poppins tracking-[0.03rem] text-[#3d4750] whitespace-nowrap overflow-hidden text-ellipsis block text-[14px] leading-[18px] font-medium"
+                          >
+                            {item.title}
+                          </a>
+                          <span className="cart-price mb-[8px] text-[14px] leading-[18px] block font-Poppins text-[#686e7d] font-light tracking-[0.03rem]">
+                            <span className="new-price px-[3px] text-[15px] leading-[18px] text-[#686e7d] font-bold">
+                              ₹{item.price}
+                            </span>
+                          </span>
+
+                          <div className="qty-plus-minus h-[28px] w-[85px] py-[7px] border-[1px] border-solid border-[#eee] overflow-hidden relative flex items-center justify-between bg-[#fff] rounded-[10px]">
+                            <div className="dec bb-qtybtn" onClick={() => handleQuantityChange(item._id, item.quantity - 1)}>-</div>
+                            <input
+                              className="qty-input text-center"
+                              type="text"
+                              name="bb-qtybtn"
+                              min="1"
+                              readOnly
+                              value={item.quantity}
+                            />
+                            <div className="inc bb-qtybtn" onClick={() => handleQuantityChange(item._id, item.quantity + 1)}>+</div>
+                          </div>
+                        </div>
+                      </li>
+                    )))}
                 </ul>
               </div>
               <div className="bb-bottom-cart">
@@ -348,15 +270,15 @@ const CartSidebar = ({ onClose }) => {
                           Sub-Total :
                         </td>
                         <td className="price text-[#777] text-right p-[.5rem]">
-                          ₹300.00
+                          ₹{totalPrice.toFixed(2)}
                         </td>
                       </tr>
                       <tr>
                         <td className="title font-medium text-[#777] p-[.5rem]">
-                          VAT (20%) :
+                          Shipping :
                         </td>
                         <td className="price text-[#777] text-right p-[.5rem]">
-                          ₹60.00
+                          Free
                         </td>
                       </tr>
                       <tr>
@@ -364,25 +286,25 @@ const CartSidebar = ({ onClose }) => {
                           Total :
                         </td>
                         <td className="price text-[#777] text-right p-[.5rem]">
-                          ₹360.00
+                          ₹{totalPrice.toFixed(2)}
                         </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
                 <div className="cart-btn flex justify-between mb-[20px]">
-                  <a
-                    href="cart.html"
+                  <button
+                    onClick={cartPage }
                     className="bb-btn-1 transition-all duration-[0.3s] ease-in-out font-Poppins leading-[28px] tracking-[0.03rem] py-[5px] px-[15px] text-[14px] font-normal text-[#3d4750] bg-transparent rounded-[10px] border-[1px] border-solid border-[#3d4750] hover:bg-[#6c7fd8] hover:border-[#6c7fd8] hover:text-[#fff]"
                   >
                     View Cart
-                  </a>
-                  <a
-                    href="checkout.html"
+                  </button>
+                  <button
+                    onClick={checkoutPage}
                     className="bb-btn-2 transition-all duration-[0.3s] ease-in-out font-Poppins leading-[28px] tracking-[0.03rem] py-[5px] px-[15px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
                   >
                     Checkout
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>

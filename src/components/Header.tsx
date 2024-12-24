@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CategoryPopup from "./CategoryPopup";
 import CartSidebar from "./CartSidebar";
 import {
@@ -12,6 +12,10 @@ import {
   RiTwitterFill,
 } from "react-icons/ri";
 import Image from "next/image";
+import siteLogo from '/public/print-hutt-logo.webp';
+import { useCartStore } from "@/store/useCartStore";
+import { useUserStore } from "@/store/useUserStore";
+
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,6 +34,18 @@ const Header = () => {
 
   const [isOpenSubCategory, setIsOpenSubCategory] = useState(false);
   const toggleMenuMobileSubcat = () => setIsOpenSubCategory((prev) => !prev);
+
+
+  const { getTotalItems } = useCartStore();
+  const [totalItem, setTotalItem] = useState<number>(0);
+  useEffect(() => {
+    setTotalItem(getTotalItems());
+  }, [totalItem]);
+
+
+  // const userDetails = useUserStore((state) => state.userDetails);
+  const isLoggedIn = useUserStore((state) => state.isLoggedIn);
+// console.log(userDetails)
 
   return (
     <>
@@ -83,27 +99,28 @@ const Header = () => {
                         className="bb-toggle-menu flex max-[991px]:flex max-[991px]:mr-[6px] sm:hidden"
                       >
                         <div className="header-icon">
-                        <RiMenu2Fill className="text-[22px] text-[#6c7fd8]" />
+                          <RiMenu2Fill className="text-[22px] text-[#6c7fd8]" />
                         </div>
                       </a>
                       <Link href="/">
                         <Image
-                          src="/print-hutt-logo.webp"
+                          src={siteLogo}
                           alt="logo"
                           width={180}
                           height={56}
                           className="light w-[180px] max-[991px]:w-[115px] block"
-                          loading="lazy"
+                          priority={true}
                         />
                         <Image
-                          src="/print-hutt-logo.webp"
+                          src={siteLogo}
                           alt="logo"
                           width={180}
                           height={56}
                           className="dark w-[180px] max-[991px]:w-[115px] hidden"
-                          loading="lazy"
+                          priority={true}
                         />
                       </Link>
+
                     </div>
                     {/* Header Logo End */}
                     <a
@@ -157,8 +174,8 @@ const Header = () => {
                     <div className="bb-flex-justify max-[575px]:flex max-[575px]:justify-between">
                       <div className="bb-header-buttons h-full flex justify-end items-center">
                         <div className="bb-acc-drop relative">
-                          <a
-                            href="javascript:void(0)"
+                          <Link
+                            href={isLoggedIn ? '/user/dashboard' : '/login'}
                             className="bb-header-btn bb-header-user dropdown-toggle bb-user-toggle transition-all duration-[0.3s] ease-in-out relative flex w-[auto] items-center whitespace-nowrap ml-[30px] max-[1199px]:ml-[20px] max-[767px]:ml-[0]"
                             title="Account"
                           >
@@ -180,28 +197,30 @@ const Header = () => {
                                 Account
                               </span>
                               <span className="bb-btn-stitle font-Poppins transition-all duration-[0.3s] ease-in-out text-[14px] leading-[16px] font-semibold text-[#3d4750]  tracking-[0.03rem] whitespace-nowrap">
-                                Login
+                                {isLoggedIn ? 'Dashboard' : 'Login'}
                               </span>
                             </div>
-                          </a>
+                          </Link>
                           <ul className="bb-dropdown-menu min-w-[150px] py-[10px] px-[5px] transition-all duration-[0.3s] ease-in-out mt-[25px] absolute z-[16] text-left opacity-[0] right-[auto] bg-[#fff] border-[1px] border-solid border-[#eee] block rounded-[10px]">
-                            
-                            <li className="py-[4px] px-[15px] m-[0] font-Poppins text-[15px] text-[#686e7d] font-light leading-[28px] tracking-[0.03rem]">
-                              <Link
-                                className="dropdown-item transition-all duration-[0.3s] ease-in-out font-Poppins text-[13px] hover:text-[#6c7fd8] leading-[22px] block w-full font-normal tracking-[0.03rem]"
-                                href="/checkout"
-                              >
-                                Checkout
-                              </Link>
-                            </li>
-                            <li className="py-[4px] px-[15px] m-[0] font-Poppins text-[15px] text-[#686e7d] font-light leading-[28px] tracking-[0.03rem]">
-                              <Link
-                                className="dropdown-item transition-all duration-[0.3s] ease-in-out font-Poppins text-[13px] hover:text-[#6c7fd8] leading-[22px] block w-full font-normal tracking-[0.03rem]"
-                                href="/login"
-                              >
-                                Login
-                              </Link>
-                            </li>
+                            {isLoggedIn ? (
+                              <li className="py-[4px] px-[15px] m-[0] font-Poppins text-[15px] text-[#686e7d] font-light leading-[28px] tracking-[0.03rem]">
+                                <Link
+                                  className="dropdown-item transition-all duration-[0.3s] ease-in-out font-Poppins text-[13px] hover:text-[#6c7fd8] leading-[22px] block w-full font-normal tracking-[0.03rem]"
+                                  href="/user/dashboard"
+                                >
+                                  My Profile
+                                </Link>
+                              </li>
+                            ) : (
+                              <li className="py-[4px] px-[15px] m-[0] font-Poppins text-[15px] text-[#686e7d] font-light leading-[28px] tracking-[0.03rem]">
+                                <Link
+                                  className="dropdown-item transition-all duration-[0.3s] ease-in-out font-Poppins text-[13px] hover:text-[#6c7fd8] leading-[22px] block w-full font-normal tracking-[0.03rem]"
+                                  href="/login"
+                                >
+                                  Login
+                                </Link>
+                              </li>
+                            )}
                           </ul>
                         </div>
                         <Link
@@ -253,21 +272,21 @@ const Header = () => {
                           </div>
                           <div className="bb-btn-desc flex flex-col ml-[10px] max-[1199px]:hidden">
                             <span className="bb-btn-title font-Poppins transition-all duration-[0.3s] ease-in-out text-[12px] leading-[1] text-[#3d4750] mb-[4px] tracking-[0.6px] capitalize font-medium whitespace-nowrap">
-                              <b className="bb-cart-count">4</b> items
+                              <b className="bb-cart-count">{totalItem}</b> items
                             </span>
                             <span className="bb-btn-stitle font-Poppins transition-all duration-[0.3s] ease-in-out text-[14px] leading-[16px] font-semibold text-[#3d4750]  tracking-[0.03rem] whitespace-nowrap">
                               Cart
                             </span>
                           </div>
                         </a>
-                        <a
+                        <button
                           onClick={toggleMenu}
                           className="bb-toggle-menu hidden max-[991px]:flex max-[991px]:ml-[20px]"
                         >
                           <div className="header-icon">
                             <RiMenu3Fill className="text-[22px] text-[#6c7fd8]" />
                           </div>
-                        </a>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -276,6 +295,7 @@ const Header = () => {
             </div>
           </div>
         </div>
+
         <div className="bb-main-menu-desk bg-[#fff] py-[5px] border-t-[1px] border-solid border-[#eee] max-[991px]:hidden">
           <div className="flex flex-wrap justify-between relative items-center mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">
             <div className="flex flex-wrap w-full">
@@ -502,7 +522,7 @@ const Header = () => {
           </div>
         </div>
 
-        {/* MObile Meneu */}
+        {/* Mobile Meneu */}
         {isMobileMenu && (
           <div
             className="bb-mobile-menu-overlay w-full h-screen fixed top-[0] left-[0] bg-[#000000cc] z-[16]"
@@ -512,9 +532,8 @@ const Header = () => {
 
         <div
           id="bb-mobile-menu"
-          className={`bb-mobile-menu transition-all duration-[0.3s] ease-in-out w-[340px] h-full pt-[15px] px-[20px] pb-[20px] fixed top-[0] right-[auto] left-[0] bg-[#fff] ${
-            isMobileMenu ? "translate-x-0" : "translate-x-[-100%]"
-          } flex flex-col z-[17] overflow-auto max-[480px]:w-[300px]`}
+          className={`bb-mobile-menu transition-all duration-[0.3s] ease-in-out w-[340px] h-full pt-[15px] px-[20px] pb-[20px] fixed top-[0] right-[auto] left-[0] bg-[#fff] ${isMobileMenu ? "translate-x-0" : "translate-x-[-100%]"
+            } flex flex-col z-[17] overflow-auto max-[480px]:w-[300px]`}
         >
           <div className="bb-menu-title w-full pb-[10px] flex flex-wrap justify-between">
             <span className="menu_title font-Poppins flex items-center text-[16px] text-[#3d4750] font-semibold leading-[26px] tracking-[0.02rem]">
@@ -548,9 +567,8 @@ const Header = () => {
                     Categories
                   </a>
                   <ul
-                    className={`sub-menu w-full min-w-[auto] p-[0] mb-[10px] static ${
-                      isOpenCategory ? "block" : "hidden"
-                    } visible opacity-[1]`}
+                    className={`sub-menu w-full min-w-[auto] p-[0] mb-[10px] static ${isOpenCategory ? "block" : "hidden"
+                      } visible opacity-[1]`}
                   >
                     {/* <ul className={`sub-menu w-full min-w-[auto] p-[0] mb-[10px] ${isOpen ? 'block' : 'hidden'}`}></ul> */}
                     <li className="relative">
@@ -565,9 +583,8 @@ const Header = () => {
                         Classic
                       </a>
                       <ul
-                        className={`sub-menu w-full min-w-[auto] p-[0] mb-[10px] static ${
-                          isOpenSubCategory ? "block" : "hidden"
-                        } opacity-[1]`}
+                        className={`sub-menu w-full min-w-[auto] p-[0] mb-[10px] static ${isOpenSubCategory ? "block" : "hidden"
+                          } opacity-[1]`}
                       >
                         <li className="relative">
                           <a

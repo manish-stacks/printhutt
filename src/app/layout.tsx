@@ -15,6 +15,7 @@ import { ToastContainer } from 'react-toastify';
 
 
 export const metadata: Metadata = {
+  
   title: "Shop made for everyone’s dream Decoration - Print Hutt",
   description:
     "We are India No.1 neon light makers. We make customised neon lights and signs for your home, business or events. If you’re looking for a high-quality, custom neon sign maker, contact us at Neon Attack.",
