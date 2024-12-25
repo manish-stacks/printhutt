@@ -1,13 +1,14 @@
-import mongoose from "mongoose";
+import mongoose, { Model, Schema } from "mongoose";
+import { IProduct, IVariant } from "@/lib/types/product";
 
-const variantSchema = new mongoose.Schema({
+const variantSchema = new Schema<IVariant>({
   size: { type: String, required: true },
   color: { type: String },
   price: { type: Number, required: true },
   stock: { type: Number, required: true },
 });
 
-const productSchema = new mongoose.Schema(
+const productSchema = new Schema<IProduct>(
   {
     title: {
       type: String,
@@ -29,12 +30,12 @@ const productSchema = new mongoose.Schema(
       required: [true, "Please add a description"],
     },
     category: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Category",
       required: true,
     },
     subcategory: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "SubCategory",
     },
     price: {
@@ -84,22 +85,22 @@ const productSchema = new mongoose.Schema(
       default: 1,
     },
     warrantyInformation: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "WarrantyInformation",
     },
     shippingInformation: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "ShippingInformation",
     },
     returnPolicy: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "ReturnPolicy",
     },
     meta: {
       keywords: String,
       meta_description: {
         type: String,
-        max: [160, "Meta discription 160"],
+        maxlength: [160, "Meta description cannot be more than 160 characters"],
       },
     },
     thumbnail: {
@@ -112,12 +113,12 @@ const productSchema = new mongoose.Schema(
         url: String,
         public_id: String,
         fileType: String,
-        _id:false
+        _id: false,
       },
     ],
     reviews: [
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Review",
       },
     ],
@@ -147,13 +148,13 @@ const productSchema = new mongoose.Schema(
     },
     offers: [
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Offer",
       },
     ],
     shippingFee: {
       type: Number,
-      required: function () {
+      required: function (this: IProduct) {
         return (
           this.shippingInformation && !this.shippingInformation.isFreeShipping
         );
@@ -173,6 +174,7 @@ const productSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Product =
-  mongoose.models.Product || mongoose.model("Product", productSchema);
+const Product: Model<IProduct> = mongoose.models.Product || mongoose.model<IProduct>("Product", productSchema);
+
 export default Product;
+

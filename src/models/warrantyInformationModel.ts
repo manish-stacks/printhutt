@@ -1,6 +1,7 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, Model } from "mongoose";
+import { IWarrantyInformation } from "@/lib/types/warranty";
 
-const warrantyInfoSchema = new mongoose.Schema(
+const warrantyInfoSchema = new Schema<IWarrantyInformation>(
   {
     warrantyType: {
       type: String,
@@ -23,7 +24,9 @@ const warrantyInfoSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const WarrantyInformation =
+
+const WarrantyInformation: Model<IWarrantyInformation> =
   mongoose.models.WarrantyInformation ||
-  mongoose.model("WarrantyInformation", warrantyInfoSchema);
+  mongoose.model<IWarrantyInformation>("WarrantyInformation", warrantyInfoSchema);
+
 export default WarrantyInformation;

@@ -9,6 +9,7 @@ import {
   RiHeart2Fill,
   RiHome2Fill,
   RiLogoutCircleRFill,
+  RiMap2Fill,
   RiMessage2Fill,
   RiShoppingCartFill,
   RiStarHalfFill,
@@ -59,6 +60,15 @@ const Dashboard = () => {
                     <RiUser2Fill />
                   </span>{" "}
                   My Profile
+                </a>
+                <a
+                  href="#"
+                  className="flex items-center text-gray-600 hover:text-purple-600"
+                >
+                  <span className="mr-2">
+                    <RiMap2Fill />
+                  </span>{" "}
+                  My Adddress
                 </a>
                 <a
                   href="#"

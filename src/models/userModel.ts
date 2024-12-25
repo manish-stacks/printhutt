@@ -1,26 +1,46 @@
-import mongoose from "mongoose";
+
+
+import mongoose, { Document, Model, Schema } from "mongoose";
 import bcryptjs from "bcryptjs";
 
-const userSchema = new mongoose.Schema(
+interface IUser extends Document {
+  username: string;
+  email: string;
+  password: string;
+  number?: number;
+  isVerified: boolean;
+  role: "user" | "admin";
+  otpVerification?: number;
+  otpVerificationExpiry?: Date;
+  forgotPasswordToken?: string;
+  forgotPasswordTokenExpiry?: Date;
+  verifyToken?: string;
+  verifyTokenExpiry?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface IUserMethods {
+  comparePassword(usePassword: string): Promise<boolean>;
+}
+
+type UserModel = Model<IUser, {}, IUserMethods>;
+
+const userSchema = new Schema<IUser, UserModel, IUserMethods>(
   {
     username: {
       type: String,
       default: "user",
-      // required: [true, "Please provide username"],
     },
     email: {
       type: String,
-      // required: [true, "Please provide email"],
       unique: true,
     },
     password: {
       type: String,
-      // required: [true, "Please provide password"],
     },
     number: {
       type: Number,
-      // required: true,
-      //unique: true,
     },
     isVerified: {
       type: Boolean,
@@ -48,13 +68,15 @@ const userSchema = new mongoose.Schema(
 //   next();
 // });
 
-userSchema.methods.comparePassword = async function (usePassword) {
+userSchema.methods.comparePassword = async function (usePassword: string): Promise<boolean> {
   try {
     return await bcryptjs.compare(usePassword, this.password);
   } catch (error) {
-    throw new Error("Password comparison failed", error);
+    throw new Error("Password comparison failed");
   }
 };
 
-const User = mongoose.models.User || mongoose.model("User", userSchema);
+const User: UserModel = mongoose.models.User as UserModel || mongoose.model<IUser, UserModel>("User", userSchema);
+
 export default User;
+
