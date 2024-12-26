@@ -1,6 +1,6 @@
 
-import type { PaginationData } from '@/lib/types';
 import { RiArrowDropLeftLine, RiArrowDropRightLine, RiSkipLeftLine, RiSkipRightLine } from 'react-icons/ri';
+import type { PaginationData } from '@/lib/types';
 
 interface PaginationProps {
     pagination: PaginationData;

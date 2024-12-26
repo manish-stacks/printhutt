@@ -1,6 +1,7 @@
-import { Coupon } from '@/lib/types';
 import { ChangeEvent, FormEvent } from 'react';
 import { RiLoader2Line } from 'react-icons/ri';
+import type { Coupon } from '@/lib/types/coupon';
+
 
 
 interface CouponFormProps {
@@ -12,13 +13,13 @@ interface CouponFormProps {
   mode: 'add' | 'edit';
 }
 
-export function CouponForm({ 
-  formData, 
-  isSubmitting, 
-  onSubmit, 
-  onChange, 
-  onClose, 
-  mode 
+export function CouponForm({
+  formData,
+  isSubmitting,
+  onSubmit,
+  onChange,
+  onClose,
+  mode
 }: CouponFormProps) {
   return (
     <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">

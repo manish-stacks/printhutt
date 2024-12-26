@@ -8,8 +8,9 @@ import { OfferForm } from '@/components/admin/offer/OfferForm';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import { createOffer, getOfferPolicies, modifyOffer, removeOffer } from '@/_services/admin/offer';
-import { Offer } from '@/lib/types';
+
 import { RiDeleteBin2Line, RiEdit2Fill, RiLoader2Line } from 'react-icons/ri';
+import type { Offer } from '@/lib/types/offer';
 
 
 export default function OfferPage() {

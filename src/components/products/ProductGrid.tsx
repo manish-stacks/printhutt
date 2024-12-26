@@ -1,9 +1,9 @@
 import React from 'react'
-import { Product } from '@/lib/types';
 import Image from 'next/image';
 import { useCartStore } from '@/store/useCartStore';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
+import type { Product } from '@/lib/types/product';
 
 interface ProductGridProps {
     products: Product[]

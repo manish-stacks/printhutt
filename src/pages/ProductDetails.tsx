@@ -3,10 +3,10 @@ import React, { useState } from "react";
 import SingleProductSlider from "@/components/SingleProductSlider";
 import ProductSlider from "@/components/ProductSlider";
 import Breadcrumb from "@/components/Breadcrumb";
-import { Product } from "@/lib/types";
 import { useCartStore } from "@/store/useCartStore";
 import { toast } from "react-toastify";
 import CartSidebar from "@/components/CartSidebar";
+import type { Product } from "@/lib/types/product";
 
 interface ProductProps {
   product: Product | null;

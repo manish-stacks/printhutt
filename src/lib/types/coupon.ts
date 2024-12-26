@@ -25,3 +25,24 @@ export interface CouponMethods {
 }
 
 export interface CouponDocument extends CouponAttributes, Document, CouponMethods {}
+
+
+
+export interface Coupon {
+  _id: string;
+  code: string;
+  description: string;
+  discountType: string | 'percentage' | 'fixed' | 'free_shipping';
+  discountValue: number;
+  minimumPurchaseAmount: string | number;
+  maxDiscountAmount?: string | number;
+  validFrom: string;
+  validUntil: string;
+  usageLimit: number | null;
+  usedCount: number;
+  applicableProducts: string[];
+  applicableCategories: string[];
+  isActive: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}

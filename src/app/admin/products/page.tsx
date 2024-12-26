@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { delete_a_product, get_all_products, update_product_status } from '@/_services/admin/product';
 import { toast } from 'react-toastify';
@@ -8,9 +7,10 @@ import Link from 'next/link';
 import { FaSearch } from 'react-icons/fa';
 import { RiDeleteBin2Line, RiEdit2Fill, RiLoader2Line } from 'react-icons/ri';
 import Image from 'next/image';
-import { PaginationData } from '@/lib/types';
+
 import { Pagination } from '@/components/admin/Pagination';
 import Swal from 'sweetalert2';
+import type { PaginationData } from '@/lib/types';
 
 const ProductList: React.FC = () => {
   const [products, setProducts] = useState<any[]>([]);

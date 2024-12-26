@@ -1,5 +1,6 @@
-import type { ReturnPolicy } from "@/lib/types";
+
 import { axiosInstance } from "@/utils/axios";
+import type { ReturnPolicy } from "@/lib/types/return";
 
 export async function getReturnPolicies(page: string, search: string) {
     return axiosInstance.get(`/return-policy?page=${page}&search=${search}&limit=10`);

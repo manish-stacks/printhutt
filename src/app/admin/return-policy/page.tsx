@@ -6,10 +6,11 @@ import { FaSearch } from 'react-icons/fa';
 import { Pagination } from '@/components/admin/Pagination';
 import { ReturnPolicyForm } from '@/components/admin/return-policy/ReturnPolicyForm';
 import { createReturnPolicy, getReturnPolicies, modifyReturnPolicy, removeReturnPolicy } from '@/_services/admin/return-policy';
-import type { PaginationData, ReturnPolicy } from '@/lib/types';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import { RiDeleteBin2Line, RiEdit2Fill, RiLoader2Line } from 'react-icons/ri';
+import type { ReturnPolicy } from '@/lib/types/return';
+import type { PaginationData } from '@/lib/types';
 
 
 export default function ReturnPolicyPage() {

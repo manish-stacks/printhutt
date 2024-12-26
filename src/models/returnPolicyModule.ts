@@ -1,5 +1,5 @@
 import mongoose, {Model, Schema } from "mongoose";
-import { IReturnPolicy } from "@/lib/types/return";
+import type { IReturnPolicy } from "@/lib/types/return";
 
 
 const returnPolicySchema = new Schema<IReturnPolicy>(

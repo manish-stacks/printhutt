@@ -7,9 +7,10 @@ import { FaSearch } from 'react-icons/fa';
 import { RiArrowDropLeftLine, RiArrowDropRightLine, RiDeleteBin2Line, RiEdit2Fill, RiLoader2Line, RiSkipLeftLine, RiSkipRightLine } from 'react-icons/ri';
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
-import { CategoryFormData, PaginationData } from '@/lib/types';
 import Link from 'next/link';
 import { delete_sub_categories, getAllsub_CatPagination, update_sub_category_status } from '@/_services/admin/sub-category';
+import type { CategoryFormData } from '@/lib/types/category';
+import type { PaginationData } from '@/lib/types';
 
 
 export default function CategoryList() {

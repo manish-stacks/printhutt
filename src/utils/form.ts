@@ -1,4 +1,5 @@
-import { ProductFormData } from "@/lib/types";
+import { ProductFormData } from "@/lib/types/product";
+
 
 export const generateSlug = (title: string): string => {
   return title

@@ -8,3 +8,12 @@ export interface IWarrantyInformation extends Document {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+
+export interface Warranty {
+  _id: string;
+  warrantyType: string;
+  durationMonths: string;
+  coverage: string;
+  claimProcess: string;
+}

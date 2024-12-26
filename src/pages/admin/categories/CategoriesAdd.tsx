@@ -1,10 +1,9 @@
 'use client'
 import { add_new_category } from '@/_services/admin/category';
 import { generateSlug } from '@/helpers/helpers';
-import { CategoryFormData } from '@/lib/types';
+import type { CategoryFormData } from '@/lib/types/category';
 import { useRouter } from 'next/navigation';
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { FaImage } from 'react-icons/fa';
 import { RiLoader2Line } from 'react-icons/ri';
 import { toast } from 'react-toastify';

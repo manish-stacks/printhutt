@@ -1,6 +1,6 @@
-import type { Warranty } from '@/lib/types';
 import { ChangeEvent, FormEvent } from 'react';
 import { RiLoader2Line } from 'react-icons/ri';
+import type { Warranty } from '@/lib/types/warranty';
 
 
 interface WarrantyFormProps {

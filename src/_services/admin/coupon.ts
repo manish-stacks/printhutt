@@ -1,5 +1,6 @@
-import { Coupon } from "@/lib/types";
+
 import { axiosInstance } from "@/utils/axios";
+import type { Coupon } from "@/lib/types/coupon";
 
 
 export async function getAllCouponsPagination(page: string, search: string) {

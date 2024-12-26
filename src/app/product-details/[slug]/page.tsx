@@ -1,7 +1,8 @@
 "use client"
 import { get_product_by_slug } from '@/_services/admin/product';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import { Product } from '@/lib/types';
+import type { Product } from '@/lib/types/product';
+
 import ProductDetails from '@/pages/ProductDetails'
 import Head from 'next/head';
 import { useParams, useRouter } from 'next/navigation';

@@ -4,7 +4,8 @@ import { getDataFromToken } from '@/helpers/getDataFromToken';
 import ProductModel from '@/models/productModel';
 import { deleteImage, uploadImage } from '@/lib/cloudinary';
 import mongoose from 'mongoose';
-import { ProductUpdateData } from '@/lib/types';
+import type { ProductUpdateData } from '@/lib/types/product';
+
 
 connect()
 

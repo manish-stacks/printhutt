@@ -1,7 +1,7 @@
-import type { Offer } from '@/lib/types';
 import { ChangeEvent, FormEvent } from 'react';
 import { RiLoader2Line } from 'react-icons/ri';
-// import type { Offer } from '@/types/offer';
+import type { Offer } from '@/lib/types/offer';
+
 
 interface OfferFormProps {
   formData: Partial<Offer>;
@@ -12,13 +12,13 @@ interface OfferFormProps {
   mode: 'add' | 'edit';
 }
 
-export function OfferForm({ 
-  formData, 
-  isSubmitting, 
-  onSubmit, 
-  onChange, 
-  onClose, 
-  mode 
+export function OfferForm({
+  formData,
+  isSubmitting,
+  onSubmit,
+  onChange,
+  onClose,
+  mode
 }: OfferFormProps) {
   return (
     <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">

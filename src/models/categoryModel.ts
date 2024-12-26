@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { CategoryDocument, ImageData } from '@/lib/types/category';
+import type { CategoryDocument, ImageData } from '@/lib/types/category';
 
 const imageSchema = new Schema<ImageData>({
   url: { type: String },
@@ -17,7 +17,8 @@ const categorySchema = new Schema<CategoryDocument>({
     type: String, 
     required: true,
     unique: true,
-    trim: true 
+    trim: true ,
+    index: true
   },
   description: { 
     type: String,
@@ -45,9 +46,7 @@ const categorySchema = new Schema<CategoryDocument>({
 });
 
 
-categorySchema.index({ slug: 1 });
-categorySchema.index({ status: 1 });
-categorySchema.index({ level: 1 });
+
 
 const Category = mongoose.models.Category || mongoose.model<CategoryDocument>('Category', categorySchema);
 

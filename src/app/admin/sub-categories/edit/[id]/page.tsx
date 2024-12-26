@@ -1,8 +1,10 @@
 'use client'
 import { get_parent_categories } from '@/_services/admin/category';
-import {  get_sub_category_by_id, update_sub_category } from '@/_services/admin/sub-category';
+import { get_sub_category_by_id, update_sub_category } from '@/_services/admin/sub-category';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import { generateSlug } from '@/helpers/helpers';
-import { CategoryFormData } from '@/lib/types';
+import { CategoryFormData } from '@/lib/types/category';
+
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 
@@ -35,6 +37,7 @@ const CategoriesEdit = () => {
     const [isUploading, setIsUploading] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [categories, setCategories] = useState<Category[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [formData, setFormData] = useState<CategoryFormData>({
         parentCategory: '',
         name: '',
@@ -52,6 +55,7 @@ const CategoriesEdit = () => {
     useEffect(() => {
         const fetchCategory = async () => {
             try {
+                setIsLoading(true)
                 const data = await get_sub_category_by_id(id) as any;
                 if (data) {
                     setFormData({
@@ -71,6 +75,8 @@ const CategoriesEdit = () => {
             } catch (error) {
                 console.error("Error fetching category:", error);
                 toast.error("Failed to fetch category details.");
+            } finally {
+                setIsLoading(false);
             }
         };
 
@@ -193,6 +199,14 @@ const CategoriesEdit = () => {
     const handleStatusToggle = () => {
         setFormData((prevData) => ({ ...prevData, status: !prevData.status }));
     };
+
+
+
+    if (isLoading) {
+        return (
+          <LoadingSpinner />
+        );
+      }
 
     return (
         <>

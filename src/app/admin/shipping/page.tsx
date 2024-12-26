@@ -7,10 +7,11 @@ import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 
 import { addNewShipping, deleteShipping, getAllShippingPagination, updateShipping } from '@/_services/admin/shipping';
-import type { PaginationData, ShippingInformation } from '@/lib/types';
 import { Pagination } from '@/components/admin/Pagination';
 import { ShippingForm } from '@/components/admin/shipping/ShippingForm';
 import { RiDeleteBin2Line, RiEdit2Fill, RiLoader2Line } from 'react-icons/ri';
+import type { PaginationData } from '@/lib/types';
+import type { ShippingInformation } from '@/lib/types/shipping';
 
 export default function ShippingPage() {
     const [shippingMethods, setShippingMethods] = useState<ShippingInformation[]>([]);

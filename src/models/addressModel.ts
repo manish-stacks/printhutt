@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { IAddress } from '@/lib/types/address';
+import type { IAddress } from '@/lib/types/address';
 
 
 const AddressSchema = new Schema<IAddress>({

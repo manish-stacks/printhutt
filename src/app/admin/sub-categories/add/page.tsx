@@ -2,7 +2,7 @@
 import { get_parent_categories } from '@/_services/admin/category';
 import { add_new_sub_category } from '@/_services/admin/sub-category';
 import { generateSlug } from '@/helpers/helpers';
-import { CategoryFormData } from '@/lib/types';
+import { CategoryFormData } from '@/lib/types/category';
 import { useRouter } from 'next/navigation';
 
 import React, { useState, useEffect } from 'react';

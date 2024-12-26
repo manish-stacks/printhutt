@@ -8,8 +8,9 @@ import { RiArrowDropLeftLine, RiArrowDropRightLine, RiDeleteBin2Line, RiEdit2Fil
 import Swal from 'sweetalert2';
 import { delete_categories, getAllCatPagination, update_category_status } from '@/_services/admin/category';
 import { toast } from 'react-toastify';
-import { CategoryFormData, PaginationData } from '@/lib/types';
+import type{ PaginationData } from '@/lib/types';
 import Link from 'next/link';
+import { CategoryFormData } from '@/lib/types/category';
 
 
 export default function CategoryList() {

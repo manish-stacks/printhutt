@@ -1,5 +1,6 @@
-import { Product } from "@/lib/types";
+
 import { axiosInstance } from "@/utils/axios";
+import type { Product } from "@/lib/types/product";
 
 export const add_new_product = async (formData: any) => {
   return axiosInstance.post(`/product`, formData)

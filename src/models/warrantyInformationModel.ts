@@ -1,5 +1,5 @@
 import mongoose, { Schema, Model } from "mongoose";
-import { IWarrantyInformation } from "@/lib/types/warranty";
+import type { IWarrantyInformation } from "@/lib/types/warranty";
 
 const warrantyInfoSchema = new Schema<IWarrantyInformation>(
   {

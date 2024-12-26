@@ -5,7 +5,7 @@ import { FaSearch } from 'react-icons/fa';
 import { CouponTable } from '@/components/admin/coupon/CouponTable';
 import { Pagination } from '@/components/admin/Pagination';
 import { CouponForm } from '@/components/admin/coupon/CouponForm';
-import { Coupon } from '@/lib/types';
+
 import Swal from 'sweetalert2';
 import { addNewCoupon, deleteCoupon, getAllCouponsPagination, updateCoupon } from '@/_services/admin/coupon';
 import { toast } from 'react-toastify';

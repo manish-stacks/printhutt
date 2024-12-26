@@ -8,7 +8,6 @@ import { get_parent_sub_categories } from '@/_services/admin/sub-category';
 import { get_all_warranty } from '@/_services/admin/warranty';
 import { ImageUpload } from '@/components/admin/products/ImageUpload';
 import { generateSlug } from '@/helpers/helpers';
-import { CategoryFormData, Offer, Option, ProductFormData, ReturnPolicy, ShippingInformation, Warranty } from '@/lib/types';
 import { validateProductForm } from '@/utils/form';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -16,6 +15,13 @@ import { FaTrash } from 'react-icons/fa';
 import { RiLoader2Line } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 import Select, { MultiValue } from 'react-select';
+import type { ProductFormData } from '@/lib/types/product';
+import type { Warranty } from '@/lib/types/warranty';
+import type { ShippingInformation } from '@/lib/types/shipping';
+import type { ReturnPolicy } from '@/lib/types/return';
+import type { CategoryFormData } from '@/lib/types/category';
+import type { Offer } from '@/lib/types/offer';
+import type { Option } from '@/lib/types';
 
 
 
@@ -26,7 +32,7 @@ const initialFormData: ProductFormData = {
   category: '',
   subcategory: '',
   price: 0,
-  discountType: 0,
+  discountType: '',
   discountPrice: 0,
   rating: 0,
   stock: 0,

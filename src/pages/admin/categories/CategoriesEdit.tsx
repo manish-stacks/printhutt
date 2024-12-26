@@ -1,18 +1,12 @@
 'use client'
 import { get_category_by_id, update_category } from '@/_services/admin/category';
 import { generateSlug } from '@/helpers/helpers';
-import { CategoryFormData } from '@/lib/types';
+import type { CategoryFormData } from '@/lib/types/category';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import { RiLoader2Line } from 'react-icons/ri';
 import { toast } from 'react-toastify';
-
-
-interface Category {
-    _id: string;
-    name: string;
-}
 
 
 
@@ -128,7 +122,7 @@ const CategoriesEdit = () => {
 
 
         setIsSubmitting(true);
-    
+
         const data = new FormData()
         data.append('name', formData.name)
         data.append('slug', formData.slug)
@@ -182,7 +176,7 @@ const CategoriesEdit = () => {
 
                     <div className="w-full md:w-8/12 lg:w-8/12 px-4 space-y-6">
                         <div className="bg-white text-black p-6 rounded-lg space-y-5 shadow-md shadow-black-300">
-                            
+
                             <div>
                                 <label
                                     htmlFor="name"

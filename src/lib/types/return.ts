@@ -5,3 +5,13 @@ export interface IReturnPolicy extends Document {
     createdAt: Date;
     updatedAt: Date;
 }
+
+
+export interface ReturnPolicy {
+    _id: string;
+    returnPeriod: string;
+    restockingFee: string;
+    policyDetails: string;
+    createdAt?: string;
+    updatedAt?: string;
+}

@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { CouponDocument } from '@/lib/types/coupon';
+import type{ CouponDocument } from '@/lib/types/coupon';
 
 
 const couponSchema = new Schema<CouponDocument>({

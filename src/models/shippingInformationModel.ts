@@ -1,5 +1,5 @@
 import mongoose, { Model, Schema } from "mongoose";
-import { IShippingInformation } from "@/lib/types/shipping";
+import type { IShippingInformation } from "@/lib/types/shipping";
 
 
 const shippingInformationSchema = new Schema<IShippingInformation>(

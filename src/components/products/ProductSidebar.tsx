@@ -1,9 +1,11 @@
-import { FilterState, Product } from '@/lib/types'
+
 import React, { useMemo } from 'react'
 import { CategoryFilter } from './filters/category-filter'
 import { PriceFilter } from './filters/price-filter'
 import { RatingFilter } from './filters/rating-filter'
 import { TagFilter } from './filters/tag-filter'
+import type { FilterState } from '@/lib/types'
+import type { Product } from '@/lib/types/product'
 
 interface ProductSidebarProps {
     products: Product[]

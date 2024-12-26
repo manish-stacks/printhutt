@@ -1,5 +1,5 @@
 import mongoose, { Model, Schema } from "mongoose";
-import { IReview } from "@/lib/types/review";
+import type { IReview } from "@/lib/types/review";
 
 
 

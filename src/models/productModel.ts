@@ -1,5 +1,5 @@
 import mongoose, { Model, Schema } from "mongoose";
-import { IProduct, IVariant } from "@/lib/types/product";
+import type { IProduct, IVariant } from "@/lib/types/product";
 
 const variantSchema = new Schema<IVariant>({
   size: { type: String, required: true },

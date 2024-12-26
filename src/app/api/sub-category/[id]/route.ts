@@ -37,22 +37,20 @@ export async function GET(request: NextRequest, context: { params: { id: string 
 
 export async function PUT(request: NextRequest, context: { params: { id: string } }) {
     try {
-       const { id } = await context.params;
+        const { id } = context.params;
 
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return NextResponse.json({ success: false, message: "Invalid Product ID" }, { status: 400 });
         }
 
         const { role } = await getDataFromToken(request);
-        if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
-
+        if (role !== 'admin') {
+            return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+        }
 
         const formData = await request.formData();
 
-        const file = formData.get('imageUrl');
-
         const existingCategory = await SubCategory.findById(id);
-
         if (!existingCategory) {
             return NextResponse.json(
                 { error: 'Category not found' },
@@ -60,27 +58,37 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
             );
         }
 
+        // Handle image upload
+        const file = formData.get('imageUrl');
+        let imageUrl = existingCategory.image;
 
-        let imageUrl;
-
-        if (file && file instanceof File) {
+        if (file instanceof File) {
             imageUrl = await uploadImage(file, 'categories');
-            await deleteImage(existingCategory.image);
-        } else {
-            imageUrl = existingCategory.image;
+            if (existingCategory.image?.public_id) {
+                await deleteImage(existingCategory.image.public_id);
+            }
         }
 
+        // Safely get and type form data values
+        const getStringValue = (key: string): string => {
+            const value = formData.get(key);
+            return value && typeof value === 'string' ? value : '';
+        };
 
-        existingCategory.name = formData.get('name') || existingCategory.name;
-        existingCategory.slug = formData.get('slug') || existingCategory.slug;
-        existingCategory.description = formData.get('description') || existingCategory.description;
-        existingCategory.metaKeywords = formData.get('metaKeywords') || existingCategory.metaKeywords;
-        existingCategory.metaDescription = formData.get('metaDescription') || existingCategory.metaDescription;
-        existingCategory.parentCategory = formData.get('parentCategory') || existingCategory.parentCategory;
-        existingCategory.level = formData.get('level') || existingCategory.level;
-        existingCategory.status = formData.get('status') || existingCategory.status;
-        existingCategory.image = imageUrl;
+        // Update category with type-safe values
+        const updates = {
+            name: getStringValue('name') || existingCategory.name,
+            slug: getStringValue('slug') || existingCategory.slug,
+            description: getStringValue('description') || existingCategory.description,
+            metaKeywords: getStringValue('metaKeywords') || existingCategory.metaKeywords,
+            metaDescription: getStringValue('metaDescription') || existingCategory.metaDescription,
+            parentCategory: getStringValue('parentCategory') || existingCategory.parentCategory,
+            level: getStringValue('level') || existingCategory.level,
+            status: getStringValue('status') || existingCategory.status,
+            image: imageUrl
+        };
 
+        Object.assign(existingCategory, updates);
         await existingCategory.save();
 
         return NextResponse.json(
@@ -92,7 +100,7 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
             { status: 201 }
         );
     } catch (error) {
-        console.error(error);
+        console.error('Error updating category:', error);
         return NextResponse.json(
             { error: 'Failed to update category' },
             { status: 500 }
@@ -103,30 +111,35 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
 
 export async function DELETE(request: NextRequest, context: { params: { id: string } }) {
     try {
-       const { id } = await context.params;
-
+        const { id } = context.params;
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return NextResponse.json({ success: false, message: "Invalid Product ID" }, { status: 400 });
         }
-
-        const { role } = await getDataFromToken(request)
-        if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
-
-        const deleteData = await SubCategory.findByIdAndDelete(id);
-        await deleteImage(deleteData.image.public_id);
-
+        const { role } = await getDataFromToken(request);
+        if (role !== 'admin') {
+            return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+        }
+        const deleteData = await SubCategory.findById(id);
+        
         if (!deleteData) {
             return NextResponse.json({ error: "Category not found" }, { status: 404 });
         }
+     
+        if (deleteData.image?.public_id) {
+            await deleteImage(deleteData.image.public_id);
+        }
+
+        await SubCategory.findByIdAndDelete(id);
 
         return NextResponse.json({
             success: true,
-            message: "Category Deleted successfully!",
+            message: "Category deleted successfully!",
         });
 
     } catch (error) {
+        console.error('Error deleting category:', error);
         return NextResponse.json(
-            { error: "Failed to delete post" },
+            { error: "Failed to delete category" },
             { status: 500 }
         );
     }

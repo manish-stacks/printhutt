@@ -1,5 +1,5 @@
-import type { Coupon } from '@/lib/types';
 import { RiDeleteBin2Line, RiEdit2Fill, RiLoader2Line } from 'react-icons/ri';
+import { Coupon } from '@/lib/types/coupon';
 
 
 interface CouponTableProps {

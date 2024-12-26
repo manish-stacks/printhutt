@@ -3,13 +3,14 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { FaSearch } from 'react-icons/fa';
-import { RiArrowDropLeftLine, RiArrowDropRightLine, RiDeleteBin2Line, RiEdit2Fill, RiLoader2Line, RiSkipLeftLine, RiSkipRightLine } from 'react-icons/ri';
+import { RiDeleteBin2Line, RiEdit2Fill, RiLoader2Line } from 'react-icons/ri';
 import { toast } from 'react-toastify';
-import type { Warranty, PaginationData } from '@/lib/types';
 import { add_new_warranty, delete_warranty, get_all_warranty_pagination, update_warranty } from '@/_services/admin/warranty';
 import Swal from 'sweetalert2';
 import { WarrantyForm } from '@/components/admin/warranty/WarrantyForm';
 import { Pagination } from '@/components/admin/Pagination';
+import type { PaginationData } from '@/lib/types';
+import type { Warranty } from '@/lib/types/warranty';
 
 
 export default function Warranty() {

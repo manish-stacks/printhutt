@@ -1,5 +1,5 @@
 import mongoose, { Model, Schema } from "mongoose";
-import { IOffer } from "@/lib/types/offer";
+import type { IOffer } from "@/lib/types/offer";
 
 
 const offerSchema: Schema<IOffer> = new Schema(

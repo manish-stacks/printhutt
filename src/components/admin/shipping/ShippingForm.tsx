@@ -1,9 +1,10 @@
-import type { ShippingInformation } from '@/lib/types';
+
 import { ChangeEvent, FormEvent } from 'react';
 import { RiLoader2Line } from 'react-icons/ri';
+import type { ShippingInformation } from '@/lib/types/shipping';
 
 
-interface WarrantyFormProps {
+interface ShippingFormProps {
     formData: Partial<ShippingInformation>;
     isSubmitting: boolean;
     onSubmit: (e: FormEvent) => void;
@@ -12,14 +13,14 @@ interface WarrantyFormProps {
     mode: 'add' | 'edit';
 }
 
-export function ShippingForm({ formData, isSubmitting, onSubmit, onChange, onClose, mode }: WarrantyFormProps) {
+export function ShippingForm({ formData, isSubmitting, onSubmit, onChange, onClose, mode }: ShippingFormProps) {
     return (
         <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
             <div className="relative p-4 w-full max-w-4xl max-h-full">
                 <div className="px-3 relative bg-white rounded-lg shadow dark:bg-gray-700">
                     <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                         <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                            {mode === 'add' ? 'Add Warranty' : 'Edit Warranty'}
+                            {mode === 'add' ? 'Add Shipping' : 'Edit Shipping'}
                         </h3>
                         <button
                             type="button"
@@ -35,7 +36,7 @@ export function ShippingForm({ formData, isSubmitting, onSubmit, onChange, onClo
 
                             <div className="w-full">
                                 <label className="block mb-2 text-sm font-medium text-gray-900">
-                                    Coverage
+                                    Method
                                 </label>
                                 <textarea
                                     id="shippingMethod"
@@ -59,13 +60,13 @@ export function ShippingForm({ formData, isSubmitting, onSubmit, onChange, onClo
                                     value={formData.shippingFee || ''}
                                     onChange={onChange}
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                    placeholder="Warranty duration in months"
+                                    placeholder="fee"
                                 />
                             </div>
 
                             <div className="w-full">
                                 <label className="block mb-2 text-sm font-medium text-gray-900">
-                                    Claim Process
+                                    Shipping Time
                                 </label>
                                 <textarea
                                     id="shippingTime"

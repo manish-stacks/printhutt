@@ -1,14 +1,13 @@
 "use client"
 import { get_parent_categories } from '@/_services/admin/category';
 import { get_all_offer } from '@/_services/admin/offer';
-import { get_product_by_id, update_a_product } from '@/_services/admin/product';
+import { update_a_product } from '@/_services/admin/product';
 import { get_all_return } from '@/_services/admin/return-policy';
 import { get_all_shipping } from '@/_services/admin/shipping';
 import { get_parent_sub_categories } from '@/_services/admin/sub-category';
 import { get_all_warranty } from '@/_services/admin/warranty';
 import { ImageUpload } from '@/components/admin/products/ImageUpload';
 import { generateSlug } from '@/helpers/helpers';
-import { CategoryFormData, Offer, Option, ProductFormData, ReturnPolicy, ShippingInformation, Warranty } from '@/lib/types';
 import { validateProductForm } from '@/utils/form';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';

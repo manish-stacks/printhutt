@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
 import { ProductSidebar } from "@/components/products/ProductSidebar";
-import { FilterState, Product } from "@/lib/types";
+import type { FilterState } from "@/lib/types";
 import { toast } from "react-toastify";
 import { useSearchParams } from "next/navigation";
 import { ProductHeader } from "@/components/products/ProductHeader";
@@ -11,6 +11,7 @@ import ProductGrid from "@/components/products/ProductGrid";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { get_all_products } from "@/_services/admin/product";
 import { useCartStore } from "@/store/useCartStore";
+import type { Product } from "@/lib/types/product";
 
 function Products() {
 

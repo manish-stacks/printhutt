@@ -1,6 +1,6 @@
-import { ReturnPolicy } from '@/lib/types';
 import { ChangeEvent, FormEvent } from 'react';
 import { RiLoader2Line } from 'react-icons/ri';
+import type { ReturnPolicy } from '@/lib/types/return';
 
 
 interface ReturnPolicyFormProps {

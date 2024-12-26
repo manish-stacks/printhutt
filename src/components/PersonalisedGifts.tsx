@@ -4,6 +4,7 @@ import Slider from "react-slick";
 const PersonalisedGifts = () => {
   const settings = {
     dots: false,
+    arrows:false,
     infinite: true,
     autoplay: true,
     speed: 500,

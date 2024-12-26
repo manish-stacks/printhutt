@@ -1,4 +1,5 @@
 import { Document } from 'mongoose';
+import { ImageType } from '../types';
 
 export interface ImageData {
   url: string;
@@ -18,5 +19,22 @@ export interface CategoryAttributes {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+
+
+export interface CategoryFormData {
+  _id?: string | undefined;
+  name: string;
+  slug: string;
+  description: string;
+  metaKeywords: string;
+  metaDescription: string;
+  level: string;
+  imageUrl: string | File;
+  status: boolean;
+  image?: ImageType;
+  parentCategory?: any;
+}
+
 
 export interface CategoryDocument extends CategoryAttributes, Document {}

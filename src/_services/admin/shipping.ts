@@ -1,5 +1,5 @@
-import type { ShippingInformation } from "@/lib/types";
 import { axiosInstance } from "@/utils/axios";
+import type { ShippingInformation } from "@/lib/types/shipping";
 
 export async function getAllShippingPagination(page: string, search: string) {
         return axiosInstance.get(`/shipping?page=${page}&search=${search}&limit=10`);
