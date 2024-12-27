@@ -65,6 +65,7 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
             title: formData.get('title')?.toString() || product.title,
             slug: formData.get('slug')?.toString() || product.slug,
             description: formData.get('description')?.toString() || product.description,
+            short_description: formData.get('short_description')?.toString() || product.short_description,
             category: formData.get('category')?.toString() || product.category,
             subcategory: formData.get('subcategory')?.toString() || product.subcategory,
             price: parseFloat(formData.get('price')?.toString() || product.price),
@@ -105,7 +106,7 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
             if (product.thumbnail?.public_id) {
                 await deleteImage(product.thumbnail.public_id);
             }
-            updatedData.thumbnail = await uploadImage(thumbnail, 'products/thumbnails');
+            updatedData.thumbnail = await uploadImage(thumbnail, 'products/thumbnails', 800, 800);
         }
 
         // Handle images upload
@@ -114,7 +115,7 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
             const uploadedImages = await Promise.all(
                 imagesRaw.map(async (image) => {
                     if (image instanceof File) {
-                        return uploadImage(image, 'products');
+                        return uploadImage(image, 'products', 800, 800);
                     } else {
                         throw new Error('Invalid image file provided.');
                     }

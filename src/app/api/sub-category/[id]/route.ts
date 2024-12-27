@@ -63,7 +63,7 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
         let imageUrl = existingCategory.image;
 
         if (file instanceof File) {
-            imageUrl = await uploadImage(file, 'categories');
+            imageUrl = await uploadImage(file, 'categories', 800, 800);
             if (existingCategory.image?.public_id) {
                 await deleteImage(existingCategory.image.public_id);
             }

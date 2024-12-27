@@ -6,7 +6,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-export const uploadImage = async (file:any,folderName='common'): Promise<{ url: string; public_id: string;fileType:string }> => {
+export const uploadImage = async (file: any, folderName = 'common', width: number, height: number): Promise<{ url: string; public_id: string; fileType: string }> => {
   try {
 
     const buffer = await file.arrayBuffer();
@@ -15,14 +15,14 @@ export const uploadImage = async (file:any,folderName='common'): Promise<{ url: 
 
     const result = await cloudinary.uploader.upload(dataUri, {
       folder: folderName,
-      // transformation: [
-      //   { width: 500, height: 500, crop: "fill", gravity: "center" }
-      // ]
+      transformation: [
+        { width: width, height: height, crop: "fill", gravity: "center" },
+      ]
     });
     return {
       url: result.secure_url,
       public_id: result.public_id,
-      fileType:result.format
+      fileType: result.format
     };
   } catch (error) {
     console.error('Error uploading to Cloudinary:', error);

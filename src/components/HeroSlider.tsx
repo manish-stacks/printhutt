@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import React, { MouseEventHandler, useState } from 'react'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import Slider from 'react-slick/lib/slider';
+import Slider from 'react-slick';
+
 
 
 interface ArrowProps {
@@ -12,7 +13,7 @@ interface ArrowProps {
 const NextArrow = ({ onClick }:ArrowProps) => (
     <button
         onClick={onClick}
-        className="next-arrow absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white rounded-full p-2 md:p-3 hover:bg-gray-500 transition-all z-10"
+        className="next-arrow absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white rounded-full p-2 md:p-3 hover:bg-gray-500 transition-all z-5"
     >
         <FaChevronRight className="w-4 h-4 md:w-5 md:h-5" />
     </button>
@@ -21,7 +22,7 @@ const NextArrow = ({ onClick }:ArrowProps) => (
 const PrevArrow = ({ onClick }:ArrowProps) => (
     <button
         onClick={onClick}
-        className="prev-arrow absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white rounded-full p-2 md:p-3 hover:bg-gray-500 transition-all z-10"
+        className="prev-arrow absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white rounded-full p-2 md:p-3 hover:bg-gray-500 transition-all z-5"
     >
         <FaChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
     </button>

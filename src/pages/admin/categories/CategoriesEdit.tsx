@@ -1,5 +1,6 @@
 'use client'
 import { get_category_by_id, update_category } from '@/_services/admin/category';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import { generateSlug } from '@/helpers/helpers';
 import type { CategoryFormData } from '@/lib/types/category';
 import Link from 'next/link';
@@ -26,6 +27,7 @@ const CategoriesEdit = () => {
     const [previewUrl, setPreviewUrl] = useState<string>();
     const [isUploading, setIsUploading] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [formData, setFormData] = useState<CategoryFormData>({
         name: '',
         slug: '',
@@ -42,6 +44,7 @@ const CategoriesEdit = () => {
     useEffect(() => {
         const fetchCategory = async () => {
             try {
+                setIsLoading(true);
                 const data = await get_category_by_id(id) as any;
                 if (data) {
                     setFormData({
@@ -60,6 +63,8 @@ const CategoriesEdit = () => {
             } catch (error) {
                 console.error("Error fetching category:", error);
                 toast.error("Failed to fetch category details.");
+            }finally{
+                setIsLoading(false);
             }
         };
 
@@ -154,6 +159,9 @@ const CategoriesEdit = () => {
         setFormData((prevData) => ({ ...prevData, status: !prevData.status }));
     };
 
+
+    if(isLoading) return <LoadingSpinner/>
+    
     return (
         <>
             <form onSubmit={handleSubmit} encType={'multipart/form-data'}>

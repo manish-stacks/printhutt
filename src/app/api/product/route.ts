@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
     const [products, total] = await Promise.all([
       ProductModel.find(query)
         .populate({ path: 'category', model: Category })
-        .populate({path: 'subcategory', model: SubCategory })
+        .populate({ path: 'subcategory', model: SubCategory })
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit),
@@ -139,6 +139,7 @@ export async function POST(req: NextRequest) {
       title: formData.get('title')?.toString() || '',
       slug: formData.get('slug')?.toString() || '',
       description: formData.get('description')?.toString() || '',
+      short_description: formData.get('short_description')?.toString() || '',
       category: formData.get('category')?.toString() || '',
       subcategory: formData.get('subcategory')?.toString() || '',
       price: parseFloat(formData.get('price')?.toString() || '0'),
@@ -175,29 +176,28 @@ export async function POST(req: NextRequest) {
 
 
     const product = new ProductModel(productData);
+    if (product) {
+      const uploadedImages = await Promise.all(
+        imagesRaw.map(async (image) => {
+          if (image instanceof File) {
+            return uploadImage(image, 'products', 800, 800);
+          } else {
+            throw new Error('Invalid image file provided.');
+          }
+        })
+      );
 
-    const uploadedImages = await Promise.all(
-      imagesRaw.map(async (image) => {
-        if (image instanceof File) {
-          return uploadImage(image, 'products');
-        } else {
-          throw new Error('Invalid image file provided.');
-        }
-      })
-    );
+      const thumbnailResponse = await uploadImage(thumbnail, 'products/thumbnails', 800, 800);
 
-    const thumbnailResponse = await uploadImage(thumbnail, 'products/thumbnails');
-
-    product.images = uploadedImages;
-    product.thumbnail = thumbnailResponse;
-
-    const savedProduct = await product.save();
-
+      product.images = uploadedImages;
+      product.thumbnail = thumbnailResponse;
+      await product.save();
+    }
     return NextResponse.json(
       {
         success: true,
         message: 'Data inserted successfully',
-        data: savedProduct,
+        data: product,
       },
       { status: 201 }
     );

@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const uploadResponse = await uploadImage(file, 'categories')
+    const uploadResponse = await uploadImage(file, 'categories', 60, 60);
 
     const category = new SubCategory({
       name: formData.get('name'),

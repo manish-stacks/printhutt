@@ -1,7 +1,8 @@
 "use client"
+
 import { get_parent_categories } from '@/_services/admin/category';
 import { get_all_offer } from '@/_services/admin/offer';
-import { get_product_by_id, update_a_product } from '@/_services/admin/product';
+import { add_new_product } from '@/_services/admin/product';
 import { get_all_return } from '@/_services/admin/return-policy';
 import { get_all_shipping } from '@/_services/admin/shipping';
 import { get_parent_sub_categories } from '@/_services/admin/sub-category';
@@ -9,24 +10,24 @@ import { get_all_warranty } from '@/_services/admin/warranty';
 import { ImageUpload } from '@/components/admin/products/ImageUpload';
 import { generateSlug } from '@/helpers/helpers';
 import { validateProductForm } from '@/utils/form';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import { RiLoader2Line } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 import Select, { MultiValue } from 'react-select';
 import type { ProductFormData } from '@/lib/types/product';
-import type { ShippingInformation } from '@/lib/types/shipping';
 import type { Warranty } from '@/lib/types/warranty';
+import type { ShippingInformation } from '@/lib/types/shipping';
 import type { ReturnPolicy } from '@/lib/types/return';
 import type { CategoryFormData } from '@/lib/types/category';
 import type { Offer } from '@/lib/types/offer';
 import type { Option } from '@/lib/types';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import dynamic from 'next/dynamic';
+
 const QuillEditor = dynamic(() => import('@/components/QuillEditor'), { ssr: false });
-
-
+// <div dangerouslySetInnerHTML={{ __html: content }} />
 const initialFormData: ProductFormData = {
   title: '',
   slug: '',
@@ -67,14 +68,8 @@ const initialFormData: ProductFormData = {
   varient: []
 };
 
-export default function EditProduct() {
-  const params = useParams();
-  const id = params?.id as string | undefined;
-  // console.log(id)
-  if (!id) {
-    toast.error("No category ID provided.");
-    return;
-  }
+
+export default function AddProduct() {
 
   const [formData, setFormData] = useState<ProductFormData>(initialFormData);
   const [warranties, setWarranties] = useState<Warranty[]>([]);
@@ -90,9 +85,6 @@ export default function EditProduct() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
-
-
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -102,40 +94,22 @@ export default function EditProduct() {
           shippingData,
           returnData,
           categoryData,
-          offerData,
-          productData,
+          offerData
         ] = await Promise.all([
           get_all_warranty(),
           get_all_shipping(),
           get_all_return(),
           get_parent_categories(),
-          get_all_offer(),
-          get_product_by_id(id)
+          get_all_offer()
         ]) as any;
 
-        console.log(productData)
-
-        setFormData(productData)
-        setFormData(prevData => ({
-          ...prevData,
-          meta_description: productData.meta.meta_description,
-          keywords: productData.meta.keywords,
-        }));
-
-        setImage(productData.thumbnail.url); // set thumbnail
+        // console.log(warrantyData)
         setWarranties(warrantyData.warranty);
         setShippings(shippingData.shipping);
         setReturns(returnData.returnData);
+
         setCategories(categoryData.category);
         setOffers(offerData.returnData);
-
-
-        if (productData.category) {
-          const subcategoryData = await get_parent_sub_categories(productData.category) as any;
-          setSubCategories(subcategoryData.category || []);
-        }
-
-
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -144,7 +118,7 @@ export default function EditProduct() {
     };
 
     fetchData();
-  }, [id]);
+  }, []);
 
   const toggleVariantAccordion = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index); // Toggle open/close
@@ -168,7 +142,6 @@ export default function EditProduct() {
         const shippingfilter = shippings.find(ship => ship._id === value) as any;
         updatedData.shippingFee = shippingfilter?.shippingFee ? shippingfilter?.shippingFee : 0;
       }
-
 
       return updatedData;
     });
@@ -235,23 +208,20 @@ export default function EditProduct() {
     }
   };
 
+
   const handleCategoryChange = async (event: any) => {
     const { value } = event.target;
-
+    formData.category = value
     try {
-      setFormData(prev => ({ ...prev, category: value, subcategory: '' }));
-
-      if (value) {
-        const subcategoryData = await get_parent_sub_categories(value) as any;
-        setSubCategories(subcategoryData.category || []);
-      } else {
-        setSubCategories([]);
-      }
+      setLoading(true);
+      const categoryData = await get_parent_sub_categories(value) as any;
+      setSubCategories(categoryData.category)
     } catch (error) {
-      console.error('Error fetching subcategories:', error);
-      toast.error('Error loading subcategories');
-      setSubCategories([]);
+      toast.error('Failed to fetch sub categories');
+    } finally {
+      setLoading(false);
     }
+
   }
 
   const handleTagsChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -276,6 +246,8 @@ export default function EditProduct() {
     }));
   };
 
+
+
   const options = offers.map((offer) => ({
     value: offer._id,
     label: offer.offerTitle.toUpperCase(),
@@ -289,9 +261,6 @@ export default function EditProduct() {
       offers: selectedOffers,
     });
   };
-
-  const selectedOffers = options.filter(option => formData.offers.includes(option.value));
-
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -332,7 +301,7 @@ export default function EditProduct() {
         }
       });
 
-      const response = await update_a_product(id, formDataToSend) as any;
+      const response = await add_new_product(formDataToSend) as any;
 
       if (response.success) {
         toast.success('Product created successfully!');
@@ -340,23 +309,29 @@ export default function EditProduct() {
         setImage(null);
         router.push('/admin/products')
       } else {
-        toast.error(response.message || 'Failed to Update product');
+        toast.error(response.message || 'Failed to create product');
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-      toast.error('Failed to Update product. Please try again.');
-      setErrors(['Failed to Update product. Please try again.']);
+      toast.error('Failed to create product. Please try again.');
+      setErrors(['Failed to create product. Please try again.']);
     } finally {
       setIsSubmitting(false);
     }
   };
 
+
+  // const [content, setContent] = useState<string>('');
+
   const handleEditorChange = (value: string) => {
+    // setContent(value);
     setFormData((prev) => ({
       ...prev,
       description: value,
     }));
   };
+
+  // console.log(content)
 
   if (loading) return <LoadingSpinner />
 
@@ -370,7 +345,7 @@ export default function EditProduct() {
           {/* top row */}
           <div className="w-full md:w-12/12 lg:w-12/12 px-4 mb-5">
             <div className=" bg-white text-black flex justify-between align-middle p-6 rounded-lg shadow-md shadow-black-300">
-              <h3 className="text-lg font-bold">Update Product</h3>
+              <h3 className="text-lg font-bold">Create Product</h3>
               <button className="bg-blue-500 text-white py-1 px-7 rounded">Back</button>
             </div>
           </div>
@@ -427,6 +402,7 @@ export default function EditProduct() {
             <div className="bg-white text-black p-6 rounded-lg space-y-5 shadow-md shadow-black-300">
               <div>
                 <label className="block text-sm font-medium text-gray-700">Thumbnail *</label>
+                <p className="text-xs/5 text-gray-600">Image Size Should Be 800 x 800.</p>
                 <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
                   <div className="text-center">
                     {image ? (
@@ -471,17 +447,26 @@ export default function EditProduct() {
             <div className="bg-white text-black p-6 rounded-lg space-y-5 shadow-md shadow-black-300">
               <div>
                 <label className="block text-sm font-medium text-gray-700">Gallery Images *</label>
+                <p className="text-xs/5 text-gray-600">Image Size Should Be 800 x 800.</p>
                 <ImageUpload
                   images={formData.images}
                   onImagesChange={handleImagesChange}
-                  productId={id}
+                  productId={''}
                 />
               </div>
             </div>
 
+            {/* <div className="bg-white text-black p-6 rounded-lg space-y-5 shadow-md shadow-black-300">
+            <div><label className="block text-sm font-medium text-gray-700">Gallery image *</label>
+              <input className="w-50 flex mt-5 h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" id="name"  placeholder="Product name" type="file" name="attachment" />
+              <button className="bg-green-500 text-white py-1 px-5 rounded gap-1 mt-4">+ Add More</button>
+            </div>
+          </div> */}
+
             <div className="bg-white text-black p-6 rounded-lg space-y-5 shadow-md shadow-black-300">
               <div>
                 <label className="block text-sm font-medium text-gray-700">Short description *</label>
+
                 <textarea
                   className="flex w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
                   id="short_description"
@@ -491,9 +476,10 @@ export default function EditProduct() {
                   onChange={handleInputChange}
                   placeholder="Enter category short description"
                 />
+
+
               </div>
             </div>
-
             <div className="bg-white text-black p-6 rounded-lg space-y-5 shadow-md shadow-black-300">
               <div>
                 <label className="block text-sm font-medium text-gray-700">Description *</label>
@@ -562,11 +548,10 @@ export default function EditProduct() {
                       onChange={handleInputChange}
                       placeholder='Tags'
                     /> */}
-
                     {formData.tags.map((tag, index) => (
                       <span
                         key={index}
-                        className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 mx-1 text-sm text-blue-700"
+                        className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-700"
                       >
                         {tag}
                         <button
@@ -580,13 +565,12 @@ export default function EditProduct() {
                       </span>
                     ))}
                     <input
-                      className="flex-grow bg-white px-2 py-2 mt-2 text-base text-gray-900 outline-none placeholder-gray-400 focus:ring-0"
+                      className="flex-grow bg-white px-2 py-1 text-base text-gray-900 outline-none placeholder-gray-400 focus:ring-0"
                       type="text"
                       id="tags"
                       placeholder="Add a tag"
                       onKeyDown={handleTagsChange} // Handle tags on key press
                     />
-
                   </div>
                 </div>
 
@@ -814,7 +798,7 @@ export default function EditProduct() {
                   {isSubmitting && (
                     <RiLoader2Line className="mr-2 h-4 w-4 animate-spin" />
                   )}
-                  {isSubmitting ? 'Updating...' : 'Update'}
+                  {isSubmitting ? 'Creating...' : 'Save'}
                 </span>
               </button>
               <button type="submit" className="bg-blue-500 text-white py-2 px-7 rounded gap-1">
@@ -822,7 +806,7 @@ export default function EditProduct() {
                   {isSubmitting && (
                     <RiLoader2Line className="mr-2 h-4 w-4 animate-spin" />
                   )}
-                  {isSubmitting ? 'Updating...' : 'Update & Edit'}
+                  {isSubmitting ? 'Creating...' : 'Save & Edit'}
                 </span>
               </button>
             </div>
@@ -956,26 +940,26 @@ export default function EditProduct() {
               {/* <select
                 id="offers"
                 name="offers"
-                value={formData.offers || []}
+                value={formData.offers || ''}
                 onChange={handleInputChange}
-                multiple
+                multiple={true}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               >
-                <option disabled>Choose offers</option>
-                {offers.length === 0 ? (
-                  <option>No data found</option>
-                ) : (
-                  offers.map((offer) => (
-                    <option key={offer._id} value={offer._id}>
-                      {offer.offerTitle.toUpperCase()}
-                    </option>
-                  ))
-                )}
+                <option>Chhose offers</option>
+                {
+                  offers.length === 0 ? (
+                    <option>No data found</option>
+                  ) :
+                    offers.map((offer) => (
+                      <option key={offer._id} value={offer._id}>{offer.offerTitle.toUpperCase()}</option>
+                    ))
+                }
+
               </select> */}
+
               <Select
                 options={options}
                 isMulti
-                value={selectedOffers}
                 onChange={handleSelectChangeOffer}
               />
 
@@ -1016,7 +1000,6 @@ export default function EditProduct() {
                 name="subcategory"
                 value={formData.subcategory || ''}
                 onChange={handleInputChange}
-                disabled={!formData.category}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               >
                 <option>Choose SubCategory</option>
@@ -1024,8 +1007,8 @@ export default function EditProduct() {
                   subcategories.length === 0 ? (
                     <option>No data found</option>
                   ) :
-                    subcategories.map((subcategory) => (
-                      <option key={subcategory._id} value={subcategory._id}>{subcategory.name.toUpperCase()}</option>
+                    subcategories.map((category) => (
+                      <option key={category._id} value={category._id}>{category.name.toUpperCase()}</option>
                     ))
                 }
               </select>
