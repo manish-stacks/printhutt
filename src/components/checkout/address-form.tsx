@@ -1,27 +1,113 @@
-import React, { useState } from 'react'
+import { getAddress, saveAddress } from '@/_services/common/address';
+import { type AddressFormData, addressSchema } from '@/lib/types/address';
+import React, { useEffect, useState } from 'react'
 import { RiCheckFill } from 'react-icons/ri'
+import { toast } from 'react-toastify';
+import { ZodError } from 'zod';
 
-export const CheckoutAddressForm = () => {
+interface TypeSelectorProps {
+    onChangeAddress: (type: string) => void;
+}
+export const CheckoutAddressForm = ({ onChangeAddress }: TypeSelectorProps) => {
 
     const [selectedAddress, setSelectedAddress] = useState<boolean>(true);
+    const [addresslist, setAddresslist] = useState<AddressFormData[]>([]);
+    // const [defaultId, setDefaultId] = useState<string | null>(null);
 
-    // const handleAddressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     // setSelectedAddress(event.target.value === 'existing'); 
-    //     console.log(event.target.name)
-    //     event.target.name === 'address' ? setSelectedAddress(true) : setSelectedAddress(false);
-    // };
+    useEffect(() => {
+        const fetchAddress = async () => {
+            try {
+                const response = await getAddress() as any;
+                setAddresslist(response);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchAddress();
+    }, [selectedAddress])
+
+
+    useEffect(()=>{
+        const defaultAddress = addresslist.find((address) => address.isDefault);
+        if (defaultAddress) {
+            onChangeAddress(defaultAddress._id);
+        }
+    })
     const handleAddressChange = () => {
         setSelectedAddress((prev) => !prev);
     }
 
+
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [errors, setErrors] = useState<Record<string, string>>({});
+    const [formData, setFormData] = useState<Partial<AddressFormData>>({
+        addressType: 'home',
+    });
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+        // Clear error when field is modified
+        if (errors[name]) {
+            setErrors(prev => {
+                const newErrors = { ...prev };
+                delete newErrors[name];
+                return newErrors;
+            });
+        }
+    };
+
+
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        try {
+            setIsSubmitting(true);
+            const validatedData = addressSchema.parse(formData);
+            await saveAddress(validatedData);
+            toast.success('Address saved successfully');
+
+            setSelectedAddress(true);
+        } catch (error) {
+            if (error instanceof ZodError) {
+                const formErrors: Record<string, string> = {};
+                error.errors.forEach((err) => {
+                    if (err.path[0] && typeof err.path[0] === "string") {
+                        formErrors[err.path[0]] = err.message;
+                    }
+                });
+                setErrors(formErrors);
+            } else if (error instanceof Error) {
+                toast.error(error.message);
+            }
+        } finally {
+            setIsSubmitting(false);
+        }
+    }
+
+    const changeAddress = (id: string) => {
+        onChangeAddress(id)
+        setAddresslist((prev) =>
+            prev.map((address) =>
+                address._id === id
+                    ? { ...address, isDefault: true }
+                    : { ...address, isDefault: false }
+            )
+        );
+    }
+
+
+
     return (
         <>
-            <div className="min-[992px]:w-[66.66%] w-full px-[12px] mb-[24px]">
+            <div className="min-[992px]:w-[66.66%] w-full px-[12px] mb-[24px]" >
                 <div
                     className="bb-checkout-contact border-[1px] border-solid border-[#eee] p-[20px] bg-[#f1f3f6]"
                     data-aos="fade-up"
                     data-aos-duration={1000}
                     data-aos-delay={400}
+                    style={{ position: 'sticky', top: '20px' }}
                 >
 
                     <div className="bg-white mb-4 p-4 rounded shadow-sm">
@@ -52,7 +138,7 @@ export const CheckoutAddressForm = () => {
                                     name="addres"
                                     className="w-auto mr-[2px] p-[10px]"
                                     checked={selectedAddress === true}
-                                    onChange={()=>{}}
+                                    onChange={() => { }}
                                 />
                                 <label
                                     htmlFor="address1"
@@ -67,7 +153,7 @@ export const CheckoutAddressForm = () => {
                                     id="new-address"
                                     name="new-address"
                                     checked={selectedAddress === false}
-                                    onChange={()=>{}}
+                                    onChange={() => { }}
                                     className="w-auto mr-[2px] p-[10px]"
                                 />
                                 <label
@@ -79,46 +165,52 @@ export const CheckoutAddressForm = () => {
                             </div>
                         </div>
 
-                        {selectedAddress === true && (
-
-
+                        {selectedAddress ? (
                             <div className="space-y-4 ">
-                                <div className="py-4 max-w-full overflow-hidden border-s-4 border-lime-500">
-                                    <div className="flex items-start justify-between space-x-4 max-[480px]:flex-col max-[480px]:space-x-0 max-[480px]:space-y-3">
-                                        {/* Address Details */}
-                                        <div className="relative text-sm text-gray-700 pl-6 cursor-pointer w-full max-w-[calc(100%-100px)]">
-                                            <div>
-                                                <span className='text-sm text-white bg-amber-500 px-2 rounded-lg'>Selected</span>
-                                            </div>
-                                            <p className="font-medium flex items-center space-x-2  break-words">
-                                                <span>Manish Kumar</span>
-                                                <span className="bg-slate-100 px-3 py-1 rounded text-xs text-gray-600">Home</span>
-                                                <span className="font-bold text-black">6200027897</span>
-                                            </p>
-                                            <p className="mt-1 text-gray-600 break-words">
-                                                82A, Gali Number 11, C-Block, Saroop Vihar, New Delhi, Delhi
-                                            </p>
-                                        </div>
 
-                                        {/* Edit Button */}
-                                        <div className="ml-auto flex items-center w-full max-w-[100px] justify-end">
-                                            <a
-                                                href="#"
-                                                className="text-blue-500 font-semibold uppercase hover:text-blue-700 transition-colors duration-200"
-                                            >
-                                                Edit
-                                            </a>
+                                {
+                                    addresslist.length > 0 ? (
+                                        <div className="flex flex-col space-y-4">
+                                            {addresslist.map((address) => (
+                                                <div
+                                                    onClick={() => changeAddress(address?._id)}
+                                                    key={address?._id}
+                                                    className={`py-4 max-w-full overflow-hidden border-s-4 ${address.isDefault ? 'border-lime-500' : ' border-slate-500'} `}>
+
+                                                    <div className="flex items-start justify-between space-x-4 max-[480px]:flex-col max-[480px]:space-x-0 max-[480px]:space-y-3">
+                                                        {/* Address Details */}
+                                                        <div className="relative text-sm text-gray-700 pl-6 cursor-pointer w-full max-w-[calc(100%-100px)]">
+                                                            {address.isDefault && (
+                                                                <div>
+                                                                    <span className='text-sm text-white bg-amber-500 px-2 rounded-lg'>Selected</span>
+                                                                </div>
+                                                            )}
+
+                                                            <p className="font-medium flex items-center space-x-2  break-words">
+                                                                <span>{address.fullName}</span>
+                                                                <span className="bg-slate-100 px-3 py-1 rounded text-xs text-gray-600">{address.addressType}</span>
+                                                                <span className="font-bold text-black">{address.mobileNumber}</span>
+                                                            </p>
+                                                            <p className="mt-1 text-gray-600 break-words">
+                                                                {address.addressLine}, {address.city}, {address.state}, {address.postCode}
+                                                            </p>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            ))}
                                         </div>
-                                    </div>
-                                </div>
+                                    ) : (
+                                        <div className="text-center text-gray-500">
+                                            <p>No addresses found.</p>
+                                        </div>
+                                    )
+                                }
+
                             </div>
-
-
-
-                        )}
-                        {selectedAddress === false && (
+                        ) : (
                             <div className="input-box-form mt-[20px] ">
-                                <form method="post">
+                                <form method="post" onSubmit={handleSubmit}>
                                     <div className="flex flex-wrap mx-[-12px]">
                                         <div className="min-[992px]:w-[50%] w-full px-[12px]">
                                             <div className="input-item mb-[24px]">
@@ -127,11 +219,15 @@ export const CheckoutAddressForm = () => {
                                                 </label>
                                                 <input
                                                     type="text"
-                                                    name="name"
+                                                    name="fullName"
                                                     placeholder="Enter your Name"
                                                     className="w-full p-[10px] text-[14px] font-normal text-[#686e7d] border-[1px] border-solid border-[#eee] leading-[26px] outline-[0] rounded-[10px]"
-
+                                                    value={formData.fullName || ''}
+                                                    onChange={handleChange}
                                                 />
+                                                {errors.fullName && (
+                                                    <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>
+                                                )}
                                             </div>
                                         </div>
                                         <div className="min-[992px]:w-[50%] w-full px-[12px]">
@@ -141,11 +237,15 @@ export const CheckoutAddressForm = () => {
                                                 </label>
                                                 <input
                                                     type="text"
-                                                    name="name"
+                                                    name="mobileNumber"
                                                     placeholder="Enter your Mobile Number"
                                                     className="w-full p-[10px] text-[14px] font-normal text-[#686e7d] border-[1px] border-solid border-[#eee] leading-[26px] outline-[0] rounded-[10px]"
-
+                                                    value={formData.mobileNumber || ''}
+                                                    onChange={handleChange}
                                                 />
+                                                {errors.mobileNumber && (
+                                                    <p className="text-red-500 text-sm mt-1">{errors.mobileNumber}</p>
+                                                )}
                                             </div>
                                         </div>
                                         <div className="w-full px-[12px]">
@@ -155,11 +255,15 @@ export const CheckoutAddressForm = () => {
                                                 </label>
                                                 <input
                                                     type="text"
-                                                    name="name"
+                                                    name="addressLine"
                                                     placeholder="Address (Area and Street)"
                                                     className="w-full p-[10px] text-[14px] font-normal text-[#686e7d] border-[1px] border-solid border-[#eee] leading-[26px] outline-[0] rounded-[10px]"
-
+                                                    value={formData.addressLine || ''}
+                                                    onChange={handleChange}
                                                 />
+                                                {errors.addressLine && (
+                                                    <p className="text-red-500 text-sm mt-1">{errors.addressLine}</p>
+                                                )}
                                             </div>
                                         </div>
                                         <div className="min-[992px]:w-[50%] w-full px-[12px]">
@@ -170,11 +274,15 @@ export const CheckoutAddressForm = () => {
                                                 </label>
                                                 <input
                                                     type="text"
-                                                    name="name"
+                                                    name="city"
                                                     placeholder="City/District/Town"
                                                     className="w-full p-[10px] text-[14px] font-normal text-[#686e7d] border-[1px] border-solid border-[#eee] leading-[26px] outline-[0] rounded-[10px]"
-
+                                                    value={formData.city || ''}
+                                                    onChange={handleChange}
                                                 />
+                                                {errors.city && (
+                                                    <p className="text-red-500 text-sm mt-1">{errors.city}</p>
+                                                )}
                                             </div>
                                         </div>
                                         <div className="min-[992px]:w-[50%] w-full px-[12px]">
@@ -184,11 +292,15 @@ export const CheckoutAddressForm = () => {
                                                 </label>
                                                 <input
                                                     type="text"
-                                                    name="name"
+                                                    name="postCode"
                                                     placeholder="Post Code"
                                                     className="w-full p-[10px] text-[14px] font-normal text-[#686e7d] border-[1px] border-solid border-[#eee] leading-[26px] outline-[0] rounded-[10px]"
-
+                                                    value={formData.postCode || ''}
+                                                    onChange={handleChange}
                                                 />
+                                                {errors.postCode && (
+                                                    <p className="text-red-500 text-sm mt-1">{errors.postCode}</p>
+                                                )}
                                             </div>
                                         </div>
 
@@ -198,13 +310,19 @@ export const CheckoutAddressForm = () => {
                                                     Region State *
                                                 </label>
                                                 <div className="custom-select p-[10px] border-[1px] border-solid border-[#eee] leading-[26px] rounded-[10px]">
-                                                    <select>
-                                                        <option value="option1">Region/State</option>
-                                                        <option value="option1">Region/State 1</option>
-                                                        <option value="option2">Region/State 2</option>
-                                                        <option value="option3">Region/State 3</option>
-                                                        <option value="option4">Region/State 4</option>
+                                                    <select
+                                                        name="state"
+                                                        value={formData.state || ''}
+                                                        onChange={handleChange}
+                                                        className="form-select"
+                                                    >
+                                                        <option value="">Select State</option>
+                                                        <option value="delhi">Delhi</option>
+                                                        <option value="maharashtra">Maharashtra</option>
                                                     </select>
+                                                    {errors.state && (
+                                                        <p className="text-red-500 text-sm mt-1">{errors.state}</p>
+                                                    )}
                                                 </div>
                                             </div>
                                         </div>
@@ -216,9 +334,11 @@ export const CheckoutAddressForm = () => {
                                                 </label>
                                                 <input
                                                     type="text"
-                                                    name="name"
+                                                    name="alternatePhone"
                                                     placeholder="Alternate Phone (Optional)"
                                                     className="w-full p-[10px] text-[14px] font-normal text-[#686e7d] border-[1px] border-solid border-[#eee] leading-[26px] outline-[0] rounded-[10px]"
+                                                    value={formData.alternatePhone || ''}
+                                                    onChange={handleChange}
                                                 />
                                             </div>
                                         </div>
@@ -227,13 +347,15 @@ export const CheckoutAddressForm = () => {
                                             <div className="radio-itens mr-[20px]">
                                                 <input
                                                     type="radio"
-                                                    id="address1"
-                                                    name="addressd"
+                                                    id="addressType1"
+                                                    name="addressType"
                                                     className="w-auto mr-[2px] p-[10px]"
-
+                                                    value="home"
+                                                    checked={formData.addressType === 'home'}
+                                                    onChange={(e) => setFormData(prev => ({ ...prev, addressType: e.target.value as "home" | "work", }))}
                                                 />
                                                 <label
-                                                    htmlFor="address1"
+                                                    htmlFor="addressType1"
                                                     className="relative font-normal text-[14px] text-[#686e7d] pl-[26px] cursor-pointer leading-[16px] inline-block tracking-[0]"
                                                 >
                                                     Home (All day delivery)
@@ -242,26 +364,34 @@ export const CheckoutAddressForm = () => {
                                             <div className="radio-itens">
                                                 <input
                                                     type="radio"
-                                                    id="address2"
-                                                    name="addressd"
+                                                    id="addressType"
+                                                    name="addressType"
                                                     className="w-auto mr-[2px] p-[10px]"
+                                                    value="work"
+                                                    checked={formData.addressType === 'work'}
+                                                    onChange={(e) => setFormData((prev) => ({ ...prev, addressType: e.target.value as "home" | "work", }))}
                                                 />
                                                 <label
-                                                    htmlFor="address2"
+                                                    htmlFor="addressType"
                                                     className="relative font-normal text-[14px] text-[#686e7d] pl-[26px] cursor-pointer leading-[16px] inline-block tracking-[0]"
                                                 >
                                                     Work (Delivery between 10 AM - 5 PM)
                                                 </label>
                                             </div>
+                                            {errors.addressType && (
+                                                <p className="text-red-500 text-sm">{errors.addressType}</p>
+                                            )}
+
                                         </div>
 
                                         <div className="w-full px-[12px]">
                                             <div className="input-button">
                                                 <button
-                                                    type="button"
+                                                    type="submit"
+                                                    disabled={isSubmitting}
                                                     className="bb-btn-2 inline-block items-center justify-center check-btn transition-all duration-[0.3s] ease-in-out font-Poppins leading-[28px] tracking-[0.03rem] py-[4px] px-[25px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
                                                 >
-                                                    Place Order
+                                                    {isSubmitting ? 'Saving...' : 'Save Address'}
                                                 </button>
                                             </div>
                                         </div>

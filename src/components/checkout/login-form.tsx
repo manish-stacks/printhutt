@@ -139,6 +139,7 @@ export const CheckoutloginForm = () => {
                     data-aos="fade-up"
                     data-aos-duration={1000}
                     data-aos-delay={400}
+                    style={{position: 'sticky',top: '20px'}}
                 >
 
                     <div className="bg-[#E10176] p-4">

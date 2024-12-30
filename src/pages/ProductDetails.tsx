@@ -35,7 +35,7 @@ const ProductDetails = ({ product }: ProductProps) => {
   // console.log(product)
 
   const item = items.find(item => item._id === product?._id) || { _id: '', quantity: 0 };
-  console.log(item.quantity)
+
   const quantity = item.quantity || 1;
 
 
@@ -46,6 +46,8 @@ const ProductDetails = ({ product }: ProductProps) => {
   const viwCart = () => {
     setIsOpenCart(true);
   }
+
+ 
 
   return (
     <>
@@ -162,7 +164,7 @@ const ProductDetails = ({ product }: ProductProps) => {
                             <span className="font-Poppins text-[#777] text-[14px]">
                               Offers :
                             </span>{" "}
-                            {product?.offers.join(', ') || 'No offers available'}
+                            {product.offers.map((offer) => offer.offerTitle).join(', ') || 'No offers available'}
                           </li>
                           <li className="my-[8px] font-Poppins text-[14px] font-light leading-[28px] tracking-[0.03rem] text-[#777] list-disc">
                             <span className="font-Poppins text-[#777] text-[14px]">
@@ -306,9 +308,10 @@ const ProductDetails = ({ product }: ProductProps) => {
                       <div className="tab-pro-pane" id="detail">
                         <div className="bb-inner-tabs border-[1px] border-solid border-[#eee] p-[15px] rounded-[20px]">
                           <div className="bb-details">
-                            <p className="mb-[12px] font-Poppins text-[#686e7d] leading-[28px] tracking-[0.03rem] font-light">
-                              {product?.description}
-                            </p>
+                            <div 
+                            dangerouslySetInnerHTML={{ __html: product?.description }} 
+                            className="mb-[12px] font-Poppins text-[#686e7d] leading-[28px] tracking-[0.03rem] font-light"
+                             />
                             <div className="details-info">
                               <ul className="list-disc pl-[20px] mb-[0]">
                                 <li className="py-[5px] text-[15px] text-[#686e7d] font-Poppins leading-[28px] font-light">

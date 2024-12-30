@@ -36,16 +36,12 @@ const Header = () => {
   const toggleMenuMobileSubcat = () => setIsOpenSubCategory((prev) => !prev);
 
 
-  const { getTotalItems } = useCartStore();
-  const [totalItem, setTotalItem] = useState<number>(0);
-  useEffect(() => {
-    setTotalItem(getTotalItems());
-  }, [totalItem]);
+  const { items } = useCartStore();
+  const totalItem = items.length;
 
 
-  // const userDetails = useUserStore((state) => state.userDetails);
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
-// console.log(userDetails)
+
 
   return (
     <>
