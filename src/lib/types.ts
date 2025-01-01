@@ -44,4 +44,11 @@ export interface OrderEmailData {
         quantity: number;
         price: number;
     }>;
+    shipping: {
+        addressLine: string,
+        city: string,
+        state: string,
+        postCode: string,
+        mobileNumber: string
+    };
 }

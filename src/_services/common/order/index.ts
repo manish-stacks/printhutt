@@ -6,14 +6,14 @@ export const create_a_new_order = async (formData: IOrder) => {
   return axiosInstance.post(`/order`, formData)
 }
 
-
-
-
-export const get_all_orders_of_user = async (id: string) => {
-  return axiosInstance.get(`/order`, { id: id })
+export async function get_all_orders_of_user(page: string, search: string) {
+  return axiosInstance.get(`/order?page=${page}&search=${search}&limit=10`);
 }
 
 
+
+
 export const get_order_details = async (id: any) => {
+
   return axiosInstance.get(`/order/${id}`)
 }

@@ -1,3 +1,4 @@
+import { formatCurrency } from '@/helpers/helpers';
 import React from 'react';
 
 interface TypeSelectorProps {
@@ -79,7 +80,7 @@ const PaymentMethod = ({ value, onChange, totalPrice }: TypeSelectorProps) => {
                                     <tr>
                                         <td className="py-2 text-gray-600 border border-slate-300 px-3">20% Payable before order</td>
                                         <td className="py-2 font-bold text-gray-900 border border-slate-300">
-                                            ₹ {(totalPrice* 0.20).toFixed(2)}
+                                             {formatCurrency((totalPrice* 0.20))}
                                         </td>
                                     </tr>
                                 </tbody>

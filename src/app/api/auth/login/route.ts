@@ -1,5 +1,5 @@
 import { connect } from '@/dbConfig/dbConfig'
-import { sendOtpByEmail, sendOtpBySms } from '@/helpers/mailer';
+import { sendOtpByEmail, sendOtpBySms } from '@/lib/mail/mailer';
 import { NextRequest, NextResponse } from 'next/server'
 import UserModel from '@/models/userModel'
 import { isEmail } from '@/helpers/helpers';

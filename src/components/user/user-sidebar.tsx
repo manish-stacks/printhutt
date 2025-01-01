@@ -94,15 +94,15 @@ const UserSidebar = ({ activemenu }: Props) => {
                         </span>{" "}
                         Payment
                     </a>
-                    <a
-                        href="#"
-                        className={`flex items-center hover:text-purple-600 ${activemenu == '' ? ' text-purple-600 font-semibold' : 'text-gray-600'}`}
+                    <Link
+                        href="/user/orders"
+                        className={`flex items-center hover:text-purple-600 ${activemenu == 'orders' ? ' text-purple-600 font-semibold' : 'text-gray-600'}`}
                     >
                         <span className="mr-2">
                             <RiShoppingCartFill />
                         </span>{" "}
                         Order History
-                    </a>
+                    </Link>
                 </nav>
                 <div className="mt-8 border-t pt-4 text-lg">
                     <p className="text-gray-400 text-sm">Seting</p>

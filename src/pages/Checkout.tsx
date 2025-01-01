@@ -14,7 +14,7 @@ import { toast } from "react-toastify";
 
 const Checkout = () => {
   const [totalPrice, setTotalPrice] = useState<number>(0);
-  const { items, getTotalPrice, getTotalItems } = useCartStore();
+  const { items, getTotalPrice, getTotalItems,removeAllItems } = useCartStore();
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
   const [paymentMethod, setPaymentMethod] = useState<'online' | 'offline'>('online');
   const [couponCode, setCouponCode] = useState<string>('');
@@ -35,7 +35,7 @@ const Checkout = () => {
 
   const placeOrder = async () => {
     const order = {
-      items: items.map((item) => ({ id: item._id, quantity: item.quantity, name: item.title, price: item.price })),
+      items: items.map((item) => ({ productId: item._id, quantity: item.quantity, name: item.title, price: item.price })),
       getTotalItems: getTotalItems(),
       totalPrice: getTotalPrice(),
       paymentMethod: paymentMethod,
@@ -43,13 +43,14 @@ const Checkout = () => {
       address: selectAddress
     };
 
-    console.log(order)
+    // console.log(order)
     try {
       setIsSubmitting(true);
-      const response = await create_a_new_order(order);
-      console.log(response)
+      const response = await create_a_new_order(order) as any;
       toast.success('Order placed successfully');
-      // router.push(`/order/`)
+      router.push(`/orders/${response.order._id}/confirmation`);
+      // removeAllItems()
+      return response;
     } catch (error) {
       console.error(error);
       toast.error('Failed to save address');

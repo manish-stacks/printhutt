@@ -13,6 +13,7 @@ interface CartStore {
   items: CartItem[]
   addToCart: (product: Product) => void
   removeFromCart: (productId: string) => void;
+  removeAllItems: () => void;
   updateQuantity: (productId: string, quantity: number) => void;
   getTotalItems: () => number
   getTotalPrice: () => number
@@ -41,13 +42,14 @@ export const useCartStore = create<CartStore>()(
         })
       },
       removeFromCart: (productId) => {
-        //toast.error('Removed from cart');
         set((state) => ({
           items: state.items.filter(item => item._id !== productId),
         }))
       },
+      removeAllItems: () => {
+        set({ items: [] })
+      },
       updateQuantity: (productId, quantity) => {
-        //toast.info('Updated quantity');
         set((state) => ({
           items: state.items.map(item =>
             item._id === productId
@@ -57,11 +59,9 @@ export const useCartStore = create<CartStore>()(
         }))
       },
       getTotalItems: () => {
-        //toast.info('Updated quantity');
         return get().items.reduce((total, item) => total + item.quantity, 0)
       },
       getTotalPrice: () => {
-        //toast.info('Updated quantity');
         return get().items.reduce((total, item) => total + (item.price * item.quantity), 0)
       },
     }),
