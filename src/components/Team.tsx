@@ -47,17 +47,17 @@ const Team = () => {
                           <div className="inner-shape relative" />
                           <ul className="mb-[0] py-[20px] px-[10px]">
                             <li className="bb-social-link leading-[28px] pb-[10px]">
-                              <a href="javascript:void(0)">
+                              <a >
                                 <i className="ri-facebook-fill text-[16px] hover:text-[#6c7fd8]" />
                               </a>
                             </li>
                             <li className="bb-social-link leading-[28px] pb-[10px]">
-                              <a href="javascript:void(0)">
+                              <a >
                                 <i className="ri-twitter-x-fill text-[16px] hover:text-[#6c7fd8]" />
                               </a>
                             </li>
                             <li className="bb-social-link leading-[28px]">
-                              <a href="javascript:void(0)">
+                              <a >
                                 <i className="ri-linkedin-fill text-[16px] hover:text-[#6c7fd8]" />
                               </a>
                             </li>
@@ -91,17 +91,17 @@ const Team = () => {
                           <div className="inner-shape relative" />
                           <ul className="mb-[0] py-[20px] px-[10px]">
                             <li className="bb-social-link leading-[28px] pb-[10px]">
-                              <a href="javascript:void(0)">
+                              <a >
                                 <i className="ri-facebook-fill text-[16px] hover:text-[#6c7fd8]" />
                               </a>
                             </li>
                             <li className="bb-social-link leading-[28px] pb-[10px]">
-                              <a href="javascript:void(0)">
+                              <a >
                                 <i className="ri-twitter-x-fill text-[16px] hover:text-[#6c7fd8]" />
                               </a>
                             </li>
                             <li className="bb-social-link leading-[28px]">
-                              <a href="javascript:void(0)">
+                              <a >
                                 <i className="ri-linkedin-fill text-[16px] hover:text-[#6c7fd8]" />
                               </a>
                             </li>
@@ -135,17 +135,17 @@ const Team = () => {
                           <div className="inner-shape relative" />
                           <ul className="mb-[0] py-[20px] px-[10px]">
                             <li className="bb-social-link leading-[28px] pb-[10px]">
-                              <a href="javascript:void(0)">
+                              <a >
                                 <i className="ri-facebook-fill text-[16px] hover:text-[#6c7fd8]" />
                               </a>
                             </li>
                             <li className="bb-social-link leading-[28px] pb-[10px]">
-                              <a href="javascript:void(0)">
+                              <a >
                                 <i className="ri-twitter-x-fill text-[16px] hover:text-[#6c7fd8]" />
                               </a>
                             </li>
                             <li className="bb-social-link leading-[28px]">
-                              <a href="javascript:void(0)">
+                              <a >
                                 <i className="ri-linkedin-fill text-[16px] hover:text-[#6c7fd8]" />
                               </a>
                             </li>
@@ -179,17 +179,17 @@ const Team = () => {
                           <div className="inner-shape relative" />
                           <ul className="mb-[0] py-[20px] px-[10px]">
                             <li className="bb-social-link leading-[28px] pb-[10px]">
-                              <a href="javascript:void(0)">
+                              <a >
                                 <i className="ri-facebook-fill text-[16px] hover:text-[#6c7fd8]" />
                               </a>
                             </li>
                             <li className="bb-social-link leading-[28px] pb-[10px]">
-                              <a href="javascript:void(0)">
+                              <a >
                                 <i className="ri-twitter-x-fill text-[16px] hover:text-[#6c7fd8]" />
                               </a>
                             </li>
                             <li className="bb-social-link leading-[28px]">
-                              <a href="javascript:void(0)">
+                              <a >
                                 <i className="ri-linkedin-fill text-[16px] hover:text-[#6c7fd8]" />
                               </a>
                             </li>

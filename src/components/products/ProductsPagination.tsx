@@ -11,7 +11,7 @@ const ProductsPagination = () => {
                     <ul className="flex">
                         <li className="leading-[28px] mr-[6px] active">
                             <a
-                                href="javascript:void(0)"
+                                
                                 className="transition-all duration-[0.3s] ease-in-out w-[32px] h-[32px] font-light text-[#777] leading-[32px] bg-[#f8f8fb] font-Poppins tracking-[0.03rem] text-[15px] flex text-center align-top justify-center items-center rounded-[10px] border-[1px] border-solid border-[#eee] hover:bg-[#3d4750] hover:text-[#fff]"
                             >
                                 1
@@ -19,7 +19,7 @@ const ProductsPagination = () => {
                         </li>
                         <li className="leading-[28px] mr-[6px]">
                             <a
-                                href="javascript:void(0)"
+                                
                                 className="transition-all duration-[0.3s] ease-in-out w-[32px] h-[32px] font-light text-[#777] leading-[32px] bg-[#f8f8fb] font-Poppins tracking-[0.03rem] text-[15px] flex text-center align-top justify-center items-center rounded-[10px] border-[1px] border-solid border-[#eee] hover:bg-[#3d4750] hover:text-[#fff]"
                             >
                                 2
@@ -27,7 +27,7 @@ const ProductsPagination = () => {
                         </li>
                         <li className="leading-[28px] mr-[6px]">
                             <a
-                                href="javascript:void(0)"
+                                
                                 className="transition-all duration-[0.3s] ease-in-out w-[32px] h-[32px] font-light text-[#777] leading-[32px] bg-[#f8f8fb] font-Poppins tracking-[0.03rem] text-[15px] flex text-center align-top justify-center items-center rounded-[10px] border-[1px] border-solid border-[#eee] hover:bg-[#3d4750] hover:text-[#fff]"
                             >
                                 3
@@ -35,7 +35,7 @@ const ProductsPagination = () => {
                         </li>
                         <li className="leading-[28px] mr-[6px]">
                             <a
-                                href="javascript:void(0)"
+                                
                                 className="transition-all duration-[0.3s] ease-in-out w-[32px] h-[32px] font-light text-[#777] leading-[32px] bg-[#f8f8fb] font-Poppins tracking-[0.03rem] text-[15px] flex text-center align-top justify-center items-center rounded-[10px] border-[1px] border-solid border-[#eee] hover:bg-[#3d4750] hover:text-[#fff]"
                             >
                                 4
@@ -43,7 +43,7 @@ const ProductsPagination = () => {
                         </li>
                         <li className="leading-[28px]">
                             <a
-                                href="javascript:void(0)"
+                                
                                 className="next transition-all duration-[0.3s] ease-in-out w-[auto] h-[32px] px-[13px] font-light text-[#fff] leading-[30px] bg-[#3d4750] font-Poppins tracking-[0.03rem] text-[15px] flex text-center align-top justify-center items-center rounded-[10px] border-[1px] border-solid border-[#eee]"
                             >
                                 Next{" "}

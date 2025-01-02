@@ -4,7 +4,7 @@ import Slider from "react-slick";
 const PersonalisedGifts = () => {
   const settings = {
     dots: false,
-    arrows:false,
+    arrows: false,
     infinite: true,
     autoplay: true,
     speed: 500,
@@ -71,17 +71,17 @@ const PersonalisedGifts = () => {
                           <div className="inner-shape relative" />
                           <ul className="mb-[0] py-[20px] px-[10px]">
                             <li className="bb-social-link leading-[28px] pb-[10px]">
-                              <a href="javascript:void(0)">
+                              <a >
                                 <i className="ri-edit-circle-fill text-[16px] hover:text-[#6c7fd8]" />
                               </a>
                             </li>
                             <li className="bb-social-link leading-[28px] pb-[10px]">
-                              <a href="javascript:void(0)">
+                              <a >
                                 <i className="ri-shopping-cart-fill text-[16px] hover:text-[#6c7fd8]" />
                               </a>
                             </li>
                             <li className="bb-social-link leading-[28px]">
-                              <a href="javascript:void(0)">
+                              <a >
                                 <i className="ri-heart-2-fill text-[16px] hover:text-[#6c7fd8]" />
                               </a>
                             </li>
@@ -92,15 +92,6 @@ const PersonalisedGifts = () => {
                           alt="team-1"
                           className="w-full rounded-[20px]"
                         />
-                      </div>
-                      <div className="bb-team-contact text-center">
-                        <h5 className="font-quicksand tracking-[0.03rem] leading-[1.2] text-[18px] font-bold text-[#3d4750]">
-                          Elena Wilson
-                        </h5>
-                        <p className="font-Poppins font-light leading-[28px] tracking-[0.03rem] text-[15px] text-[#686e7d] mt-3">
-                          <button type="button" className="w-full text-gray-900 bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-lime-300 dark:focus:ring-lime-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Lime</button>
-
-                        </p>
                       </div>
                     </div>
                   </div>
@@ -116,17 +107,17 @@ const PersonalisedGifts = () => {
                           <div className="inner-shape relative" />
                           <ul className="mb-[0] py-[20px] px-[10px]">
                             <li className="bb-social-link leading-[28px] pb-[10px]">
-                              <a href="javascript:void(0)">
+                              <a >
                                 <i className="ri-edit-circle-fill text-[16px] hover:text-[#6c7fd8]" />
                               </a>
                             </li>
                             <li className="bb-social-link leading-[28px] pb-[10px]">
-                              <a href="javascript:void(0)">
+                              <a >
                                 <i className="ri-shopping-cart-fill text-[16px] hover:text-[#6c7fd8]" />
                               </a>
                             </li>
                             <li className="bb-social-link leading-[28px]">
-                              <a href="javascript:void(0)">
+                              <a >
                                 <i className="ri-heart-2-fill text-[16px] hover:text-[#6c7fd8]" />
                               </a>
                             </li>
@@ -138,14 +129,7 @@ const PersonalisedGifts = () => {
                           className="w-full rounded-[20px]"
                         />
                       </div>
-                      <div className="bb-team-contact text-center">
-                        <h5 className="font-quicksand tracking-[0.03rem] leading-[1.2] text-[18px] font-bold text-[#3d4750]">
-                          Mario Bisop
-                        </h5>
-                        <p className="font-Poppins font-light leading-[28px] tracking-[0.03rem] text-[15px] text-[#686e7d] mt-3">
-                          <button type="button" className="w-full text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Red</button>
-                        </p>
-                      </div>
+
                     </div>
                   </div>
                   <div className="px-2">
@@ -160,17 +144,17 @@ const PersonalisedGifts = () => {
                           <div className="inner-shape relative" />
                           <ul className="mb-[0] py-[20px] px-[10px]">
                             <li className="bb-social-link leading-[28px] pb-[10px]">
-                              <a href="javascript:void(0)">
+                              <a >
                                 <i className="ri-edit-circle-fill text-[16px] hover:text-[#6c7fd8]" />
                               </a>
                             </li>
                             <li className="bb-social-link leading-[28px] pb-[10px]">
-                              <a href="javascript:void(0)">
+                              <a >
                                 <i className="ri-shopping-cart-fill text-[16px] hover:text-[#6c7fd8]" />
                               </a>
                             </li>
                             <li className="bb-social-link leading-[28px]">
-                              <a href="javascript:void(0)">
+                              <a >
                                 <i className="ri-heart-2-fill text-[16px] hover:text-[#6c7fd8]" />
                               </a>
                             </li>
@@ -182,14 +166,7 @@ const PersonalisedGifts = () => {
                           className="w-full rounded-[20px]"
                         />
                       </div>
-                      <div className="bb-team-contact text-center">
-                        <h5 className="font-quicksand tracking-[0.03rem] leading-[1.2] text-[18px] font-bold text-[#3d4750]">
-                          Maria Margret
-                        </h5>
-                        <p className="font-Poppins font-light leading-[28px] tracking-[0.03rem] text-[15px] text-[#686e7d] mt-3">
-                          <button type="button" className="w-full text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Pink</button>
-                        </p>
-                      </div>
+
                     </div>
                   </div>
                   <div className="px-2">
@@ -204,17 +181,17 @@ const PersonalisedGifts = () => {
                           <div className="inner-shape relative" />
                           <ul className="mb-[0] py-[20px] px-[10px]">
                             <li className="bb-social-link leading-[28px] pb-[10px]">
-                              <a href="javascript:void(0)">
+                              <a >
                                 <i className="ri-edit-circle-fill text-[16px] hover:text-[#6c7fd8]" />
                               </a>
                             </li>
                             <li className="bb-social-link leading-[28px] pb-[10px]">
-                              <a href="javascript:void(0)">
+                              <a >
                                 <i className="ri-shopping-cart-fill text-[16px] hover:text-[#6c7fd8]" />
                               </a>
                             </li>
                             <li className="bb-social-link leading-[28px]">
-                              <a href="javascript:void(0)">
+                              <a >
                                 <i className="ri-heart-2-fill text-[16px] hover:text-[#6c7fd8]" />
                               </a>
                             </li>
@@ -226,14 +203,7 @@ const PersonalisedGifts = () => {
                           className="w-full rounded-[20px]"
                         />
                       </div>
-                      <div className="bb-team-contact text-center">
-                        <h5 className="font-quicksand tracking-[0.03rem] leading-[1.2] text-[18px] font-bold text-[#3d4750]">
-                          Juliat Hilson
-                        </h5>
-                        <p className="font-Poppins font-light leading-[28px] tracking-[0.03rem] text-[15px] text-[#686e7d] mt-3">
-                          <button type="button" className="w-full text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Purple</button>
-                        </p>
-                      </div>
+
                     </div>
                   </div>
                 </Slider>

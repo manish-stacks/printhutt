@@ -26,7 +26,7 @@ const Blog = () => {
                 <div className="blog-contact p-[20px]">
                   <h5 className="mb-[12px] text-[18px] leading-[1.2]">
                     <a
-                      href="javascript:void(0)"
+                      
                       className="font-Poppins leading-[28px] tracking-[0.03rem] text-[18px] font-medium text-[#3d4750]"
                     >
                       Marketing Guide: 5 Steps to Success.
@@ -65,7 +65,7 @@ const Blog = () => {
                 <div className="blog-contact p-[20px]">
                   <h5 className="mb-[12px] text-[18px] leading-[1.2]">
                     <a
-                      href="javascript:void(0)"
+                      
                       className="font-Poppins leading-[28px] tracking-[0.03rem] text-[18px] font-medium text-[#3d4750]"
                     >
                       Best way to solve business deal issue.
@@ -104,7 +104,7 @@ const Blog = () => {
                 <div className="blog-contact p-[20px]">
                   <h5 className="mb-[12px] text-[18px] leading-[1.2]">
                     <a
-                      href="javascript:void(0)"
+                      
                       className="font-Poppins leading-[28px] tracking-[0.03rem] text-[18px] font-medium text-[#3d4750]"
                     >
                       31 customer stats know in 2019.
@@ -143,7 +143,7 @@ const Blog = () => {
                 <div className="blog-contact p-[20px]">
                   <h5 className="mb-[12px] text-[18px] leading-[1.2]">
                     <a
-                      href="javascript:void(0)"
+                      
                       className="font-Poppins leading-[28px] tracking-[0.03rem] text-[18px] font-medium text-[#3d4750]"
                     >
                       Business ideas to grow your business.
@@ -182,7 +182,7 @@ const Blog = () => {
                 <div className="blog-contact p-[20px]">
                   <h5 className="mb-[12px] text-[18px] leading-[1.2]">
                     <a
-                      href="javascript:void(0)"
+                      
                       className="font-Poppins leading-[28px] tracking-[0.03rem] text-[18px] font-medium text-[#3d4750]"
                     >
                       Marketing Guide: 5 Steps to Success.
@@ -221,7 +221,7 @@ const Blog = () => {
                 <div className="blog-contact p-[20px]">
                   <h5 className="mb-[12px] text-[18px] leading-[1.2]">
                     <a
-                      href="javascript:void(0)"
+                      
                       className="font-Poppins leading-[28px] tracking-[0.03rem] text-[18px] font-medium text-[#3d4750]"
                     >
                       31 customer stats know in 2019.
@@ -251,7 +251,7 @@ const Blog = () => {
                 <ul className="flex">
                   <li className="leading-[28px] mr-[6px] active">
                     <a
-                      href="javascript:void(0)"
+                      
                       className="transition-all duration-[0.3s] ease-in-out w-[32px] h-[32px] font-light text-[#777] leading-[32px] bg-[#f8f8fb] font-Poppins tracking-[0.03rem] text-[15px] flex text-center align-top justify-center items-center rounded-[10px] border-[1px] border-solid border-[#eee] hover:bg-[#3d4750] hover:text-[#fff]"
                     >
                       1
@@ -259,7 +259,7 @@ const Blog = () => {
                   </li>
                   <li className="leading-[28px] mr-[6px]">
                     <a
-                      href="javascript:void(0)"
+                      
                       className="transition-all duration-[0.3s] ease-in-out w-[32px] h-[32px] font-light text-[#777] leading-[32px] bg-[#f8f8fb] font-Poppins tracking-[0.03rem] text-[15px] flex text-center align-top justify-center items-center rounded-[10px] border-[1px] border-solid border-[#eee] hover:bg-[#3d4750] hover:text-[#fff]"
                     >
                       2
@@ -267,7 +267,7 @@ const Blog = () => {
                   </li>
                   <li className="leading-[28px] mr-[6px]">
                     <a
-                      href="javascript:void(0)"
+                      
                       className="transition-all duration-[0.3s] ease-in-out w-[32px] h-[32px] font-light text-[#777] leading-[32px] bg-[#f8f8fb] font-Poppins tracking-[0.03rem] text-[15px] flex text-center align-top justify-center items-center rounded-[10px] border-[1px] border-solid border-[#eee] hover:bg-[#3d4750] hover:text-[#fff]"
                     >
                       3
@@ -275,7 +275,7 @@ const Blog = () => {
                   </li>
                   <li className="leading-[28px] mr-[6px]">
                     <a
-                      href="javascript:void(0)"
+                      
                       className="transition-all duration-[0.3s] ease-in-out w-[32px] h-[32px] font-light text-[#777] leading-[32px] bg-[#f8f8fb] font-Poppins tracking-[0.03rem] text-[15px] flex text-center align-top justify-center items-center rounded-[10px] border-[1px] border-solid border-[#eee] hover:bg-[#3d4750] hover:text-[#fff]"
                     >
                       4
@@ -283,7 +283,7 @@ const Blog = () => {
                   </li>
                   <li className="leading-[28px]">
                     <a
-                      href="javascript:void(0)"
+                      
                       className="next transition-all duration-[0.3s] ease-in-out w-[auto] h-[32px] px-[13px] font-light text-[#fff] leading-[30px] bg-[#3d4750] font-Poppins tracking-[0.03rem] text-[15px] flex text-center align-top justify-center items-center rounded-[10px] border-[1px] border-solid border-[#eee]"
                     >
                       Next{" "}

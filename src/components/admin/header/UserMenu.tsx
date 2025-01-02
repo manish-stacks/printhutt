@@ -29,6 +29,7 @@ export function UserMenu() {
             await axios.get("/api/auth/logout");
             toast("logout successfully");
             router.push("/login");
+            return;
         } catch (error) {
             toast.error("Whoops Server error");
         }

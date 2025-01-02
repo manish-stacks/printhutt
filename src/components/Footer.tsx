@@ -287,7 +287,7 @@ const Footer = () => {
                         <ul className="align-items-center flex flex-wrap items-center">
                           <li className="bb-footer-link leading-[1.5] flex items-center pr-[5px]">
                             <a
-                              href="javascript:void(0)"
+                              
                               className="transition-all duration-[0.3s] ease-in-out w-[30px] h-[30px] rounded-[5px] bg-[#3d4750] hover:bg-[#6c7fd8] capitalize flex items-center justify-center text-[15px] leading-[20px] text-[#686e7d] relative break-all font-normal"
                             >
                               <FaFacebookF className="text-[16px] text-[#fff]" />
@@ -295,7 +295,7 @@ const Footer = () => {
                           </li>
                           <li className="bb-footer-link leading-[1.5] flex items-center pr-[5px]">
                             <a
-                              href="javascript:void(0)"
+                              
                               className="transition-all duration-[0.3s] ease-in-out w-[30px] h-[30px] rounded-[5px] bg-[#3d4750] hover:bg-[#6c7fd8] capitalize flex items-center justify-center text-[15px] leading-[20px] text-[#686e7d] relative break-all font-normal"
                             >
                               <FaTwitter className="text-[16px] text-[#fff]" />
@@ -303,7 +303,7 @@ const Footer = () => {
                           </li>
                           <li className="bb-footer-link leading-[1.5] flex items-center pr-[5px]">
                             <a
-                              href="javascript:void(0)"
+                              
                               className="transition-all duration-[0.3s] ease-in-out w-[30px] h-[30px] rounded-[5px] bg-[#3d4750] hover:bg-[#6c7fd8] capitalize flex items-center justify-center text-[15px] leading-[20px] text-[#686e7d] relative break-all font-normal"
                             >
                               <FaLinkedinIn className="text-[16px] text-[#fff]" />
@@ -311,7 +311,7 @@ const Footer = () => {
                           </li>
                           <li className="bb-footer-link leading-[1.5] flex items-center pr-[5px]">
                             <a
-                              href="javascript:void(0)"
+                              
                               className="transition-all duration-[0.3s] ease-in-out w-[30px] h-[30px] rounded-[5px] bg-[#3d4750] hover:bg-[#6c7fd8] capitalize flex items-center justify-center text-[15px] leading-[20px] text-[#686e7d] relative break-all font-normal"
                             >
                               <FaInstagram className="text-[16px] text-[#fff]" />
@@ -425,7 +425,7 @@ const Footer = () => {
                       <ul className="flex flex-wrap m-[-2px]">
                         <li className="h-[22px] m-[2px] py-[2px] px-[8px] cursor-pointer border-[1px] border-solid border-[#eee] text-[#777] flex items-center justify-center text-[12px] leading-[22px] rounded-[20px] font-normal active">
                           <a
-                            href="javascript:void(0)"
+                            
                             className="bb-opt-sz font-Poppins text-[12px] leading-[22px] font-normal text-[#777] tracking-[0.03rem]"
                             data-tooltip="Small"
                           >
@@ -434,7 +434,7 @@ const Footer = () => {
                         </li>
                         <li className="h-[22px] m-[2px] py-[2px] px-[8px] cursor-pointer border-[1px] border-solid border-[#eee] text-[#777] flex items-center justify-center text-[12px] leading-[22px] rounded-[20px] font-normal">
                           <a
-                            href="javascript:void(0)"
+                            
                             className="bb-opt-sz font-Poppins text-[12px] leading-[22px] font-normal text-[#777] tracking-[0.03rem]"
                             data-tooltip="Medium"
                           >
@@ -443,7 +443,7 @@ const Footer = () => {
                         </li>
                         <li className="h-[22px] m-[2px] py-[2px] px-[8px] cursor-pointer border-[1px] border-solid border-[#eee] text-[#777] flex items-center justify-center text-[12px] leading-[22px] rounded-[20px] font-normal">
                           <a
-                            href="javascript:void(0)"
+                            
                             className="bb-opt-sz font-Poppins text-[12px] leading-[22px] font-normal text-[#777] tracking-[0.03rem]"
                             data-tooltip="Large"
                           >
@@ -452,7 +452,7 @@ const Footer = () => {
                         </li>
                         <li className="h-[22px] m-[2px] py-[2px] px-[8px] cursor-pointer border-[1px] border-solid border-[#eee] text-[#777] flex items-center justify-center text-[12px] leading-[22px] rounded-[20px] font-normal">
                           <a
-                            href="javascript:void(0)"
+                            
                             className="bb-opt-sz font-Poppins text-[12px] leading-[22px] font-normal text-[#777] tracking-[0.03rem]"
                             data-tooltip="Extra Large"
                           >

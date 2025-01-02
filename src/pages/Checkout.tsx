@@ -1,24 +1,64 @@
 "use client";
+import { create_a_new_order } from "@/_services/common/order";
 import Breadcrumb from "@/components/Breadcrumb";
 import { CheckoutAddressForm } from "@/components/checkout/address-form";
 import { CheckoutloginForm } from "@/components/checkout/login-form";
+import PaymentMethod from "@/components/checkout/payment-method";
 import { useCartStore } from "@/store/useCartStore";
 import { useUserStore } from "@/store/useUserStore";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { RiCheckFill, RiNotification3Fill, RiStackFill, RiTruckLine } from "react-icons/ri";
+import { toast } from "react-toastify";
 
 
 const Checkout = () => {
   const [totalPrice, setTotalPrice] = useState<number>(0);
-  const { items, getTotalPrice } = useCartStore();
+  const { items, getTotalPrice, getTotalItems, removeAllItems } = useCartStore();
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
+  const [paymentMethod, setPaymentMethod] = useState<'online' | 'offline'>('online');
+  const [couponCode, setCouponCode] = useState<string>('');
+  const [selectAddress, setSelectAddress] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
+
 
   useEffect(() => {
     setTotalPrice(getTotalPrice());
   }, [items]);
 
 
+  const handleChangeAddress = (id: string) => {
+    setSelectAddress(id);
+  };
+
+
+  const placeOrder = async () => {
+    const order = {
+      items: items.map((item) => ({ productId: item._id, slug: item.slug, quantity: item.quantity, name: item.title, price: item.price })),
+      getTotalItems: getTotalItems(),
+      totalPrice: getTotalPrice(),
+      paymentMethod: paymentMethod,
+      couponCode: couponCode,
+      address: selectAddress
+    };
+
+    // console.log(order)
+    try {
+      setIsSubmitting(true);
+      const response = await create_a_new_order(order) as any;
+      toast.success('Order placed successfully');
+      router.push(`/orders/${response.order._id}/confirmation`);
+      removeAllItems()
+      return response;
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to save address');
+    } finally {
+      setIsSubmitting(false);
+    }
+
+  }
 
   return (
     <>
@@ -32,10 +72,11 @@ const Checkout = () => {
           <div className="flex flex-wrap w-full mb-[-24px]">
             {
               isLoggedIn ? (
-                <CheckoutAddressForm />
+                <CheckoutAddressForm onChangeAddress={handleChangeAddress} />
               ) : (
                 <CheckoutloginForm />
-              )}
+              )
+            }
 
 
             <div className="min-[992px]:w-[33.33%] w-full px-[12px] mb-[24px]">
@@ -66,7 +107,7 @@ const Checkout = () => {
                           Delivery Charges
                         </span>
                         <span className="font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] font-medium text-[#686e7d]">
-                          ₹{totalPrice.toFixed(2)}
+                          {/* ₹{totalPrice.toFixed(2)} */}Free
                         </span>
                       </li>
                       <li className="flex justify-between leading-[28px] mb-[8px]">
@@ -75,7 +116,7 @@ const Checkout = () => {
                         </span>
                         <span className="font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] font-medium text-[#686e7d]">
                           <a
-                            href="javascript:void(0)"
+                            
                             className="apply drop-coupon font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] font-medium text-[#ff0000]"
                           >
                             Apply Coupon
@@ -121,7 +162,7 @@ const Checkout = () => {
                           <div className="items-contact">
                             <h4 className="text-[16px]">
                               <a
-                                href="javascript:void(0)"
+                                
                                 className="font-Poppins tracking-[0.03rem] text-[15px] font-medium leading-[18px] text-[#3d4750]"
                               >
                                 {item.title}
@@ -163,52 +204,17 @@ const Checkout = () => {
                   data-aos-duration={1000}
                   data-aos-delay={400}
                 >
-                  <div className="sub-title mb-[12px]">
-                    <h4 className="font-quicksand tracking-[0.03rem] leading-[1.2] text-[20px] font-bold text-[#3d4750]">
-                      Payment Method
-                    </h4>
-                  </div>
-                  <div className="checkout-method mb-[24px]">
-                    <span className="details font-Poppins leading-[26px] tracking-[0.02rem] text-[15px] font-medium text-[#686e7d]">
-                      Please select the preferred shipping method to use on this
-                      order.
-                    </span>
-                    <div className="bb-del-option mt-[12px] flex max-[480px]:flex-col">
-                      <div className="inner-del w-[50%] max-[480px]:w-full">
-                        <div className="radio-itens">
-                          <input
-                            type="radio"
-                            id="Cash1"
-                            name="radio-itens"
-                            className="w-full p-[10px] text-[14px] font-normal text-[#686e7d] border-[1px] border-solid border-[#eee] outline-[0] rounded-[10px]"
-                          />
-                          <label
-                            htmlFor="Cash1"
-                            className="relative pl-[26px] cursor-pointer leading-[16px] inline-block text-[#686e7d] tracking-[0]"
-                          >
-                            Cash On Delivery
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="about-order">
-                    <h5 className="font-quicksand tracking-[0.03rem] leading-[1.2] mb-[12px] text-[15px] font-medium text-[#686e7d]">
-                      Add Comments About Your Order
-                    </h5>
-                    <textarea
-                      name="your-commemt"
-                      placeholder="Comments"
-                      className="w-full h-[100px] p-[10px] text-[14px] font-normal text-[#686e7d] border-[1px] border-solid border-[#eee] outline-[0] rounded-[10px]"
-                      defaultValue={""}
-                    />
-                  </div>
+                  <PaymentMethod
+                    value={paymentMethod}
+                    onChange={(value) => setPaymentMethod(value)}
+                    totalPrice={totalPrice}
+                  />
                 </div>
                 <div
                   className="checkout-items border-[1px] border-solid border-[#eee] p-[20px] rounded-[20px] mb-[24px]"
                   data-aos="fade-up"
                   data-aos-duration={1000}
-                  data-aos-delay={800}
+                  data-aos-delay={400}
                 >
                   <div className="sub-title mb-[12px]">
                     <h4 className="font-quicksand tracking-[0.03rem] leading-[1.2] text-[20px] font-bold text-[#3d4750]">
@@ -223,6 +229,17 @@ const Checkout = () => {
                     />
                   </div>
                 </div>
+
+
+                <button
+                  className="w-full bb-btn-2 mt-[24px] inline-flex items-center justify-center check-btn transition-all duration-[0.3s] ease-in-out font-Poppins leading-[28px] tracking-[0.03rem] py-[8px] px-[20px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
+                  data-aos="fade-up"
+                  data-aos-duration={1000}
+                  data-aos-delay={400}
+                  onClick={placeOrder}
+                >
+                  {isSubmitting ? 'Submiting...' : 'Place Order'}
+                </button>
               </div>
             </div>
           </div>

@@ -27,7 +27,7 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 import dynamic from 'next/dynamic';
 
 const QuillEditor = dynamic(() => import('@/components/QuillEditor'), { ssr: false });
-// <div dangerouslySetInnerHTML={{ __html: content }} />
+
 const initialFormData: ProductFormData = {
   title: '',
   slug: '',

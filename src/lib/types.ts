@@ -30,3 +30,25 @@ export type FilterState = {
 }
 
 
+export interface mallerType {
+    email: String,
+    emailType: String,
+    userId: String
+}
+export interface OrderEmailData {
+    email: string;
+    orderId: string;
+    totalAmount: number;
+    items: Array<{
+        name: string;
+        quantity: number;
+        price: number;
+    }>;
+    shipping: {
+        addressLine: string,
+        city: string,
+        state: string,
+        postCode: string,
+        mobileNumber: string
+    };
+}

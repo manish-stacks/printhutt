@@ -138,7 +138,7 @@ const HomeComponent = () => {
                   Personalised &amp; LED Lamp
                 </h4>
                 <a
-                  href="javascript:void(0)"
+                  
                   className="bb-btn-1 transition-all duration-[0.3s] ease-in-out font-Poppins leading-[28px] tracking-[0.03rem] py-[8px] px-[20px] max-[1199px]:py-[3px] max-[1199px]:px-[15px] text-[14px] font-normal text-[#3d4750] bg-transparent rounded-[10px] border-[1px] border-solid border-[#3d4750] hover:bg-[#6c7fd8] hover:border-[#6c7fd8] hover:text-[#fff]"
                 >
                   Shop Now
@@ -188,7 +188,7 @@ const HomeComponent = () => {
                 <div className="tab-content">
                   <div className="tab-vendors-pane" id="vendors_tab_one">
                     <a
-                      href="javascript:void(0)"
+                      
                       className="bb-vendor-init transition-all duration-[0.3s] ease-in-out absolute right-[20px] top-[20px] h-[35px] w-[35px] bg-[#00000080] hover:bg-[#000000cc] flex justify-center items-center rounded-[10px]"
                     >
                       <i className="ri-arrow-right-up-line text-[20px] text-[#fff]" />

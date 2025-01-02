@@ -42,7 +42,7 @@ const Offer = () => {
                       New
                     </span>
                   </span>
-                  <a href="javascript:void(0)">
+                  <a >
                     <div className="inner-img relative block overflow-hidden pointer-events-none rounded-t-[20px]">
                       <img
                         className="main-img transition-all duration-[0.3s] ease-in-out w-full"
@@ -59,7 +59,7 @@ const Offer = () => {
                   <ul className="bb-pro-actions transition-all duration-[0.3s] ease-in-out my-[0] mx-[auto] absolute z-[9] left-[0] right-[0] bottom-[0] flex flex-row items-center justify-center opacity-[0]">
                     <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                       <a
-                        href="javascript:void(0)"
+                        
                         title="Wishlist"
                         className="w-[35px] h-[35px] flex items-center justify-center"
                       >
@@ -68,7 +68,7 @@ const Offer = () => {
                     </li>
                     <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                       <a
-                        href="javascript:void(0)"
+                        
                         title="Quick View"
                         className="bb-modal-toggle w-[35px] h-[35px] flex items-center justify-center"
                       >
@@ -86,7 +86,7 @@ const Offer = () => {
                     </li>
                     <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                       <a
-                        href="javascript:void(0)"
+                        
                         title="Add To Cart"
                         className="w-[35px] h-[35px] flex items-center justify-center"
                       >
@@ -170,7 +170,7 @@ const Offer = () => {
             >
               <div className="bb-pro-box bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[20px]">
                 <div className="bb-pro-img overflow-hidden relative border-b-[1px] border-solid border-[#eee] z-[4]">
-                  <a href="javascript:void(0)">
+                  <a >
                     <div className="inner-img relative block overflow-hidden pointer-events-none rounded-t-[20px]">
                       <img
                         className="main-img transition-all duration-[0.3s] ease-in-out w-full"
@@ -187,7 +187,7 @@ const Offer = () => {
                   <ul className="bb-pro-actions transition-all duration-[0.3s] ease-in-out my-[0] mx-[auto] absolute z-[9] left-[0] right-[0] bottom-[0] flex flex-row items-center justify-center opacity-[0]">
                     <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                       <a
-                        href="javascript:void(0)"
+                        
                         title="Wishlist"
                         className="w-[35px] h-[35px] flex items-center justify-center"
                       >
@@ -196,7 +196,7 @@ const Offer = () => {
                     </li>
                     <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                       <a
-                        href="javascript:void(0)"
+                        
                         title="Quick View"
                         className="bb-modal-toggle w-[35px] h-[35px] flex items-center justify-center"
                       >
@@ -214,7 +214,7 @@ const Offer = () => {
                     </li>
                     <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                       <a
-                        href="javascript:void(0)"
+                        
                         title="Add To Cart"
                         className="w-[35px] h-[35px] flex items-center justify-center"
                       >
@@ -298,7 +298,7 @@ const Offer = () => {
                       Trend
                     </span>
                   </span>
-                  <a href="javascript:void(0)">
+                  <a >
                     <div className="inner-img relative block overflow-hidden pointer-events-none rounded-t-[20px]">
                       <img
                         className="main-img transition-all duration-[0.3s] ease-in-out w-full"
@@ -315,7 +315,7 @@ const Offer = () => {
                   <ul className="bb-pro-actions transition-all duration-[0.3s] ease-in-out my-[0] mx-[auto] absolute z-[9] left-[0] right-[0] bottom-[0] flex flex-row items-center justify-center opacity-[0]">
                     <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                       <a
-                        href="javascript:void(0)"
+                        
                         title="Wishlist"
                         className="w-[35px] h-[35px] flex items-center justify-center"
                       >
@@ -324,7 +324,7 @@ const Offer = () => {
                     </li>
                     <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                       <a
-                        href="javascript:void(0)"
+                        
                         title="Quick View"
                         className="bb-modal-toggle w-[35px] h-[35px] flex items-center justify-center"
                       >
@@ -342,7 +342,7 @@ const Offer = () => {
                     </li>
                     <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                       <a
-                        href="javascript:void(0)"
+                        
                         title="Add To Cart"
                         className="w-[35px] h-[35px] flex items-center justify-center"
                       >
@@ -418,7 +418,7 @@ const Offer = () => {
             >
               <div className="bb-pro-box bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[20px]">
                 <div className="bb-pro-img overflow-hidden relative border-b-[1px] border-solid border-[#eee] z-[4]">
-                  <a href="javascript:void(0)">
+                  <a >
                     <div className="inner-img relative block overflow-hidden pointer-events-none rounded-t-[20px]">
                       <img
                         className="main-img transition-all duration-[0.3s] ease-in-out w-full"
@@ -435,7 +435,7 @@ const Offer = () => {
                   <ul className="bb-pro-actions transition-all duration-[0.3s] ease-in-out my-[0] mx-[auto] absolute z-[9] left-[0] right-[0] bottom-[0] flex flex-row items-center justify-center opacity-[0]">
                     <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                       <a
-                        href="javascript:void(0)"
+                        
                         title="Wishlist"
                         className="w-[35px] h-[35px] flex items-center justify-center"
                       >
@@ -444,7 +444,7 @@ const Offer = () => {
                     </li>
                     <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                       <a
-                        href="javascript:void(0)"
+                        
                         title="Quick View"
                         className="bb-modal-toggle w-[35px] h-[35px] flex items-center justify-center"
                       >
@@ -462,7 +462,7 @@ const Offer = () => {
                     </li>
                     <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                       <a
-                        href="javascript:void(0)"
+                        
                         title="Add To Cart"
                         className="w-[35px] h-[35px] flex items-center justify-center"
                       >
@@ -543,7 +543,7 @@ const Offer = () => {
                       Sale
                     </span>
                   </span>
-                  <a href="javascript:void(0)">
+                  <a >
                     <div className="inner-img relative block overflow-hidden pointer-events-none rounded-t-[20px]">
                       <img
                         className="main-img transition-all duration-[0.3s] ease-in-out w-full"
@@ -560,7 +560,7 @@ const Offer = () => {
                   <ul className="bb-pro-actions transition-all duration-[0.3s] ease-in-out my-[0] mx-[auto] absolute z-[9] left-[0] right-[0] bottom-[0] flex flex-row items-center justify-center opacity-[0]">
                     <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                       <a
-                        href="javascript:void(0)"
+                        
                         title="Wishlist"
                         className="w-[35px] h-[35px] flex items-center justify-center"
                       >
@@ -569,7 +569,7 @@ const Offer = () => {
                     </li>
                     <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                       <a
-                        href="javascript:void(0)"
+                        
                         title="Quick View"
                         className="bb-modal-toggle w-[35px] h-[35px] flex items-center justify-center"
                       >
@@ -587,7 +587,7 @@ const Offer = () => {
                     </li>
                     <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                       <a
-                        href="javascript:void(0)"
+                        
                         title="Add To Cart"
                         className="w-[35px] h-[35px] flex items-center justify-center"
                       >
@@ -648,7 +648,7 @@ const Offer = () => {
             >
               <div className="bb-pro-box bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[20px]">
                 <div className="bb-pro-img overflow-hidden relative border-b-[1px] border-solid border-[#eee] z-[4]">
-                  <a href="javascript:void(0)">
+                  <a >
                     <div className="inner-img relative block overflow-hidden pointer-events-none rounded-t-[20px]">
                       <img
                         className="main-img transition-all duration-[0.3s] ease-in-out w-full"
@@ -665,7 +665,7 @@ const Offer = () => {
                   <ul className="bb-pro-actions transition-all duration-[0.3s] ease-in-out my-[0] mx-[auto] absolute z-[9] left-[0] right-[0] bottom-[0] flex flex-row items-center justify-center opacity-[0]">
                     <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                       <a
-                        href="javascript:void(0)"
+                        
                         title="Wishlist"
                         className="w-[35px] h-[35px] flex items-center justify-center"
                       >
@@ -674,7 +674,7 @@ const Offer = () => {
                     </li>
                     <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                       <a
-                        href="javascript:void(0)"
+                        
                         title="Quick View"
                         className="bb-modal-toggle w-[35px] h-[35px] flex items-center justify-center"
                       >
@@ -692,7 +692,7 @@ const Offer = () => {
                     </li>
                     <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                       <a
-                        href="javascript:void(0)"
+                        
                         title="Add To Cart"
                         className="w-[35px] h-[35px] flex items-center justify-center"
                       >
@@ -753,7 +753,7 @@ const Offer = () => {
             >
               <div className="bb-pro-box bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[20px]">
                 <div className="bb-pro-img overflow-hidden relative border-b-[1px] border-solid border-[#eee] z-[4]">
-                  <a href="javascript:void(0)">
+                  <a >
                     <div className="inner-img relative block overflow-hidden pointer-events-none rounded-t-[20px]">
                       <img
                         className="main-img transition-all duration-[0.3s] ease-in-out w-full"
@@ -770,7 +770,7 @@ const Offer = () => {
                   <ul className="bb-pro-actions transition-all duration-[0.3s] ease-in-out my-[0] mx-[auto] absolute z-[9] left-[0] right-[0] bottom-[0] flex flex-row items-center justify-center opacity-[0]">
                     <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                       <a
-                        href="javascript:void(0)"
+                        
                         title="Wishlist"
                         className="w-[35px] h-[35px] flex items-center justify-center"
                       >
@@ -779,7 +779,7 @@ const Offer = () => {
                     </li>
                     <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                       <a
-                        href="javascript:void(0)"
+                        
                         title="Quick View"
                         className="bb-modal-toggle w-[35px] h-[35px] flex items-center justify-center"
                       >
@@ -797,7 +797,7 @@ const Offer = () => {
                     </li>
                     <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                       <a
-                        href="javascript:void(0)"
+                        
                         title="Add To Cart"
                         className="w-[35px] h-[35px] flex items-center justify-center"
                       >
@@ -858,7 +858,7 @@ const Offer = () => {
             >
               <div className="bb-pro-box bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[20px]">
                 <div className="bb-pro-img overflow-hidden relative border-b-[1px] border-solid border-[#eee] z-[4]">
-                  <a href="javascript:void(0)">
+                  <a >
                     <div className="inner-img relative block overflow-hidden pointer-events-none rounded-t-[20px]">
                       <img
                         className="main-img transition-all duration-[0.3s] ease-in-out w-full"
@@ -875,7 +875,7 @@ const Offer = () => {
                   <ul className="bb-pro-actions transition-all duration-[0.3s] ease-in-out my-[0] mx-[auto] absolute z-[9] left-[0] right-[0] bottom-[0] flex flex-row items-center justify-center opacity-[0]">
                     <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                       <a
-                        href="javascript:void(0)"
+                        
                         title="Wishlist"
                         className="w-[35px] h-[35px] flex items-center justify-center"
                       >
@@ -884,7 +884,7 @@ const Offer = () => {
                     </li>
                     <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                       <a
-                        href="javascript:void(0)"
+                        
                         title="Quick View"
                         className="bb-modal-toggle w-[35px] h-[35px] flex items-center justify-center"
                       >
@@ -902,7 +902,7 @@ const Offer = () => {
                     </li>
                     <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                       <a
-                        href="javascript:void(0)"
+                        
                         title="Add To Cart"
                         className="w-[35px] h-[35px] flex items-center justify-center"
                       >

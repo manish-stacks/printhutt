@@ -5,26 +5,30 @@ import Breadcrumb from "@/components/Breadcrumb";
 import { ProductSidebar } from "@/components/products/ProductSidebar";
 import type { FilterState } from "@/lib/types";
 import { toast } from "react-toastify";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ProductHeader } from "@/components/products/ProductHeader";
 import ProductGrid from "@/components/products/ProductGrid";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { get_all_products } from "@/_services/admin/product";
 import { useCartStore } from "@/store/useCartStore";
 import type { Product } from "@/lib/types/product";
+import ProductsPagination from "@/components/products/ProductsPagination";
+import { Pagination } from "@/components/admin/Pagination";
 
 function Products() {
 
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
+  const [pagination, setPagination] = useState<any>();
+  const router = useRouter();
   const [filters, setFilters] = useState<FilterState>({
     categories: [],
     priceRange: [0, 1000],
     rating: null,
     tags: []
   })
-// console.log(filters)
+  // console.log(filters)
 
   const searchParams = useSearchParams();
   const page = searchParams?.get('page') || '1';
@@ -43,12 +47,14 @@ function Products() {
         tags: filters.tags.join(',')
       })
 
-      // console.log(`/api/products?${queryParams}`)
-      // const response = await fetch(`/api/products?${queryParams}`)
-      // const data = await response.json()
-      // setProducts(data.products)
-      const response = await get_all_products(page, search) as any;
-      setProducts(response.products);
+      console.log(`/api/products?${queryParams}`)
+      const response = await fetch(`/api/products?${queryParams}`)
+      const data = await response.json()
+      // console.log(data)
+      setProducts(data.products)
+      setPagination(data.pagination);
+      // const response = await get_all_products(page, search) as any;
+      // setProducts(response.products);
     } catch (error) {
       toast.error('Failed to fetch products')
     } finally {
@@ -66,9 +72,15 @@ function Products() {
   const items = useCartStore(state => state.items);
   console.log(items)
 
-  
 
 
+
+  const handlePageChange = (newPage: number) => {
+    const params = new URLSearchParams(searchParams!);
+    params.set('page', newPage.toString());
+    router.push(`?${params.toString()}`);
+    return params;
+  };
 
   if (loading) {
     return (
@@ -104,6 +116,15 @@ function Products() {
                     totalProducts={products.length}
                   />
                   <ProductGrid products={products} viewMode={viewMode} />
+                  {/* <ProductsPagination /> */}
+                  <div className="w-full px-[12px]">
+                      {pagination && (
+                        <Pagination
+                          pagination={pagination}
+                          onPageChange={handlePageChange}
+                        />
+                      )}
+                  </div>
                 </div>
               </div>
             </div>

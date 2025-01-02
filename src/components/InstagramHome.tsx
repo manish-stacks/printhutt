@@ -55,7 +55,7 @@ const InstagramHome = () => {
                       data-aos-delay={200}
                     >
                       <div className="instagram-img relative overflow-hidden rounded-[30px]">
-                        <a href="javascript:void(0)">
+                        <a >
                           <img
                             src="https://printhutt.com//media/table-name-lemp.png"
                             alt="instagram-1"
@@ -73,7 +73,7 @@ const InstagramHome = () => {
                       data-aos-delay={300}
                     >
                       <div className="instagram-img relative overflow-hidden rounded-[30px]">
-                        <a href="javascript:void(0)">
+                        <a >
                           <img
                             src="https://printhutt.com//media/table-name-lemp.png"
                             alt="instagram-2"
@@ -91,7 +91,7 @@ const InstagramHome = () => {
                       data-aos-delay={400}
                     >
                       <div className="instagram-img relative overflow-hidden rounded-[30px]">
-                        <a href="javascript:void(0)">
+                        <a >
                           <img
                             src="https://printhutt.com//media/table-name-lemp.png"
                             alt="instagram-3"
@@ -109,7 +109,7 @@ const InstagramHome = () => {
                       data-aos-delay={500}
                     >
                       <div className="instagram-img relative overflow-hidden rounded-[30px]">
-                        <a href="javascript:void(0)">
+                        <a >
                           <img
                             src="https://printhutt.com//media/table-name-lemp.png"
                             alt="instagram-4"
@@ -127,7 +127,7 @@ const InstagramHome = () => {
                       data-aos-delay={600}
                     >
                       <div className="instagram-img relative overflow-hidden rounded-[30px]">
-                        <a href="javascript:void(0)">
+                        <a >
                           <img
                             src="https://printhutt.com//media/table-name-lemp.png"
                             alt="instagram-5"
@@ -145,7 +145,7 @@ const InstagramHome = () => {
                       data-aos-delay={700}
                     >
                       <div className="instagram-img relative overflow-hidden rounded-[30px]">
-                        <a href="javascript:void(0)">
+                        <a >
                           <img
                             src="https://printhutt.com//media/table-name-lemp.png"
                             alt="instagram-6"

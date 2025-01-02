@@ -1,3 +1,4 @@
+'use client';
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import CategoryPopup from "./CategoryPopup";
@@ -15,9 +16,11 @@ import Image from "next/image";
 import siteLogo from '/public/print-hutt-logo.webp';
 import { useCartStore } from "@/store/useCartStore";
 import { useUserStore } from "@/store/useUserStore";
+import HeaderCategoryList from "./header/category-list";
+import axios from "axios";
 
 
-const Header = () => {
+export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const toggelCategory = () => setIsOpen((prev) => !prev);
   const toggleClose = () => setIsOpen(false);
@@ -35,18 +38,36 @@ const Header = () => {
   const [isOpenSubCategory, setIsOpenSubCategory] = useState(false);
   const toggleMenuMobileSubcat = () => setIsOpenSubCategory((prev) => !prev);
 
-
   const { items } = useCartStore();
-
-  const [totalItem, setTotalItem] = useState<number>(0);
-  useEffect(() => {
-    const totalItems = items.length
-    setTotalItem(totalItems);
-  }, []);
-  // setTotalItem(items.length)
-  // console.log(totalItem)
+  const totalItem = items.length;
 
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
+
+  const socialLinks = [
+    { icon: RiFacebookFill, link: "https://www.facebook.com/print.hutt" },
+    { icon: RiInstagramFill, link: "https://www.instagram.com/printhutt/" },
+    { icon: RiTwitterFill, link: "https://twitter.com/printhutt" },
+    { icon: RiLinkedinFill, link: "https://www.linkedin.com/company/print-hutt" },
+  ];
+
+  const [categoryList, setCategoryList] = useState([]);
+  const [relatedProducts, setRelatedProducts] = useState([]);
+
+
+  const fetchCategory = async () => {
+    try {
+      const {data} = await axios.get("/api/v1/category");
+      setCategoryList(data.categories);
+      setRelatedProducts(data.products);
+
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategory();
+  }, []);
 
 
   return (
@@ -274,7 +295,7 @@ const Header = () => {
                           </div>
                           <div className="bb-btn-desc flex flex-col ml-[10px] max-[1199px]:hidden">
                             <span className="bb-btn-title font-Poppins transition-all duration-[0.3s] ease-in-out text-[12px] leading-[1] text-[#3d4750] mb-[4px] tracking-[0.6px] capitalize font-medium whitespace-nowrap">
-                              <b className="bb-cart-count">{items.length}</b> items
+                              <b className="bb-cart-count">{totalItem}</b> items
                             </span>
                             <span className="bb-btn-stitle font-Poppins transition-all duration-[0.3s] ease-in-out text-[14px] leading-[16px] font-semibold text-[#3d4750]  tracking-[0.03rem] whitespace-nowrap">
                               Cart
@@ -344,76 +365,19 @@ const Header = () => {
                           Home
                         </Link>
                       </li>
-                      <li className="nav-item bb-main-dropdown flex items-center mr-[45px]">
-                        <a
-                          className="nav-link bb-dropdown-item font-Poppins relative p-[0] leading-[28px] text-[15px] font-medium text-[#3d4750] block tracking-[0.03rem]"
-                          href="javascript:void(0)"
-                        >
-                          Categories
-                        </a>
-                        <ul className="mega-menu min-w-full transition-all duration-[0.3s] ease-in-out mt-[25px] pl-[30px] absolute top-[40px] z-[16] text-left opacity-[0] invisible left-[0] right-[auto] bg-[#fff] border-[1px] border-solid border-[#eee] flex flex-col rounded-[10px]">
-                          <li className="m-[0] flex items-center">
-                            <ul className="mega-block w-[calc(25%-30px)] mr-[30px] py-[15px]">
-                              <li className="menu_title border-b-[1px] border-solid border-[#eee] mb-[10px] pb-[5px] flex items-center leading-[28px]">
-                                <a
-                                  href="javascript:void(0)"
-                                  className="transition-all duration-[0.3s] ease-in-out font-Poppins h-[auto] text-[#6c7fd8] text-[15px] font-medium tracking-[0.03rem] block py-[10px] leading-[22px] capitalize"
-                                >
-                                  Classic
-                                </a>
-                              </li>
-                              <li className="flex items-center leading-[28px]">
-                                <a
-                                  href="shop-left-sidebar-col-3.html"
-                                  className="transition-all duration-[0.3s] ease-in-out font-Poppins py-[10px] leading-[22px] text-[14px] font-normal tracking-[0.03rem] text-[#686e7d] hover:text-[#6c7fd8] capitalize"
-                                >
-                                  Left sidebar 3 column
-                                </a>
-                              </li>
-                              <li className="flex items-center leading-[28px]">
-                                <a
-                                  href="shop-left-sidebar-col-4.html"
-                                  className="transition-all duration-[0.3s] ease-in-out font-Poppins py-[10px] leading-[22px] text-[14px] font-normal tracking-[0.03rem] text-[#686e7d] hover:text-[#6c7fd8] capitalize"
-                                >
-                                  Left sidebar 4 column
-                                </a>
-                              </li>
-                            </ul>
-                          </li>
-                        </ul>
-                      </li>
+                      <HeaderCategoryList />
                       <li className="nav-item bb-dropdown flex items-center relative mr-[45px]">
-                        <a
-                          className="nav-link bb-dropdown-item font-Poppins relative p-[0] leading-[28px] text-[15px] font-medium text-[#3d4750] block tracking-[0.03rem]"
-                          href="javascript:void(0)"
+                        <Link
+                          className="nav-link font-Poppins relative p-[0] leading-[28px] text-[15px] font-medium text-[#3d4750] block tracking-[0.03rem]"
+                          href="/products"
                         >
                           Products
-                        </a>
-                        <ul className="bb-dropdown-menu min-w-[205px] p-[10px] transition-all duration-[0.3s] ease-in-out mt-[25px] absolute top-[40px] z-[16] text-left opacity-[0] invisible left-[0] right-[auto] bg-[#fff] border-[1px] border-solid border-[#eee] flex flex-col rounded-[10px]">
-                          <li className="bb-mega-dropdown m-[0] py-[5px] px-[15px] relative flex items-center">
-                            <Link
-                              className="bb-mega-item transition-all duration-[0.3s] ease-in-out font-Poppins py-[5px] leading-[22px] text-[14px] font-normal text-[#686e7d] hover:text-[#6c7fd8] capitalize tracking-[0.03rem]"
-                              href="/"
-                            >
-                              Product page
-                            </Link>
-                            <ul className="bb-mega-menu transition-all duration-[0.3s] ease-in-out min-w-[220px] p-[10px] mt-[25px] absolute top-[-20px] left-[193px] z-[16] text-left opacity-[0] invisible right-[auto] bg-[#fff] border-[1px] border-solid border-[#eee] flex flex-col rounded-[10px]">
-                              <li className="m-[0] py-[5px] px-[15px] flex items-center">
-                                <a
-                                  className="dropdown-item transition-all duration-[0.3s] ease-in-out py-[6px] text-[14px] font-normal text-[#686e7d] hover:text-[#6c7fd8] capitalize"
-                                  href="product-left-sidebar.html"
-                                >
-                                  Product left sidebar
-                                </a>
-                              </li>
-                            </ul>
-                          </li>
-                        </ul>
+                        </Link>
                       </li>
                       <li className="nav-item bb-dropdown flex items-center relative mr-[45px]">
                         <a
                           className="nav-link bb-dropdown-item font-Poppins relative p-[0] leading-[28px] text-[15px] font-medium text-[#3d4750] block tracking-[0.03rem]"
-                          href="javascript:void(0)"
+
                         >
                           Pages
                         </a>
@@ -579,7 +543,7 @@ const Header = () => {
                         onClick={toggleMenuMobileSubcat}
                       ></span>
                       <a
-                        href="javascript:void(0)"
+
                         className="transition-all duration-[0.3s] ease-in-out mb-[0] pl-[15px] pr-[0] py-[12px] capitalize block text-[14px] font-normal text-[#686e7d]"
                       >
                         Classic
@@ -603,7 +567,7 @@ const Header = () => {
                 <li className="relative">
                   <span className="menu-toggle"></span>
                   <a
-                    href="javascript:void(0)"
+
                     className="transition-all duration-[0.3s] ease-in-out mb-[12px] p-[12px] block font-Poppins capitalize text-[#686e7d] border-[1px] border-solid border-[#eee] rounded-[10px] text-[15px] font-medium leading-[28px] tracking-[0.03rem]"
                   >
                     Products
@@ -612,7 +576,7 @@ const Header = () => {
                     <li className="relative">
                       <span className="menu-toggle"></span>
                       <a
-                        href="javascript:void(0)"
+
                         className="transition-all duration-[0.3s] ease-in-out mb-[0] pl-[15px] pr-[0] py-[12px] capitalize block text-[14px] font-normal text-[#686e7d]"
                       >
                         Product page
@@ -649,7 +613,7 @@ const Header = () => {
                 <li className="relative">
                   <span className="menu-toggle"></span>
                   <a
-                    href="javascript:void(0)"
+
                     className="transition-all duration-[0.3s] ease-in-out mb-[12px] p-[12px] block font-Poppins capitalize text-[#686e7d] border-[1px] border-solid border-[#eee] rounded-[10px] text-[15px] font-medium leading-[28px] tracking-[0.03rem]"
                   >
                     Pages
@@ -681,38 +645,20 @@ const Header = () => {
               <div className="header-res-social mt-[30px]">
                 <div className="header-top-social">
                   <ul className="flex flex-row justify-center mb-[0]">
-                    <li className="list-inline-item w-[30px] h-[30px] flex items-center justify-center bg-[#3d4750] rounded-[10px] mr-[.5rem]">
-                      <a
-                        href="#"
-                        className="transition-all duration-[0.3s] ease-in-out"
-                      >
-                        <RiFacebookFill className="text-[#fff] text-[15px]" />
-                      </a>
-                    </li>
-                    <li className="list-inline-item w-[30px] h-[30px] flex items-center justify-center bg-[#3d4750] rounded-[10px] mr-[.5rem]">
-                      <a
-                        href="#"
-                        className="transition-all duration-[0.3s] ease-in-out"
-                      >
-                        <RiTwitterFill className="text-[#fff] text-[15px]" />
-                      </a>
-                    </li>
-                    <li className="list-inline-item w-[30px] h-[30px] flex items-center justify-center bg-[#3d4750] rounded-[10px] mr-[.5rem]">
-                      <a
-                        href="#"
-                        className="transition-all duration-[0.3s] ease-in-out"
-                      >
-                        <RiInstagramFill className="text-[#fff] text-[15px]" />
-                      </a>
-                    </li>
-                    <li className="list-inline-item w-[30px] h-[30px] flex items-center justify-center bg-[#3d4750] rounded-[10px]">
-                      <a
-                        href="#"
-                        className="transition-all duration-[0.3s] ease-in-out"
-                      >
-                        <RiLinkedinFill className="text-[#fff] text-[15px]" />
-                      </a>
-                    </li>
+
+                    {
+                      socialLinks && socialLinks.map((item, index) => (
+                        <li key={index} className="list-inline-item w-[30px] h-[30px] flex items-center justify-center bg-[#3d4750] rounded-[10px] mr-[.5rem]">
+                          <a
+                            href={item.link}
+                            className="transition-all duration-[0.3s] ease-in-out"
+                          >
+                            <item.icon className="text-[#fff] text-[15px]" />
+                          </a>
+                        </li>
+                      ))
+                    }
+
                   </ul>
                 </div>
               </div>
@@ -722,10 +668,10 @@ const Header = () => {
         </div>
       </header>
 
-      {isOpen && <CategoryPopup onClose={toggleClose} />}
+      {isOpen && <CategoryPopup onClose={toggleClose} category ={categoryList} products={relatedProducts} />}
       {isCartOpen && <CartSidebar onClose={toggelCartSidebarClose} />}
     </>
   );
 };
 
-export default Header;
+

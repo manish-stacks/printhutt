@@ -30,6 +30,7 @@ const Cart = () => {
 
   const gotoCheckout = () => {
     router.push('/checkout');
+    return;
   }
 
 
@@ -78,7 +79,7 @@ const Cart = () => {
                       items.map(item => (
                         <tr className="border-b-[1px] border-solid border-[#eee]" key={item._id}>
                           <td className="p-[12px]">
-                            <a href="javascript:void(0)">
+                            <a >
                               <div className="Product-cart flex items-center">
                                 <Image
                                   className="w-[70px] border-[1px] border-solid border-[#eee] rounded-[10px]"

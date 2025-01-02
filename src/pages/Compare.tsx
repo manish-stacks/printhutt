@@ -100,7 +100,7 @@ const Compare = () => {
                     <ul className="bb-compare-inner-box border-l-[1px] border-t-[1px] border-b-[1px] border-solid border-[#eee] w-[323px] max-[991px]:w-[250px]">
                       <li className="inner-image relative bg-[#fff] borderb-[1px] border-solid border-[#eee]">
                         <span className="bb-remove-compare absolute top-[20px] right-[20px]">
-                          <a href="javascript:void(0)">
+                          <a >
                             <i className="ri-close-circle-fill transition-all duration-[0.3s] ease-in-out text-[22px] text-[#686e7d] hover:text-[#6c7fd8]" />
                           </a>
                         </span>
@@ -196,7 +196,7 @@ const Compare = () => {
                     <ul className="bb-compare-inner-box border-l-[1px] border-t-[1px] border-b-[1px] border-solid border-[#eee] w-[323px] max-[991px]:w-[250px]">
                       <li className="inner-image relative bg-[#fff] borderb-[1px] border-solid border-[#eee]">
                         <span className="bb-remove-compare absolute top-[20px] right-[20px]">
-                          <a href="javascript:void(0)">
+                          <a >
                             <i className="ri-close-circle-fill transition-all duration-[0.3s] ease-in-out text-[22px] text-[#686e7d] hover:text-[#6c7fd8]" />
                           </a>
                         </span>
@@ -292,7 +292,7 @@ const Compare = () => {
                     <ul className="bb-compare-inner-box border-l-[1px] border-t-[1px] border-b-[1px] border-solid border-[#eee] w-[323px] max-[991px]:w-[250px]">
                       <li className="inner-image relative bg-[#fff] borderb-[1px] border-solid border-[#eee]">
                         <span className="bb-remove-compare absolute top-[20px] right-[20px]">
-                          <a href="javascript:void(0)">
+                          <a >
                             <i className="ri-close-circle-fill transition-all duration-[0.3s] ease-in-out text-[22px] text-[#686e7d] hover:text-[#6c7fd8]" />
                           </a>
                         </span>
@@ -388,7 +388,7 @@ const Compare = () => {
                     <ul className="bb-compare-inner-box border-l-[1px] border-t-[1px] border-b-[1px] border-solid border-[#eee] w-[323px] max-[991px]:w-[250px]">
                       <li className="inner-image relative bg-[#fff] borderb-[1px] border-solid border-[#eee]">
                         <span className="bb-remove-compare absolute top-[20px] right-[20px]">
-                          <a href="javascript:void(0)">
+                          <a >
                             <i className="ri-close-circle-fill transition-all duration-[0.3s] ease-in-out text-[22px] text-[#686e7d] hover:text-[#6c7fd8]" />
                           </a>
                         </span>

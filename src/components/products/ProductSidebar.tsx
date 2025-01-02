@@ -39,7 +39,7 @@ export function ProductSidebar({ products, filters, onFilterChange }: ProductSid
                                         className="w-full h-[calc(100%-5px)] absolute opacity-[0] cursor-pointer z-[999] top-[50%] left-[0] translate-y-[-50%]"
                                     />
                                     <a
-                                        href="javascript:void(0)"
+                                        
                                         className="ml-[30px] block text-[#777] text-[14px] leading-[20px] font-normal capitalize cursor-pointer"
                                     >
                                         clothes
@@ -54,7 +54,7 @@ export function ProductSidebar({ products, filters, onFilterChange }: ProductSid
                                         className="w-full h-[calc(100%-5px)] absolute opacity-[0] cursor-pointer z-[999] top-[50%] left-[0] translate-y-[-50%]"
                                     />
                                     <a
-                                        href="javascript:void(0)"
+                                        
                                         className="ml-[30px] block text-[#777] text-[14px] leading-[20px] font-normal capitalize cursor-pointer"
                                     >
                                         Bags
@@ -69,7 +69,7 @@ export function ProductSidebar({ products, filters, onFilterChange }: ProductSid
                                         className="w-full h-[calc(100%-5px)] absolute opacity-[0] cursor-pointer z-[999] top-[50%] left-[0] translate-y-[-50%]"
                                     />
                                     <a
-                                        href="javascript:void(0)"
+                                        
                                         className="ml-[30px] block text-[#777] text-[14px] leading-[20px] font-normal capitalize cursor-pointer"
                                     >
                                         Shoes
@@ -84,7 +84,7 @@ export function ProductSidebar({ products, filters, onFilterChange }: ProductSid
                                         className="w-full h-[calc(100%-5px)] absolute opacity-[0] cursor-pointer z-[999] top-[50%] left-[0] translate-y-[-50%]"
                                     />
                                     <a
-                                        href="javascript:void(0)"
+                                        
                                         className="ml-[30px] block text-[#777] text-[14px] leading-[20px] font-normal capitalize cursor-pointer"
                                     >
                                         Cosmetics
@@ -99,7 +99,7 @@ export function ProductSidebar({ products, filters, onFilterChange }: ProductSid
                                         className="w-full h-[calc(100%-5px)] absolute opacity-[0] cursor-pointer z-[999] top-[50%] left-[0] translate-y-[-50%]"
                                     />
                                     <a
-                                        href="javascript:void(0)"
+                                        
                                         className="ml-[30px] block text-[#777] text-[14px] leading-[20px] font-normal capitalize cursor-pointer"
                                     >
                                         Electrics
@@ -114,7 +114,7 @@ export function ProductSidebar({ products, filters, onFilterChange }: ProductSid
                                         className="w-full h-[calc(100%-5px)] absolute opacity-[0] cursor-pointer z-[999] top-[50%] left-[0] translate-y-[-50%]"
                                     />
                                     <a
-                                        href="javascript:void(0)"
+                                        
                                         className="ml-[30px] block text-[#777] text-[14px] leading-[20px] font-normal capitalize cursor-pointer"
                                     >
                                         Phone
@@ -129,7 +129,7 @@ export function ProductSidebar({ products, filters, onFilterChange }: ProductSid
                                         className="w-full h-[calc(100%-5px)] absolute opacity-[0] cursor-pointer z-[999] top-[50%] left-[0] translate-y-[-50%]"
                                     />
                                     <a
-                                        href="javascript:void(0)"
+                                        
                                         className="ml-[30px] block text-[#777] text-[14px] leading-[20px] font-normal capitalize cursor-pointer"
                                     >
                                         Watch
@@ -155,7 +155,7 @@ export function ProductSidebar({ products, filters, onFilterChange }: ProductSid
                                         className="w-full h-[calc(100%-5px)] absolute opacity-[0] cursor-pointer z-[999] top-[50%] left-[0] translate-y-[-50%]"
                                     />
                                     <a
-                                        href="javascript:void(0)"
+                                        
                                         className="ml-[30px] block text-[#777] text-[14px] leading-[20px] font-normal capitalize cursor-pointer"
                                     >
                                         Pre
@@ -170,7 +170,7 @@ export function ProductSidebar({ products, filters, onFilterChange }: ProductSid
                                         className="w-full h-[calc(100%-5px)] absolute opacity-[0] cursor-pointer z-[999] top-[50%] left-[0] translate-y-[-50%]"
                                     />
                                     <a
-                                        href="javascript:void(0)"
+                                        
                                         className="ml-[30px] block text-[#777] text-[14px] leading-[20px] font-normal capitalize cursor-pointer"
                                     >
                                         Customize
@@ -192,7 +192,7 @@ export function ProductSidebar({ products, filters, onFilterChange }: ProductSid
                         <ul className="flex flex-wrap m-[-5px]">
                             <li className="transition-all duration-[0.3s] ease-in-out m-[5px] py-[2px] px-[15px] border-[1px] border-solid border-[#eee] rounded-[10px] hover:bg-[#6c7fd8] cursor-pointer">
                                 <a
-                                    href="javascript:void(0)"
+                                    
                                     className="font-Poppins text-[13px] capitalize font-light leading-[28px] tracking-[0.03rem] text-[#686e7d]"
                                 >
                                     Neon
@@ -200,7 +200,7 @@ export function ProductSidebar({ products, filters, onFilterChange }: ProductSid
                             </li>
                             <li className="transition-all duration-[0.3s] ease-in-out m-[5px] py-[2px] px-[15px] border-[1px] border-solid border-[#eee] rounded-[10px] hover:bg-[#6c7fd8] cursor-pointer">
                                 <a
-                                    href="javascript:void(0)"
+                                    
                                     className="font-Poppins text-[13px] capitalize font-light leading-[28px] tracking-[0.03rem] text-[#686e7d]"
                                 >
                                     Name Lamp
@@ -208,7 +208,7 @@ export function ProductSidebar({ products, filters, onFilterChange }: ProductSid
                             </li>
                             <li className="transition-all duration-[0.3s] ease-in-out m-[5px] py-[2px] px-[15px] border-[1px] border-solid border-[#eee] rounded-[10px] hover:bg-[#6c7fd8] cursor-pointer">
                                 <a
-                                    href="javascript:void(0)"
+                                    
                                     className="font-Poppins text-[13px] capitalize font-light leading-[28px] tracking-[0.03rem] text-[#686e7d]"
                                 >
                                     3D
@@ -216,7 +216,7 @@ export function ProductSidebar({ products, filters, onFilterChange }: ProductSid
                             </li>
                             <li className="transition-all duration-[0.3s] ease-in-out m-[5px] py-[2px] px-[15px] border-[1px] border-solid border-[#eee] rounded-[10px] hover:bg-[#6c7fd8] cursor-pointer">
                                 <a
-                                    href="javascript:void(0)"
+                                    
                                     className="font-Poppins text-[13px] capitalize font-light leading-[28px] tracking-[0.03rem] text-[#686e7d]"
                                 >
                                     Neon Sign
@@ -224,7 +224,7 @@ export function ProductSidebar({ products, filters, onFilterChange }: ProductSid
                             </li>
                             <li className="transition-all duration-[0.3s] ease-in-out m-[5px] py-[2px] px-[15px] border-[1px] border-solid border-[#eee] rounded-[10px] hover:bg-[#6c7fd8] cursor-pointer">
                                 <a
-                                    href="javascript:void(0)"
+                                    
                                     className="font-Poppins text-[13px] capitalize font-light leading-[28px] tracking-[0.03rem] text-[#686e7d]"
                                 >
                                     Keychain
@@ -232,7 +232,7 @@ export function ProductSidebar({ products, filters, onFilterChange }: ProductSid
                             </li>
                             <li className="transition-all duration-[0.3s] ease-in-out m-[5px] py-[2px] px-[15px] border-[1px] border-solid border-[#eee] rounded-[10px] hover:bg-[#6c7fd8] cursor-pointer">
                                 <a
-                                    href="javascript:void(0)"
+                                    
                                     className="font-Poppins text-[13px] capitalize font-light leading-[28px] tracking-[0.03rem] text-[#686e7d]"
                                 >
                                     Hot
@@ -240,7 +240,7 @@ export function ProductSidebar({ products, filters, onFilterChange }: ProductSid
                             </li>
                             <li className="transition-all duration-[0.3s] ease-in-out m-[5px] py-[2px] px-[15px] border-[1px] border-solid border-[#eee] rounded-[10px] hover:bg-[#6c7fd8] cursor-pointer">
                                 <a
-                                    href="javascript:void(0)"
+                                    
                                     className="font-Poppins text-[13px] capitalize font-light leading-[28px] tracking-[0.03rem] text-[#686e7d]"
                                 >
                                     Offer
@@ -248,7 +248,7 @@ export function ProductSidebar({ products, filters, onFilterChange }: ProductSid
                             </li>
                             <li className="transition-all duration-[0.3s] ease-in-out m-[5px] py-[2px] px-[15px] border-[1px] border-solid border-[#eee] rounded-[10px] hover:bg-[#6c7fd8] cursor-pointer">
                                 <a
-                                    href="javascript:void(0)"
+                                    
                                     className="font-Poppins text-[13px] capitalize font-light leading-[28px] tracking-[0.03rem] text-[#686e7d]"
                                 >
                                     Gift

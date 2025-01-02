@@ -24,11 +24,11 @@ export const menuItems = {
     { id: 'coupons', label: 'Coupons', path: '/admin/coupons' },
   ],
   orders: [
-    { id: 'all-orders', label: 'All Orders', path: '/admin/all-orders' },
-    { id: 'pending-orders', label: 'Pending Orders', path: '/admin/pending-orders' },
-    { id: 'progress-orders', label: 'Progress Orders', path: '/admin/progress-orders' },
-    { id: 'delivered-orders', label: 'Delivered Orders', path: '/admin/delivered-orders' },
-    { id: 'canceld-orders', label: 'Canceled Orders', path: '/admin/canceld-orders' },
+    { id: 'all-orders', label: 'All Orders', path: '/admin/orders' },
+    { id: 'pending-orders', label: 'Pending Orders', path: '/admin/orders?status=pending' },
+    { id: 'progress-orders', label: 'Progress Orders', path: '/admin/orders?status=progress' },
+    { id: 'delivered-orders', label: 'Delivered Orders', path: '/admin/orders?status=delivered' },
+    { id: 'cancelled-orders', label: 'cancelled Orders', path: '/admin/orders?status=cancelled' },
   ],
   blog: [
     { id: 'blog-categories', label: 'Categories', path: '/admin/blog-categories' },
@@ -119,11 +119,6 @@ export const mainMenuItems = [
     label: 'Cache Clear',
     path: '/admin/cache-clear',
   },
-  {
-    id: 'log-out',
-    icon: FaSignOutAlt,
-    label: 'log-out',
-    path: '/admin/log-out',
-  },
+  
 ];
 

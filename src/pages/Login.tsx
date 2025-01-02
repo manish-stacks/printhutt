@@ -368,7 +368,7 @@ const Login = () => {
                   </div>
                   <div className="bb-login-wrap mb-[24px]">
                     <a
-                      href="javascript:void(0)"
+                      
                       className="font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] font-medium text-[#777]"
                     >
                       Forgot Password?
