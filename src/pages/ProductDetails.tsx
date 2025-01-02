@@ -35,7 +35,7 @@ const ProductDetails = ({ product }: ProductProps) => {
   // console.log(product)
 
   const item = items.find(item => item._id === product?._id) || { _id: '', quantity: 0 };
-  console.log(item.quantity)
+ 
   const quantity = item.quantity || 1;
 
 

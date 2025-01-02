@@ -36,16 +36,18 @@ const Header = () => {
   const toggleMenuMobileSubcat = () => setIsOpenSubCategory((prev) => !prev);
 
 
-  const { getTotalItems } = useCartStore();
+  const { items } = useCartStore();
+
   const [totalItem, setTotalItem] = useState<number>(0);
   useEffect(() => {
-    setTotalItem(getTotalItems());
-  }, [totalItem]);
+    const totalItems = items.length
+    setTotalItem(totalItems);
+  }, []);
+  // setTotalItem(items.length)
+  // console.log(totalItem)
 
-
-  // const userDetails = useUserStore((state) => state.userDetails);
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
-// console.log(userDetails)
+
 
   return (
     <>
@@ -272,7 +274,7 @@ const Header = () => {
                           </div>
                           <div className="bb-btn-desc flex flex-col ml-[10px] max-[1199px]:hidden">
                             <span className="bb-btn-title font-Poppins transition-all duration-[0.3s] ease-in-out text-[12px] leading-[1] text-[#3d4750] mb-[4px] tracking-[0.6px] capitalize font-medium whitespace-nowrap">
-                              <b className="bb-cart-count">{totalItem}</b> items
+                              <b className="bb-cart-count">{items.length}</b> items
                             </span>
                             <span className="bb-btn-stitle font-Poppins transition-all duration-[0.3s] ease-in-out text-[14px] leading-[16px] font-semibold text-[#3d4750]  tracking-[0.03rem] whitespace-nowrap">
                               Cart
