@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import Slider from "react-slick";
-
+import Slider, { Settings } from "react-slick";
 
 interface SingleProductSliderProps {
   product: {
@@ -9,23 +8,22 @@ interface SingleProductSliderProps {
     thumbnail: {
       url: string;
     };
-    images: [{
-      url: string;
-    }];
+    images: [
+      {
+        url: string;
+      }
+    ];
   };
 }
 
-
 const SingleProductSlider = ({ product }: SingleProductSliderProps) => {
-
   const { thumbnail, images, imgAlt, slug } = product;
 
+  const [navSlider, setNavSlider] = useState<Slider | null>(null);
+  const [mainSlider, setMainSlider] = useState<Slider | null>(null);
+  const [zoomStyle, setZoomStyle] = useState<React.CSSProperties | null>(null);
 
-  const [navSlider, setNavSlider] = useState(null);
-  const [mainSlider, setMainSlider] = useState(null);
-  const [zoomStyle, setZoomStyle] = useState(null);
-
-  const mainSliderSettings = {
+  const mainSliderSettings: Settings = {
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: false,
@@ -34,7 +32,7 @@ const SingleProductSlider = ({ product }: SingleProductSliderProps) => {
     ref: (slider: any) => setMainSlider(slider), // Bind the main slider
   };
 
-  const navSliderSettings = {
+  const navSliderSettings: Settings = {
     slidesToShow: 4,
     slidesToScroll: 1,
     asNavFor: mainSlider,
@@ -44,14 +42,9 @@ const SingleProductSlider = ({ product }: SingleProductSliderProps) => {
     ref: (slider: any) => setNavSlider(slider), // Bind the nav slider
   };
 
+  const productImages = [thumbnail.url, ...images.map((image) => image.url)];
 
-
-  const productImages = [
-    thumbnail.url,
-    ...images.map((image) => image.url),
-  ];
-
-  const handleMouseMove = (e: any, image: any) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, image: string) => {
     const { left, top, width, height } = e.target.getBoundingClientRect();
     const x = ((e.clientX - left) / width) * 100;
     const y = ((e.clientY - top) / height) * 100;
@@ -82,7 +75,7 @@ const SingleProductSlider = ({ product }: SingleProductSliderProps) => {
               <img
                 className="img-responsive rounded-tl-[15px] rounded-tr-[15px]"
                 src={image}
-                alt={index === 0 ? imgAlt : (`${slug}-${index + 1}`)}
+                alt={index === 0 ? imgAlt : `${slug}-${index + 1}`}
               />
               {zoomStyle && (
                 <div

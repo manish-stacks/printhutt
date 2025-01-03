@@ -1,7 +1,6 @@
 import { connect } from '@/dbConfig/dbConfig'
 import UserModel from '@/models/userModel'
 import { NextRequest, NextResponse } from 'next/server'
-import { sendEmail } from '@/lib/mail/mailer'
 import bcryptjs from "bcryptjs";
 
 connect();
@@ -50,9 +49,9 @@ export async function POST(request: NextRequest) {
         })
 
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         return NextResponse.json({
-            error: error.message || 'Internal server error',
+            error: (error as Error).message || 'Internal server error',
         }, { status: 500 });
     }
 }

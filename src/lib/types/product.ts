@@ -110,7 +110,7 @@ export interface ProductFormData {
     new: boolean;
     isCustomize: boolean;
     images: ImageType[];
-    thumbnail: any;
+    thumbnail: IMedia; // Changed from 'any' to 'IMedia'
     keywords: string;
     meta_description: string;
     shippingFee: string | number;

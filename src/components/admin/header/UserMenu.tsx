@@ -30,7 +30,7 @@ export function UserMenu() {
             toast("logout successfully");
             router.push("/login");
             return;
-        } catch (error) {
+        } catch {
             toast.error("Whoops Server error");
         }
     };

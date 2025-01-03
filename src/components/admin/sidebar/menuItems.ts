@@ -1,4 +1,4 @@
-import { FaBook, FaBroom, FaHome, FaLayerGroup, FaQuestionCircle, FaRandom, FaRssSquare, FaSignOutAlt, FaTag, FaTasks, FaUsers } from "react-icons/fa";
+import { FaBook, FaBroom, FaHome, FaLayerGroup, FaQuestionCircle, FaRandom, FaRssSquare, FaTag, FaTasks, FaUsers } from "react-icons/fa";
 import { RiLuggageCartFill, RiReceiptFill } from "react-icons/ri";
 
 

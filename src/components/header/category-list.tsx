@@ -1,9 +1,12 @@
+import Link from 'next/link'
 import React from 'react'
+import LoadingSpinner from '../LoadingSpinner'
 
-const HeaderCategoryList = () => {
+interface CategoryProps {
+    categories: { name: string, slug: string, subcategories: { name: string, slug: string }[] }[]
+}
+const HeaderCategoryList = ({ categories }: CategoryProps) => {
 
-
-    
     return (
         <>
             <li className="nav-item bb-main-dropdown flex items-center mr-[45px]">
@@ -13,32 +16,40 @@ const HeaderCategoryList = () => {
                     Categories
                 </a>
                 <ul className="mega-menu min-w-full transition-all duration-[0.3s] ease-in-out mt-[25px] pl-[30px] absolute top-[40px] z-[16] text-left opacity-[0] invisible left-[0] right-[auto] bg-[#fff] border-[1px] border-solid border-[#eee] flex flex-col rounded-[10px]">
-                    <li className="m-[0] flex items-center">
-                        <ul className="mega-block w-[calc(25%-30px)] mr-[30px] py-[15px]">
-                            <li className="menu_title border-b-[1px] border-solid border-[#eee] mb-[10px] pb-[5px] flex items-center leading-[28px]">
-                                <a
-                                    className="transition-all duration-[0.3s] ease-in-out font-Poppins h-[auto] text-[#6c7fd8] text-[15px] font-medium tracking-[0.03rem] block py-[10px] leading-[22px] capitalize"
-                                >
-                                    Classic
-                                </a>
-                            </li>
-                            <li className="flex items-center leading-[28px]">
-                                <a
-                                    href="shop-left-sidebar-col-3.html"
-                                    className="transition-all duration-[0.3s] ease-in-out font-Poppins py-[10px] leading-[22px] text-[14px] font-normal tracking-[0.03rem] text-[#686e7d] hover:text-[#6c7fd8] capitalize"
-                                >
-                                    Left sidebar 3 column
-                                </a>
-                            </li>
-                            <li className="flex items-center leading-[28px]">
-                                <a
-                                    href="shop-left-sidebar-col-4.html"
-                                    className="transition-all duration-[0.3s] ease-in-out font-Poppins py-[10px] leading-[22px] text-[14px] font-normal tracking-[0.03rem] text-[#686e7d] hover:text-[#6c7fd8] capitalize"
-                                >
-                                    Left sidebar 4 column
-                                </a>
-                            </li>
-                        </ul>
+                    <li className="m-[0] flex ">
+                        {
+                            categories.length > 0 ?
+                            
+
+                            categories.map((category, index) => {
+                                return (
+                                    category.subcategories.length > 0 &&
+                                    <ul key={index} className="mega-block w-[calc(25%-30px)] mr-[30px] py-[15px]">
+                                        <li className="menu_title border-b-[1px] border-solid border-[#eee] mb-[10px] pb-[5px] flex items-center leading-[28px]">
+                                            <Link
+                                                href={`/category/${category.slug}`}
+                                                className="transition-all duration-[0.3s] ease-in-out font-Poppins h-[auto] text-[#6c7fd8] text-[15px] font-medium tracking-[0.03rem] block py-[10px] leading-[22px] capitalize"
+                                            >
+                                                {category.name}
+                                            </Link>
+                                        </li>
+                                        {category.subcategories.map((subCategory, subIndex) => {
+                                            return (
+                                                <li key={subIndex} className="flex items-center leading-[28px]">
+                                                    <Link
+                                                        href={`/category/${subCategory.slug}`}
+                                                        className="transition-all duration-[0.3s] ease-in-out font-Poppins py-[10px] leading-[22px] text-[14px] font-normal tracking-[0.03rem] text-[#686e7d] hover:text-[#6c7fd8] capitalize"
+                                                    >
+                                                        {subCategory.name}
+                                                    </Link>
+                                                </li>
+                                            )
+                                        })}
+                                    </ul>
+                                )
+                            })
+                            : <LoadingSpinner/>
+                        }
                     </li>
                 </ul>
             </li>

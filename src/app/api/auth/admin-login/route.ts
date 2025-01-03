@@ -72,10 +72,10 @@ export const POST = async (request: NextRequest) => {
 
         return response;
 
-    } catch (error: any) {
-        console.error("Error during login:", error.message);
+    } catch (error) {
+        console.error("Error during login:", (error as Error).message);
         return NextResponse.json({
-            error: error.message || 'Internal server error',
+            error: (error as Error).message || 'Internal server error',
         }, { status: 500 });
     }
 };

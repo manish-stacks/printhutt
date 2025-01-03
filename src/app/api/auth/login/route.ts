@@ -1,5 +1,5 @@
 import { connect } from '@/dbConfig/dbConfig'
-import { sendOtpByEmail, sendOtpBySms } from '@/lib/mail/mailer';
+import { sendOtpBySms } from '@/lib/mail/mailer';
 import { NextRequest, NextResponse } from 'next/server'
 import UserModel from '@/models/userModel'
 import { isEmail } from '@/helpers/helpers';
@@ -49,10 +49,10 @@ export async function POST(request: NextRequest) {
             { message: 'OTP sent successfully',otp:otp },
             { status: 200 }
         );
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error('Error in OTP generation:', error);
         return NextResponse.json(
-            { error: error.message || 'Internal server error' },
+            { error: (error as Error).message || 'Internal server error' },
             { status: 500 }
         );
     }

@@ -27,7 +27,7 @@ export async function GET(request: NextRequest, context: { params: { id: string 
             );
         }
         return NextResponse.json(post);
-    } catch (error) {
+    } catch {
         return NextResponse.json(
             { error: "Failed to fetch post" },
             { status: 500 }
@@ -90,7 +90,7 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
             },
             { status: 201 }
         );
-    } catch (error) {
+    } catch {
         console.error(error);
         return NextResponse.json(
             { error: 'Failed to update category' },
@@ -122,7 +122,7 @@ export async function DELETE(request: NextRequest, context: { params: { id: stri
             message: "Category Deleted successfully!",
         });
 
-    } catch (error) {
+    } catch {
         return NextResponse.json(
             { error: "Failed to delete post" },
             { status: 500 }
@@ -164,7 +164,7 @@ export async function PATCH(request: NextRequest, context: { params: { id: strin
             },
             { status: 200 }
         );
-    } catch (error) {
+    } catch {
         return NextResponse.json(
             { error: "Something went wrong" },
             { status: 500 }

@@ -1,3 +1,31 @@
+interface Item {
+  name: string;
+  quantity: number;
+  productId: string;
+  price: number;
+}
+
+interface Shipping {
+  addressLine: string;
+  city: string;
+  state: string;
+  postCode: string;
+  mobileNumber: string;
+}
+
+interface Payment {
+  method: string;
+  isPaid: boolean;
+  transactionId?: string;
+  paidAt?: string;
+}
+
+interface Coupon {
+  isApplied: boolean;
+  code?: string;
+  discountAmount?: number;
+}
+
 export function getOwnerEmailTemplate({
   orderId,
   items,
@@ -8,11 +36,11 @@ export function getOwnerEmailTemplate({
   formatCurrency,
 }: {
   orderId: string;
-  items: any[];
+  items: Item[];
   totalAmount: number;
-  shipping: any;
-  payment: any;
-  coupon: any;
+  shipping: Shipping;
+  payment: Payment;
+  coupon: Coupon;
   formatCurrency: (amount: number) => string;
 }) {
   const itemsHtml = items
@@ -89,7 +117,17 @@ export function getOwnerEmailTemplate({
                         </td>
                       </tr>
                     </table>
-
+                    <!-- Payment Details -->
+                    <div style="margin-bottom: 24px; padding: 16px; background-color: #f9fafb; border-radius: 6px;">
+                      <h3 style="margin: 0 0 12px; color: #111827; font-size: 16px; font-weight: 600;">Payment Information</h3>
+                      <p style="margin: 0; color: #374151;">
+                        Method: ${payment.method.charAt(0).toUpperCase() + payment.method.slice(1)}<br>
+                        Status: ${payment.isPaid ? 'Paid' : 'Pending'}<br>
+                        ${payment.transactionId ? `Transaction ID: ${payment.transactionId}<br>` : ''}
+                        ${payment.paidAt ? `Payment Date: ${new Date(payment.paidAt).toLocaleDateString()}<br>` : ''}
+                        Coupon ${coupon.isApplied ? `Code: ${coupon.code}<br>Discount: ${formatCurrency(coupon.discountAmount)}` : 'Not Applied'}
+                        </p>
+                    </div>
                     <table width="100%" cellpadding="0" cellspacing="0">
                       <tr>
                         <td style="padding: 32px 0;">

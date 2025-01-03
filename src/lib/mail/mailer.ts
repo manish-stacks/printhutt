@@ -1,7 +1,7 @@
-const nodemailer = require("nodemailer");
+import nodemailer from "nodemailer";
 import { v4 as uuidv4 } from 'uuid';
 import UserModel from '@/models/userModel'
-import type { mallerType, OrderEmailData } from '@/lib/types';
+import type { mallerType } from '@/lib/types';
 import { formatCurrency } from '../../helpers/helpers';
 import { getCustomerEmailTemplate } from './templates/customer';
 import { getOwnerEmailTemplate } from './templates/owner';
@@ -16,9 +16,6 @@ const transporter = nodemailer.createTransport({
     pass: process.env.SMTP_PASS,
   },
 });
-
-
-
 
 export const sendVerifyEmail = async ({ email, emailType, userId }: mallerType) => {
   try {
@@ -44,16 +41,14 @@ export const sendVerifyEmail = async ({ email, emailType, userId }: mallerType) 
             `,
     }
 
-
     const mailResponce = await transporter.sendMail(mailOption)
     return mailResponce;
   } catch (error: any) {
-    throw new Error(error.message)
+    throw new Error((error as Error).message)
   }
 }
 
 export const sendOtpByEmail = async (email: string, otp: string) => {
-
   const mailOption = {
     from: '"' + process.env.APP_NAME + '" ' + process.env.SMTP_FROM,
     to: email,
@@ -65,13 +60,11 @@ export const sendOtpByEmail = async (email: string, otp: string) => {
     const mailResponce = await transporter.sendMail(mailOption)
     return mailResponce;
   } catch (error: any) {
-    throw new Error(error.message)
+    throw new Error((error as Error).message)
   }
-
-
 }
 
-export const sendOtpBySms = async (mobile: string, otp: string) => {
+export const sendOtpBySms = async (_mobile: string, _otp: string) => {
   // Replace with your SMS service logic
   // return someSmsService.send({
   //     to: mobile,
@@ -79,9 +72,15 @@ export const sendOtpBySms = async (mobile: string, otp: string) => {
   // });
 }
 
-
-
-export async function sendOrderConfirmationEmail(orderData: any) {
+export async function sendOrderConfirmationEmail(orderData: {
+  email: string;
+  orderId: string;
+  items: any[];
+  totalAmount: number;
+  payment: string;
+  shipping: string;
+  coupon?: string;
+}) {
   // Send customer confirmation
   await transporter.sendMail({
     from: process.env.SMTP_FROM,

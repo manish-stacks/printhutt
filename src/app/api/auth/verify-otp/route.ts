@@ -22,7 +22,7 @@ export const POST = async (request: NextRequest) => {
         const isEmailInput = isEmail(emailOrMobile);
         const queryKey = isEmailInput ? 'email' : 'number';
 
-        let user = await UserModel.findOne({ [queryKey]: emailOrMobile });
+        const user = await UserModel.findOne({ [queryKey]: emailOrMobile });
 
         if (!user) {
             return NextResponse.json({
@@ -77,10 +77,10 @@ export const POST = async (request: NextRequest) => {
         });
 
         return response;
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Error in OTP verification:", error);
         return NextResponse.json({
-            error: error.message || 'Internal server error',
+            error: (error as Error).message || 'Internal server error',
         }, { status: 500 });
     }
 };

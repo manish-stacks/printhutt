@@ -22,10 +22,10 @@ const ContactUs = () => {
                 <div className="section-detail max-[991px]:mb-[12px]">
                   <h2 className="bb-title font-quicksand mb-[0] p-[0] text-[25px] font-bold text-[#3d4750] relative inline capitalize leading-[1] tracking-[0.03rem] max-[767px]:text-[23px]">
                     Get In <span className="text-[#6c7fd8]">Touch</span>
-                  </h2>
+                  </h2> 
                   <p className="font-Poppins max-w-[400px] mt-[10px] text-[14px] text-[#686e7d] leading-[18px] font-light tracking-[0.03rem] max-[991px]:mx-[auto]">
                     Please select a topic below related to you inquiry. If you
-                    don't fint what you need, fill out our contact form.
+                    don&apos;t find what you need, fill out our contact form.
                   </p>
                 </div>
               </div>
@@ -97,7 +97,7 @@ const ContactUs = () => {
             >
               <div className="bb-contact-maps sticky top-[0]">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d929.6923186886103!2d72.9043573711624!3d21.240995949535076!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1718947386404!5m2!1sen!2sin"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3499.7120988320553!2d77.1312131!3d28.698257599999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d0151f063e0a1%3A0xf5c829e933be081d!2sPrint%20Hutt!5e0!3m2!1sen!2sin!4v1735904725123!5m2!1sen!2sin"
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                   className="w-full h-[577px] mb-[-10px] rounded-[20px] border-[0]"

@@ -41,8 +41,9 @@ export async function GET(req: NextRequest) {
         limit
       }
     });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    const err = error as Error;
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
 
@@ -139,10 +140,11 @@ export async function POST(req: NextRequest) {
       },
       { status: 201 }
     );
-  } catch (error: any) {
-    console.error('Product creation error:', error);
+  } catch (error: unknown) {
+    const err = error as Error;
+    console.error('Product creation error:', err);
     return NextResponse.json(
-      { success: false, message: error.message },
+      { success: false, message: err.message },
       { status: 500 }
     );
   }

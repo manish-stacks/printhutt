@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
         }
 
         const imageIndex = product.images.findIndex(
-            (img: any) => img.public_id === image.public_id
+            (img: { public_id: string }) => img.public_id === image.public_id
         );
 
         if (imageIndex === -1) {
@@ -51,10 +51,9 @@ export async function POST(req: NextRequest) {
             },
             { status: 200 }
         );
-    } catch (error: any) {
-        console.error('Product image delete:', error);
+    } catch {
         return NextResponse.json(
-            { success: false, message: error.message },
+            { success: false, message: "Failed to delete image" },
             { status: 500 }
         );
     }

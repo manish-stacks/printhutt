@@ -975,7 +975,7 @@ const Offer = () => {
                     <span className="text-[#6c7fd8]">50% Off</span>
                   </h2>
                   <p className="font-Poppins max-w-[400px] mt-[10px] text-[14px] text-[#686e7d] leading-[18px] font-light tracking-[0.03rem] max-[991px]:mx-[auto]">
-                    Don't wait. The time will never be just right.
+                    Don&apos;t wait. The time will never be just right.
                   </p>
                 </div>
                 <div id="dealend" className="dealend-timer" />

@@ -37,7 +37,7 @@ const HomeComponent = () => {
                     Day of the <span className="text-[#6c7fd8]">deal</span>
                   </h2>
                   <p className="font-Poppins max-w-[400px] mt-[10px] text-[14px] text-[#686e7d] leading-[18px] font-light tracking-[0.03rem] max-[991px]:mx-[auto]">
-                    Don't wait. The time will never be just right.
+                    Don&apos;t wait. The time will never be just right.
                   </p>
                 </div>
                 <div id="dealend" className="dealend-timer" />
@@ -73,7 +73,7 @@ const HomeComponent = () => {
                     />
                   </div>
                   <div className="inner-contact max-w-[250px] px-[12px] flex flex-col items-start justify-center max-[480px]:p-[0] max-[480px]:max-w-[100%] max-[480px]:text-center max-[480px]:items-center">
-                    <h5 className="font-quicksand mb-[15px] text-[31px] text-[#3d4750] font-bold tracking-[0.03rem] text-[#3d4750] leading-[1.2] max-[991px]:text-[28px] max-[575px]:text-[24px] max-[480px]:mb-[2px] max-[480px]:text-[22px]">
+                    <h5 className="font-quicksand mb-[15px] text-[31px] text-[#3d4750] font-bold tracking-[0.03rem]  leading-[1.2] max-[991px]:text-[28px] max-[575px]:text-[24px] max-[480px]:mb-[2px] max-[480px]:text-[22px]">
                       Personalised &amp; Acrylic Frame
                     </h5>
                     <p className="font-Poppins text-[16px] font-light leading-[28px] tracking-[0.03rem] text-[#686e7d] mb-[15px] max-[480px]:mb-[8px] max-[480px]:text-[14px]">
@@ -105,7 +105,7 @@ const HomeComponent = () => {
                     />
                   </div>
                   <div className="inner-contact max-w-[250px] px-[12px] flex flex-col items-start justify-center max-[480px]:p-[0] max-[480px]:max-w-[100%] max-[480px]:text-center max-[480px]:items-center">
-                    <h5 className="font-quicksand mb-[15px] text-[31px] text-[#3d4750] font-bold tracking-[0.03rem] text-[#3d4750] leading-[1.2] max-[991px]:text-[28px] max-[575px]:text-[24px] max-[480px]:mb-[2px] max-[480px]:text-[22px]">
+                    <h5 className="font-quicksand mb-[15px] text-[31px] text-[#3d4750] font-bold tracking-[0.03rem] leading-[1.2] max-[991px]:text-[28px] max-[575px]:text-[24px] max-[480px]:mb-[2px] max-[480px]:text-[22px]">
                       Personalised &amp; Table Frame
                     </h5>
                     <p className="font-Poppins text-[16px] font-light leading-[28px] tracking-[0.03rem] text-[#686e7d] mb-[15px] max-[480px]:mb-[8px] max-[480px]:text-[14px]">
@@ -126,13 +126,13 @@ const HomeComponent = () => {
       </section>
 
       {/* Banner-two  */}
-      <section className="section-banner-two overflow-hidden my-[50px] max-[1199px]:my-[35px] bg-[url('https://printhutt.com/image/printhutt-slider.webp')] min-h-[600px] overflow-hidden bg-no-repeat bg-cover bg-center max-[991px]:max-h-[400px] max-[991px]:min-h-[auto]">
+      <section className="section-banner-two my-[50px] max-[1199px]:my-[35px] bg-[url('https://printhutt.com/image/printhutt-slider.webp')] min-h-[600px] overflow-hidden bg-no-repeat bg-cover bg-center max-[991px]:max-h-[400px] max-[991px]:min-h-[auto]">
         <div className="flex flex-wrap justify-between relative items-center mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">
           <div className="flex flex-wrap w-full">
-            <div className="w-full px-[12px] banner-justify-box-contact w-full h-[600px] flex justify-end items-end max-[991px]:h-[400px]">
+            <div className="w-full px-[12px] banner-justify-box-contact  h-[600px] flex justify-end items-end max-[991px]:h-[400px]">
               <div className="banner-two-box bg-[#fff] rounded-t-[30px] max-w-[400px] pt-[30px] px-[30px] flex flex-col items-start relative max-[991px]:max-w-[250px] max-[575px]:my-[0] max-[575px]:mx-[auto]">
                 <span className="text-[20px] font-semibold text-[#6c7fd8] leading-[26px] max-[991px]:text-[16px]">
-                  25% Off
+                  30% Off
                 </span>
                 <h4 className="font-quicksand mb-[20px] text-[40px] font-bold text-[#3d4750] tracking-[0.03rem] leading-[1.2] max-[991px]:text-[22px]">
                   Personalised &amp; LED Lamp

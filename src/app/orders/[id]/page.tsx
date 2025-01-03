@@ -36,8 +36,8 @@ export default async function OrderDetailsPage({
 }: {
     params: { id: string };
 }) {
-
-    const order = await Order.findById(params.id)
+    const {id} = await params;
+    const order = await Order.findById(id)
         .lean();
 
     if (!order) {
@@ -86,7 +86,7 @@ export default async function OrderDetailsPage({
                         <div className="p-6">
                             <h2 className="text-xl font-semibold mb-4">Order Items</h2>
                             <div className="space-y-4">
-                                {order.items.map((item: any) => (
+                                {order.items.map((item) => (
                                     <div
                                         key={item._id}
                                         className="flex items-center justify-between py-4 border-b last:border-0"

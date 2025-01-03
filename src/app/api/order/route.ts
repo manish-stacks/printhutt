@@ -133,8 +133,7 @@ export async function POST(request: NextRequest) {
             order: order
         });
 
-    } catch (error) {
-        console.log(error)
+    } catch{
         return NextResponse.json(
             { success: false, message: 'Internal server error' },
             { status: 500 }

@@ -2,18 +2,18 @@
 import axios from 'axios'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useState, FormEvent } from 'react'
 import { toast } from 'react-toastify'
 
 const Login = () => {
     const router = useRouter();
     const [loading, setLoading] = useState<boolean>(false);
 
-    const handleLogin = async (e: any) => {
+    const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const userData = {
-            email: e.currentTarget.email.value,
-            password: e.currentTarget.password.value,
+            email: (e.currentTarget as HTMLFormElement).email.value,
+            password: (e.currentTarget as HTMLFormElement).password.value,
         };
 
         if (!userData.email && !userData.password) {

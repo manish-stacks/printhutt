@@ -33,7 +33,7 @@ export interface CategoryFormData {
   imageUrl: string | File;
   status: boolean;
   image?: ImageType;
-  parentCategory?: any;
+  parentCategory?: string | null; // Specify a more specific type instead of 'any'
 }
 
 

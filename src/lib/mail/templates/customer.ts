@@ -1,3 +1,30 @@
+interface Item {
+  name: string;
+  quantity: number;
+  price: number;
+}
+
+interface Payment {
+  method: string;
+  isPaid: boolean;
+  transactionId?: string;
+  paidAt?: string;
+}
+
+interface Shipping {
+  addressLine: string;
+  city: string;
+  state: string;
+  postCode: string;
+  mobileNumber: string;
+}
+
+interface Coupon {
+  isApplied: boolean;
+  code: string;
+  discountAmount: number;
+}
+
 export function getCustomerEmailTemplate({
   orderId,
   items,
@@ -8,11 +35,11 @@ export function getCustomerEmailTemplate({
   formatCurrency,
 }: {
   orderId: string;
-  items: any[];
+  items: Item[];
   totalAmount: number;
-  payment: any;
-  shipping: any;
-  coupon: any;
+  payment: Payment;
+  shipping: Shipping;
+  coupon: Coupon;
   formatCurrency: (amount: number) => string;
 }) {
   const itemsHtml = items

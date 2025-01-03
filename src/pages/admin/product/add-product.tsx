@@ -25,6 +25,7 @@ import type { Offer } from '@/lib/types/offer';
 import type { Option } from '@/lib/types';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import dynamic from 'next/dynamic';
+import type { ChangeEvent, KeyboardEvent, FormEvent } from 'react';
 
 const QuillEditor = dynamic(() => import('@/components/QuillEditor'), { ssr: false });
 
@@ -79,7 +80,7 @@ export default function AddProduct() {
   const [subcategories, setSubCategories] = useState<CategoryFormData[]>([]);
   const [offers, setOffers] = useState<Offer[]>([]);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState<string | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
@@ -101,7 +102,7 @@ export default function AddProduct() {
           get_all_return(),
           get_parent_categories(),
           get_all_offer()
-        ]) as any;
+        ]);
 
         // console.log(warrantyData)
         setWarranties(warrantyData.warranty);
@@ -127,7 +128,7 @@ export default function AddProduct() {
 
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
 
@@ -139,7 +140,7 @@ export default function AddProduct() {
       }
 
       if (name === 'shippingInformation') {
-        const shippingfilter = shippings.find(ship => ship._id === value) as any;
+        const shippingfilter = shippings.find(ship => ship._id === value);
         updatedData.shippingFee = shippingfilter?.shippingFee ? shippingfilter?.shippingFee : 0;
       }
 
@@ -150,12 +151,12 @@ export default function AddProduct() {
 
 
   const handleVariantChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: ChangeEvent<HTMLInputElement>,
     index: number
   ) => {
     const { name, value } = e.target;
 
-    setFormData((prevFormData: any) => {
+    setFormData((prevFormData) => {
       const updatedVarient = [...prevFormData.varient];
       updatedVarient[index] = { ...updatedVarient[index], [name]: value };
       return { ...prevFormData, varient: updatedVarient };
@@ -195,27 +196,26 @@ export default function AddProduct() {
   };
 
 
-  const handleFileChange = (event: any) => {
-    const file = event.target.files[0];
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
     if (file) {
-      // formData.thumbnail = URL.createObjectURL(file);
       formData.thumbnail = file;
-      const reader = new FileReader() as any;
+      const reader = new FileReader();
       reader.onloadend = () => {
-        setImage(reader.result);
+        setImage(reader.result as string);
       };
       reader.readAsDataURL(file);
     }
   };
 
 
-  const handleCategoryChange = async (event: any) => {
+  const handleCategoryChange = async (event: ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target;
-    formData.category = value
+    formData.category = value;
     try {
       setLoading(true);
-      const categoryData = await get_parent_sub_categories(value) as any;
-      setSubCategories(categoryData.category)
+      const categoryData = await get_parent_sub_categories(value);
+      setSubCategories(categoryData.category);
     } catch (error) {
       toast.error('Failed to fetch sub categories');
     } finally {
@@ -224,7 +224,7 @@ export default function AddProduct() {
 
   }
 
-  const handleTagsChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleTagsChange = (e: KeyboardEvent<HTMLInputElement>) => {
     const inputValue = e.currentTarget.value.trim();
 
     if (e.key === 'Enter' || e.key === ',') {
@@ -262,7 +262,7 @@ export default function AddProduct() {
     });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     const validationErrors = validateProductForm(formData);
@@ -301,13 +301,13 @@ export default function AddProduct() {
         }
       });
 
-      const response = await add_new_product(formDataToSend) as any;
+      const response = await add_new_product(formDataToSend);
 
       if (response.success) {
         toast.success('Product created successfully!');
         setFormData(initialFormData);
         setImage(null);
-        router.push('/admin/products')
+        router.push('/admin/products');
       } else {
         toast.error(response.message || 'Failed to create product');
       }

@@ -131,9 +131,10 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
             { success: true, message: 'Product updated successfully', data: savedProduct },
             { status: 200 }
         );
-    } catch (error: any) {
-        console.error('Error updating product:', error.message);
-        return NextResponse.json({ success: false, message: 'Failed to update product', error: error.message }, { status: 500 });
+    } catch (error: unknown) {
+        const err = error as Error;
+        console.error('Error updating product:', err.message);
+        return NextResponse.json({ success: false, message: 'Failed to update product', error: err.message }, { status: 500 });
     }
 }
 

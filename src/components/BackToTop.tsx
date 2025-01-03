@@ -33,7 +33,7 @@ const BackToTop = () => {
   return (
     <>
       {showButton && (
-        <div className="fixed bottom-6 right-6 z-10">
+        <div className="fixed bottom-6 right-6 z-10 max-[991px]:bottom-[5rem]">
           <button
             onClick={(e) => {
               e.preventDefault();

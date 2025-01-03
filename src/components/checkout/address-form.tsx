@@ -17,7 +17,7 @@ export const CheckoutAddressForm = ({ onChangeAddress }: TypeSelectorProps) => {
     useEffect(() => {
         const fetchAddress = async () => {
             try {
-                const response = await getAddress() as any;
+                const response: AddressFormData[] = await getAddress();
                 setAddresslist(response);
             } catch (error) {
                 console.error(error);

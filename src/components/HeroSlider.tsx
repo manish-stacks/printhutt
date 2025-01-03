@@ -47,10 +47,8 @@ const HeroSlider = () => {
         // fade: true,              
     };
 
-    const [src, setSrc] = useState("https://via.placeholder.com/1900x545.png?text=1900*545");
-
-    const fail = (e:any) => {
-        setSrc("https://via.placeholder.com/1900x545.png?text=1900*545");
+    const fail = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+        e.currentTarget.src = "https://via.placeholder.com/1900x545.png?text=1900*545";
     };
 
     return (
@@ -66,7 +64,7 @@ const HeroSlider = () => {
                             height={545}
                             placeholder="blur"
                             blurDataURL="https://via.placeholder.com/1900x545.png?text=1900*545"
-                            onError={(e) => fail(e)}
+                            onError={fail}
                         />
                     </div>
                     <div>

@@ -13,7 +13,6 @@ interface SubMenuProps {
   items: SubMenuItem[];
   isCollapsed: boolean;
   activeItem: string;
-  onItemClick: (path: string) => void;
 }
 
 export function SubMenu({
@@ -22,7 +21,6 @@ export function SubMenu({
   items,
   isCollapsed,
   activeItem,
-  onItemClick,
 }: SubMenuProps) {
   const [isExpanded, setIsExpanded] = React.useState(false);
   const isActive = items.some((item) => item.path === activeItem);

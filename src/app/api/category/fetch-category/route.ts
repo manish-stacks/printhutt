@@ -1,11 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { connect } from '@/dbConfig/dbConfig'
 import Category from '@/models/categoryModel';
-import { uploadImage } from '@/lib/cloudinary';
-import { File } from 'buffer';
 
 connect();
-
 
 export async function GET() {
     try {
@@ -19,7 +16,7 @@ export async function GET() {
             { status: 201 }
         );
 
-    } catch (error: any) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
+    } catch (error: unknown) {
+        return NextResponse.json({ error: (error as Error).message }, { status: 500 });
     }
 }

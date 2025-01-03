@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
         const search = url.searchParams.get('search') || '';
       
         
-        const query: any = { role: { $ne: 'admin' } };
+        const query: Record<string, any> = { role: { $ne: 'admin' } }; // Specify the type for query object
       
         if (search) {
             query.username = { $regex: search, $options: 'i' };
@@ -43,10 +43,10 @@ export async function GET(request: NextRequest) {
                 limit,
             },
         });
-    } catch (error: any) {
+    } catch (error: unknown) { // Specify the type for error
         console.error('Error fetching orders:', error);
         return NextResponse.json(
-            { error: error.message || 'Internal Server Error' },
+            { error: error instanceof Error ? error.message : 'Internal Server Error' },
             { status: 500 }
         );
     }

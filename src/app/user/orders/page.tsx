@@ -12,18 +12,7 @@ import { FaSearch } from "react-icons/fa";
 import Link from "next/link";
 
 
-function getStatusVariant(status: string) {
-  switch (status) {
-    case 'confirmed':
-      return 'success';
-    case 'pending':
-      return 'warning';
-    case 'cancelled':
-      return 'destructive';
-    default:
-      return 'secondary';
-  }
-}
+
 
 const ordersPage = () => {
   const [orders, setOrdera] = useState<IOrder[]>([]);
@@ -41,7 +30,7 @@ const ordersPage = () => {
   async function fetchOrdes() {
     try {
       setIsLoading(true);
-      const data = await get_all_orders_of_user(page, search) as any;
+      const data = await get_all_orders_of_user(page, search,'') as any;
       setOrdera(data.orders);
       setPagination(data.pagination);
     } catch (error) {

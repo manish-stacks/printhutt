@@ -79,7 +79,7 @@ export async function DELETE(request: NextRequest, context: { params: { id: stri
         });
 
 
-    } catch (error) {
+    } catch {
         return NextResponse.json(
             { error: "Failed to delete post" },
             { status: 500 }

@@ -1,5 +1,3 @@
-
-
 import mongoose, { Document, Model, Schema } from "mongoose";
 import bcryptjs from "bcryptjs";
 
@@ -24,7 +22,7 @@ interface IUserMethods {
   comparePassword(usePassword: string): Promise<boolean>;
 }
 
-type UserModel = Model<IUser, {}, IUserMethods>;
+type UserModel = Model<IUser, Record<string, never>, IUserMethods>;
 
 const userSchema = new Schema<IUser, UserModel, IUserMethods>(
   {
@@ -71,7 +69,7 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>(
 userSchema.methods.comparePassword = async function (usePassword: string): Promise<boolean> {
   try {
     return await bcryptjs.compare(usePassword, this.password);
-  } catch (error) {
+  } catch {
     throw new Error("Password comparison failed");
   }
 };

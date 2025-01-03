@@ -14,8 +14,8 @@ export async function middleware(request: NextRequest) {
             const { payload } = await jwtVerify(token, new TextEncoder().encode(process.env.TOKEN_SECRET!));
             const redirectPath = payload.role === 'admin' ? '/admin/dashboard' : '/user/dashboard';
             if (payload.role) return NextResponse.redirect(new URL(redirectPath, request.url));
-        } catch (error: any) {
-            console.error('Error decoding token:', error.message || error);
+        } catch (error: unknown) {
+            console.error('Error decoding token:', (error as Error).message || error);
             return NextResponse.redirect(new URL('/login', request.url));
         }
     }
@@ -29,8 +29,8 @@ export async function middleware(request: NextRequest) {
         const rolePath = (path.startsWith('/admin') && payload.role !== 'admin') || (path.startsWith('/user') && payload.role !== 'user');
         if (rolePath) return NextResponse.redirect(new URL('/login', request.url));
         return NextResponse.next();
-    } catch (error: any) {
-        console.error('Error decoding token:', error.message || error);
+    } catch (error: unknown) {
+        console.error('Error decoding token:', (error as Error).message || error);
         return NextResponse.redirect(new URL('/login', request.url));
     }
 }
@@ -81,8 +81,8 @@ export async function middleware(request: NextRequest) {
         }
         return NextResponse.next();
 
-    } catch (error: any) {
-        console.error('Error decoding token:', error.message || error);
+    } catch (error: unknown) {
+        console.error('Error decoding token:', (error as Error).message || error);
         return NextResponse.redirect(new URL('/login', request.url));
     }
 }

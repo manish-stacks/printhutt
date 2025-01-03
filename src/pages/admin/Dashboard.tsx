@@ -19,7 +19,7 @@ const Dashboard = () => {
         <div className="p-4 sm:p-6 lg:p-8">
           <div className="my-8">
             <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-            <p className="mt-1 text-gray-500">Welcome back, here's what's happening today.</p>
+            <p className="mt-1 text-gray-500">Welcome back, here&apos;s what&apos;s happening today.</p>
           </div>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">

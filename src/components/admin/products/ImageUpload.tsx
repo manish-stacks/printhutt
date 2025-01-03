@@ -89,12 +89,10 @@ export function ImageUpload({ onImagesChange, images, productId }: ImageUploadPr
     if (imageToRemove?.url && productId) {
       try {
         setLoading(true)
-        const data = await removeProductImage(productId, imageToRemove) as any;
+        const data: { success: boolean; message: string } = await removeProductImage(productId, imageToRemove);
         if (data.success) {
           toast(data.message)
         }
-      } catch (error) {
-        console.log('Error removing image')
       } finally {
         setLoading(false)
       }

@@ -34,17 +34,17 @@ export default function Warranty() {
 
     useEffect(() => {
         fetchWarranty();
-    }, [page, search]);
+    }, [page, search, fetchWarranty]);
 
     async function fetchWarranty() {
         try {
             setIsLoading(true);
-            const data = await get_all_warranty_pagination(page, search) as any
+            const data: { warranty: Warranty[], pagination: PaginationData } = await get_all_warranty_pagination(page, search);
             setWarranties(data.warranty);
             setPagination(data.pagination);
         } catch (error) {
             console.error('Failed to fetch Warranty:', error);
-            toast.error('Failed to fetch Warranty')
+            toast.error('Failed to fetch Warranty');
         } finally {
             setIsLoading(false);
         }

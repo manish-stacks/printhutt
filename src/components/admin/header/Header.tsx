@@ -1,7 +1,5 @@
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
-import { RiCloseCircleFill, RiMenu3Fill, RiNotification3Line, RiSearch2Line } from 'react-icons/ri';
+import { RiMenu3Fill, RiNotification3Line, RiSearch2Line } from 'react-icons/ri';
 import { UserMenu } from './UserMenu';
 
 interface HeaderProps {

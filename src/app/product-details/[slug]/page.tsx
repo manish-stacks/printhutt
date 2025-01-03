@@ -3,7 +3,6 @@ import ProductDetails from '@/pages/ProductDetails';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-
 interface Props {
   params: {
     slug: string;
@@ -22,7 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         images: product.thumbnail?.url ? [product.thumbnail.url] : [],
       },
     };
-  } catch (error) {
+  } catch {
     return {
       title: 'Product Details',
       description: 'Product information',
@@ -39,7 +38,7 @@ export default async function ProductPage({ params }: Props) {
       notFound();
     }
     return <ProductDetails product={product} />;
-  } catch (error) {
+  } catch {
     notFound();
   }
 }

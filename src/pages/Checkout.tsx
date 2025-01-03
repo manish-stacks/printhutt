@@ -17,7 +17,6 @@ const Checkout = () => {
   const { items, getTotalPrice, getTotalItems, removeAllItems } = useCartStore();
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
   const [paymentMethod, setPaymentMethod] = useState<'online' | 'offline'>('online');
-  const [couponCode, setCouponCode] = useState<string>('');
   const [selectAddress, setSelectAddress] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
@@ -25,7 +24,7 @@ const Checkout = () => {
 
   useEffect(() => {
     setTotalPrice(getTotalPrice());
-  }, [items]);
+  }, [items, getTotalPrice]);
 
 
   const handleChangeAddress = (id: string) => {
@@ -39,14 +38,13 @@ const Checkout = () => {
       getTotalItems: getTotalItems(),
       totalPrice: getTotalPrice(),
       paymentMethod: paymentMethod,
-      couponCode: couponCode,
       address: selectAddress
     };
 
     // console.log(order)
     try {
       setIsSubmitting(true);
-      const response = await create_a_new_order(order) as any;
+      const response: { order: { _id: string } } = await create_a_new_order(order);
       toast.success('Order placed successfully');
       router.push(`/orders/${response.order._id}/confirmation`);
       removeAllItems()

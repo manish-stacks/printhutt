@@ -2,8 +2,9 @@
 import React from "react";
 import OurServices from "@/components/OurServices";
 import Testimonials from "@/components/Testimonials";
-import Team from "@/components/Team";
+// import Team from "@/components/Team";
 import Breadcrumb from "@/components/Breadcrumb";
+import Image from "next/image";
 
 export const AboutUs = () => {
   return (
@@ -17,8 +18,10 @@ export const AboutUs = () => {
           <div className="flex flex-wrap w-full mb-[-24px]">
             <div className="min-[992px]:w-[50%] w-full px-[12px] mb-[24px]">
               <div className="bb-about-img sticky top-[0]">
-                <img
-                  src="https://maraviyainfotech.com/projects/blueberry-tailwind/assets/img/about/one.png"
+                <Image
+                  height={500}
+                  width={500}
+                  src="https://res.cloudinary.com/dkprths9f/image/upload/v1735904182/about_l1sq5j.png"
                   alt="about-one"
                   className="w-full"
                 />
@@ -35,7 +38,7 @@ export const AboutUs = () => {
                   <div className="section-detail max-[991px]:mb-[12px]">
                     <h2 className="bb-title font-quicksand tracking-[0.03rem] mb-[0] p-[0] text-[25px] font-bold text-[#3d4750] inline capitalize leading-[1] max-[767px]:text-[23px]">
                       About the{" "}
-                      <span className="text-[#6c7fd8]">BlueBerry</span>
+                      <span className="text-[#6c7fd8]">Print Hutt</span>
                     </h2>
                   </div>
                 </div>
@@ -46,23 +49,16 @@ export const AboutUs = () => {
                   data-aos-delay={400}
                 >
                   <h4 className="font-quicksand tracking-[0.03rem] leading-[1.2] mb-[20px] text-[18px] text-[#3d4750] font-bold italic">
-                    Farm-fresh Goodness, just a click Away.
+                    Printhutt is Founded By Shivank Arora in 2016.
                   </h4>
                   <p className="font-Poppins mb-[16px] text-[14px] text-[#686e7d] font-light leading-[28px] tracking-[0.03rem]">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Reprehenderit, rem! Et obcaecati rem nulla, aut assumenda
-                    unde minima earum distinctio porro excepturi veritatis
-                    officiis dolorem quod. sapiente amet rerum beatae
-                    dignissimos aperiam id quae quia velit. Ab optio doloribus
-                    hic quas sit corporis numquam.
+                    Welcome to Print Hutt, your one-stop shop for high-quality neon sign boards and custom name plates. We are a team of passionate professionals who take pride in creating unique, eye-catching, and personalized signage solutions for our clients.
+
+                    We are the best neon sign board manufacturers that provide premium quality, 1-year warranty, fast & free shipping, and world-class craftsmanship.
                   </p>
                   <p className="font-Poppins mb-[16px] text-[14px] text-[#686e7d] font-light leading-[28px] tracking-[0.03rem]">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Reprehenderit, rem! Et obcaecati rem nulla, aut assumenda
-                    unde minima earum distinctio porro excepturi veritatis
-                    officiis dolorem quod. sapiente amet rerum beatae
-                    dignissimos aperiam id quae quia velit. Ab optio doloribus
-                    hic quas sit corporis numquam.
+                  Our Team:
+                  We have a team of skilled designers, manufacturing workers, and machine operators. They are working with their full strength and passion to deliver all our customer’s products on time with best quality.
                   </p>
                 </div>
                 <div
@@ -80,7 +76,7 @@ export const AboutUs = () => {
                       </div>
                       <div className="inner-text">
                         <p className="font-Poppins font-light tracking-[0.03rem] text-[14px] leading-[18px] text-[#686e7d] mb-[0] text-center">
-                          vendors
+                          products
                         </p>
                       </div>
                     </div>
@@ -124,7 +120,7 @@ export const AboutUs = () => {
       <Testimonials />
 
       {/* Team */}
-      <Team />
+      {/* <Team /> */}
     </>
   );
 };

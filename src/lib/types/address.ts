@@ -16,7 +16,7 @@ export interface IAddress extends Document {
 }
 
 
-import { string, z } from 'zod';
+import { z } from 'zod';
 
 export const addressSchema = z.object({
   fullName: z.string().min(1, "Name is required"),

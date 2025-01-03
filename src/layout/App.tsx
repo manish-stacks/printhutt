@@ -11,7 +11,7 @@ const App = ({ children }: LayoutProps) => {
         <>
             <Header />
             {children}
-            <Footer />;
+            <Footer />
         </>
     )
 }

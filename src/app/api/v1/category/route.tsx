@@ -8,7 +8,7 @@ connect();
 
 
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
 
     const categories = await Category.find()
@@ -35,9 +35,9 @@ export async function GET(req: NextRequest) {
       categories: categoriesData,
       products: productsData
     }, { status: 200 });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.log(error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: (error as Error).message }, { status: 500 });
   }
 }
 

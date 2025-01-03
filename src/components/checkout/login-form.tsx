@@ -11,15 +11,13 @@ export const CheckoutloginForm = () => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [timer, setTimer] = useState<number>(30);
     const [isResendEnabled, setIsResendEnabled] = useState<boolean>(false);
-    const [success, setSuccess] = useState<string>("");
-    const [error, setError] = useState<string>("");
     const [isOtpSent, setIsOtpSent] = useState<boolean>(false);
     const [otp, setOtp] = useState<string[]>(new Array(6).fill(""));
     const [loadingOtp, setLoadingOtp] = useState<boolean>(false);
     const router = useRouter();
     const fetchUserDetails = useUserStore((state) => state.fetchUserDetails);
 
-    const handleInputChange = (e: any) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmailOrMobile(e.target.value);
         if (errorMessage) {
             setErrorMessage("");
@@ -45,8 +43,8 @@ export const CheckoutloginForm = () => {
             console.log(data);
             toast.success(`Otp send ${emailOrMobile}`);
             setIsOtpSent(true);
-        } catch (error: any) {
-            toast.error(error.message);
+        } catch (error: unknown) {
+            toast.error((error as Error).message);
             console.error("Failed to send OTP:", error);
         } finally {
             setLoading(false);
@@ -69,8 +67,6 @@ export const CheckoutloginForm = () => {
 
     const handleSubmitVerifyOtp = async (e: FormEvent) => {
         e.preventDefault();
-        setError("");
-        setSuccess("");
 
         const otpValue = otp.join("");
         if (otpValue.length !== 6) {
@@ -87,7 +83,6 @@ export const CheckoutloginForm = () => {
 
             fetchUserDetails();
             if (data.role === 'user') {
-                setSuccess(data.message);
                 //router.push('/user/dashboard');
                 toast.success(data.message);
             } else {
@@ -95,8 +90,8 @@ export const CheckoutloginForm = () => {
                 router.push('/login');
             }
 
-        } catch (err: any) {
-            setError(err.response?.data?.error || "Failed to verify/expired OTP.");
+        } catch (err: unknown) {
+            setError((err as Error).response?.data?.error || "Failed to verify/expired OTP.");
         } finally {
             setLoadingOtp(false);
         }
@@ -125,8 +120,8 @@ export const CheckoutloginForm = () => {
             });
             console.log(data)
             toast.success(`Otp send ${emailOrMobile}`);
-        } catch (error: any) {
-            toast.error(error.message);
+        } catch (error: unknown) {
+            toast.error((error as Error).message);
         }
     }
 

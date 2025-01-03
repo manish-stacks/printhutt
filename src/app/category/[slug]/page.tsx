@@ -9,9 +9,8 @@ import { useEffect, useState } from 'react';
 
 const Page = () => {
 
-    const params = useParams();
-    const slug = params?.slug as string | undefined;
-
+    //const params = useParams();
+    // const slug = params?.slug as string | undefined;
 
     const [location, setLocation] = useState({ city: '', country: '' });
     const [error, setError] = useState('');
@@ -36,7 +35,7 @@ const Page = () => {
                         setError('Unable to fetch location data');
                     }
                 },
-                (err) => {
+                () => {
                     setError('Location permission denied');
                 }
             );

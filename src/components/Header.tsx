@@ -83,21 +83,20 @@ export default function Header() {
                       href="shop-left-sidebar-col-3.html"
                       className="transition-all duration-[0.3s] ease-in-out font-Poppins font-light text-[16px] text-[#fff] leading-[28px] tracking-[0.03rem]"
                     >
-                      Flat 50% Off On Grocery Shop.
+                      Flat 30% Off On Neon Light Shop.
                     </a>
                   </div>
                   <div className="col-right-bar flex">
                     <div className="cols px-[12px]">
-                      <a
-                        href="faq.html"
+                      <Link
+                        href="/faq"
                         className="transition-all duration-[0.3s] ease-in-out font-Poppins text-[16px] text-[#fff] font-light leading-[28px] tracking-[0.03rem]"
                       >
                         Help?
-                      </a>
+                      </Link>
                     </div>
                     <div className="cols px-[12px]">
                       <a
-                        href="track-order.html"
                         className="transition-all duration-[0.3s] ease-in-out font-Poppins text-[16px] text-[#fff] font-light leading-[28px] tracking-[0.03rem]"
                       >
                         Track Order
@@ -172,10 +171,10 @@ export default function Header() {
                         <div className="inner-select border-r-[1px] border-solid border-[#eee] h-full px-[20px] flex items-center absolute top-[0] left-[0] max-[991px]:hidden">
                           <div className="custom-select w-[100px] capitalize text-[#777] flex items-center justify-between transition-all duration-[0.2s] ease-in text-[14px] relative">
                             <select>
-                              <option value="option1">Vegetables</option>
-                              <option value="option2">Cold Drinks</option>
-                              <option value="option3">Fruits</option>
-                              <option value="option4">Bakery</option>
+                              <option value="Neon">Neon</option>
+                              <option value="Lamps">Lamps</option>
+                              <option value="Frames">Frames</option>
+                              <option value="Acrylic">Acrylic</option>
                             </select>
                           </div>
                         </div>
@@ -267,7 +266,7 @@ export default function Header() {
                           </div>
                           <div className="bb-btn-desc flex flex-col ml-[10px] max-[1199px]:hidden">
                             <span className="bb-btn-title font-Poppins transition-all duration-[0.3s] ease-in-out text-[12px] leading-[1] text-[#3d4750] mb-[4px] tracking-[0.6px] capitalize font-medium whitespace-nowrap">
-                              <b className="bb-wishlist-count">3</b> items
+                              <b className="bb-wishlist-count">0</b> items
                             </span>
                             <span className="bb-btn-stitle font-Poppins transition-all duration-[0.3s] ease-in-out text-[14px] leading-[16px] font-semibold text-[#3d4750]  tracking-[0.03rem] whitespace-nowrap">
                               Wishlist
@@ -365,7 +364,7 @@ export default function Header() {
                           Home
                         </Link>
                       </li>
-                      <HeaderCategoryList />
+                      <HeaderCategoryList categories={categoryList} />
                       <li className="nav-item bb-dropdown flex items-center relative mr-[45px]">
                         <Link
                           className="nav-link font-Poppins relative p-[0] leading-[28px] text-[15px] font-medium text-[#3d4750] block tracking-[0.03rem]"

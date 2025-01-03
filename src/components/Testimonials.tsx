@@ -90,10 +90,10 @@ const Testimonials = () => {
                               </div>
                               <div className="inner-contact bg-[#fff] mt-[10px] border-[1px] border-solid border-[#eee] p-[20px] rounded-[30px]">
                                 <p className="font-Poppins text-[#686e7d] text-[14px] leading-[25px] tracking-[0.03rem] font-light">
-                                  "Lorem ipsum dolor sit amet consectetur adipisicing
+                                  &quot;Lorem ipsum dolor sit amet consectetur adipisicing
                                   elit. Architecto at sint eligendi possimus perspiciatis
                                   asperiores reiciendis hic amet alias aut quaerat maiores
-                                  blanditiis."
+                                  blanditiis.&quot;
                                 </p>
                               </div>
                             </div>
@@ -132,10 +132,10 @@ const Testimonials = () => {
                               </div>
                               <div className="inner-contact bg-[#fff] mt-[10px] border-[1px] border-solid border-[#eee] p-[20px] rounded-[30px]">
                                 <p className="font-Poppins text-[#686e7d] text-[14px] leading-[25px] tracking-[0.03rem] font-light">
-                                  "Lorem ipsum dolor sit amet consectetur adipisicing
+                                  &quot;Lorem ipsum dolor sit amet consectetur adipisicing
                                   elit. Architecto at sint eligendi possimus perspiciatis
                                   asperiores reiciendis hic amet alias aut quaerat maiores
-                                  blanditiis."
+                                  blanditiis.&quot;
                                 </p>
                               </div>
                             </div>
@@ -174,10 +174,10 @@ const Testimonials = () => {
                               </div>
                               <div className="inner-contact bg-[#fff] mt-[10px] border-[1px] border-solid border-[#eee] p-[20px] rounded-[30px]">
                                 <p className="font-Poppins text-[#686e7d] text-[14px] leading-[25px] tracking-[0.03rem] font-light">
-                                  "Lorem ipsum dolor sit amet consectetur adipisicing
+                                  &quot;Lorem ipsum dolor sit amet consectetur adipisicing
                                   elit. Architecto at sint eligendi possimus perspiciatis
                                   asperiores reiciendis hic amet alias aut quaerat maiores
-                                  blanditiis."
+                                  blanditiis.&quot;
                                 </p>
                               </div>
                             </div>

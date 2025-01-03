@@ -38,7 +38,7 @@ export default async function OrderConfirmationPage({
             <div className="mt-8">
               <h3 className="text-lg font-semibold mb-4">Items Ordered</h3>
               <div className="space-y-4">
-                {order.items.map((item: any) => (
+                {order.items.map((item) => (
                   <div key={item._id} className="flex justify-between items-center border-b pb-4">
                     <div>
                       <p className="font-medium">{item.name}</p>
