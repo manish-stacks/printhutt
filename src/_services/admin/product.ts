@@ -2,7 +2,7 @@
 import { axiosInstance } from "@/utils/axios";
 import type { Product } from "@/lib/types/product";
 
-export const add_new_product = async (formData: any) => {
+export const add_new_product = async (formData: object) => {
   return axiosInstance.post(`/product`, formData)
 }
 
@@ -17,7 +17,7 @@ export const delete_a_product = async (id: string) => {
 }
 
 
-export const update_a_product = async (id: string, formData: any) => {
+export const update_a_product = async (id: string, formData: object) => {
   return axiosInstance.put(`/product/${id}`, formData)
 }
 
@@ -34,7 +34,7 @@ export const get_product_by_category_id = async (id: string) => {
   return axiosInstance.get(`/product/by_category/${id}`);
 }
 
-export const update_product_status = async (categoryId: string, newStatus: any) => {
+export const update_product_status = async (categoryId: string, newStatus: boolean) => {
   return axiosInstance.patch(`/product/${categoryId}`, {
     status: newStatus,
   });

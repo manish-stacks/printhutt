@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
 import UserSidebar from "@/components/user/user-sidebar";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -11,27 +11,20 @@ import { get_all_orders_of_user } from "@/_services/common/order";
 import { FaSearch } from "react-icons/fa";
 import Link from "next/link";
 
-
-
-
-const ordersPage = () => {
-  const [orders, setOrdera] = useState<IOrder[]>([]);
-  const [pagination, setPagination] = useState<any>();
+const OrdersPage = () => {
+  const [orders, setOrders] = useState<IOrder[]>([]);
+  const [pagination, setPagination] = useState()
   const [isLoading, setIsLoading] = useState(true);
   const searchParams = useSearchParams();
   const router = useRouter();
   const page = searchParams?.get('page') || '1';
   const search = searchParams?.get('search') || '';
 
-  useEffect(() => {
-    fetchOrdes();
-  }, [page, search]);
-
-  async function fetchOrdes() {
+  async function fetchOrders() {
     try {
       setIsLoading(true);
-      const data = await get_all_orders_of_user(page, search,'') as any;
-      setOrdera(data.orders);
+      const data = await get_all_orders_of_user(page, search, '') 
+      setOrders(data.orders);
       setPagination(data.pagination);
     } catch (error) {
       console.error('Failed to fetch return methods:', error);
@@ -40,6 +33,10 @@ const ordersPage = () => {
       setIsLoading(false);
     }
   }
+
+  useEffect(() => {
+    fetchOrders();
+  }, [page, search]);
 
   const handleSearch = (value: string) => {
     const params = new URLSearchParams(searchParams!);
@@ -59,21 +56,17 @@ const ordersPage = () => {
   };
 
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString();
-  };
-
   return (
     <>
+     <Suspense fallback={<div>Loading...</div>}>
+     
       <Breadcrumb title={"Orders"} />
 
       <section className="section-about py-[50px] max-[1199px]:py-[35px]">
         <div className="flex flex-wrap justify-between items-center mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">
           <div className="flex flex-wrap w-full mb-[-24px]">
             <UserSidebar activemenu={'orders'} />
-            {/* Main Content */}
             <div className="flex-1 p-6 pt-0">
-              {/* Profile Header */}
               <div className="bg-purple-600 text-white rounded-lg p-8 flex items-center justify-between mb-6 w-full max-w-full">
                 <div className="flex items-center space-x-4">
                   <div>
@@ -81,7 +74,7 @@ const ordersPage = () => {
                   </div>
                 </div>
               </div>
-              {/* Dashboard Statistics */}
+
               <div className="bg-white px-5 py-10">
                 <div className="mb-6 flex justify-between items-center">
                   <div className="relative hidden sm:block mt-4">
@@ -96,14 +89,12 @@ const ordersPage = () => {
                   </div>
                 </div>
 
-
                 <div className="overflow-x-auto bg-white shadow-md rounded-lg">
                   {isLoading ? (
                     <div className="flex justify-center py-8">
                       <RiLoader2Line className="h-8 w-8 text-blue-500 animate-spin" />
                     </div>
                   ) : (
-
                     <table className="min-w-full table-auto text-left text-sm text-gray-600">
                       <thead>
                         <tr className="bg-gray-100 border-b">
@@ -121,8 +112,8 @@ const ordersPage = () => {
                             <td colSpan={6} className="py-3 px-4 text-center">No offers found.</td>
                           </tr>
                         ) : (
-                          orders.map((order) => (
-                            <tr key={order._id} className="border-b hover:bg-gray-50">
+                          orders.map((order, index) => (
+                            <tr key={index} className="border-b hover:bg-gray-50">
                               <td className="py-3 px-4">{order.orderId}</td>
                               <td className="py-3 px-4">{new Date(order.createdAt).toLocaleDateString()}</td>
                               <td className="py-3 px-4">{order.totalAmount.toFixed(2)}</td>
@@ -150,16 +141,14 @@ const ordersPage = () => {
                     onPageChange={handlePageChange}
                   />
                 )}
-
               </div>
             </div>
           </div>
         </div>
       </section>
+     </Suspense>
     </>
   );
 };
 
-export default ordersPage;
-
-
+export default OrdersPage; 

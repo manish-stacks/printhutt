@@ -6,7 +6,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-export const uploadImage = async (file: any, folderName = 'common', width: number, height: number): Promise<{ url: string; public_id: string; fileType: string }> => {
+export const uploadImage = async (file, folderName = 'common', width: number, height: number): Promise<{ url: string; public_id: string; fileType: string }> => {
   try {
 
     const buffer = await file.arrayBuffer();

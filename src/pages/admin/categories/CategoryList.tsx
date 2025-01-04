@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { FaSearch } from 'react-icons/fa';
@@ -8,7 +8,7 @@ import { RiArrowDropLeftLine, RiArrowDropRightLine, RiDeleteBin2Line, RiEdit2Fil
 import Swal from 'sweetalert2';
 import { delete_categories, getAllCatPagination, update_category_status } from '@/_services/admin/category';
 import { toast } from 'react-toastify';
-import type{ PaginationData } from '@/lib/types';
+import type { PaginationData } from '@/lib/types';
 import Link from 'next/link';
 import { CategoryFormData } from '@/lib/types/category';
 
@@ -30,7 +30,7 @@ export default function CategoryList() {
   async function fetchCategories() {
     try {
       setIsLoading(true);
-      const data = await getAllCatPagination(page, search) as any
+      const data = await getAllCatPagination(page, search)
       setCategories(data.categories);
       setPagination(data.pagination);
     } catch (error) {
@@ -81,11 +81,20 @@ export default function CategoryList() {
             icon: "success"
           });
         } catch (error) {
-          Swal.fire({
-            title: "Error!",
-            text: "There was an issue deleting the category.",
-            icon: "error"
-          });
+          if (error instanceof Error) {
+
+            Swal.fire({
+              title: "Error!",
+              text: "There was an issue deleting the category.",
+              icon: "error"
+            });
+          } else {
+            Swal.fire({
+              title: "Error!",
+              text: "There was an issue deleting the category.",
+              icon: "error"
+            });
+          }
         }
       }
     });
@@ -125,6 +134,9 @@ export default function CategoryList() {
   };
 
   return (
+     <Suspense fallback={<div>Loading...</div>}>
+
+
     <div className="max-w-10xl mx-auto lg:px-10 py-20">
 
       <div className="w-full md:w-12/12 lg:w-12/12 mb-5">
@@ -298,5 +310,6 @@ export default function CategoryList() {
         )}
       </div>
     </div>
+     </Suspense>
   );
 }

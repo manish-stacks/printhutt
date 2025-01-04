@@ -9,10 +9,7 @@ import { RiLoader2Line } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 
 
-interface Category {
-  _id: string;
-  name: string;
-}
+
 
 
 const maxSize = (value: File) => {
@@ -107,7 +104,7 @@ const CategoriesAdd = () => {
 
 
     try {
-      const res = await add_new_category(data) as any;
+      const res = await add_new_category(data)
       if (res.success) {
         toast.success(res?.message);
         setTimeout(() => {
@@ -118,8 +115,11 @@ const CategoriesAdd = () => {
         toast.error(res?.message)
         setIsSubmitting(false);
       }
-    } catch (error: any) {
-      toast.error(error?.message)
+    } catch (error) {
+      if(error instanceof Error){
+            
+        toast.error(error?.message)
+      }
     } finally {
       setIsSubmitting(false);
     }

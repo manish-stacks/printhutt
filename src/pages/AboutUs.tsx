@@ -6,7 +6,7 @@ import Testimonials from "@/components/Testimonials";
 import Breadcrumb from "@/components/Breadcrumb";
 import Image from "next/image";
 
-export const AboutUs = () => {
+ const AboutUs = () => {
   return (
     <>
       {/* Breadcrumb */}
@@ -124,3 +124,5 @@ export const AboutUs = () => {
     </>
   );
 };
+
+export default AboutUs;

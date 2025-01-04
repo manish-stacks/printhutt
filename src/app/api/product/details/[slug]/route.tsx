@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connect } from '@/dbConfig/dbConfig'
-import { getDataFromToken } from '@/helpers/getDataFromToken';
 import ProductModel from '@/models/productModel';
-import mongoose from 'mongoose';
 import Category from '@/models/categoryModel';
 import SubCategory from '@/models/subCategoryModel';
 import WarrantyInformation from '@/models/warrantyInformationModel';
@@ -33,7 +31,10 @@ export async function GET(request: NextRequest, context: { params: { slug: strin
         return NextResponse.json(product);
 
     } catch (error) {
-        return NextResponse.json({ error: "Failed to fetch product" }, { status: 500 });
+        if(error instanceof Error){
+            
+            return NextResponse.json({ error: "Failed to fetch product" }, { status: 500 });
+        }
     }
 
 

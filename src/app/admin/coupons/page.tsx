@@ -1,5 +1,5 @@
 'use client'
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, Suspense, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { FaSearch } from 'react-icons/fa';
 import { CouponTable } from '@/components/admin/coupon/CouponTable';
@@ -9,6 +9,7 @@ import { CouponForm } from '@/components/admin/coupon/CouponForm';
 import Swal from 'sweetalert2';
 import { addNewCoupon, deleteCoupon, getAllCouponsPagination, updateCoupon } from '@/_services/admin/coupon';
 import { toast } from 'react-toastify';
+import { CouponAttributes } from '@/lib/types/coupon';
 
 
 export default function CouponPage() {
@@ -17,8 +18,8 @@ export default function CouponPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
 
-  const [coupons, setCoupons] = useState<Coupon[]>([]);
-  const [pagination, setPagination] = useState<any>();
+  const [coupons, setCoupons] = useState<CouponAttributes[]>([]);
+  const [pagination, setPagination] = useState<number | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(true);
 
   const [formData, setFormData] = useState({
@@ -39,15 +40,13 @@ export default function CouponPage() {
   const page = searchParams?.get('page') || '1';
   const search = searchParams?.get('search') || '';
 
-  useEffect(() => {
-    fetchCoupons();
-  }, [page, search]);
-
+ 
 
   async function fetchCoupons() {
     try {
       setIsLoading(true);
-      const data = await getAllCouponsPagination(page, search) as any;
+      const response = await getAllCouponsPagination(page, search);
+      const data = response.data as unknown as { coupons: CouponAttributes[], pagination: number }; 
       setCoupons(data.coupons);
       setPagination(data.pagination);
     } catch (error) {
@@ -57,6 +56,11 @@ export default function CouponPage() {
       setIsLoading(false);
     }
   }
+
+  useEffect(() => {
+    fetchCoupons();
+  }, [page]);
+
 
   const handleSearch = (value: string) => {
     const params = new URLSearchParams(searchParams!);
@@ -141,11 +145,21 @@ export default function CouponPage() {
           icon: "success"
         });
       } catch (error) {
-        Swal.fire({
-          title: "Error!",
-          text: "There was an issue deleting the coupon.",
-          icon: "error"
-        });
+        if(error instanceof Error){
+          console.error('Error deleting coupon:', error.message);
+          Swal.fire({
+            title: "Error!",
+            text: "There was an issue deleting the coupon.",
+            icon: "error"
+          });
+        }else{
+          console.error('Unexpected error:', error);
+          Swal.fire({
+            title: "Error!",
+            text: "There was an issue deleting the coupon.",
+            icon: "error"
+          });
+        }
       }
     }
   };
@@ -168,7 +182,8 @@ export default function CouponPage() {
   };
 
   return (
-    <div className="max-w-10xl mx-auto lg:px-10 py-20">
+   <Suspense fallback={<div>Loading...</div>} >
+     <div className="max-w-10xl mx-auto lg:px-10 py-20">
       <div className="w-full md:w-12/12 lg:w-12/12 mb-5">
         <div className="bg-white text-black flex justify-between align-middle p-6 rounded-lg shadow-md">
           <div>
@@ -228,5 +243,6 @@ export default function CouponPage() {
         />
       )}
     </div>
+   </Suspense>
   );
 }

@@ -29,7 +29,7 @@ const SingleProductSlider = ({ product }: SingleProductSliderProps) => {
     arrows: false,
     fade: false,
     asNavFor: navSlider,
-    ref: (slider: any) => setMainSlider(slider), // Bind the main slider
+    ref: (slider) => setMainSlider(slider), 
   };
 
   const navSliderSettings: Settings = {
@@ -39,7 +39,7 @@ const SingleProductSlider = ({ product }: SingleProductSliderProps) => {
     dots: false,
     arrows: true,
     focusOnSelect: true,
-    ref: (slider: any) => setNavSlider(slider), // Bind the nav slider
+    ref: (slider) => setNavSlider(slider),
   };
 
   const productImages = [thumbnail.url, ...images.map((image) => image.url)];

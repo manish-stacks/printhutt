@@ -19,7 +19,7 @@ const ProductDetails = ({ product }: ProductProps) => {
   const addToCart = useCartStore(state => state.addToCart);
   const { items } = useCartStore();
   const [isCartOpen, setIsOpenCart] = useState(false);
-  const toggelCartSidebar = () => setIsOpenCart((prev) => !prev);
+
   const toggelCartSidebarClose = () => setIsOpenCart(false);
 
   const handleAddToCart = () => {

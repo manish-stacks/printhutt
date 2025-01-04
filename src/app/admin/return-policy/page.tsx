@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, Suspense, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { FaSearch } from 'react-icons/fa';
 import { Pagination } from '@/components/admin/Pagination';
@@ -39,7 +39,7 @@ export default function ReturnPolicyPage() {
     async function fetchReturnPolicies() {
         try {
             setIsLoading(true);
-            const data = await getReturnPolicies(page, search) as any;
+            const data = await getReturnPolicies(page, search)
             setReturnPolicies(data.returndata);
             setPagination(data.pagination);
         } catch (error) {
@@ -126,11 +126,19 @@ export default function ReturnPolicyPage() {
                         icon: "success"
                     });
                 } catch (error) {
-                    Swal.fire({
-                        title: "Error!",
-                        text: "There was an issue deleting the return-policy method.",
-                        icon: "error"
-                    });
+                    if (error instanceof Error) {
+                        Swal.fire({
+                            title: "Error!",
+                            text: "There was an issue deleting the return-policy method.",
+                            icon: "error"
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Error!",
+                            text: "There was an issue deleting the return-policy method.",
+                            icon: "error"
+                        });
+                    }
                 }
             }
         });
@@ -147,6 +155,8 @@ export default function ReturnPolicyPage() {
     };
 
     return (
+         <Suspense fallback={<div>Loading...</div>}>
+
         <div className="max-w-10xl mx-auto lg:px-10 py-20">
             <div className="w-full md:w-12/12 lg:w-12/12 mb-5">
                 <div className="bg-white text-black flex justify-between align-middle p-6 rounded-lg shadow-md">
@@ -249,6 +259,7 @@ export default function ReturnPolicyPage() {
                 />
             )}
         </div>
+         </Suspense>
     );
 }
 

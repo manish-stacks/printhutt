@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, Suspense, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { FaSearch } from 'react-icons/fa';
 import { RiDeleteBin2Line, RiEdit2Fill, RiLoader2Line } from 'react-icons/ri';
@@ -34,7 +34,7 @@ export default function Warranty() {
 
     useEffect(() => {
         fetchWarranty();
-    }, [page, search, fetchWarranty]);
+    }, [page, search]);
 
     async function fetchWarranty() {
         try {
@@ -89,7 +89,10 @@ export default function Warranty() {
             fetchWarranty();
             handleCloseModal();
         } catch (error) {
-            toast.error('Something went wrong');
+            if(error instanceof Error){
+            
+                toast.error('Something went wrong');
+            }
         } finally {
             setIsSubmitting(false);
         }
@@ -143,11 +146,14 @@ export default function Warranty() {
                         icon: "success"
                     });
                 } catch (error) {
-                    Swal.fire({
-                        title: "Error!",
-                        text: "There was an issue deleting the warranty.",
-                        icon: "error"
-                    });
+                    if(error instanceof Error){
+            
+                        Swal.fire({
+                            title: "Error!",
+                            text: "There was an issue deleting the warranty.",
+                            icon: "error"
+                        });
+                    }
                 }
             }
         });
@@ -156,6 +162,8 @@ export default function Warranty() {
 
     return (
         <>
+         <Suspense fallback={<div>Loading...</div>}>
+         
             <div className="max-w-10xl mx-auto lg:px-10 py-20">
 
 
@@ -273,6 +281,7 @@ export default function Warranty() {
                     mode={editingId ? 'edit' : 'add'}
                 />
             )}
+         </Suspense>
         </>
     );
 }

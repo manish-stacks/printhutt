@@ -13,7 +13,7 @@ export async function get_all_orders_of_user(page: string, search: string, statu
 
 
 
-export const get_order_details = async (id: any) => {
+export const get_order_details = async (id: string) => {
 
   return axiosInstance.get(`/order/${id}`)
 }

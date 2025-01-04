@@ -32,9 +32,12 @@ const Login = () => {
             } else {
                 toast.error('Unauthorized access');
             }
-        } catch (error: any) {
-            console.log(error.response.data.message)
-            toast.error(error.response.data.message || 'Login failed');
+        } catch (error) {
+            if(error instanceof Error){
+            
+                console.log(error.response.data.message)
+                toast.error(error.response.data.message || 'Login failed');
+            }
         } finally {
             setLoading(false);
         }

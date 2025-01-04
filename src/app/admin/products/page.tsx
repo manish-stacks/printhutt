@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { delete_a_product, get_all_products, update_product_status } from '@/_services/admin/product';
 import { toast } from 'react-toastify';
@@ -11,9 +11,27 @@ import Image from 'next/image';
 import { Pagination } from '@/components/admin/Pagination';
 import Swal from 'sweetalert2';
 import type { PaginationData } from '@/lib/types';
-
+interface Product {
+  _id: string;
+  title: string;
+  price: number;
+  category: {
+    name: string;
+  };
+  subcategory?: {
+    name: string;
+  };
+  stock: number;
+  isCustomize: boolean;
+  status: boolean;
+  thumbnail?: {
+    url: string;
+  };
+}
 const ProductList: React.FC = () => {
-  const [products, setProducts] = useState<any[]>([]);
+
+
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [pagination, setPagination] = useState<PaginationData>();
   const searchParams = useSearchParams();
@@ -24,11 +42,16 @@ const ProductList: React.FC = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await get_all_products(page, search) as any;
+      const response = await get_all_products(page, search)
       setProducts(response.products);
       setPagination(response.pagination);
     } catch (error) {
-      toast.error('Failed to fetch products');
+      if (error instanceof Error) {
+
+        toast.error('Failed to fetch products');
+      } else {
+        toast.error('Failed to fetch products');
+      }
     } finally {
       setLoading(false);
     }
@@ -72,18 +95,27 @@ const ProductList: React.FC = () => {
         try {
           setLoading(true)
           await delete_a_product(id);
-          setProducts(prev => prev.filter(product => product._id !== id));
+          setProducts(prev => prev.filter(product => product?._id !== id));
           Swal.fire({
             title: "Deleted!",
             text: "Your category has been deleted.",
             icon: "success"
           });
         } catch (error) {
-          Swal.fire({
-            title: "Error!",
-            text: "There was an issue deleting the category.",
-            icon: "error"
-          });
+          if (error instanceof Error) {
+            Swal.fire({
+              title: "Error!",
+              text: "There was an issue deleting the category.",
+              icon: "error"
+            });
+          } else {
+            Swal.fire({
+              title: "Error!",
+              text: "There was an issue deleting the category.",
+              icon: "error"
+            });
+          }
+
         } finally {
           setLoading(false)
         }
@@ -96,7 +128,7 @@ const ProductList: React.FC = () => {
 
     setProducts((prevProducts) =>
       prevProducts.map((product) =>
-        product._id === categoryId ? { ...product, status: newStatus } : product
+        product?._id === categoryId ? { ...product, status: newStatus } : product
       )
     );
 
@@ -104,14 +136,22 @@ const ProductList: React.FC = () => {
       update_product_status(categoryId, newStatus);
       toast.success("Status updated successfully")
     } catch (error) {
-      toast.error('Failed to fetch products');
-      setLoading(false);
+      if(error instanceof Error){
+
+        toast.error('Failed to fetch products');
+        setLoading(false);
+      }else{
+        toast.error('Failed to fetch products');
+        setLoading(false);
+      }
     }
   };
   const editHandel = async (id: string) => {
     router.push(`/admin/products/edit/${id}`);
   }
   return (
+     <Suspense fallback={<div>Loading...</div>}>
+
     <div className="max-w-10xl mx-auto lg:px-10 py-20">
 
       <div className="w-full md:w-12/12 lg:w-12/12 mb-5">
@@ -133,7 +173,7 @@ const ProductList: React.FC = () => {
             <FaSearch className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
             <input
               type="search"
-              placeholder="Search product..."
+              placeholder="Search product?..."
               value={search}
               onChange={(e) => handleSearch(e.target.value)}
               className="w-80 rounded-lg border border-gray-200 py-2 pl-10 pr-4 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -167,9 +207,9 @@ const ProductList: React.FC = () => {
                     <td colSpan={5} className="py-3 px-4 text-center">No categories found.</td>
                   </tr>
                 ) : (products.map((product) => (
-                  <tr key={product._id} className="border-b hover:bg-gray-50">
+                  <tr key={product?._id} className="border-b hover:bg-gray-50">
                     <td className="py-3 px-4">
-                      {product.thumbnail?.url ? (
+                      {product?.thumbnail?.url ? (
                         <div className="relative w-12 h-12">
                           <Image
                             src={product?.thumbnail?.url}
@@ -183,44 +223,45 @@ const ProductList: React.FC = () => {
                         <div className="w-12 h-12 bg-gray-200 rounded-full" />
                       )}
                     </td>
-                    <td className="py-3 px-4">{product.title}</td>
-                    <td className="py-3 px-4">{`₹${product.price.toFixed(2)}`}</td>
+                    <td className="py-3 px-4">{product?.title}</td>
+                    <td className="py-3 px-4">{product?.price ? `₹${product?.price.toFixed(2)}` : 'Price not available'}</td>
+
                     <td className="py-3 px-4">
-                      {product.category.name}
-                      {product.subcategory && (
+                      {product?.category.name}
+                      {product?.subcategory && (
                         <>
                           <br />
-                          <span>{`-- ${product.subcategory.name}`}</span>
+                          <span>{`-- ${product?.subcategory.name}`}</span>
                         </>
                       )}
                     </td>
-                    <td className="py-3 px-4">{product.stock}</td>
-                    <td className="py-3 px-4" style={{ color: product.isCustomize ? 'green' : 'blue' }}>
-                      {product.isCustomize ? 'Customize' : <span>Pre</span>}
+                    <td className="py-3 px-4">{product?.stock}</td>
+                    <td className="py-3 px-4" style={{ color: product?.isCustomize ? 'green' : 'blue' }}>
+                      {product?.isCustomize ? 'Customize' : <span>Pre</span>}
                     </td>
                     <td>
                       <label className="flex items-center cursor-pointer">
                         <input
                           type="checkbox"
-                          checked={product.status}
-                          onChange={() => handleStatusToggle(product._id || '', product.status)}
+                          checked={product?.status}
+                          onChange={() => handleStatusToggle(product?._id || '', product?.status)}
                           className="sr-only peer"
                         />
                         <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600" />
                         <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-                          {product.status ? "Active" : "Inactive"}
+                          {product?.status ? "Active" : "Inactive"}
                         </span>
                       </label>
                     </td>
                     <td>
                       <div className='flex space-x-2'>
                         <button
-                          onClick={() => editHandel(product._id || '')}
+                          onClick={() => editHandel(product?._id || '')}
                           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-full">
                           <RiEdit2Fill />
                         </button>
                         <button
-                          onClick={() => handleDelete(product._id || '')}
+                          onClick={() => handleDelete(product?._id || '')}
                           className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 rounded-full">
                           <RiDeleteBin2Line />
                         </button>
@@ -243,6 +284,7 @@ const ProductList: React.FC = () => {
         )}
       </div>
     </div>
+     </Suspense>
   );
 };
 

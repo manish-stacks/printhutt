@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { MouseEventHandler, useState } from 'react'
+import React, { MouseEventHandler } from 'react'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import Slider from 'react-slick';
 

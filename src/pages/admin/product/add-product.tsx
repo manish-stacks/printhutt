@@ -188,7 +188,7 @@ export default function AddProduct() {
   };
 
   const handleRemoveVariant = (index: number) => {
-    setFormData((prevFormData: any) => {
+    setFormData((prevFormData) => {
       const updatedVarient = prevFormData.varient.filter((_: unknown, i: number) => i !== index);
       return { ...prevFormData, varient: updatedVarient };
     });
@@ -217,7 +217,10 @@ export default function AddProduct() {
       const categoryData = await get_parent_sub_categories(value);
       setSubCategories(categoryData.category);
     } catch (error) {
-      toast.error('Failed to fetch sub categories');
+      if(error instanceof Error){
+            
+        toast.error('Failed to fetch sub categories');
+      }
     } finally {
       setLoading(false);
     }
@@ -284,7 +287,7 @@ export default function AddProduct() {
       }
 
       if (formData.images && formData.images.length > 0) {
-        formData.images.forEach((image, index) => {
+        formData.images.forEach((image) => {
           if (image.file instanceof File) {
             formDataToSend.append(`images`, image.file);
           }

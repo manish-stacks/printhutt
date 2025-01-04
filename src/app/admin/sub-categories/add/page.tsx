@@ -85,7 +85,7 @@ const CategoriesAdd = () => {
 
   const handleSubmit = (async (e: React.FormEvent) => {
     e.preventDefault();
-   
+
     if (!formData.imageUrl) return toast.error('Please choose an image');
     if (!formData.name) return toast.error('Please enter a name');
     if (!formData.slug) return toast.error('Please enter a slug');
@@ -112,7 +112,7 @@ const CategoriesAdd = () => {
 
 
     try {
-      const res = await add_new_sub_category(data) as any;
+      const res = await add_new_sub_category(data)
       if (res.success) {
         toast.success(res?.message);
         setTimeout(() => {
@@ -123,8 +123,12 @@ const CategoriesAdd = () => {
         toast.error(res?.message)
         setIsSubmitting(false);
       }
-    } catch (error: any) {
-      toast.error(error?.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error?.message)
+      } else {
+        toast.error(error?.message)
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -137,7 +141,7 @@ const CategoriesAdd = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const data = await get_parent_categories() as any;
+        const data = await get_parent_categories()
         setCategories(data.category);
       } catch (error) {
         console.error("Error fetching categories:", error);
@@ -307,7 +311,7 @@ const CategoriesAdd = () => {
                 {isSubmitting ? 'Creating...' : 'Save'}
               </button>
               <button type="submit" className="bg-blue-500 text-white py-2 px-7 rounded gap-1">
-                
+
                 {(isSubmitting || isUploading) && (
                   <RiLoader2Line className="mr-2 h-4 w-4 animate-spin" />
                 )}

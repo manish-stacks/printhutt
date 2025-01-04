@@ -1,4 +1,4 @@
-import { AboutUs } from "@/pages/AboutUs"
+import AboutUs from "@/pages/AboutUs"
 
 
 const AboutPage= () => {

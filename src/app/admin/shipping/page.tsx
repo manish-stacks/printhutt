@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, Suspense, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { FaSearch } from 'react-icons/fa';
 import { toast } from 'react-toastify';
@@ -39,7 +39,7 @@ export default function ShippingPage() {
     async function fetchShippingMethods() {
         try {
             setIsLoading(true);
-            const data = await getAllShippingPagination(page, search) as any;
+            const data = await getAllShippingPagination(page, search) 
             setShippingMethods(data.shipping);
             setPagination(data.pagination);
         } catch (error) {
@@ -89,7 +89,11 @@ export default function ShippingPage() {
             fetchShippingMethods();
             handleCloseModal();
         } catch (error) {
-            toast.error('Something went wrong');
+            if(error instanceof Error) {
+                toast.error('Something went wrong');
+            }else{
+                toast.error('Something went wrong');
+            }
         } finally {
             setIsSubmitting(false);
         }
@@ -129,11 +133,13 @@ export default function ShippingPage() {
                         icon: "success"
                     });
                 } catch (error) {
+                  if(error instanceof Error){
                     Swal.fire({
                         title: "Error!",
                         text: "There was an issue deleting the shipping method.",
                         icon: "error"
                     });
+                  }
                 }
             }
         });
@@ -151,6 +157,8 @@ export default function ShippingPage() {
     };
 
     return (
+         <Suspense fallback={<div>Loading...</div>}>
+
         <div className="max-w-10xl mx-auto lg:px-10 py-20">
             <div className="w-full md:w-12/12 lg:w-12/12 mb-5">
                 <div className="bg-white text-black flex justify-between align-middle p-6 rounded-lg shadow-md shadow-black-300">
@@ -253,5 +261,6 @@ export default function ShippingPage() {
                 />
             )}
         </div>
+         </Suspense>
     );
 }

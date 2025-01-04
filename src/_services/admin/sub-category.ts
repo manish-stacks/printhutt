@@ -5,7 +5,7 @@ export async function getAllsub_CatPagination(page: string, search: string) {
   return axiosInstance.get(`/sub-category?page=${page}&search=${search}&limit=10`);
 }
 
-export const add_new_sub_category = async (formData: any) => {
+export const add_new_sub_category = async (formData: object) => {
   return axiosInstance.post(`/sub-category`, formData)
 }
 
@@ -26,11 +26,11 @@ export const get_sub_category_by_id = async (id: string) => {
   return axiosInstance.get(`/sub-category/${id}`)
 }
 
-export const update_sub_category = async (id: string, formData: any) => {
+export const update_sub_category = async (id: string, formData: object) => {
   return axiosInstance.put(`/sub-category/${id}`, formData)
 }
 
-export const update_sub_category_status = async (categoryId: string, newStatus: any) => {
+export const update_sub_category_status = async (categoryId: string, newStatus: boolean) => {
   return axiosInstance.patch(`/sub-category/${categoryId}`, {
     status: newStatus,
   });

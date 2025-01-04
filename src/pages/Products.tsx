@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
 import { ProductSidebar } from "@/components/products/ProductSidebar";
 import type { FilterState } from "@/lib/types";
@@ -9,10 +9,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ProductHeader } from "@/components/products/ProductHeader";
 import ProductGrid from "@/components/products/ProductGrid";
 import LoadingSpinner from "@/components/LoadingSpinner";
-import { get_all_products } from "@/_services/admin/product";
 import { useCartStore } from "@/store/useCartStore";
 import type { Product } from "@/lib/types/product";
-import ProductsPagination from "@/components/products/ProductsPagination";
 import { Pagination } from "@/components/admin/Pagination";
 
 function Products() {
@@ -20,7 +18,7 @@ function Products() {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
-  const [pagination, setPagination] = useState<any>();
+  const [pagination, setPagination] = useState();
   const router = useRouter();
   const [filters, setFilters] = useState<FilterState>({
     categories: [],
@@ -56,7 +54,10 @@ function Products() {
       // const response = await get_all_products(page, search) as any;
       // setProducts(response.products);
     } catch (error) {
-      toast.error('Failed to fetch products')
+      if(error instanceof Error){
+            
+        toast.error('Failed to fetch products')
+      }
     } finally {
       setLoading(false)
     }
@@ -68,7 +69,6 @@ function Products() {
 
 
 
-  const totalItems = useCartStore(state => state.getTotalItems());
   const items = useCartStore(state => state.items);
   console.log(items)
 
@@ -91,6 +91,7 @@ function Products() {
   return (
     <>
 
+ <Suspense fallback={<div>Loading...</div>}>
 
       <Breadcrumb title={"Shop Page"} />
 
@@ -131,6 +132,7 @@ function Products() {
           </div>
         </div>
       </section>
+ </Suspense>
     </>
   );
 }

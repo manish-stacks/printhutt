@@ -1,5 +1,4 @@
 "use client"
-import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 // export const metadata = {
@@ -32,7 +31,9 @@ const Page = () => {
                         const country = data.address?.country || 'Unknown Country';
                         setLocation({ city, country });
                     } catch (err) {
-                        setError('Unable to fetch location data');
+                        if (err instanceof Error) {
+                            setError('Unable to fetch location data');
+                        }
                     }
                 },
                 () => {

@@ -52,9 +52,12 @@ const Login = () => {
       console.log(data);
       toast.success(`Otp send ${emailOrMobile}`);
       setIsOtpSent(true);
-    } catch (error: any) {
-      toast.error(error.message);
-      console.error("Failed to send OTP:", error);
+    } catch (error) {
+      if (error instanceof Error) {
+
+        toast.error(error.message);
+        console.error("Failed to send OTP:", error);
+      }
     } finally {
       setLoading(false);
     }
@@ -101,8 +104,11 @@ const Login = () => {
         router.push('/login');
       }
 
-    } catch (err: any) {
-      setError(err.response?.data?.error || "Failed to verify/expired OTP.");
+    } catch (err) {
+      if (err instanceof Error) {
+
+        setError(err.response?.data?.error || "Failed to verify/expired OTP.");
+      }
     } finally {
       setLoadingOtp(false);
     }
@@ -130,8 +136,11 @@ const Login = () => {
       });
       console.log(data)
       toast.success(`Otp send ${emailOrMobile}`);
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error) {
+      if(error instanceof Error){
+            
+        toast.error(error.message);
+      }
     }
   }
   return (

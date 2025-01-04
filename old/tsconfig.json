@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/models/orderModel.ts", "src/models/productModel.ts", "src/models/categoryModel.js", "src/models/couponModel.ts", "src/models/offerModel.ts", "src/models/returnPolicyModule.ts", "src/models/reviewModel.ts", "src/models/shippingInformationModel.ts", "src/models/userModel.ts", "src/models/variantModel.js", "src/models/warrantyInformationModel.ts", "src/models/categoryModel.ts"],
+  "exclude": ["node_modules"]
+}

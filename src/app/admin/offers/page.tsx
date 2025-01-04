@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, Suspense, useCallback, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { FaSearch } from 'react-icons/fa';
 import { Pagination } from '@/components/admin/Pagination';
@@ -19,7 +19,7 @@ export default function OfferPage() {
     const [isOpen, setIsOpen] = useState(false);
     const [editingId, setEditingId] = useState<string | null>(null);
     const [offers, setOffers] = useState<Offer[]>([]);
-    const [pagination, setPagination] = useState<any>();
+    const [pagination, setPagination] = useState<number>();
     const [isLoading, setIsLoading] = useState(true);
 
     const [formData, setFormData] = useState({
@@ -35,23 +35,24 @@ export default function OfferPage() {
     const page = searchParams?.get('page') || '1';
     const search = searchParams?.get('search') || '';
 
-    useEffect(() => {
-        fetchOffers();
-    }, [page, search]);
-
-    async function fetchOffers() {
+    const fetchOffers = useCallback(async () => {
         try {
             setIsLoading(true);
-            const data = await getOfferPolicies(page, search) as any;
-            setOffers(data.returndata);
-            setPagination(data.pagination);
+            const response = await getOfferPolicies(page, search);
+            
+            setOffers(response.returndata);
+            setPagination(response.pagination);
         } catch (error) {
             console.error('Failed to fetch return methods:', error);
             toast.error('Failed to fetch return methods');
         } finally {
             setIsLoading(false);
         }
-    }
+    }, [page, search]);
+
+    useEffect(() => {
+        fetchOffers();
+    }, [fetchOffers]);
 
     const handleSearch = (value: string) => {
         const params = new URLSearchParams(searchParams!);
@@ -131,11 +132,20 @@ export default function OfferPage() {
                         icon: "success"
                     });
                 } catch (error) {
-                    Swal.fire({
-                        title: "Error!",
-                        text: "There was an issue deleting the return-policy method.",
-                        icon: "error"
-                    });
+                    if (error instanceof Error) {
+                        Swal.fire({
+                            title: "Error!",
+                            text: "There was an issue deleting the return-policy method.",
+                            icon: "error"
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Error!",
+                            text: "There was an issue deleting the return-policy method.",
+                            icon: "error"
+                        });
+                    }
+
                 }
             }
         });
@@ -159,111 +169,114 @@ export default function OfferPage() {
     };
 
     return (
-        <div className="max-w-10xl mx-auto lg:px-10 py-20">
-            <div className="w-full md:w-12/12 lg:w-12/12 mb-5">
-                <div className="bg-white text-black flex justify-between align-middle p-6 rounded-lg shadow-md">
-                    <div>
-                        <h2 className="text-2xl font-bold text-gray-900">Special Offers</h2>
-                        <p className="text-gray-600">Manage promotional offers and discounts</p>
-                    </div>
-                    <div>
-                        <button
-                            className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                            onClick={() => setIsOpen(true)}
-                        >
-                            Add Offer
-                        </button>
-                    </div>
-                </div>
-            </div>
+        <Suspense fallback={<div>Loading...</div>}>
 
-            <div className="bg-white px-5 py-10">
-                <div className="mb-6 flex justify-between items-center">
-                    <div className="relative hidden sm:block mt-4">
-                        <FaSearch className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
-                        <input
-                            type="search"
-                            placeholder="Search offers..."
-                            value={search}
-                            onChange={(e) => handleSearch(e.target.value)}
-                            className="w-80 rounded-lg border border-gray-200 py-2 pl-10 pr-4 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                        />
-                    </div>
-                </div>
-
-                <div className="overflow-x-auto bg-white shadow-md rounded-lg">
-                    {isLoading ? (
-                        <div className="flex justify-center py-8">
-                            <RiLoader2Line className="h-8 w-8 text-blue-500 animate-spin" />
+            <div className="max-w-10xl mx-auto lg:px-10 py-20">
+                <div className="w-full md:w-12/12 lg:w-12/12 mb-5">
+                    <div className="bg-white text-black flex justify-between align-middle p-6 rounded-lg shadow-md">
+                        <div>
+                            <h2 className="text-2xl font-bold text-gray-900">Special Offers</h2>
+                            <p className="text-gray-600">Manage promotional offers and discounts</p>
                         </div>
-                    ) : (
+                        <div>
+                            <button
+                                className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                                onClick={() => setIsOpen(true)}
+                            >
+                                Add Offer
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
-                        <table className="min-w-full table-auto text-left text-sm text-gray-600">
-                            <thead>
-                                <tr className="bg-gray-100 border-b">
-                                    <th className="py-3 px-4">Title</th>
-                                    <th className="py-3 px-4">Description</th>
-                                    <th className="py-3 px-4">Discount</th>
-                                    <th className="py-3 px-4">Valid From</th>
-                                    <th className="py-3 px-4">Valid To</th>
-                                    <th className="py-3 px-4">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {offers.length === 0 ? (
-                                    <tr>
-                                        <td colSpan={6} className="py-3 px-4 text-center">No offers found.</td>
+                <div className="bg-white px-5 py-10">
+                    <div className="mb-6 flex justify-between items-center">
+                        <div className="relative hidden sm:block mt-4">
+                            <FaSearch className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+                            <input
+                                type="search"
+                                placeholder="Search offers..."
+                                value={search}
+                                onChange={(e) => handleSearch(e.target.value)}
+                                className="w-80 rounded-lg border border-gray-200 py-2 pl-10 pr-4 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="overflow-x-auto bg-white shadow-md rounded-lg">
+                        {isLoading ? (
+                            <div className="flex justify-center py-8">
+                                <RiLoader2Line className="h-8 w-8 text-blue-500 animate-spin" />
+                            </div>
+                        ) : (
+
+                            <table className="min-w-full table-auto text-left text-sm text-gray-600">
+                                <thead>
+                                    <tr className="bg-gray-100 border-b">
+                                        <th className="py-3 px-4">Title</th>
+                                        <th className="py-3 px-4">Description</th>
+                                        <th className="py-3 px-4">Discount</th>
+                                        <th className="py-3 px-4">Valid From</th>
+                                        <th className="py-3 px-4">Valid To</th>
+                                        <th className="py-3 px-4">Actions</th>
                                     </tr>
-                                ) : (
-                                    offers.map((offer) => (
-                                        <tr key={offer._id} className="border-b hover:bg-gray-50">
-                                            <td className="py-3 px-4">{offer.offerTitle}</td>
-                                            <td className="py-3 px-4">{offer.offerDescription}</td>
-                                            <td className="py-3 px-4">{offer.discountPercentage || 0}%</td>
-                                            <td className="py-3 px-4">{offer.validFrom ? formatDate(offer.validFrom) : null}</td>
-                                            <td className="py-3 px-4">{offer.validTo ? formatDate(offer.validTo) : null}</td>
-                                            <td className="py-3 px-4">
-                                                <div className="flex space-x-2">
-                                                    <button
-                                                        onClick={() => handleEdit(offer._id)}
-                                                        className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600"
-                                                    >
-                                                        <RiEdit2Fill />
-                                                    </button>
-                                                    <button
-                                                        onClick={() => handleDelete(offer._id)}
-                                                        className="bg-red-500 text-white p-2 rounded-full hover:bg-red-600"
-                                                    >
-                                                        <RiDeleteBin2Line />
-                                                    </button>
-                                                </div>
-                                            </td>
+                                </thead>
+                                <tbody>
+                                    {offers.length === 0 ? (
+                                        <tr>
+                                            <td colSpan={6} className="py-3 px-4 text-center">No offers found.</td>
                                         </tr>
-                                    ))
-                                )}
-                            </tbody>
-                        </table>
+                                    ) : (
+                                        offers.map((offer) => (
+                                            <tr key={offer._id} className="border-b hover:bg-gray-50">
+                                                <td className="py-3 px-4">{offer.offerTitle}</td>
+                                                <td className="py-3 px-4">{offer.offerDescription}</td>
+                                                <td className="py-3 px-4">{offer.discountPercentage || 0}%</td>
+                                                <td className="py-3 px-4">{offer.validFrom ? formatDate(offer.validFrom) : null}</td>
+                                                <td className="py-3 px-4">{offer.validTo ? formatDate(offer.validTo) : null}</td>
+                                                <td className="py-3 px-4">
+                                                    <div className="flex space-x-2">
+                                                        <button
+                                                            onClick={() => handleEdit(offer._id)}
+                                                            className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600"
+                                                        >
+                                                            <RiEdit2Fill />
+                                                        </button>
+                                                        <button
+                                                            onClick={() => handleDelete(offer._id)}
+                                                            className="bg-red-500 text-white p-2 rounded-full hover:bg-red-600"
+                                                        >
+                                                            <RiDeleteBin2Line />
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    )}
+                                </tbody>
+                            </table>
+                        )}
+                    </div>
+
+                    {pagination && (
+                        <Pagination
+                            pagination={pagination}
+                            onPageChange={handlePageChange}
+                        />
                     )}
                 </div>
 
-                {pagination && (
-                    <Pagination
-                        pagination={pagination}
-                        onPageChange={handlePageChange}
+                {isOpen && (
+                    <OfferForm
+                        formData={formData}
+                        isSubmitting={isSubmitting}
+                        onSubmit={handleSubmit}
+                        onChange={handleChange}
+                        onClose={handleCloseModal}
+                        mode={editingId ? 'edit' : 'add'}
                     />
                 )}
             </div>
-
-            {isOpen && (
-                <OfferForm
-                    formData={formData}
-                    isSubmitting={isSubmitting}
-                    onSubmit={handleSubmit}
-                    onChange={handleChange}
-                    onClose={handleCloseModal}
-                    mode={editingId ? 'edit' : 'add'}
-                />
-            )}
-        </div>
+        </Suspense>
     );
 }

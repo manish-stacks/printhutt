@@ -15,16 +15,56 @@ import { FaTrash } from 'react-icons/fa';
 import { RiLoader2Line } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 import Select, { MultiValue } from 'react-select';
-import type { ProductFormData } from '@/lib/types/product';
+// import type { , ProductFormData } from '@/lib/types/product';
 import type { ShippingInformation } from '@/lib/types/shipping';
 import type { Warranty } from '@/lib/types/warranty';
 import type { ReturnPolicy } from '@/lib/types/return';
 import type { CategoryFormData } from '@/lib/types/category';
 import type { Offer } from '@/lib/types/offer';
-import type { Option } from '@/lib/types';
+import type { ImageType, Option } from '@/lib/types';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import dynamic from 'next/dynamic';
+import { ProductVariant } from '@/lib/types/product';
 const QuillEditor = dynamic(() => import('@/components/QuillEditor'), { ssr: false });
+interface ProductFormData {
+  title: string;
+  slug: string;
+  description: string;
+  short_description: string;
+  category: string;
+  subcategory: string;
+  price: number;
+  discountType: string;
+  discountPrice: number;
+  rating: number;
+  stock: number;
+  tags: string[];
+  sku: string;
+  weight: number;
+  availabilityStatus: string;
+  minimumOrderQuantity: number;
+  dimensions: string;
+  warrantyInformation: string;
+  shippingInformation: string;
+  returnPolicy: string;
+  demoVideo: string;
+  imgAlt: string;
+  status: boolean;
+  ishome: boolean;
+  trending: boolean;
+  hot: boolean;
+  sale: boolean;
+  new: boolean;
+  isCustomize: boolean;
+  images: ImageType[];
+  thumbnail: File | string; // Changed from 'any' to 'IMedia'
+  keywords: string;
+  meta_description: string;
+  shippingFee: string | number;
+  offers: string[];
+  isVarientStatus: boolean;
+  varient: ProductVariant[];
+}
 
 
 const initialFormData: ProductFormData = {
@@ -66,15 +106,16 @@ const initialFormData: ProductFormData = {
   isVarientStatus: false,
   varient: []
 };
+interface UpdateProductResponse {
+  success: boolean;
+  message?: string;
+}
 
 export default function EditProduct() {
   const params = useParams();
   const id = params?.id as string | undefined;
   // console.log(id)
-  if (!id) {
-    toast.error("No category ID provided.");
-    return;
-  }
+
 
   const [formData, setFormData] = useState<ProductFormData>(initialFormData);
   const [warranties, setWarranties] = useState<Warranty[]>([]);
@@ -84,7 +125,7 @@ export default function EditProduct() {
   const [subcategories, setSubCategories] = useState<CategoryFormData[]>([]);
   const [offers, setOffers] = useState<Offer[]>([]);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState<string | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
@@ -111,18 +152,19 @@ export default function EditProduct() {
           get_parent_categories(),
           get_all_offer(),
           get_product_by_id(id)
-        ]) as any;
+        ])
 
         console.log(productData)
 
         setFormData(productData)
+
         setFormData(prevData => ({
           ...prevData,
           meta_description: productData.meta.meta_description,
           keywords: productData.meta.keywords,
         }));
 
-        setImage(productData.thumbnail.url); // set thumbnail
+        setImage(productData.thumbnail.url);
         setWarranties(warrantyData.warranty);
         setShippings(shippingData.shipping);
         setReturns(returnData.returnData);
@@ -131,10 +173,9 @@ export default function EditProduct() {
 
 
         if (productData.category) {
-          const subcategoryData = await get_parent_sub_categories(productData.category) as any;
+          const subcategoryData = await get_parent_sub_categories(productData.category)
           setSubCategories(subcategoryData.category || []);
         }
-
 
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -165,7 +206,7 @@ export default function EditProduct() {
       }
 
       if (name === 'shippingInformation') {
-        const shippingfilter = shippings.find(ship => ship._id === value) as any;
+        const shippingfilter = shippings.find(ship => ship._id === value) ;
         updatedData.shippingFee = shippingfilter?.shippingFee ? shippingfilter?.shippingFee : 0;
       }
 
@@ -182,7 +223,7 @@ export default function EditProduct() {
   ) => {
     const { name, value } = e.target;
 
-    setFormData((prevFormData: any) => {
+    setFormData((prevFormData: ProductFormData) => {
       const updatedVarient = [...prevFormData.varient];
       updatedVarient[index] = { ...updatedVarient[index], [name]: value };
       return { ...prevFormData, varient: updatedVarient };
@@ -214,7 +255,7 @@ export default function EditProduct() {
   };
 
   const handleRemoveVariant = (index: number) => {
-    setFormData((prevFormData: any) => {
+    setFormData((prevFormData: ProductFormData) => {
       const updatedVarient = prevFormData.varient.filter((_: unknown, i: number) => i !== index);
       return { ...prevFormData, varient: updatedVarient };
     });
@@ -222,27 +263,34 @@ export default function EditProduct() {
   };
 
 
-  const handleFileChange = (event: any) => {
-    const file = event.target.files[0];
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
     if (file) {
-      // formData.thumbnail = URL.createObjectURL(file);
-      formData.thumbnail = file;
-      const reader = new FileReader() as any;
+
+      setFormData((prevData: ProductFormData) => ({
+        ...prevData,
+        thumbnail: file,
+      }));
+
+      const reader = new FileReader();
       reader.onloadend = () => {
-        setImage(reader.result);
+        if (reader.result) {
+          setImage(reader.result as string);
+        }
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleCategoryChange = async (event: any) => {
-    const { value } = event.target;
+
+  const handleCategoryChange = async (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const { value } = event.target as HTMLInputElement;
 
     try {
       setFormData(prev => ({ ...prev, category: value, subcategory: '' }));
 
       if (value) {
-        const subcategoryData = await get_parent_sub_categories(value) as any;
+        const subcategoryData = await get_parent_sub_categories(value)
         setSubCategories(subcategoryData.category || []);
       } else {
         setSubCategories([]);
@@ -303,11 +351,10 @@ export default function EditProduct() {
     }
 
     setErrors([]);
-
-    console.log('Form data:', formData);
-
     try {
       setIsSubmitting(true);
+
+
       const formDataToSend = new FormData();
 
       if (formData.thumbnail instanceof File) {
@@ -315,16 +362,16 @@ export default function EditProduct() {
       }
 
       if (formData.images && formData.images.length > 0) {
-        formData.images.forEach((image, index) => {
+        formData.images.forEach((image) => {
           if (image.file instanceof File) {
-            formDataToSend.append(`images`, image.file);
+            formDataToSend.append('images', image.file);
           }
         });
       }
 
       Object.entries(formData).forEach(([key, value]) => {
         if (key !== 'thumbnail' && key !== 'images') {
-          if (typeof value === 'object') {
+          if (typeof value === 'object' && value !== null) {
             formDataToSend.append(key, JSON.stringify(value));
           } else {
             formDataToSend.append(key, String(value));
@@ -332,23 +379,36 @@ export default function EditProduct() {
         }
       });
 
-      const response = await update_a_product(id, formDataToSend) as any;
+      if (!id) {
+        throw new Error("Product ID is required");
+      }
 
+      const response = (await update_a_product(
+        id,
+        formDataToSend
+      )) as unknown as UpdateProductResponse;
+
+      // Check response success
       if (response.success) {
-        toast.success('Product created successfully!');
+        toast.success('Product updated successfully!');
         setFormData(initialFormData);
         setImage(null);
-        router.push('/admin/products')
+        router.push('/admin/products');
       } else {
-        toast.error(response.message || 'Failed to Update product');
+        toast.error(response.message || 'Failed to update product');
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error submitting form:', error);
-      toast.error('Failed to Update product. Please try again.');
-      setErrors(['Failed to Update product. Please try again.']);
+
+      // Handle error messages safely
+      const errorMessage =
+        error instanceof Error ? error.message : 'An unknown error occurred';
+      toast.error(errorMessage);
+      setErrors([errorMessage]);
     } finally {
       setIsSubmitting(false);
     }
+
   };
 
   const handleEditorChange = (value: string) => {
@@ -357,7 +417,10 @@ export default function EditProduct() {
       description: value,
     }));
   };
-
+  if (!id) {
+    toast.error("No category ID provided.");
+    return;
+  }
   if (loading) return <LoadingSpinner />
 
 

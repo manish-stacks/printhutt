@@ -63,7 +63,7 @@ const customStyles: StylesConfig<Option, false> = {
     }),
 };
 
-export function ProductHeader({ viewMode, onViewModeChange, totalProducts }: ProductHeaderProps) {
+export function ProductHeader({ viewMode, onViewModeChange }: ProductHeaderProps) {
     return (
         <>
             <div className="w-full px-[12px]">

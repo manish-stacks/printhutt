@@ -12,12 +12,12 @@ export async function GET(request: NextRequest) {
         if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
     
         const url = new URL(request.url);
-        const page = Math.max(parseInt(url.searchParams.get('page') || '1', 10), 1); // Ensure `page` is at least 1
-        const limit = Math.min(Math.max(parseInt(url.searchParams.get('limit') || '10', 10), 1), 100); // Limit between 1 and 100
+        const page = Math.max(parseInt(url.searchParams.get('page') || '1', 10), 1); 
+        const limit = Math.min(Math.max(parseInt(url.searchParams.get('limit') || '10', 10), 1), 100); 
         const search = url.searchParams.get('search') || '';
       
         
-        const query: Record<string, any> = { role: { $ne: 'admin' } }; // Specify the type for query object
+        const query: { role: { $ne: string }, username?: { $regex: string, $options: string } } = { role: { $ne: 'admin' } };
       
         if (search) {
             query.username = { $regex: search, $options: 'i' };
@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
                 limit,
             },
         });
-    } catch (error: unknown) { // Specify the type for error
+    } catch (error: unknown) { 
         console.error('Error fetching orders:', error);
         return NextResponse.json(
             { error: error instanceof Error ? error.message : 'Internal Server Error' },

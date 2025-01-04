@@ -43,8 +43,11 @@ export const sendVerifyEmail = async ({ email, emailType, userId }: mallerType) 
 
     const mailResponce = await transporter.sendMail(mailOption)
     return mailResponce;
-  } catch (error: any) {
-    throw new Error((error as Error).message)
+  } catch (error) {
+    if(error instanceof Error){
+            
+      throw new Error((error as Error).message)
+    }
   }
 }
 
@@ -59,14 +62,17 @@ export const sendOtpByEmail = async (email: string, otp: string) => {
   try {
     const mailResponce = await transporter.sendMail(mailOption)
     return mailResponce;
-  } catch (error: any) {
-    throw new Error((error as Error).message)
+  } catch (error) {
+    if(error instanceof Error){
+            
+      throw new Error((error as Error).message)
+    }
   }
 }
 
-export const sendOtpBySms = async (_mobile: string, _otp: string) => {
-  // Replace with your SMS service logic
-  // return someSmsService.send({
+export const sendOtpBySms = async () => {
+  
+  // return ({
   //     to: mobile,
   //     message: `Your OTP is ${otp}`,
   // });
@@ -75,7 +81,7 @@ export const sendOtpBySms = async (_mobile: string, _otp: string) => {
 export async function sendOrderConfirmationEmail(orderData: {
   email: string;
   orderId: string;
-  items: any[];
+  items: { name: string; quantity: number; price: number }[];
   totalAmount: number;
   payment: string;
   shipping: string;

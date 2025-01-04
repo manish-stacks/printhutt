@@ -26,7 +26,10 @@ export async function GET(request: NextRequest, context: { params: { id: string 
         return NextResponse.json(product);
 
     } catch (error) {
-        return NextResponse.json({ error: "Failed to fetch product" }, { status: 500 });
+        if(error instanceof Error){
+
+            return NextResponse.json({ error: "Failed to fetch product" }, { status: 500 });
+        }
     }
 
 
@@ -171,10 +174,13 @@ export async function DELETE(request: NextRequest, context: { params: { id: stri
         });
 
     } catch (error) {
-        return NextResponse.json(
-            { error: "Failed to delete post" },
-            { status: 500 }
-        );
+        if(error instanceof Error){
+            
+            return NextResponse.json(
+                { error: "Failed to delete post" },
+                { status: 500 }
+            );
+        }
     }
 }
 
@@ -216,10 +222,13 @@ export async function PATCH(request: NextRequest, context: { params: { id: strin
             { status: 200 }
         );
     } catch (error) {
-        return NextResponse.json(
-            { error: "Something went wrong" },
-            { status: 500 }
-        );
+        if(error instanceof Error){
+            
+            return NextResponse.json(
+                { error: "Something went wrong" },
+                { status: 500 }
+            );
+        }
     }
 }
 

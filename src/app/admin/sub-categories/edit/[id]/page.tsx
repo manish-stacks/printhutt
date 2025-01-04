@@ -29,10 +29,7 @@ const maxSize = (value: File) => {
 const CategoriesEdit = () => {
     const params = useParams();
     const id = params?.id as string | undefined;
-    if (!id) {
-        toast.error("No category ID provided.");
-        return;
-    }
+
     const [previewUrl, setPreviewUrl] = useState<string>();
     const [isUploading, setIsUploading] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -56,7 +53,7 @@ const CategoriesEdit = () => {
         const fetchCategory = async () => {
             try {
                 setIsLoading(true)
-                const data = await get_sub_category_by_id(id) as any;
+                const data = await get_sub_category_by_id(id)
                 if (data) {
                     setFormData({
                         parentCategory: data.parentCategory || "",
@@ -89,7 +86,7 @@ const CategoriesEdit = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const data = await get_parent_categories() as any;
+                const data = await get_parent_categories() 
                 setCategories(data.category);
             } catch (error) {
                 console.error("Error fetching categories:", error);
@@ -172,7 +169,7 @@ const CategoriesEdit = () => {
 
 
         try {
-            const res = await update_sub_category(id, data) as any;
+            const res = await update_sub_category(id, data)
             if (res.success) {
                 toast.success(res?.message);
                 setTimeout(() => {
@@ -183,8 +180,11 @@ const CategoriesEdit = () => {
                 toast.error(res?.message)
                 setIsSubmitting(false);
             }
-        } catch (error: any) {
-            toast.error(error?.message)
+        } catch (error) {
+            if(error instanceof Error){
+            
+                toast.error(error?.message)
+            }
         } finally {
             setIsSubmitting(false);
         }
@@ -200,7 +200,10 @@ const CategoriesEdit = () => {
         setFormData((prevData) => ({ ...prevData, status: !prevData.status }));
     };
 
-
+    if (!id) {
+        toast.error("No category ID provided.");
+        return;
+    }
 
     if (isLoading) {
         return (
