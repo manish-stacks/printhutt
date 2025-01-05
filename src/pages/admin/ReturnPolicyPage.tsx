@@ -3,54 +3,54 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { FaSearch } from 'react-icons/fa';
-import { RiDeleteBin2Line, RiEdit2Fill, RiLoader2Line } from 'react-icons/ri';
-import { toast } from 'react-toastify';
-import { add_new_warranty, delete_warranty, get_all_warranty_pagination, update_warranty } from '@/_services/admin/warranty';
-import Swal from 'sweetalert2';
-import { WarrantyForm } from '@/components/admin/warranty/WarrantyForm';
 import { Pagination } from '@/components/admin/Pagination';
+import { ReturnPolicyForm } from '@/components/admin/return-policy/ReturnPolicyForm';
+import { createReturnPolicy, getReturnPolicies, modifyReturnPolicy, removeReturnPolicy } from '@/_services/admin/return-policy';
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
+import { RiDeleteBin2Line, RiEdit2Fill, RiLoader2Line } from 'react-icons/ri';
+import type { ReturnPolicy } from '@/lib/types/return';
 import type { PaginationData } from '@/lib/types';
-import type { Warranty } from '@/lib/types/warranty';
 
 
-export default function Warranty() {
-    const [warranties, setWarranties] = useState<Warranty[]>([]);
+export default function ReturnPolicyPage() {
+
+    const [returnPolicies, setReturnPolicies] = useState<ReturnPolicy[]>([]);
     const [pagination, setPagination] = useState<PaginationData>();
     const [isLoading, setIsLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const searchParams = useSearchParams();
-    const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
     const [editingId, setEditingId] = useState<string | null>(null);
     const [formData, setFormData] = useState({
-        warrantyType: '',
-        durationMonths: '',
-        coverage: '',
-        claimProcess: '',
+        returnPeriod: '',
+        restockingFee: '',
+        policyDetails: '',
     });
 
+    const searchParams = useSearchParams();
+    const router = useRouter();
     const page = searchParams?.get('page') || '1';
     const search = searchParams?.get('search') || '';
 
     useEffect(() => {
-        fetchWarranty();
+        fetchReturnPolicies();
     }, [page, search]);
 
-    async function fetchWarranty() {
+    async function fetchReturnPolicies() {
         try {
             setIsLoading(true);
-            const data: { warranty: Warranty[], pagination: PaginationData } = await get_all_warranty_pagination(page, search);
-            setWarranties(data.warranty);
+            const data = await getReturnPolicies(page, search)
+            setReturnPolicies(data.returndata);
             setPagination(data.pagination);
         } catch (error) {
-            console.error('Failed to fetch Warranty:', error);
-            toast.error('Failed to fetch Warranty');
+            console.error('Failed to fetch return methods:', error);
+            toast.error('Failed to fetch return methods');
         } finally {
             setIsLoading(false);
         }
     }
 
-    function handleSearch(value: string) {
+    const handleSearch = (value: string) => {
         const params = new URLSearchParams(searchParams!);
         if (value) {
             params.set('search', value);
@@ -59,15 +59,15 @@ export default function Warranty() {
         }
         params.set('page', '1');
         router.push(`?${params.toString()}`);
-    }
+    };
 
-    function handlePageChange(newPage: number) {
+    const handlePageChange = (newPage: number) => {
         const params = new URLSearchParams(searchParams!);
         params.set('page', newPage.toString());
         router.push(`?${params.toString()}`);
-    }
+    };
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
             ...prevData,
@@ -79,54 +79,34 @@ export default function Warranty() {
         e.preventDefault();
         setIsSubmitting(true);
         try {
-            if (editingId) {
-                await update_warranty(editingId, formData);
-                toast.success('Warranty updated successfully');
-            } else {
-                await add_new_warranty(formData);
-                toast.success('Warranty added successfully');
-            }
-            fetchWarranty();
-            handleCloseModal();
-        } catch (error) {
-            if (error instanceof Error) {
+            const success = editingId
+                ? await modifyReturnPolicy(editingId, formData)
+                : await createReturnPolicy(formData);
 
-                toast.error('Something went wrong');
+            if (success) {
+                fetchReturnPolicies();
+                handleCloseModal();
             }
         } finally {
             setIsSubmitting(false);
         }
-
     };
 
-
-
-    const editWarrantyInfo = (id: string) => {
-        const warrantyToEdit = warranties.find(warranty => warranty._id === id);
-        if (warrantyToEdit) {
+    const handleEdit = (id: string) => {
+        const policyToEdit = returnPolicies.find(policy => policy._id === id);
+        if (policyToEdit) {
             setFormData({
-                warrantyType: warrantyToEdit.warrantyType,
-                durationMonths: warrantyToEdit.durationMonths,
-                coverage: warrantyToEdit.coverage,
-                claimProcess: warrantyToEdit.claimProcess,
+                returnPeriod: policyToEdit.returnPeriod,
+                restockingFee: policyToEdit.restockingFee.toString(),
+                policyDetails: policyToEdit.policyDetails,
             });
             setEditingId(id);
             setIsOpen(true);
         }
-    }
-
-    const handleCloseModal = () => {
-        setIsOpen(false);
-        setEditingId(null);
-        setFormData({
-            warrantyType: '',
-            durationMonths: '',
-            coverage: '',
-            claimProcess: '',
-        });
     };
 
-    const deleteWarrantyInfo = (id: string) => {
+    const handleDelete = async (id: string) => {
+
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -138,67 +118,70 @@ export default function Warranty() {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    await delete_warranty(id);
-                    setWarranties(prev => prev.filter(warranty => warranty._id !== id));
+                    await removeReturnPolicy(id);
+                    setReturnPolicies(prev => prev.filter(method => method._id !== id));
                     Swal.fire({
                         title: "Deleted!",
-                        text: "Your warranty has been deleted.",
+                        text: "return-policy method has been deleted.",
                         icon: "success"
                     });
                 } catch (error) {
                     if (error instanceof Error) {
-
                         Swal.fire({
                             title: "Error!",
-                            text: "There was an issue deleting the warranty.",
+                            text: "There was an issue deleting the return-policy method.",
+                            icon: "error"
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Error!",
+                            text: "There was an issue deleting the return-policy method.",
                             icon: "error"
                         });
                     }
                 }
             }
         });
-    }
+    };
 
+    const handleCloseModal = () => {
+        setIsOpen(false);
+        setEditingId(null);
+        setFormData({
+            returnPeriod: '',
+            restockingFee: '',
+            policyDetails: '',
+        });
+    };
 
     return (
         <>
 
-
             <div className="max-w-10xl mx-auto lg:px-10 py-20">
-
-
                 <div className="w-full md:w-12/12 lg:w-12/12 mb-5">
-                    <div className=" bg-white text-black flex justify-between align-middle p-6 rounded-lg shadow-md shadow-black-300">
+                    <div className="bg-white text-black flex justify-between align-middle p-6 rounded-lg shadow-md">
                         <div>
-                            <h2 className="text-2xl font-bold text-gray-900">All Warranty</h2>
-                            <p className="text-gray-600">
-                                List a new warranty and description.
-                            </p>
+                            <h2 className="text-2xl font-bold text-gray-900">Return Policies</h2>
+                            <p className="text-gray-600">Manage return policies and conditions</p>
                         </div>
                         <div>
-                            {/* <Link href={'/admin/categories/add'} className="bg-blue-500 text-white py-1 px-6 rounded">Add</Link> */}
                             <button
-                                className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                                 onClick={() => setIsOpen(true)}
                             >
-                                Add
+                                Add Policy
                             </button>
-
-
-
                         </div>
                     </div>
                 </div>
 
                 <div className="bg-white px-5 py-10">
-
-                    {/* Search Section */}
                     <div className="mb-6 flex justify-between items-center">
                         <div className="relative hidden sm:block mt-4">
                             <FaSearch className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
                             <input
                                 type="search"
-                                placeholder="Search categories..."
+                                placeholder="Search return policies..."
                                 value={search}
                                 onChange={(e) => handleSearch(e.target.value)}
                                 className="w-80 rounded-lg border border-gray-200 py-2 pl-10 pr-4 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -206,61 +189,57 @@ export default function Warranty() {
                         </div>
                     </div>
 
-                    {/* Category Table */}
                     <div className="overflow-x-auto bg-white shadow-md rounded-lg">
                         {isLoading ? (
                             <div className="flex justify-center py-8">
                                 <RiLoader2Line className="h-8 w-8 text-blue-500 animate-spin" />
                             </div>
                         ) : (
+
                             <table className="min-w-full table-auto text-left text-sm text-gray-600">
                                 <thead>
                                     <tr className="bg-gray-100 border-b">
-                                        <th className="py-3 px-4">Type</th>
-                                        <th className="py-3 px-4">Duration</th>
-                                        <th className="py-3 px-4">Coverage</th>
-                                        <th className="py-3 px-4">Claim Process</th>
+                                        <th className="py-3 px-4">Return Period</th>
+                                        <th className="py-3 px-4">Restocking Fee</th>
+                                        <th className="py-3 px-4">Policy Details</th>
                                         <th className="py-3 px-4">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
-                                    {
-                                        warranties.length === 0 ? (
-                                            <tr>
-                                                <td colSpan={4} className="py-3 px-4 text-center">No categories found.</td>
-                                            </tr>
-                                        ) : (warranties.map((warranty) => (
-                                            <tr key={warranty._id} className="border-b hover:bg-gray-50">
-                                                <td className="py-3 px-4">{warranty.warrantyType.toLocaleUpperCase()}</td>
-                                                <td className="py-3 px-4">{warranty.durationMonths} months</td>
-                                                <td className="py-3 px-4">{warranty.coverage}</td>
-                                                <td className="py-3 px-4">{warranty.claimProcess}</td>
-                                                <td>
+                                    {returnPolicies.length === 0 ? (
+                                        <tr>
+                                            <td colSpan={4} className="py-3 px-4 text-center">No return policies found.</td>
+                                        </tr>
+                                    ) : (
+                                        returnPolicies.map((policy) => (
+                                            <tr key={policy._id} className="border-b hover:bg-gray-50">
+                                                <td className="py-3 px-4">{policy.returnPeriod}</td>
+                                                <td className="py-3 px-4">{policy.restockingFee}%</td>
+                                                <td className="py-3 px-4">{policy.policyDetails}</td>
+                                                <td className="py-3 px-4">
                                                     <div className="flex space-x-2">
                                                         <button
-                                                            onClick={() => editWarrantyInfo(warranty._id)}
-                                                            className="bg-blue-500 text-white py-2 px-2 rounded-full"
+                                                            onClick={() => handleEdit(policy._id)}
+                                                            className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600"
                                                         >
                                                             <RiEdit2Fill />
                                                         </button>
                                                         <button
-                                                            onClick={() => deleteWarrantyInfo(warranty._id)}
-                                                            className="bg-red-500 text-white py-2 px-2 rounded-full"
+                                                            onClick={() => handleDelete(policy._id)}
+                                                            className="bg-red-500 text-white p-2 rounded-full hover:bg-red-600"
                                                         >
                                                             <RiDeleteBin2Line />
                                                         </button>
                                                     </div>
                                                 </td>
                                             </tr>
-                                        )))
-                                    }
+                                        ))
+                                    )}
                                 </tbody>
                             </table>
                         )}
                     </div>
 
-                    {/* Pagination Information */}
                     {pagination && (
                         <Pagination
                             pagination={pagination}
@@ -268,20 +247,19 @@ export default function Warranty() {
                         />
                     )}
                 </div>
+
+                {isOpen && (
+                    <ReturnPolicyForm
+                        formData={formData}
+                        isSubmitting={isSubmitting}
+                        onSubmit={handleSubmit}
+                        onChange={handleChange}
+                        onClose={handleCloseModal}
+                        mode={editingId ? 'edit' : 'add'}
+                    />
+                )}
             </div>
-
-
-            {isOpen && (
-                <WarrantyForm
-                    formData={formData}
-                    isSubmitting={isSubmitting}
-                    onSubmit={handleSubmit}
-                    onChange={handleChange}
-                    onClose={handleCloseModal}
-                    mode={editingId ? 'edit' : 'add'}
-                />
-            )}
-
         </>
     );
 }
+

@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const userData = (await User.findById(tokenData.id)) 
+    const userData = (await User.findById(tokenData.id))
 
     if (!userData.email) {
       return NextResponse.json(
@@ -90,15 +90,16 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     const timestamp = Date.now();
-    const randomStr = Math.random().toString(36).substring(2, 8);
+    // const randomStr = Math.random().toString(36).substring(2, 8);
 
-    const addressData = (await Address.findById(body.address)) 
+    const addressData = (await Address.findById(body.address))
 
     const orderData = {
-      orderId: `ORD-${timestamp}-${randomStr}`,
+      orderId: `ORD-${timestamp}`,
       items: body.items,
       totalAmount: body.totalPrice,
-      payAmt: body.totalPrice,
+      payAmt: body.paymentMethod === 'online' ? body.totalPrice : body.totalPrice * 0.20,
+      paymentType: body.paymentMethod,
       payment: {
         method: body.paymentMethod,
         transactionId: "",
@@ -128,12 +129,18 @@ export async function POST(request: NextRequest) {
     const order = new Order(orderData);
     await order.save();
 
-    await sendOrderConfirmationEmail(orderData);
+    //await sendOrderConfirmationEmail(orderData);
+
+
+
 
     return NextResponse.json({
       success: true,
       message: "Order saved successfully",
-      order: order,
+      order: {
+        ...order._doc,
+        user: userData
+      },
     });
   } catch {
     return NextResponse.json(

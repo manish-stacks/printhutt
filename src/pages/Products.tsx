@@ -1,6 +1,6 @@
 'use client'
 
-import React, { Suspense, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
 import { ProductSidebar } from "@/components/products/ProductSidebar";
 import type { FilterState } from "@/lib/types";
@@ -54,8 +54,8 @@ function Products() {
       // const response = await get_all_products(page, search) as any;
       // setProducts(response.products);
     } catch (error) {
-      if(error instanceof Error){
-            
+      if (error instanceof Error) {
+
         toast.error('Failed to fetch products')
       }
     } finally {
@@ -91,7 +91,6 @@ function Products() {
   return (
     <>
 
- <Suspense fallback={<div>Loading...</div>}>
 
       <Breadcrumb title={"Shop Page"} />
 
@@ -119,12 +118,12 @@ function Products() {
                   <ProductGrid products={products} viewMode={viewMode} />
                   {/* <ProductsPagination /> */}
                   <div className="w-full px-[12px]">
-                      {pagination && (
-                        <Pagination
-                          pagination={pagination}
-                          onPageChange={handlePageChange}
-                        />
-                      )}
+                    {pagination && (
+                      <Pagination
+                        pagination={pagination}
+                        onPageChange={handlePageChange}
+                      />
+                    )}
                   </div>
                 </div>
               </div>
@@ -132,8 +131,8 @@ function Products() {
           </div>
         </div>
       </section>
- </Suspense>
     </>
+
   );
 }
 

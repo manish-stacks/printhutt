@@ -24,8 +24,9 @@ const orderSchema: Schema<IOrder> = new Schema({
     ],
     totalAmount: { type: Number, required: true },
     payAmt: { type: Number, required: true },
+    paymentType: { type: String, enum: ['online', 'offline'], required: true },
     payment: {
-        method: { type: String, enum: ['online', 'offline'], required: true },
+        method: { type: String, required: true },
         transactionId: { type: String },
         isPaid: { type: Boolean, default: false },
         paidAt: { type: Date },
@@ -51,10 +52,10 @@ const orderSchema: Schema<IOrder> = new Schema({
         type: Number,
         required: true
     },
-   
+
     status: {
         type: String,
-        enum: ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled', 'returned','progress'],
+        enum: ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled', 'returned', 'progress'],
         default: 'pending'
     },
 }, { timestamps: true });

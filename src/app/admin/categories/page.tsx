@@ -1,10 +1,13 @@
 import Categories from "@/pages/admin/categories/CategoryList"
+import { Suspense } from "react";
 
 const Page = () => {
 
   return (
     <>
-      <Categories />
+      <Suspense fallback={<div>Loading categories...</div>}>
+        <Categories />
+      </Suspense>
     </>
   )
 }

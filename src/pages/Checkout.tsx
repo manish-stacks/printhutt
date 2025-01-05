@@ -1,5 +1,5 @@
 "use client";
-import { create_a_new_order } from "@/_services/common/order";
+import { create_a_new_order, initiate_Payment } from "@/_services/common/order";
 import Breadcrumb from "@/components/Breadcrumb";
 import { CheckoutAddressForm } from "@/components/checkout/address-form";
 import { CheckoutloginForm } from "@/components/checkout/login-form";
@@ -14,7 +14,7 @@ import { toast } from "react-toastify";
 
 const Checkout = () => {
   const [totalPrice, setTotalPrice] = useState<number>(0);
-  const { items, getTotalPrice, getTotalItems, removeAllItems } = useCartStore();
+  const { items, getTotalPrice, getTotalItems } = useCartStore();
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
   const [paymentMethod, setPaymentMethod] = useState<'online' | 'offline'>('online');
   const [selectAddress, setSelectAddress] = useState<string | null>(null);
@@ -41,17 +41,20 @@ const Checkout = () => {
       address: selectAddress
     };
 
-    // console.log(order)
     try {
       setIsSubmitting(true);
       const response: { order: { _id: string } } = await create_a_new_order(order);
-      toast.success('Order placed successfully');
-      router.push(`/orders/${response.order._id}/confirmation`);
-      removeAllItems()
-      return response;
+      const paymentResponse = await initiate_Payment(response.order);
+      if (paymentResponse?.success) {
+        const redirectUrl = paymentResponse?.data?.instrumentResponse?.redirectInfo?.url;
+        window.location.href = redirectUrl;
+      } else {
+        toast.error("Payment initiation failed!");
+      }
+      return;
     } catch (error) {
       console.error(error);
-      toast.error('Failed to save address');
+      toast.error('Somthing Went Wrong');
     } finally {
       setIsSubmitting(false);
     }
@@ -114,7 +117,7 @@ const Checkout = () => {
                         </span>
                         <span className="font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] font-medium text-[#686e7d]">
                           <a
-                            
+
                             className="apply drop-coupon font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] font-medium text-[#ff0000]"
                           >
                             Apply Coupon
@@ -160,7 +163,7 @@ const Checkout = () => {
                           <div className="items-contact">
                             <h4 className="text-[16px]">
                               <a
-                                
+
                                 className="font-Poppins tracking-[0.03rem] text-[15px] font-medium leading-[18px] text-[#3d4750]"
                               >
                                 {item.title}

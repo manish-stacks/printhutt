@@ -2,26 +2,31 @@ import React, { useState } from "react";
 import Slider, { Settings } from "react-slick";
 
 interface SingleProductSliderProps {
-  product: {
+  product?: {
     slug: string;
-    imgAlt: string;
-    thumbnail: {
+    imgAlt?: string;
+    thumbnail?: {
       url: string;
     };
-    images: [
-      {
-        url: string;
-      }
-    ];
+    images?: Array<{
+      url: string;
+    }>;
   };
 }
 
 const SingleProductSlider = ({ product }: SingleProductSliderProps) => {
-  const { thumbnail, images, imgAlt, slug } = product;
+  
 
   const [navSlider, setNavSlider] = useState<Slider | null>(null);
   const [mainSlider, setMainSlider] = useState<Slider | null>(null);
   const [zoomStyle, setZoomStyle] = useState<React.CSSProperties | null>(null);
+
+  if (!product || !product.thumbnail || !product.images) {
+    return <div>Product details are not available.</div>;
+  }
+
+  const { thumbnail, images, imgAlt, slug } = product;
+
 
   const mainSliderSettings: Settings = {
     slidesToShow: 1,
@@ -29,7 +34,7 @@ const SingleProductSlider = ({ product }: SingleProductSliderProps) => {
     arrows: false,
     fade: false,
     asNavFor: navSlider,
-    ref: (slider) => setMainSlider(slider), 
+    ref: (slider) => setMainSlider(slider),
   };
 
   const navSliderSettings: Settings = {
@@ -44,8 +49,11 @@ const SingleProductSlider = ({ product }: SingleProductSliderProps) => {
 
   const productImages = [thumbnail.url, ...images.map((image) => image.url)];
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, image: string) => {
-    const { left, top, width, height } = e.target.getBoundingClientRect();
+  const handleMouseMove = (
+    e: React.MouseEvent<HTMLDivElement>,
+    image: string
+  ) => {
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
     const x = ((e.clientX - left) / width) * 100;
     const y = ((e.clientY - top) / height) * 100;
 
@@ -75,7 +83,7 @@ const SingleProductSlider = ({ product }: SingleProductSliderProps) => {
               <img
                 className="img-responsive rounded-tl-[15px] rounded-tr-[15px]"
                 src={image}
-                alt={index === 0 ? imgAlt : `${slug}-${index + 1}`}
+                alt={index === 0 ? imgAlt || "Product Image" : `${slug}-${index + 1}`}
               />
               {zoomStyle && (
                 <div

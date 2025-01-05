@@ -7,6 +7,7 @@ import { useCartStore } from "@/store/useCartStore";
 import { toast } from "react-toastify";
 import CartSidebar from "@/components/CartSidebar";
 import type { Product } from "@/lib/types/product";
+import { formatCurrency } from "@/helpers/helpers";
 
 interface ProductProps {
   product: Product | null;
@@ -23,7 +24,7 @@ const ProductDetails = ({ product }: ProductProps) => {
   const toggelCartSidebarClose = () => setIsOpenCart(false);
 
   const handleAddToCart = () => {
-    if (product.quantity <= 0) {
+    if (!product || product?.quantity <= 0) {
       toast.error('Please select quantity');
       return;
     }
@@ -47,7 +48,7 @@ const ProductDetails = ({ product }: ProductProps) => {
     setIsOpenCart(true);
   }
 
- 
+
 
   return (
     <>
@@ -93,16 +94,25 @@ const ProductDetails = ({ product }: ProductProps) => {
                         <div className="bb-single-price py-[15px]">
                           <div className="price mb-[8px]">
                             <h5 className="font-quicksand leading-[1.2] tracking-[0.03rem] text-[20px] font-extrabold text-[#3d4750]">
-                              ₹{product?.discountType === 'percentage'
-                                ? (product.price - (product.price * product.discountPrice) / 100).toFixed(2)
-                                : (product.price - product.discountPrice).toFixed(2)}
-                              {" "}
+                              {
+                                product?.price &&
+                                  product?.discountType &&
+                                  product?.discountPrice
+                                  ? product.discountType === 'percentage'
+                                    ? formatCurrency(
+                                      product.price -
+                                      (product.price * product.discountPrice) / 100
+                                    )
+                                    : formatCurrency(product.price - product.discountPrice)
+                                  : "N/A"
+                              }{" "}
+
                               <span className="text-[#3d4750] text-[20px]">
-                                -{
-                                  product?.discountType === 'percentage'
-                                    ? (product.discountPrice + '%')
-                                    : (product.discountPrice).toFixed(2) + '₹'
-                                }
+                                -{product?.discountType && product?.discountPrice !== undefined
+                                ? product.discountType === 'percentage'
+                                ? `${product?.discountPrice}%`
+                                : `${product?.discountPrice.toFixed(2)}₹`
+                                : "N/A"}
                               </span>
                             </h5>
                           </div>
@@ -110,7 +120,7 @@ const ProductDetails = ({ product }: ProductProps) => {
                             <p className="font-Poppins text-[16px] font-light text-[#686e7d] leading-[28px] tracking-[0.03rem]">
                               M.R.P. :{" "}
                               <span className="text-[15px] line-through">
-                                {product.discountPrice > 0 ? `${product.price.toFixed(2)}` : ''}
+                                {product?.discountPrice > 0 ? `${product.price.toFixed(2)}` : ''}
                               </span>
                             </p>
                           </div>
@@ -164,7 +174,7 @@ const ProductDetails = ({ product }: ProductProps) => {
                             <span className="font-Poppins text-[#777] text-[14px]">
                               Offers :
                             </span>{" "}
-                            {product.offers.map((offer) => offer.offerTitle).join(', ') || 'No offers available'}
+                            {product?.offers.map((offer) => offer.offerTitle).join(', ') || 'No offers available'}
                           </li>
                           <li className="my-[8px] font-Poppins text-[14px] font-light leading-[28px] tracking-[0.03rem] text-[#777] list-disc">
                             <span className="font-Poppins text-[#777] text-[14px]">
@@ -190,7 +200,7 @@ const ProductDetails = ({ product }: ProductProps) => {
                             </div>
                             <div className="bb-pro-variation-contant">
                               <ul className="flex flex-wrap m-[-2px]">
-                                {product.varient.map((v, index) => (
+                                {product?.varient.map((v, index) => (
                                   <li key={index} className="my-[10px] mx-[2px] py-[2px] px-[15px] border-[1px] border-solid border-[#eee] rounded-[10px] cursor-pointer active-variation">
                                     <span className="font-Poppins text-[#686e7d] font-light text-[14px] leading-[28px] tracking-[0.03rem]">
                                       {v.size}
@@ -241,7 +251,7 @@ const ProductDetails = ({ product }: ProductProps) => {
                         <ul className="bb-pro-actions my-[2px] flex">
                           <li className="bb-btn-group">
                             <a
-                              
+
                               title="heart"
                               className="transition-all duration-[0.3s] ease-in-out w-[40px] h-[40px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] hover:bg-[#6c7fd8] border-[1px] border-solid border-[#eee] rounded-[10px]"
                             >
@@ -308,10 +318,10 @@ const ProductDetails = ({ product }: ProductProps) => {
                       <div className="tab-pro-pane" id="detail">
                         <div className="bb-inner-tabs border-[1px] border-solid border-[#eee] p-[15px] rounded-[20px]">
                           <div className="bb-details">
-                            <div 
-                            dangerouslySetInnerHTML={{ __html: product?.description }} 
-                            className="mb-[12px] font-Poppins text-[#686e7d] leading-[28px] tracking-[0.03rem] font-light"
-                             />
+                            <div
+                              dangerouslySetInnerHTML={{ __html: product?.description }}
+                              className="mb-[12px] font-Poppins text-[#686e7d] leading-[28px] tracking-[0.03rem] font-light"
+                            />
                             <div className="details-info">
                               <ul className="list-disc pl-[20px] mb-[0]">
                                 <li className="py-[5px] text-[15px] text-[#686e7d] font-Poppins leading-[28px] font-light">
@@ -530,7 +540,7 @@ const ProductDetails = ({ product }: ProductProps) => {
                               </div>
                               <div className="input-button">
                                 <a
-                                  
+
                                   className="bb-btn-2 transition-all duration-[0.3s] ease-in-out h-[40px] inline-flex font-Poppins leading-[28px] tracking-[0.03rem] py-[4px] px-[15px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
                                 >
                                   Submit

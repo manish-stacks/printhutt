@@ -11,6 +11,7 @@ export interface IOrder extends Document {
     }[];
     totalAmount: number;
     payAmt: number;
+    paymentType:string;
     payment: {
         method: 'online' | 'offline';
         transactionId?: string;

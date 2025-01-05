@@ -1,7 +1,9 @@
 import Products from '@/pages/Products'
+import { Metadata } from 'next';
+import { Suspense } from 'react';
 
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Product',
   description: 'Products-Page',
   keywords: ['Products', 'neon Products', 'led lights', 'neon lights'],
@@ -10,10 +12,20 @@ export const metadata = {
     description: 'Products-page',
   },
 }
-const ProductPage = () => {
-  return <Products />
+
+const Page = () => {
+
+  return (
+    <>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Products />
+      </Suspense>
+    </>
+  )
 }
 
-export default ProductPage
+export default Page;
+
+
 
 

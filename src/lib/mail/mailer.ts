@@ -79,7 +79,7 @@ export const sendOtpBySms = async () => {
 }
 
 export async function sendOrderConfirmationEmail(orderData: {
-  email: string;
+  userId:{email: string};
   orderId: string;
   items: { name: string; quantity: number; price: number }[];
   totalAmount: number;
@@ -90,7 +90,7 @@ export async function sendOrderConfirmationEmail(orderData: {
   // Send customer confirmation
   await transporter.sendMail({
     from: process.env.SMTP_FROM,
-    to: orderData.email,
+    to: orderData.userId.email,
     subject: `Order Confirmation - ${orderData.orderId}`,
     html: getCustomerEmailTemplate({
       orderId: orderData.orderId,

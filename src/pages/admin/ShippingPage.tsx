@@ -3,48 +3,48 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { FaSearch } from 'react-icons/fa';
-import { RiDeleteBin2Line, RiEdit2Fill, RiLoader2Line } from 'react-icons/ri';
 import { toast } from 'react-toastify';
-import { add_new_warranty, delete_warranty, get_all_warranty_pagination, update_warranty } from '@/_services/admin/warranty';
 import Swal from 'sweetalert2';
-import { WarrantyForm } from '@/components/admin/warranty/WarrantyForm';
+
+import { addNewShipping, deleteShipping, getAllShippingPagination, updateShipping } from '@/_services/admin/shipping';
 import { Pagination } from '@/components/admin/Pagination';
+import { ShippingForm } from '@/components/admin/shipping/ShippingForm';
+import { RiDeleteBin2Line, RiEdit2Fill, RiLoader2Line } from 'react-icons/ri';
 import type { PaginationData } from '@/lib/types';
-import type { Warranty } from '@/lib/types/warranty';
+import type { ShippingInformation } from '@/lib/types/shipping';
 
-
-export default function Warranty() {
-    const [warranties, setWarranties] = useState<Warranty[]>([]);
+export default function ShippingPage() {
+    const [shippingMethods, setShippingMethods] = useState<ShippingInformation[]>([]);
     const [pagination, setPagination] = useState<PaginationData>();
     const [isLoading, setIsLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const searchParams = useSearchParams();
-    const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
     const [editingId, setEditingId] = useState<string | null>(null);
-    const [formData, setFormData] = useState({
-        warrantyType: '',
-        durationMonths: '',
-        coverage: '',
-        claimProcess: '',
+    const [formData, setFormData] = useState<Partial<ShippingInformation>>({
+        shippingMethod: '',
+        shippingFee: 0,
+        shippingTime: '',
+        isFreeShipping: false,
     });
 
+    const searchParams = useSearchParams();
+    const router = useRouter();
     const page = searchParams?.get('page') || '1';
     const search = searchParams?.get('search') || '';
 
     useEffect(() => {
-        fetchWarranty();
+        fetchShippingMethods();
     }, [page, search]);
 
-    async function fetchWarranty() {
+    async function fetchShippingMethods() {
         try {
             setIsLoading(true);
-            const data: { warranty: Warranty[], pagination: PaginationData } = await get_all_warranty_pagination(page, search);
-            setWarranties(data.warranty);
+            const data = await getAllShippingPagination(page, search)
+            setShippingMethods(data.shipping);
             setPagination(data.pagination);
         } catch (error) {
-            console.error('Failed to fetch Warranty:', error);
-            toast.error('Failed to fetch Warranty');
+            console.error('Failed to fetch shipping methods:', error);
+            toast.error('Failed to fetch shipping methods');
         } finally {
             setIsLoading(false);
         }
@@ -68,10 +68,10 @@ export default function Warranty() {
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
+        const { name, value, type } = e.target;
         setFormData((prevData) => ({
             ...prevData,
-            [name]: value,
+            [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
         }));
     };
 
@@ -80,53 +80,40 @@ export default function Warranty() {
         setIsSubmitting(true);
         try {
             if (editingId) {
-                await update_warranty(editingId, formData);
-                toast.success('Warranty updated successfully');
+                await updateShipping(editingId, formData);
+                toast.success('Shipping method updated successfully');
             } else {
-                await add_new_warranty(formData);
-                toast.success('Warranty added successfully');
+                await addNewShipping(formData);
+                toast.success('Shipping method added successfully');
             }
-            fetchWarranty();
+            fetchShippingMethods();
             handleCloseModal();
         } catch (error) {
             if (error instanceof Error) {
-
+                toast.error('Something went wrong');
+            } else {
                 toast.error('Something went wrong');
             }
         } finally {
             setIsSubmitting(false);
         }
-
     };
 
-
-
-    const editWarrantyInfo = (id: string) => {
-        const warrantyToEdit = warranties.find(warranty => warranty._id === id);
-        if (warrantyToEdit) {
+    const handleEdit = (id: string) => {
+        const methodToEdit = shippingMethods.find(method => method._id === id);
+        if (methodToEdit) {
             setFormData({
-                warrantyType: warrantyToEdit.warrantyType,
-                durationMonths: warrantyToEdit.durationMonths,
-                coverage: warrantyToEdit.coverage,
-                claimProcess: warrantyToEdit.claimProcess,
+                shippingMethod: methodToEdit.shippingMethod,
+                shippingFee: methodToEdit.shippingFee,
+                shippingTime: methodToEdit.shippingTime,
+                isFreeShipping: methodToEdit.isFreeShipping,
             });
             setEditingId(id);
             setIsOpen(true);
         }
-    }
-
-    const handleCloseModal = () => {
-        setIsOpen(false);
-        setEditingId(null);
-        setFormData({
-            warrantyType: '',
-            durationMonths: '',
-            coverage: '',
-            claimProcess: '',
-        });
     };
 
-    const deleteWarrantyInfo = (id: string) => {
+    const handleDelete = (id: string) => {
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -138,67 +125,65 @@ export default function Warranty() {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    await delete_warranty(id);
-                    setWarranties(prev => prev.filter(warranty => warranty._id !== id));
+                    await deleteShipping(id);
+                    setShippingMethods(prev => prev.filter(method => method._id !== id));
                     Swal.fire({
                         title: "Deleted!",
-                        text: "Your warranty has been deleted.",
+                        text: "Shipping method has been deleted.",
                         icon: "success"
                     });
                 } catch (error) {
                     if (error instanceof Error) {
-
                         Swal.fire({
                             title: "Error!",
-                            text: "There was an issue deleting the warranty.",
+                            text: "There was an issue deleting the shipping method.",
                             icon: "error"
                         });
                     }
                 }
             }
         });
-    }
+    };
 
+    const handleCloseModal = () => {
+        setIsOpen(false);
+        setEditingId(null);
+        setFormData({
+            shippingMethod: '',
+            shippingFee: 0,
+            shippingTime: '',
+            isFreeShipping: false,
+        });
+    };
 
     return (
         <>
 
-
             <div className="max-w-10xl mx-auto lg:px-10 py-20">
-
-
                 <div className="w-full md:w-12/12 lg:w-12/12 mb-5">
-                    <div className=" bg-white text-black flex justify-between align-middle p-6 rounded-lg shadow-md shadow-black-300">
+                    <div className="bg-white text-black flex justify-between align-middle p-6 rounded-lg shadow-md shadow-black-300">
                         <div>
-                            <h2 className="text-2xl font-bold text-gray-900">All Warranty</h2>
-                            <p className="text-gray-600">
-                                List a new warranty and description.
-                            </p>
+                            <h2 className="text-2xl font-bold text-gray-900">Shipping Methods</h2>
+                            <p className="text-gray-600">Manage shipping methods and delivery options.</p>
                         </div>
                         <div>
-                            {/* <Link href={'/admin/categories/add'} className="bg-blue-500 text-white py-1 px-6 rounded">Add</Link> */}
                             <button
-                                className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                                 onClick={() => setIsOpen(true)}
                             >
                                 Add
                             </button>
-
-
-
                         </div>
                     </div>
                 </div>
 
                 <div className="bg-white px-5 py-10">
-
-                    {/* Search Section */}
                     <div className="mb-6 flex justify-between items-center">
                         <div className="relative hidden sm:block mt-4">
                             <FaSearch className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
                             <input
                                 type="search"
-                                placeholder="Search categories..."
+                                placeholder="Search shipping methods..."
                                 value={search}
                                 onChange={(e) => handleSearch(e.target.value)}
                                 className="w-80 rounded-lg border border-gray-200 py-2 pl-10 pr-4 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -206,7 +191,6 @@ export default function Warranty() {
                         </div>
                     </div>
 
-                    {/* Category Table */}
                     <div className="overflow-x-auto bg-white shadow-md rounded-lg">
                         {isLoading ? (
                             <div className="flex justify-center py-8">
@@ -216,36 +200,34 @@ export default function Warranty() {
                             <table className="min-w-full table-auto text-left text-sm text-gray-600">
                                 <thead>
                                     <tr className="bg-gray-100 border-b">
-                                        <th className="py-3 px-4">Type</th>
-                                        <th className="py-3 px-4">Duration</th>
-                                        <th className="py-3 px-4">Coverage</th>
-                                        <th className="py-3 px-4">Claim Process</th>
+                                        <th className="py-3 px-4">Method</th>
+                                        <th className="py-3 px-4">Fee</th>
+                                        <th className="py-3 px-4">Time</th>
                                         <th className="py-3 px-4">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
 
                                     {
-                                        warranties.length === 0 ? (
+                                        shippingMethods.length === 0 ? (
                                             <tr>
                                                 <td colSpan={4} className="py-3 px-4 text-center">No categories found.</td>
                                             </tr>
-                                        ) : (warranties.map((warranty) => (
-                                            <tr key={warranty._id} className="border-b hover:bg-gray-50">
-                                                <td className="py-3 px-4">{warranty.warrantyType.toLocaleUpperCase()}</td>
-                                                <td className="py-3 px-4">{warranty.durationMonths} months</td>
-                                                <td className="py-3 px-4">{warranty.coverage}</td>
-                                                <td className="py-3 px-4">{warranty.claimProcess}</td>
+                                        ) : (shippingMethods.map((shipping) => (
+                                            <tr key={shipping._id} className="border-b hover:bg-gray-50">
+                                                <td className="py-3 px-4">{shipping.shippingMethod}</td>
+                                                <td className="py-3 px-4">{shipping.shippingFee == 0 ? 'Free' : shipping.shippingFee}</td>
+                                                <td className="py-3 px-4">{shipping.shippingTime}</td>
                                                 <td>
                                                     <div className="flex space-x-2">
                                                         <button
-                                                            onClick={() => editWarrantyInfo(warranty._id)}
+                                                            onClick={() => handleEdit(shipping._id)}
                                                             className="bg-blue-500 text-white py-2 px-2 rounded-full"
                                                         >
                                                             <RiEdit2Fill />
                                                         </button>
                                                         <button
-                                                            onClick={() => deleteWarrantyInfo(warranty._id)}
+                                                            onClick={() => handleDelete(shipping._id)}
                                                             className="bg-red-500 text-white py-2 px-2 rounded-full"
                                                         >
                                                             <RiDeleteBin2Line />
@@ -260,7 +242,6 @@ export default function Warranty() {
                         )}
                     </div>
 
-                    {/* Pagination Information */}
                     {pagination && (
                         <Pagination
                             pagination={pagination}
@@ -268,20 +249,18 @@ export default function Warranty() {
                         />
                     )}
                 </div>
+
+                {isOpen && (
+                    <ShippingForm
+                        formData={formData}
+                        isSubmitting={isSubmitting}
+                        onSubmit={handleSubmit}
+                        onChange={handleChange}
+                        onClose={handleCloseModal}
+                        mode={editingId ? 'edit' : 'add'}
+                    />
+                )}
             </div>
-
-
-            {isOpen && (
-                <WarrantyForm
-                    formData={formData}
-                    isSubmitting={isSubmitting}
-                    onSubmit={handleSubmit}
-                    onChange={handleChange}
-                    onClose={handleCloseModal}
-                    mode={editingId ? 'edit' : 'add'}
-                />
-            )}
-
         </>
     );
 }

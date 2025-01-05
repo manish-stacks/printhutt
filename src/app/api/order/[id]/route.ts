@@ -9,7 +9,7 @@ connect()
 export async function GET(request: NextRequest, context: { params: { id: string } }) {
     try {
         const { id } = await context.params;
-        console.log(id)
+        // console.log(id)
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return NextResponse.json({ success: false, message: "Invalid Product ID" }, { status: 400 });
         }
