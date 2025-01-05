@@ -1,6 +1,19 @@
 import axios from 'axios';
 import CryptoJS from 'crypto-js';
-import { PaymentInitiateResponse, PaymentStatusResponse } from './types/payment';
+
+interface PaymentInitiateResponse {
+  success: boolean;
+  data?: {
+    merchantId: string;
+    merchantTransactionId: string;
+    instrumentResponse: {
+      redirectInfo: {
+        url: string;
+      };
+    };
+  };
+  error?: string;
+}
 
 export class PhonePePayment {
   private merchantId: string;
@@ -46,7 +59,7 @@ export class PhonePePayment {
       const payload = {
         merchantId: this.merchantId,
         merchantTransactionId: merchantTransactionId,
-        amount: amount * 100, 
+        amount: amount * 100, // Convert to paisa
         redirectUrl: callbackUrl,
         redirectMode: 'POST',
         callbackUrl: callbackUrl,
@@ -64,7 +77,7 @@ export class PhonePePayment {
       const base64Payload = Buffer.from(JSON.stringify(payload)).toString('base64');
       const xVerify = this.generateX_VERIFY(base64Payload, '/pg/v1/pay');
 
-      const response = await axios.post<PaymentInitiateResponse>(
+      const response = await axios.post(
         `${this.getBaseUrl()}/pg/v1/pay`,
         {
           request: base64Payload,
@@ -79,25 +92,23 @@ export class PhonePePayment {
 
       return {
         success: true,
-        ...response.data,
+        data: response.data,
       };
     } catch (error) {
       console.error('PhonePe payment initiation error:', error);
       return {
         success: false,
-        code: 'ERROR',
-        message: 'Failed to initiate payment',
         error: 'Failed to initiate payment',
       };
     }
   }
 
-  async checkStatus(merchantTransactionId: string): Promise<PaymentStatusResponse> {
+  async checkStatus(merchantTransactionId: string): Promise<any> {
     try {
       const endpoint = `/pg/v1/status/${this.merchantId}/${merchantTransactionId}`;
-      const xVerify = this.generateX_VERIFY('', endpoint);
+      const xVerify = this.generateX_VERIFY('', endpoint); // Empty payload for GET requests
 
-      const response = await axios.get<PaymentStatusResponse>(
+      const response = await axios.get(
         `${this.getBaseUrl()}${endpoint}`,
         {
           headers: {
@@ -110,14 +121,12 @@ export class PhonePePayment {
 
       return {
         success: true,
-        ...response.data,
+        data: response.data,
       };
     } catch (error) {
       console.error('PhonePe status check error:', error);
       return {
         success: false,
-        code: 'ERROR',
-        message: 'Failed to check payment status',
         error: 'Failed to check payment status',
       };
     }

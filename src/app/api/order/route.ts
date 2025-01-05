@@ -3,7 +3,7 @@ import { connect } from "@/dbConfig/dbConfig";
 import { Address } from "@/models/addressModel";
 import { getDataFromToken } from "@/helpers/getDataFromToken";
 import Order from "@/models/orderModel";
-import { sendOrderConfirmationEmail } from "@/lib/mail/mailer";
+// import { sendOrderConfirmationEmail } from "@/lib/mail/mailer";
 import User from "@/models/userModel";
 
 connect();

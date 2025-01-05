@@ -7,7 +7,6 @@ import PaymentMethod from "@/components/checkout/payment-method";
 import { useCartStore } from "@/store/useCartStore";
 import { useUserStore } from "@/store/useUserStore";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -19,8 +18,6 @@ const Checkout = () => {
   const [paymentMethod, setPaymentMethod] = useState<'online' | 'offline'>('online');
   const [selectAddress, setSelectAddress] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const router = useRouter();
-
 
   useEffect(() => {
     setTotalPrice(getTotalPrice());
