@@ -1,5 +1,5 @@
 import { connect } from '@/dbConfig/dbConfig'
-import { sendOtpBySms } from '@/lib/mail/mailer';
+import { sendOtpByEmail, sendOtpBySms } from '@/lib/mail/mailer';
 import { NextRequest, NextResponse } from 'next/server'
 import UserModel from '@/models/userModel'
 import { isEmail } from '@/helpers/helpers';
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
         }
 
         if (isEmailInput) {
-            // await sendOtpByEmail(emailOrMobile, otp);
+            await sendOtpByEmail(emailOrMobile, otp);
         } else {
             await sendOtpBySms(emailOrMobile, otp);
         }

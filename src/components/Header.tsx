@@ -18,6 +18,8 @@ import { useCartStore } from "@/store/useCartStore";
 import { useUserStore } from "@/store/useUserStore";
 import HeaderCategoryList from "./header/category-list";
 import axios from "axios";
+import { createCategorySlice } from "@/store/slices/categorySlice";
+import { useStore } from "zustand";
 
 
 export default function Header() {
@@ -53,10 +55,18 @@ export default function Header() {
   const [categoryList, setCategoryList] = useState([]);
   const [relatedProducts, setRelatedProducts] = useState([]);
 
+  // const { categories, isLoading, error, getCategories } = useStore();
+  // const { categories, isLoading } = useStore();
+  // useEffect(() => {
+  //   getCategories();
+  // }, []);
+
+  // console.log(categories)
+
 
   const fetchCategory = async () => {
     try {
-      const {data} = await axios.get("/api/v1/category");
+      const {data} = await axios.get("/api/v1/categories");
       setCategoryList(data.categories);
       setRelatedProducts(data.products);
 
@@ -64,6 +74,7 @@ export default function Header() {
       console.error("Error fetching categories:", error);
     }
   };
+
 
   useEffect(() => {
     fetchCategory();
@@ -667,7 +678,7 @@ export default function Header() {
         </div>
       </header>
 
-      {isOpen && <CategoryPopup onClose={toggleClose} category ={categoryList} products={relatedProducts} />}
+      {isOpen && <CategoryPopup onClose={toggleClose} category={categoryList} products={relatedProducts} />}
       {isCartOpen && <CartSidebar onClose={toggelCartSidebarClose} />}
     </>
   );

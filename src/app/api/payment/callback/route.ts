@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
 
 
 
-        const order = await OrderModel.findOne({ 'payment.transactionId': merchantTransactionId }).populate({ path: 'userId', model: UserModel });
+        const order = await OrderModel.findOne({orderId: merchantTransactionId }).populate({ path: 'userId', model: UserModel });
 
         if (!order) {
             const errorUrl = new URL('/payment-failure', request.url);
@@ -43,20 +43,20 @@ export async function POST(request: NextRequest) {
 
         order.payment = {
             ...order.payment,
-            transactionId: response.data.data.transactionId,
+            transactionId: response.data.transactionId,
             isPaid: true,
             paidAt: new Date(),
-            method: response.data.data.paymentInstrument?.type || 'unknown',
+            method: response.data.paymentInstrument?.type || 'unknown',
         };
         order.status = 'confirmed';
 
         await order.save();
 
-        await sendOrderConfirmationEmail(order);
+        //await sendOrderConfirmationEmail(order);
 
         const successRedirect = new URL(`/orders/${order?._id}/confirmation`, request.url);
         return NextResponse.redirect(successRedirect);
-
+        
     } catch (error) {
         console.error('Payment status check error:', error);
         return NextResponse.json(

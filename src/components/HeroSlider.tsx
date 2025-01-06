@@ -58,7 +58,7 @@ const HeroSlider = () => {
                     <div>
                         <Image
                             src="/img/hero/slider1.webp"
-                            alt="Slide 1"
+                            alt="Print-Hutt-Slider-1"
                             className="w-full"
                             width={1900}
                             height={545}
@@ -70,7 +70,7 @@ const HeroSlider = () => {
                     <div>
                         <Image
                             src="/img/hero/slider2.webp"
-                            alt="Slide 2"
+                            alt="Print-Hutt-Slider-2"
                             className="w-full"
                             width={1900}
                             height={545}
@@ -81,7 +81,7 @@ const HeroSlider = () => {
                     <div>
                         <Image
                             src="/img/hero/slider3.webp"
-                            alt="Slide 3"
+                            alt="Print-Hutt-Slider-3"
                             className="w-full"
                             width={1900}
                             height={545}

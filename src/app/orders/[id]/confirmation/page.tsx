@@ -17,6 +17,8 @@ export default function OrderConfirmationPage() {
   const [loading, setLoading] = useState(true);
   const { removeAllItems } = useCartStore();
 
+  
+
   useEffect(() => {
     const fetchOrder = async () => {
       try {

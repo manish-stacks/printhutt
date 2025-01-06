@@ -42,8 +42,8 @@ const Checkout = () => {
       setIsSubmitting(true);
       const response: { order: { _id: string } } = await create_a_new_order(order);
       const paymentResponse = await initiate_Payment(response.order);
-      if (paymentResponse?.success) {
-        const redirectUrl = paymentResponse?.data?.instrumentResponse?.redirectInfo?.url;
+      if (paymentResponse) {
+        const redirectUrl = paymentResponse?.instrumentResponse?.redirectInfo?.url;
         window.location.href = redirectUrl;
       } else {
         toast.error("Payment initiation failed!");

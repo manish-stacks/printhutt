@@ -52,3 +52,16 @@ export interface OrderEmailData {
         mobileNumber: string
     };
 }
+
+
+export interface Slider {
+    image: string;
+}
+
+export interface Testimonial {
+    _id: string;
+    name: string;
+    content: string;
+    avatar: string;
+    rating: number;
+}

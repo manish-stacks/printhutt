@@ -51,31 +51,64 @@ export const sendVerifyEmail = async ({ email, emailType, userId }: mallerType) 
   }
 }
 
+// export const sendOtpByEmail = async (email: string, otp: string) => {
+//   const mailOption = {
+//     from: '"' + process.env.APP_NAME + '" ' + process.env.SMTP_FROM,
+//     to: email,
+//     subject: 'Your OTP Code',
+//     html: `Your OTP is ${otp}`
+//   }
+
+//   try {
+//     const mailResponce = await transporter.sendMail(mailOption)
+//     return mailResponce;
+//   } catch (error) {
+//     if(error instanceof Error){
+            
+//       throw new Error((error as Error).message)
+//     }
+//   }
+// }
+
 export const sendOtpByEmail = async (email: string, otp: string) => {
   const mailOption = {
-    from: '"' + process.env.APP_NAME + '" ' + process.env.SMTP_FROM,
+    from: `"${process.env.APP_NAME}" <${process.env.SMTP_FROM}>`,
     to: email,
-    subject: 'Your OTP Code',
-    html: `Your OTP is ${otp}`
-  }
+    subject: 'Your One-Time Password (OTP)',
+    html: `
+      <div style="font-family: Arial, sans-serif; line-height: 1.5; color: #333;">
+        <h2 style="color: #4CAF50;">Your OTP Code</h2>
+        <p>Dear User,</p>
+        <p>Thank you for using ${process.env.APP_NAME}. To proceed, please use the following One-Time Password (OTP):</p>
+        <div style="font-size: 24px; font-weight: bold; color: #4CAF50; margin: 20px 0;">
+          ${otp}
+        </div>
+        <p>Please note that this OTP is valid for a limited time and should not be shared with anyone.</p>
+        <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
+        <p>If you did not request this OTP, please ignore this email or contact support at <a href="mailto:${process.env.SMTP_FROM}" style="color: #4CAF50;">${process.env.SMTP_FROM}</a>.</p>
+        <p>Best regards,</p>
+        <p>The ${process.env.APP_NAME} Team</p>
+      </div>
+    `,
+  };
 
   try {
-    const mailResponce = await transporter.sendMail(mailOption)
-    return mailResponce;
+    const mailResponse = await transporter.sendMail(mailOption);
+    return mailResponse;
   } catch (error) {
-    if(error instanceof Error){
-            
-      throw new Error((error as Error).message)
+    if (error instanceof Error) {
+      throw new Error((error as Error).message);
     }
   }
-}
+};
 
-export const sendOtpBySms = async () => {
-  
-  // return ({
-  //     to: mobile,
-  //     message: `Your OTP is ${otp}`,
-  // });
+
+
+export const sendOtpBySms = async (mobile: string, otp: string) => {
+  return ({
+      to: mobile,
+      message: `Your OTP is ${otp}`,
+  });
 }
 
 export async function sendOrderConfirmationEmail(orderData: {

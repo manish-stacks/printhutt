@@ -27,14 +27,7 @@ export async function POST(request: NextRequest) {
             callbackUrl,
             userDetails
         );
-        // console.log(response)
-
-        const updateOrder = await OrderModel.findById(orderId)
-
-        if (updateOrder) {
-            updateOrder.payment.transactionId = response?.data?.data?.merchantTransactionId
-            await updateOrder.save()
-        }
+        console.log(response)
 
 
         if (!response.success) {
@@ -44,6 +37,12 @@ export async function POST(request: NextRequest) {
             );
         }
 
+        const updateOrder = await OrderModel.findById(orderId)
+
+        if (updateOrder) {
+            updateOrder.payment.transactionId = response?.data?.merchantTransactionId
+            await updateOrder.save()
+        }
         return NextResponse.json(response.data);
 
     } catch (error) {

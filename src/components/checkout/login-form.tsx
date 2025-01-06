@@ -40,7 +40,7 @@ export const CheckoutloginForm = () => {
             setTimer(30);
             setIsResendEnabled(false);
 
-            console.log(data);
+            // console.log(data);
             toast.success(`Otp send ${emailOrMobile}`);
             setIsOtpSent(true);
         } catch (error: unknown) {
@@ -118,7 +118,7 @@ export const CheckoutloginForm = () => {
             const { data } = await axios.post("/api/auth/login", {
                 emailOrMobile,
             });
-            console.log(data)
+            // console.log(data)
             toast.success(`Otp send ${emailOrMobile}`);
         } catch (error: unknown) {
             toast.error((error as Error).message);
