@@ -1,6 +1,6 @@
 import { axiosInstance } from "@/utils/axios";;
 export const categoryService = {
-  getAll: () => axiosInstance('/v1/categories'),
+  getAll: (limit: string | number) => axiosInstance(`/v1/categories?limit=${limit}`),
 };
 
 

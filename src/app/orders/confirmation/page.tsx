@@ -3,12 +3,14 @@
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { useCartStore } from "@/store/useCartStore";
+import { useEffect } from "react";
 
 export default function OrderConfirmation() {
     const searchParams = useSearchParams();
     const orderId = searchParams?.get("id");
     const success = searchParams?.get("success") === "true";
-
+    const { removeAllItems } = useCartStore();
     if (!success || !orderId) {
         return (
             <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
@@ -34,7 +36,9 @@ export default function OrderConfirmation() {
             </div>
         );
     }
-
+    useEffect(() => {
+        removeAllItems();
+    }, [orderId]);
     return (
         <div className="min-h-screen bg-gray-50 py-12">
             <div className="max-w-3xl mx-auto px-4">

@@ -1,6 +1,6 @@
 'use client';
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import CategoryPopup from "./CategoryPopup";
 import CartSidebar from "./CartSidebar";
 import {
@@ -18,9 +18,8 @@ import { useCartStore } from "@/store/useCartStore";
 import { useUserStore } from "@/store/useUserStore";
 import HeaderCategoryList from "./header/category-list";
 import axios from "axios";
-import { createCategorySlice } from "@/store/slices/categorySlice";
-import { useStore } from "zustand";
-
+import { categoryService } from "@/_services/common/categoryService";
+import { productService } from "@/_services/common/productService";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -52,33 +51,45 @@ export default function Header() {
     { icon: RiLinkedinFill, link: "https://www.linkedin.com/company/print-hutt" },
   ];
 
-  const [categoryList, setCategoryList] = useState([]);
-  const [relatedProducts, setRelatedProducts] = useState([]);
-
-  // const { categories, isLoading, error, getCategories } = useStore();
-  // const { categories, isLoading } = useStore();
-  // useEffect(() => {
-  //   getCategories();
-  // }, []);
-
-  // console.log(categories)
-
-
-  const fetchCategory = async () => {
-    try {
-      const {data} = await axios.get("/api/v1/categories");
-      setCategoryList(data.categories);
-      setRelatedProducts(data.products);
-
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    }
-  };
-
+  const [categoriesData, setCategoriesData] = useState([]);
+  const [productData, setProductData] = useState([]);
 
   useEffect(() => {
-    fetchCategory();
+    const fetchData = async () => {
+      try {
+        const [categories, products] = await Promise.all([
+          categoryService.getAll(6),
+          productService.getTopProducts(6)
+        ]);
+        
+        setCategoriesData(categories);
+        setProductData(products);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
   }, []);
+
+  // const [categoryList, setCategoryList] = useState([]);
+  // const [relatedProducts, setRelatedProducts] = useState([]);
+
+  // const fetchCategory = async () => {
+  //   try {
+  //     const { data } = await axios.get("/api/v1/categories");
+  //     setCategoryList(data.categories);
+  //     setRelatedProducts(data.products);
+
+  //   } catch (error) {
+  //     console.error("Error fetching categories:", error);
+  //   }
+  // };
+
+
+  // useEffect(() => {
+  //   fetchCategory();
+  // }, []);
 
 
   return (
@@ -375,7 +386,9 @@ export default function Header() {
                           Home
                         </Link>
                       </li>
-                      <HeaderCategoryList categories={categoryList} />
+                      <Suspense fallback={<div>Loading...</div>}>
+                        <HeaderCategoryList categories={categoriesData} />
+                      </Suspense>
                       <li className="nav-item bb-dropdown flex items-center relative mr-[45px]">
                         <Link
                           className="nav-link font-Poppins relative p-[0] leading-[28px] text-[15px] font-medium text-[#3d4750] block tracking-[0.03rem]"
@@ -575,50 +588,13 @@ export default function Header() {
                   </ul>
                 </li>
                 <li className="relative">
-                  <span className="menu-toggle"></span>
-                  <a
-
+                  <Link
+                    href="/products"
                     className="transition-all duration-[0.3s] ease-in-out mb-[12px] p-[12px] block font-Poppins capitalize text-[#686e7d] border-[1px] border-solid border-[#eee] rounded-[10px] text-[15px] font-medium leading-[28px] tracking-[0.03rem]"
                   >
                     Products
-                  </a>
-                  <ul className="sub-menu w-full min-w-[auto] p-[0] mb-[10px] static hidden visible opacity-[1]">
-                    <li className="relative">
-                      <span className="menu-toggle"></span>
-                      <a
+                  </Link>
 
-                        className="transition-all duration-[0.3s] ease-in-out mb-[0] pl-[15px] pr-[0] py-[12px] capitalize block text-[14px] font-normal text-[#686e7d]"
-                      >
-                        Product page
-                      </a>
-                      <ul className="sub-menu w-full min-w-[auto] p-[0] mb-[10px] static hidden visible opacity-[1]">
-                        <li className="relative">
-                          <a
-                            href="product-left-sidebar.html"
-                            className="font-Poppins leading-[28px] tracking-[0.03rem] transition-all duration-[0.3s] ease-in-out font-normal pl-[30px] text-[14px] text-[#777] mb-[0] capitalize block py-[12px]"
-                          >
-                            Product left sidebar
-                          </a>
-                        </li>
-                        <li className="relative">
-                          <a
-                            href="product-right-sidebar.html"
-                            className="font-Poppins leading-[28px] tracking-[0.03rem] transition-all duration-[0.3s] ease-in-out font-normal pl-[30px] text-[14px] text-[#777] mb-[0] capitalize block py-[12px]"
-                          >
-                            Product right sidebar
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li className="relative">
-                      <a
-                        href="product-full-width.html"
-                        className="font-Poppins leading-[28px] tracking-[0.03rem] transition-all duration-[0.3s] ease-in-out font-normal pl-[12px] text-[14px] text-[#777] mb-[0] capitalize block py-[12px]"
-                      >
-                        Product full width
-                      </a>
-                    </li>
-                  </ul>
                 </li>
                 <li className="relative">
                   <span className="menu-toggle"></span>
@@ -678,7 +654,11 @@ export default function Header() {
         </div>
       </header>
 
-      {isOpen && <CategoryPopup onClose={toggleClose} category={categoryList} products={relatedProducts} />}
+      {isOpen && (
+        <Suspense fallback={null}>
+          <CategoryPopup onClose={toggleClose} category={categoriesData} products={productData} />
+        </Suspense>
+      )}
       {isCartOpen && <CartSidebar onClose={toggelCartSidebarClose} />}
     </>
   );

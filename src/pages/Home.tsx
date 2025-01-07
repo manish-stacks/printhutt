@@ -9,10 +9,19 @@ import NewProductArea from "@/components/NewProductArea";
 import OurServices from "@/components/OurServices";
 import HeroSlider from "@/components/HeroSlider";
 import PersonalisedGifts from "@/components/PersonalisedGifts";
+import { categoryService } from "@/_services/common/categoryService";
 
 
 
-const HomeComponent = () => {
+const HomeComponent = async() => {
+// // categoriesData, blogPostsData, testimonialsData, sliderContentData
+//   const [topRelatedProductsData] = await Promise.all([
+//     categoryService.getAll(),
+//     // getCategories(),
+//     // getBlogPosts(),
+//     // getTestimonials(),
+//     // getSliderContent()
+//   ])
 
   return (
     <>

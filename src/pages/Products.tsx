@@ -45,8 +45,8 @@ function Products() {
         tags: filters.tags.join(',')
       })
 
-      console.log(`/api/products?${queryParams}`)
-      const response = await fetch(`/api/products?${queryParams}`)
+      // console.log(`/api/products?${queryParams}`)
+      const response = await fetch(`/api/v1/products?${queryParams}`)
       const data = await response.json()
       // console.log(data)
       setProducts(data.products)
@@ -69,8 +69,8 @@ function Products() {
 
 
 
-  const items = useCartStore(state => state.items);
-  console.log(items)
+  // const items = useCartStore(state => state.items);
+  // console.log(items)
 
 
 
