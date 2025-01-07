@@ -13,7 +13,7 @@ export interface IOrder extends Document {
     payAmt: number;
     paymentType:string;
     payment: {
-        method: 'online' | 'offline';
+        method: string;
         transactionId?: string;
         isPaid: boolean;
         paidAt?: Date;

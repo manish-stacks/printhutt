@@ -11,12 +11,18 @@ const phonePe = new PhonePePayment(
     process.env.NODE_ENV === 'production' ? 'PROD' : 'UAT'
 );
 
+const baseUrl = process.env.APP_URL || 'http://localhost:3000';
+
 export async function POST(request: NextRequest) {
     try {
 
         const formData = await request.formData();
         const merchantTransactionId = formData.get('merchantTransactionId')?.toString() ||
             formData.get('transactionId')?.toString();
+
+        // const searchParams = request.nextUrl.searchParams;
+        // const merchantTransactionId = searchParams.get('id');
+
         if (!merchantTransactionId) {
             return NextResponse.json(
                 { error: 'merchantTransactionId is required' },
@@ -27,36 +33,28 @@ export async function POST(request: NextRequest) {
         const response = await phonePe.checkStatus(merchantTransactionId);
 
         if (!response.success) {
-            const failureRedirect = new URL('/payment-failure', request.url);
-            return NextResponse.redirect(failureRedirect);
+            return NextResponse.redirect(`${baseUrl}/orders/payment-failure`, { status: 301, });
         }
 
-
-
-        const order = await OrderModel.findOne({orderId: merchantTransactionId }).populate({ path: 'userId', model: UserModel });
+        const order = await OrderModel.findOne({ orderId: merchantTransactionId }).populate({ path: 'userId', model: UserModel });
 
         if (!order) {
-            const errorUrl = new URL('/payment-failure', request.url);
-            // errorUrl.searchParams.set('error', 'order_not_found');
-            return NextResponse.redirect(errorUrl);
+            return NextResponse.redirect(`${baseUrl}/orders/confirmation?id=${merchantTransactionId}&success=false`, { status: 301, });
+
         }
 
         order.payment = {
             ...order.payment,
-            transactionId: response.data.transactionId,
+            transactionId: response?.data?.transactionId,
             isPaid: true,
             paidAt: new Date(),
-            method: response.data.paymentInstrument?.type || 'unknown',
+            method: response?.data?.paymentInstrument?.type || 'unknown',
         };
         order.status = 'confirmed';
 
         await order.save();
+        return NextResponse.redirect(`${baseUrl}/orders/confirmation?id=${merchantTransactionId}&success=true`, { status: 301, });
 
-        //await sendOrderConfirmationEmail(order);
-
-        const successRedirect = new URL(`/orders/${order?._id}/confirmation`, request.url);
-        return NextResponse.redirect(successRedirect);
-        
     } catch (error) {
         console.error('Payment status check error:', error);
         return NextResponse.json(

@@ -16,8 +16,6 @@ const APP_Url = process.env.APP_URL;
 
 export async function POST(request: NextRequest) {
     try {
-        // const { orderId, amount, transactionId, customerMobile, customerEmail } = await req.json();
-
         const { orderId, amount, transactionId, userDetails } = await request.json();
         const callbackUrl = `${APP_Url}/api/payment/callback`
 
@@ -27,9 +25,7 @@ export async function POST(request: NextRequest) {
             callbackUrl,
             userDetails
         );
-        console.log(response)
-
-
+      
         if (!response.success) {
             return NextResponse.json(
                 { error: response.error || 'Payment initiation failed' },
