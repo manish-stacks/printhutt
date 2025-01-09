@@ -1,3 +1,4 @@
+import { formatCurrency } from "@/helpers/helpers";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useRef } from "react";
@@ -75,9 +76,9 @@ const CategoryPopup = ({ onClose, category, products }: PopupProps) => {
                                 {cat.name}
                               </Link>
                             </h5>
-                            {/* <p className="font-Poppins text-[13px] text-[#686e7d] leading-[25px] font-light tracking-[0.03rem]">
-                              485 items
-                            </p> */}
+                            <p className="font-Poppins text-[13px] text-[#686e7d] leading-[25px] font-light tracking-[0.03rem]">
+                              {category.subcategories.length} items
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -123,7 +124,7 @@ const CategoryPopup = ({ onClose, category, products }: PopupProps) => {
                                   href={`/product/${product.slug}`}
                                   className="transition-all duration-[0.3s] ease-in-out flex font-Poppins text-[15px] leading-[28px] tracking-[0.03rem] font-medium text-[#3d4750]"
                                 >
-                                  { product.title }
+                                  {product.title}
                                 </Link>
                               </h4>
                               <span className="bb-pro-rating">
@@ -135,10 +136,12 @@ const CategoryPopup = ({ onClose, category, products }: PopupProps) => {
                               </span>
                               <div className="inner-price mx-[-3px]">
                                 <span className="new-price px-[3px] text-[15px] text-[#686e7d] font-semibold">
-                                  {product.price}
+                                  {product.discountType === 'percentage'
+                                    ? formatCurrency(product.price - (product.price * product.discountPrice) / 100)
+                                    : formatCurrency(product.price - product.discountPrice)}
                                 </span>
                                 <span className="old-price px-[3px] text-[14px] text-[#686e7d] line-through">
-                                  {product.price}
+                                  {product.discountPrice > 0 ? formatCurrency(product.price) : ''}
                                 </span>
                               </div>
                             </div>

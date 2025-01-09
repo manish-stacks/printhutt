@@ -1,8 +1,7 @@
-'use client';
+'use client'
 import Link from "next/link";
 import React, { Suspense, useEffect, useState } from "react";
-import CategoryPopup from "./CategoryPopup";
-import CartSidebar from "./CartSidebar";
+
 import {
   RiCloseFill,
   RiFacebookFill,
@@ -16,10 +15,11 @@ import Image from "next/image";
 import siteLogo from '/public/print-hutt-logo.webp';
 import { useCartStore } from "@/store/useCartStore";
 import { useUserStore } from "@/store/useUserStore";
-import HeaderCategoryList from "./header/category-list";
-import axios from "axios";
 import { categoryService } from "@/_services/common/categoryService";
 import { productService } from "@/_services/common/productService";
+import HeaderCategoryList from "./category-list";
+import CartSidebar from "../CartSidebar";
+import CategoryPopup from "../CategoryPopup";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -62,8 +62,8 @@ export default function Header() {
           productService.getTopProducts(6)
         ]);
         
-        setCategoriesData(categories);
-        setProductData(products);
+        setCategoriesData(categories?.categories);
+        setProductData(products?.products);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -72,26 +72,7 @@ export default function Header() {
     fetchData();
   }, []);
 
-  // const [categoryList, setCategoryList] = useState([]);
-  // const [relatedProducts, setRelatedProducts] = useState([]);
-
-  // const fetchCategory = async () => {
-  //   try {
-  //     const { data } = await axios.get("/api/v1/categories");
-  //     setCategoryList(data.categories);
-  //     setRelatedProducts(data.products);
-
-  //   } catch (error) {
-  //     console.error("Error fetching categories:", error);
-  //   }
-  // };
-
-
-  // useEffect(() => {
-  //   fetchCategory();
-  // }, []);
-
-
+  
   return (
     <>
       <header className="bb-header relative z-[5] border-b-[1px] border-solid border-[#eee]">

@@ -65,3 +65,16 @@ export interface Testimonial {
     avatar: string;
     rating: number;
 }
+
+
+export interface ISlider extends Document {
+    title: string;
+    imageUrl: {
+        url?: string;
+        public_id?: string;
+        fileType?: string;
+    }
+    link: string;
+    isActive: boolean;
+    leval: number;
+}

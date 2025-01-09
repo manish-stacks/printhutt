@@ -27,7 +27,7 @@ const NewProductArea = () => {
                     className="bb-pro-tab-nav flex flex-wrap mx-[-20px] max-[991px]:justify-center"
                     id="ProductTab"
                   >
-                    <li className="nav-item relative leading-[28px]">
+                    <li className="nav-item relative leading-[28px] active">
                       <a
                         className="nav-link px-[20px] font-Poppins text-[16px] text-[#686e7d] font-medium capitalize leading-[28px] tracking-[0.03rem] block"
                         href="#all"
@@ -35,7 +35,7 @@ const NewProductArea = () => {
                         All
                       </a>
                     </li>
-                    <li className="nav-item relative leading-[28px] active">
+                    <li className="nav-item relative leading-[28px] ">
                       <a
                         className="nav-link px-[20px] font-Poppins text-[16px] text-[#686e7d] font-medium capitalize leading-[28px] tracking-[0.03rem] block"
                         href="#snack"
@@ -51,14 +51,7 @@ const NewProductArea = () => {
                         Pre Product
                       </a>
                     </li>
-                    <li className="nav-item leading-[28px]">
-                      <a
-                        className="nav-link px-[20px] font-Poppins text-[16px] text-[#686e7d] font-medium capitalize leading-[28px] tracking-[0.03rem] block"
-                        href="#veg"
-                      >
-                        Product
-                      </a>
-                    </li>
+                    
                   </ul>
                 </div>
               </div>
