@@ -5,17 +5,15 @@ import { productService } from '@/_services/common/productService';
 const DayoftheDeal = () => {
 
     const [productData, setProductData] = useState([]);
-
+    const fetchData = async () => {
+        try {
+            const products = await productService.getTopProducts(6)
+            setProductData(products?.products);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const products = await productService.getTopProducts(6)
-                setProductData(products?.products);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
-
         fetchData();
     }, []);
 

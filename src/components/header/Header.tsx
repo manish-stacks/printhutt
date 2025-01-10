@@ -20,6 +20,7 @@ import { productService } from "@/_services/common/productService";
 import HeaderCategoryList from "./category-list";
 import CartSidebar from "../CartSidebar";
 import CategoryPopup from "../CategoryPopup";
+import Headerlocation from "./location";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -53,26 +54,27 @@ export default function Header() {
 
   const [categoriesData, setCategoriesData] = useState([]);
   const [productData, setProductData] = useState([]);
+  const fetchData = async () => {
+    try {
+      const [categories, products] = await Promise.all([
+        categoryService.getAll(6),
+        productService.getTopProducts(6)
+      ]);
+
+      setCategoriesData(categories?.categories);
+      setProductData(products?.products);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [categories, products] = await Promise.all([
-          categoryService.getAll(6),
-          productService.getTopProducts(6)
-        ]);
-        
-        setCategoriesData(categories?.categories);
-        setProductData(products?.products);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
     fetchData();
   }, []);
 
-  
+
+
+
   return (
     <>
       <header className="bb-header relative z-[5] border-b-[1px] border-solid border-[#eee]">
@@ -379,38 +381,14 @@ export default function Header() {
                         </Link>
                       </li>
                       <li className="nav-item bb-dropdown flex items-center relative mr-[45px]">
-                        <a
-                          className="nav-link bb-dropdown-item font-Poppins relative p-[0] leading-[28px] text-[15px] font-medium text-[#3d4750] block tracking-[0.03rem]"
+                        <Link
+                          href="/about-us"
+                          className="nav-link font-Poppins relative p-[0] leading-[28px] text-[15px] font-medium text-[#3d4750] block tracking-[0.03rem]"
 
                         >
-                          Pages
-                        </a>
-                        <ul className="bb-dropdown-menu min-w-[205px] p-[10px] transition-all duration-[0.3s] ease-in-out mt-[25px] absolute top-[40px] z-[16] text-left opacity-[0] invisible left-[0] right-[auto] bg-[#fff] border-[1px] border-solid border-[#eee] flex flex-col rounded-[10px]">
-                          <li className="m-[0] py-[5px] px-[15px] flex items-center">
-                            <Link
-                              className="dropdown-item transition-all duration-[0.3s] ease-in-out py-[5px] leading-[22px] text-[14px] font-normal text-[#686e7d] hover:text-[#6c7fd8] capitalize block w-full whitespace-nowrap"
-                              href="/about-us"
-                            >
-                              About Us
-                            </Link>
-                          </li>
-                          <li className="m-[0] py-[5px] px-[15px] flex items-center">
-                            <Link
-                              className="dropdown-item transition-all duration-[0.3s] ease-in-out py-[5px] leading-[22px] text-[14px] font-normal text-[#686e7d] hover:text-[#6c7fd8] capitalize block w-full whitespace-nowrap"
-                              href="/contact-us"
-                            >
-                              Contact Us
-                            </Link>
-                          </li>
-                          <li className="m-[0] py-[5px] px-[15px] flex items-center">
-                            <Link
-                              className="dropdown-item transition-all duration-[0.3s] ease-in-out py-[5px] leading-[22px] text-[14px] font-normal text-[#686e7d] hover:text-[#6c7fd8] capitalize block w-full whitespace-nowrap"
-                              href="/faq"
-                            >
-                              Faq
-                            </Link>
-                          </li>
-                        </ul>
+                          About Us
+                        </Link>
+
                       </li>
                       <li className="nav-item flex items-center relative mr-[45px]">
                         <Link
@@ -478,11 +456,7 @@ export default function Header() {
                         />
                       </svg>
                       <div className="custom-select transition-all duration-[0.3s] ease-in-out w-full h-full pr-[15px] text-[#777] flex items-center justify-between text-[14px] relative">
-                        <select className="w-full">
-                          <option value="option2">Delhi</option>
-                          <option value="option3">Rajkot</option>
-                          <option value="option4">Udaipur</option>
-                        </select>
+                        <Headerlocation />
                       </div>
                     </div>
                   </div>

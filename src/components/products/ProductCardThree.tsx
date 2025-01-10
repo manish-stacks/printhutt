@@ -8,11 +8,10 @@ import { toast } from 'react-toastify';
 
 interface PopupProps {
     product: Product;
-    viewMode: 'grid' | 'list'
 }
 
 
-const ProductCard = ({ product, viewMode }: PopupProps) => {
+const ProductCardThree = ({ product }: PopupProps) => {
 
     const addToCart = useCartStore(state => state.addToCart);
     const handleAddToCart = (product: Product) => {
@@ -25,13 +24,15 @@ const ProductCard = ({ product, viewMode }: PopupProps) => {
             <div className="bb-pro-box bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[20px]">
                 <div className="bb-pro-img overflow-hidden relative border-b-[1px] border-solid border-[#eee] z-[4]">
                     <span className="flags transition-all duration-[0.3s] ease-in-out absolute z-[5] top-[10px] left-[6px]">
-                        {(product.new || product.trending || product.sale) && (
-                            <span className="text-[14px] text-[#777] font-medium uppercase">
-                                {product.new ? "New" : product.trending ? "Trend" : "Sale"}
-                            </span>
-                        )}
+                        <span className="text-[14px] text-[#777] font-medium uppercase">
+                            {(product.new || product.trending || product.sale) && (
+                                <span className="text-[14px] text-[#777] font-medium uppercase">
+                                    {product.new ? "New" : product.trending ? "Trend" : "Sale"}
+                                </span>
+                            )}
+                        </span>
                     </span>
-                    <Link href={`/product-details/${product.slug}`}>
+                    <Link href={`/product-details/${product.slug}`} >
                         <div className="inner-img relative block overflow-hidden pointer-events-none rounded-t-[20px]">
                             <Image
                                 className="main-img transition-all duration-[0.3s] ease-in-out w-full"
@@ -91,11 +92,10 @@ const ProductCard = ({ product, viewMode }: PopupProps) => {
                 <div className="bb-pro-contact p-[20px]">
                     <div className="bb-pro-subtitle mb-[8px] flex flex-wrap justify-between">
                         <Link
-
                             href={`/category/${product?.category?.slug}`}
                             className="transition-all duration-[0.3s] ease-in-out font-Poppins text-[13px] leading-[16px] text-[#777] font-light tracking-[0.03rem]"
                         >
-                            {product?.category?.name}
+                            {product?.category?.name || 'PrintHutt'}
                         </Link>
                         <span className="bb-pro-rating">
                             {Array.from({ length: 5 }, (_, index) => (
@@ -108,7 +108,6 @@ const ProductCard = ({ product, viewMode }: PopupProps) => {
                                 />
                             ))}
                         </span>
-
                     </div>
                     <h4 className="bb-pro-title mb-[8px] text-[16px] leading-[18px]">
                         <Link href={`/product-details/${product.slug}`}
@@ -117,9 +116,6 @@ const ProductCard = ({ product, viewMode }: PopupProps) => {
                             {product.title}
                         </Link>
                     </h4>
-                    <p className="hidden font-Poppins text-[14px] text-[#686e7d] font-light leading-[28px] tracking-[0.03rem]">
-                        {product?.short_description}
-                    </p>
                     <div className="bb-price flex flex-wrap justify-between">
                         <div className="inner-price mx-[-3px]">
                             <span className="new-price px-[3px] text-[16px] text-[#686e7d] font-bold">
@@ -127,12 +123,21 @@ const ProductCard = ({ product, viewMode }: PopupProps) => {
                                     ? formatCurrency(product.price - (product.price * product.discountPrice) / 100)
                                     : formatCurrency(product.price - product.discountPrice)}
                             </span>
-                            <span className="old-price px-[3px] text-[14px] text-[#686e7d] line-through">
-                                {product.discountPrice > 0 ? formatCurrency(product.price) : ''}
-                            </span>
+                            {
+                                product.stock > 0 ?
+                                    (
+                                        <span className="item-left px-[3px] text-[14px] text-[#6c7fd8]">
+                                            Out Of Stock
+                                        </span>
+                                    ) : (
+                                        <span className="old-price px-[3px] text-[14px] text-[#686e7d] line-through">
+                                            {product.discountPrice > 0 ? formatCurrency(product.price) : ''}
+                                        </span>
+                                    )
+                            }
+
 
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -140,4 +145,4 @@ const ProductCard = ({ product, viewMode }: PopupProps) => {
     )
 }
 
-export default ProductCard
+export default ProductCardThree

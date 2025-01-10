@@ -8,12 +8,33 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: #4b5563; 
-    border-radius: 10px; 
+    background-color: #4b5563;
+    border-radius: 10px;
   }
 
   ::-webkit-scrollbar-track {
-    background-color: #e5e7eb; 
-    border-radius: 10px; 
+    background-color: #e5e7eb;
+    border-radius: 10px;
   }
 }
+
+.skeleton {
+  animation: shimmer 1.5s infinite linear;
+  background: linear-gradient(to right, #e0e0e0 0%, #f8f8f8 50%, #e0e0e0 100%);
+  background-size: 200% 100%;
+}
+
+
+
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+
+

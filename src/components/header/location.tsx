@@ -1,18 +1,10 @@
-"use client"
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 
-// export const metadata = {
-//   title: 'Product-details',
-//   description: 'Product-details',
-// }
-
-const Page = () => {
-
-    //const params = useParams();
-    // const slug = params?.slug as string | undefined;
+const Headerlocation = () => {
 
     const [location, setLocation] = useState({ city: '', country: '' });
     const [error, setError] = useState('');
+
 
     useEffect(() => {
         if (navigator.geolocation) {
@@ -26,7 +18,7 @@ const Page = () => {
                     try {
                         const response = await fetch(url);
                         const data = await response.json();
-                        console.log(data)
+                        // console.log(data)
                         const city = data.address?.state || data.address?.city || data.address?.town || 'Unknown City';
                         const country = data.address?.country || 'Unknown Country';
                         setLocation({ city, country });
@@ -47,10 +39,9 @@ const Page = () => {
 
     return (
         <>
-            {error ? <p>{error}</p> : <p>{location.city}, {location.country}</p>}
+            {location.city}
         </>
     )
 }
 
-
-export default Page
+export default Headerlocation

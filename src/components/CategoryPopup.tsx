@@ -54,38 +54,57 @@ const CategoryPopup = ({ onClose, category, products }: PopupProps) => {
                     </div>
                   </div>
 
-                  {category && category.length > 0 ? (
-                    category.map((cat, index) => (
-                      <div key={index} className="min-[1200px]:w-[16.66%] min-[768px]:w-[33.33%] min-[576px]:w-[50%] w-full px-[12px] mb-[24px] ">
-                        <div className="bb-category-box p-[30px] rounded-[20px] flex flex-col items-center text-center max-[1399px]:p-[20px] category-items-1 bg-[#fef1f1]">
-                          <div className="category-image mb-[12px]">
-                            <Image
-                              src={cat.image.url}
-                              alt="category"
-                              width={100}
-                              height={100}
-                              className="w-[50px] h-[50px] max-[1399px]:h-[65px] max-[1399px]:w-[65px] max-[1199px]:h-[50px] max-[1199px]:w-[50px] rounded-md"
-                            />
-                          </div>
-                          <div className="category-sub-contact">
-                            <h5 className="mb-[2px] text-[16px] font-quicksand text-[#3d4750] font-semibold tracking-[0.03rem] leading-[1.2]">
-                              <Link
-                                href={`/category/${cat.slug}`}
-                                className="font-Poppins text-[16px] font-medium leading-[1.2] tracking-[0.03rem] text-[#3d4750] capitalize"
-                              >
-                                {cat.name}
-                              </Link>
-                            </h5>
-                            <p className="font-Poppins text-[13px] text-[#686e7d] leading-[25px] font-light tracking-[0.03rem]">
-                              {category.subcategories.length} items
-                            </p>
+                  {
+                    category && category.length > 0 ? (
+                      category.map((cat, index) => (
+                        <div key={index} className="min-[1200px]:w-[16.66%] min-[768px]:w-[33.33%] min-[576px]:w-[50%] w-full px-[12px] mb-[24px] ">
+                          <div className={`bb-category-box p-[30px] rounded-[20px] flex flex-col items-center text-center max-[1399px]:p-[20px] category-items-category-items-${index + 1} ${(index % 2 === 0 ? 'bg-[#f4f1fe]' : 'bg-[#fef1f1]')}`}>
+                            <div className="category-image mb-[12px]">
+                              <Image
+                                src={cat.image.url}
+                                alt="category"
+                                width={100}
+                                height={100}
+                                className="w-[50px] h-[50px] max-[1399px]:h-[65px] max-[1399px]:w-[65px] max-[1199px]:h-[50px] max-[1199px]:w-[50px] rounded-md"
+                              />
+                            </div>
+                            <div className="category-sub-contact">
+                              <h5 className="mb-[2px] text-[16px] font-quicksand text-[#3d4750] font-semibold tracking-[0.03rem] leading-[1.2]">
+                                <Link
+                                  href={`/category/${cat.slug}`}
+                                  className="font-Poppins text-[16px] font-medium leading-[1.2] tracking-[0.03rem] text-[#3d4750] capitalize"
+                                >
+                                  {cat.name}
+                                </Link>
+                              </h5>
+                              <p className="font-Poppins text-[13px] text-[#686e7d] leading-[25px] font-light tracking-[0.03rem]">
+                                {cat.subcategories.length} items
+                              </p>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))
-                  ) : (
-                    <p>No categories available.</p>
-                  )}
+                      ))
+                    ) : (
+                      Array.from({ length: 6 }).map((_, index) => (
+                        <div
+                          key={index}
+                          className="min-[1200px]:w-[16.66%] min-[768px]:w-[33.33%] min-[576px]:w-[50%] w-full px-[12px] mb-[24px]"
+                        >
+                          <div className="bb-category-box p-[30px] rounded-[20px] flex flex-col items-center text-center max-[1399px]:p-[20px] bg-[#fef1f1]">
+                            {/* Skeleton for Category Image */}
+                            <div className="category-image mb-[12px]">
+                              <div className="skeleton w-[50px] h-[50px] max-[1399px]:h-[65px] max-[1399px]:w-[65px] max-[1199px]:h-[50px] max-[1199px]:w-[50px] rounded-md bg-gray-200" />
+                            </div>
+
+                            {/* Skeleton for Text */}
+                            <div className="category-sub-contact w-full">
+                              <div className="skeleton w-[70%] h-[16px] bg-gray-200 mx-auto mb-[8px]" />
+                              <div className="skeleton w-[50%] h-[14px] bg-gray-200 mx-auto" />
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    )}
 
 
 
@@ -149,7 +168,43 @@ const CategoryPopup = ({ onClose, category, products }: PopupProps) => {
                         </div>
                       ))
                     ) : (
-                      <p>No products available.</p>
+                      Array.from({ length: 6 }).map((_, index) => (
+                        <div
+                          key={index}
+                          className="min-[992px]:w-[33.33%] min-[576px]:w-[50%] w-full px-[12px] mb-[24px]"
+                        >
+                          <div className="bb-category-cart p-[15px] overflow-hidden bg-[#f8f8fb] border-[1px] border-solid border-[#eee] rounded-[10px] flex max-[767px]:flex-col">
+                            {/* Skeleton for Product Image */}
+                            <div className="pro-img mr-[12px] max-[767px]:mb-[15px] max-[767px]:mr-[0]">
+                              <div className="skeleton w-[80px] h-[80px] rounded-[10px] bg-gray-200 border-[1px] border-solid border-[#eee] max-[767px]:w-full" />
+                            </div>
+
+                            {/* Skeleton for Product Details */}
+                            <div className="side-contact flex flex-col">
+                              {/* Skeleton for Title */}
+                              <div className="skeleton w-[70%] h-[16px] bg-gray-200 mb-[8px]" />
+
+                              {/* Skeleton for Rating */}
+                              <div className="flex gap-[3px] mb-[8px]">
+                                {Array.from({ length: 5 }).map((_, i) => (
+                                  <div
+                                    key={i}
+                                    className={`skeleton w-[15px] h-[15px] rounded-full ${i < 4 ? 'bg-[#fea99a]' : 'bg-gray-200'
+                                      }`}
+                                  />
+                                ))}
+                              </div>
+
+                              {/* Skeleton for Price */}
+                              <div className="inner-price flex gap-[3px]">
+                                <div className="skeleton w-[50px] h-[15px] bg-gray-200" />
+                                <div className="skeleton w-[40px] h-[14px] bg-gray-200" />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+
                     )
                   }
 

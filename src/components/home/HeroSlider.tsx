@@ -41,7 +41,7 @@ const HeroSlider = () => {
         const fetchData = async () => {
             try {
                 const sliders = await sliderService.getAll();
-                console.log(sliders)
+                // console.log(sliders)
                 setSlidersData(sliders?.sliders);
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -76,7 +76,6 @@ const HeroSlider = () => {
     const SliderContent = () => (
         <Slider {...settings}>
             {
-
                 slidersData.map((slider: any) => (
                     <div key={slider._id}>
                         <Image
@@ -120,10 +119,17 @@ const HeroSlider = () => {
 
     return (
         <div className="slider-container relative">
-            <Suspense fallback={<div>Loading...</div>}>
-                <SliderContent />
-            </Suspense>
-        </div>
+            {
+                loading ? (
+                    <div>
+                        <div className="skeleton w-full h-[550px] bg-gray-200 rounded-md" />
+                    </div>
+                ) : (
+                    <SliderContent />
+                )
+            }
+
+        </div >
     )
 
 }

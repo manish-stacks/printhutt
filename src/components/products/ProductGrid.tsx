@@ -1,8 +1,4 @@
 import React from 'react'
-import Image from 'next/image';
-import { useCartStore } from '@/store/useCartStore';
-import Link from 'next/link';
-import { toast } from 'react-toastify';
 import type { Product } from '@/lib/types/product';
 import ProductCard from './ProductCard';
 
@@ -26,7 +22,13 @@ export function ProductGrid({ products, viewMode }: ProductGridProps) {
     return (
         <>
             {products.map((product, index) => (
-                <div key={index}>
+                <div
+                    key={index}
+                    className={`min-[768px]:w-[33.33%] w-[50%] max-[480px]:w-full px-[12px] mb-[24px] pro-bb-content ${viewMode === 'list' ? 'width-100' : ''}`}
+                    data-aos="fade-up"
+                    data-aos-duration={1000}
+                    data-aos-delay={200}
+                >
                     <ProductCard product={product} viewMode={viewMode} />
                 </div>
             ))}

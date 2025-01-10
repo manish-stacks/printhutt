@@ -11,8 +11,6 @@ import PersonalisedGifts from "@/components/home/PersonalisedGifts";
 import DayoftheDeal from "@/components/home/DayoftheDeal";
 import BannerOne from "@/components/home/BannerOne";
 import BannerTwo from "@/components/home/BannerTwo";
-import HomeProduct from "@/components/home/HomeProduct";
-
 
 
 const HomeComponent = () => {
@@ -40,14 +38,14 @@ const HomeComponent = () => {
       <OurServices />
 
       {/* Product */}
-      <HomeProduct />
+      {/* <HomeProduct /> */}
 
 
       {/* Testimonials */}
       <Testimonials />
 
-      {/* Blog */}
       <BlogHome />
+      {/* Blog */}
 
       {/* Instagram */}
       <InstagramHome />
