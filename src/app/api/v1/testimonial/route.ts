@@ -1,19 +1,17 @@
 import { NextResponse } from 'next/server';
 import { connect } from '@/dbConfig/dbConfig'
-import Slider from '@/models/sliderModel';
+import Testimonials from '@/models/testimonialsModel';
+
 
 connect();
 
 export async function GET() {
     try {
-        const sliders = await Slider.find({ isActive: true })
-            .sort({ level: 1 })
-            .limit(4)
-            .lean();
-
+        const query = Testimonials.find().sort({ createdAt: -1 }).limit(4);
+        const testimonials = await query.lean();
 
         return NextResponse.json(
-            { sliders: sliders, message: "data fetch successfully" },
+            { testimonials: testimonials, message: "Successfully fetched testimonials" },
             { status: 200 }
         );
     } catch (error: unknown) {

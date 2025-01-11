@@ -78,3 +78,14 @@ export interface ISlider extends Document {
     isActive: boolean;
     leval: number;
 }
+
+export interface ITestimonial extends Document {
+    name: string;
+    image: {
+        url?: string;
+        public_id?: string;
+        fileType?: string;
+    }
+    feedback: string;
+    isActive: boolean;
+}

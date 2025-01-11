@@ -57,7 +57,7 @@ const CategoryPopup = ({ onClose, category, products }: PopupProps) => {
                   {
                     category && category.length > 0 ? (
                       category.map((cat, index) => (
-                        <div key={index} className="min-[1200px]:w-[16.66%] min-[768px]:w-[33.33%] min-[576px]:w-[50%] w-full px-[12px] mb-[24px] ">
+                        <div key={index} className="min-[1200px]:w-[16.66%] min-[768px]:w-[33.33%] min-[576px]:w-[50%] max-[480px]:w-[50%] w-full px-[12px] mb-[24px] ">
                           <div className={`bb-category-box p-[30px] rounded-[20px] flex flex-col items-center text-center max-[1399px]:p-[20px] category-items-category-items-${index + 1} ${(index % 2 === 0 ? 'bg-[#f4f1fe]' : 'bg-[#fef1f1]')}`}>
                             <div className="category-image mb-[12px]">
                               <Image
@@ -123,7 +123,7 @@ const CategoryPopup = ({ onClose, category, products }: PopupProps) => {
                   {
                     products && products.length > 0 ? (
                       products.map((product, index) => (
-                        <div key={index} className="min-[992px]:w-[33.33%] min-[576px]:w-[50%] w-full px-[12px] mb-[24px] ">
+                        <div key={index} className="min-[992px]:w-[33.33%] min-[576px]:w-[50%] max-[480px]:w-[50%] w-full px-[12px] mb-[24px] ">
                           <div className="bb-category-cart p-[15px] overflow-hidden bg-[#f8f8fb] border-[1px] border-solid border-[#eee] rounded-[10px] flex max-[767px]:flex-col">
                             <a
 

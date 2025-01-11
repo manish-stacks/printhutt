@@ -39,9 +39,13 @@ export const CheckoutloginForm = () => {
             });
             setTimer(30);
             setIsResendEnabled(false);
-
+            if (data) {
+                toast.success(`Otp send ${emailOrMobile}`);
+            } else {
+                toast.error(`Otp not send ${emailOrMobile}`);
+            }
             // console.log(data);
-            toast.success(`Otp send ${emailOrMobile}`);
+
             setIsOtpSent(true);
         } catch (error: unknown) {
             toast.error((error as Error).message);
@@ -118,8 +122,12 @@ export const CheckoutloginForm = () => {
             const { data } = await axios.post("/api/auth/login", {
                 emailOrMobile,
             });
-            // console.log(data)
-            toast.success(`Otp send ${emailOrMobile}`);
+            if (data) {
+                toast.success(`Otp send ${emailOrMobile}`);
+            } else {
+                toast.error('Failed to send OTP');
+            }
+
         } catch (error: unknown) {
             toast.error((error as Error).message);
         }
@@ -134,7 +142,7 @@ export const CheckoutloginForm = () => {
                     data-aos="fade-up"
                     data-aos-duration={1000}
                     data-aos-delay={400}
-                    style={{position: 'sticky',top: '20px'}}
+                    style={{ position: 'sticky', top: '20px' }}
                 >
 
                     <div className="bg-[#E10176] p-4">

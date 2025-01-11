@@ -35,13 +35,12 @@ export const menuItems = {
     { id: 'blogs', label: 'Pending Orders', path: '/admin/blogs' },
   ],
   faqs: [
-    { id: 'faq-categories', label: 'Categories', path: '/admin/faq-categories' },
-    { id: 'faqs', label: 'Pending Orders', path: '/admin/faqs' },
+    { id: 'faq-categories', label: 'Categories', path: '/admin/faqs' }
   ],
   manageSite:[
     { id: 'slider', label: 'Slider', path: '/admin/hero-banner' },
     { id: 'testimonials', label: 'Testimonials', path: '/admin/testimonials' },
-    { id: 'banner', label: 'Banner', path: '/admin/banner' },
+    // { id: 'banner', label: 'Banner', path: '/admin/banner' },
   ]
 };
 // Ecommerce

@@ -8,10 +8,9 @@ import { toast } from "react-toastify";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ProductHeader } from "@/components/products/ProductHeader";
 import ProductGrid from "@/components/products/ProductGrid";
-import LoadingSpinner from "@/components/LoadingSpinner";
-import { useCartStore } from "@/store/useCartStore";
 import type { Product } from "@/lib/types/product";
 import { Pagination } from "@/components/admin/Pagination";
+import { productService } from "@/_services/common/productService";
 
 function Products() {
 
@@ -26,7 +25,6 @@ function Products() {
     rating: null,
     tags: []
   })
-  // console.log(filters)
 
   const searchParams = useSearchParams();
   const page = searchParams?.get('page') || '1';
@@ -44,15 +42,13 @@ function Products() {
         ...(filters.rating && { rating: String(filters.rating) }),
         tags: filters.tags.join(',')
       })
+      const data = await productService.getAll(queryParams);
+      console.log(data);
+      // const response = await fetch(`/api/v1/products?${queryParams}`)
+      // const data = await response.json()
 
-      // console.log(`/api/products?${queryParams}`)
-      const response = await fetch(`/api/v1/products?${queryParams}`)
-      const data = await response.json()
-      // console.log(data)
       setProducts(data.products)
       setPagination(data.pagination);
-      // const response = await get_all_products(page, search) as any;
-      // setProducts(response.products);
     } catch (error) {
       if (error instanceof Error) {
 

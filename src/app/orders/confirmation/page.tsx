@@ -11,6 +11,12 @@ export default function OrderConfirmation() {
     const orderId = searchParams?.get("id");
     const success = searchParams?.get("success") === "true";
     const { removeAllItems } = useCartStore();
+
+    useEffect(() => {
+        removeAllItems();
+    }, [orderId]);
+
+    
     if (!success || !orderId) {
         return (
             <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
@@ -24,7 +30,7 @@ export default function OrderConfirmation() {
                     />
                     <h1 className="text-2xl font-bold text-red-700 mb-4">Invalid Order</h1>
                     <p className="text-gray-600 mb-6">
-                        We couldn't find the order details. Please try again or contact support.
+                        We couldn&apos;t find the order details. Please try again or contact support.
                     </p>
                     <Link
                         href="/"
@@ -36,9 +42,7 @@ export default function OrderConfirmation() {
             </div>
         );
     }
-    useEffect(() => {
-        removeAllItems();
-    }, [orderId]);
+    
     return (
         <div className="min-h-screen bg-gray-50 py-12">
             <div className="max-w-3xl mx-auto px-4">

@@ -34,6 +34,34 @@ const InstagramHome = () => {
     ],
   };
 
+
+  const instVideo = [
+    {
+      videoId: 'PDoLOK47vZ4',
+      title: 'Video 1',
+    },
+    {
+      videoId: '6iVmWq8qM0I',
+      title: 'Video 2',
+    },
+    {
+      videoId: 'G8q_MPtY2KU',
+      title: 'Video 3',
+    },
+    {
+      videoId: 'H3x8nAi_8xo',
+      title: 'Video 4',
+    },
+    {
+      videoId: 'k1b-Sjdgm8I',
+      title: 'Video 5',
+    },
+    {
+      videoId: '64xHPWysv3s',
+      title: 'Video 6',
+    }
+  ];
+
   return (
     <>
       <section className="section-instagram overflow-hidden py-[50px] max-[1199px]:py-[35px] relative">
@@ -47,114 +75,45 @@ const InstagramHome = () => {
               </div>
               <div className="bb-instagram-slider">
                 <Slider {...settings}>
-                  <div className="px-2">
-                    <div
-                      className="bb-instagram-card"
-                      data-aos="fade-up"
-                      data-aos-duration={1000}
-                      data-aos-delay={200}
-                    >
-                      <div className="instagram-img relative overflow-hidden rounded-[30px]">
-                        <a >
+
+                  {
+                    instVideo.map((data, index) => (
+
+                      <div className="px-2" key={index}>
+                        <div
+                          className="bb-instagram-card"
+                          data-aos="fade-up"
+                          data-aos-duration={1000}
+                          data-aos-delay={200}
+                        >
+                          <div className="instagram-img relative overflow-hidden rounded-[30px]">
+
+                            <iframe
+                              src={`https://www.youtube.com/embed/${data.videoId}?autoplay=1&loop=1&mute=1&playlist=${data.videoId}&controls=0&showinfo=0&modestbranding=1`}
+                              title={data.title}
+                              width="200"
+                              height="200"
+
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                              className="w-full rounded-[20px]"
+                            ></iframe>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  }
+                  {/* <a >
                           <img
                             src="https://printhutt.com//media/table-name-lemp.png"
                             alt="instagram-1"
                             className="w-full rounded-[20px]"
                           />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="px-2">
-                    <div
-                      className="bb-instagram-card"
-                      data-aos="fade-up"
-                      data-aos-duration={1000}
-                      data-aos-delay={300}
-                    >
-                      <div className="instagram-img relative overflow-hidden rounded-[30px]">
-                        <a >
-                          <img
-                            src="https://printhutt.com//media/table-name-lemp.png"
-                            alt="instagram-2"
-                            className="w-full rounded-[20px]"
-                          />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="px-2">
-                    <div
-                      className="bb-instagram-card"
-                      data-aos="fade-up"
-                      data-aos-duration={1000}
-                      data-aos-delay={400}
-                    >
-                      <div className="instagram-img relative overflow-hidden rounded-[30px]">
-                        <a >
-                          <img
-                            src="https://printhutt.com//media/table-name-lemp.png"
-                            alt="instagram-3"
-                            className="w-full rounded-[20px]"
-                          />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="px-2">
-                    <div
-                      className="bb-instagram-card"
-                      data-aos="fade-up"
-                      data-aos-duration={1000}
-                      data-aos-delay={500}
-                    >
-                      <div className="instagram-img relative overflow-hidden rounded-[30px]">
-                        <a >
-                          <img
-                            src="https://printhutt.com//media/table-name-lemp.png"
-                            alt="instagram-4"
-                            className="w-full rounded-[20px]"
-                          />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="px-2">
-                    <div
-                      className="bb-instagram-card"
-                      data-aos="fade-up"
-                      data-aos-duration={1000}
-                      data-aos-delay={600}
-                    >
-                      <div className="instagram-img relative overflow-hidden rounded-[30px]">
-                        <a >
-                          <img
-                            src="https://printhutt.com//media/table-name-lemp.png"
-                            alt="instagram-5"
-                            className="w-full rounded-[20px]"
-                          />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="px-2">
-                    <div
-                      className="bb-instagram-card"
-                      data-aos="fade-up"
-                      data-aos-duration={1000}
-                      data-aos-delay={700}
-                    >
-                      <div className="instagram-img relative overflow-hidden rounded-[30px]">
-                        <a >
-                          <img
-                            src="https://printhutt.com//media/table-name-lemp.png"
-                            alt="instagram-6"
-                            className="w-full rounded-[20px]"
-                          />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
+                        </a> 
+                        
+                        https://www.youtube.com/embed/PDoLOK47vZ4?autoplay=1&mute=1&loop=1
+                        */}
+
                 </Slider>
               </div>
             </div>

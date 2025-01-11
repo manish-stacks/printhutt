@@ -33,6 +33,34 @@ const BlogHome = () => {
       },
     ],
   };
+
+
+  const instVideo = [
+    {
+      videoId: 'PDoLOK47vZ4',
+      title: 'Video 1',
+    },
+    {
+      videoId: '6iVmWq8qM0I',
+      title: 'Video 2',
+    },
+    {
+      videoId: 'G8q_MPtY2KU',
+      title: 'Video 3',
+    },
+    {
+      videoId: 'H3x8nAi_8xo',
+      title: 'Video 4',
+    },
+    {
+      videoId: 'k1b-Sjdgm8I',
+      title: 'Video 5',
+    },
+    {
+      videoId: '64xHPWysv3s',
+      title: 'Video 6',
+    }
+  ];
   return (
     <>
       <section className="section-blog overflow-hidden pb-[50px] max-[1199px]:pb-[35px] pt-[100px] max-[1199px]:pt-[70px]">
@@ -41,7 +69,33 @@ const BlogHome = () => {
             <div className="w-full px-[12px]">
               <div className="blog-2-slider">
                 <Slider {...settings}>
-                  <div className="px-2">
+                  {
+                    instVideo.map((data, index) => (
+                      <div className="px-2" key={index}>
+                        <div
+                          className="blog-2-card relative overflow-hidden rounded-[30px]"
+                          data-aos="fade-up"
+                          data-aos-duration={1000}
+                          data-aos-delay={200}
+                        >
+                          <div className="blog-img">
+                            <iframe
+                              src= {`https://www.youtube.com/embed/${data.videoId}?autoplay=1&mute=1&loop=1&playlist=${data.videoId}&controls=0&showinfo=0&modestbranding=1&vq=medium`}
+                              title={data.title}
+                              width="200"
+                              height="200"
+
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                              className="transition-all duration-[0.3s] ease-in-out w-full block"
+                            ></iframe>
+                          </div>
+
+                        </div>
+                      </div>
+                    ))
+                  }
+                  {/* <div className="px-2">
                     <div
                       className="blog-2-card relative overflow-hidden rounded-[30px]"
                       data-aos="fade-up"
@@ -69,94 +123,8 @@ const BlogHome = () => {
                         </h4>
                       </div>
                     </div>
-                  </div>
-                  <div className="px-2">
-                    <div
-                      className="blog-2-card relative overflow-hidden rounded-[30px]"
-                      data-aos="fade-up"
-                      data-aos-duration={1000}
-                      data-aos-delay={400}
-                    >
-                      <div className="blog-img">
-                        <img
-                          src="https://printhutt.com//media/table-name-lemp.png"
-                          alt="blog-8"
-                          className="transition-all duration-[0.3s] ease-in-out w-full block"
-                        />
-                      </div>
-                      <div className="blog-contact transition-all duration-[0.3s] ease-in-out m-[5px] p-[15px] absolute bottom-[0] right-[0] left-[0] bg-[#ffffffe6] rounded-[30px]">
-                        <span className="font-Poppins font-normal text-[13px] leading-[26px] tracking-[0.02rem] text-[#686e7d]">
-                          May 10,2023 - organic
-                        </span>
-                        <h4 className="text-[16px] leading-[1.2]">
-                          <a
-                            href="blog-detail-left-sidebar.html"
-                            className="font-Poppins tracking-[0.03rem] text-[16px] font-medium leading-[1.3] text-[#3d4750]"
-                          >
-                            Best way to solve business deal issue.
-                          </a>
-                        </h4>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="px-2">
-                    <div
-                      className="blog-2-card relative overflow-hidden rounded-[30px]"
-                      data-aos="fade-up"
-                      data-aos-duration={1000}
-                      data-aos-delay={600}
-                    >
-                      <div className="blog-img">
-                        <img
-                          src="https://printhutt.com//media/table-name-lemp.png"
-                          alt="blog-9"
-                          className="transition-all duration-[0.3s] ease-in-out w-full block"
-                        />
-                      </div>
-                      <div className="blog-contact transition-all duration-[0.3s] ease-in-out m-[5px] p-[15px] absolute bottom-[0] right-[0] left-[0] bg-[#ffffffe6] rounded-[30px]">
-                        <span className="font-Poppins font-normal text-[13px] leading-[26px] tracking-[0.02rem] text-[#686e7d]">
-                          Jan 10,2022 - organic
-                        </span>
-                        <h4 className="text-[16px] leading-[1.2]">
-                          <a
-                            href="blog-detail-left-sidebar.html"
-                            className="font-Poppins tracking-[0.03rem] text-[16px] font-medium leading-[1.3] text-[#3d4750]"
-                          >
-                            Business ideas to grow your business.
-                          </a>
-                        </h4>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="px-2">
-                    <div
-                      className="blog-2-card relative overflow-hidden rounded-[30px]"
-                      data-aos="fade-up"
-                      data-aos-duration={1000}
-                      data-aos-delay={800}
-                    >
-                      <div className="blog-img">
-                        <img
-                          src="https://printhutt.com//media/table-name-lemp.png"
-                          alt="blog-10"
-                          className="transition-all duration-[0.3s] ease-in-out w-full block"
-                        />
-                      </div>
-                      <div className="blog-contact transition-all duration-[0.3s] ease-in-out m-[5px] p-[15px] absolute bottom-[0] right-[0] left-[0] bg-[#ffffffe6] rounded-[30px]">
-                        <span className="font-Poppins font-normal text-[13px] leading-[26px] tracking-[0.02rem] text-[#686e7d]">
-                          Feb 12,2022 - organic
-                        </span>
-                        <h4 className="text-[16px] leading-[1.2]">
-                          <a
-                            href="blog-detail-left-sidebar.html"
-                            className="font-Poppins tracking-[0.03rem] text-[16px] font-medium leading-[1.3] text-[#3d4750]"
-                          >
-                            31 customer stats know in 2020.
-                          </a>
-                        </h4>
-                      </div>
-                    </div>
-                  </div>
+                  </div> */}
+
                 </Slider>
               </div>
             </div>

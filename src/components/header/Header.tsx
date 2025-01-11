@@ -34,12 +34,6 @@ export default function Header() {
   const [isMobileMenu, setMobileMenu] = useState(false);
   const toggleMenu = () => setMobileMenu((prev) => !prev);
 
-  const [isOpenCategory, setIsOpenCategory] = useState(false);
-  const toggleMenuMobileCat = () => setIsOpenCategory((prev) => !prev);
-
-  const [isOpenSubCategory, setIsOpenSubCategory] = useState(false);
-  const toggleMenuMobileSubcat = () => setIsOpenSubCategory((prev) => !prev);
-
   const { items } = useCartStore();
   const totalItem = items.length;
 
@@ -503,44 +497,11 @@ export default function Header() {
                   </Link>
                 </li>
                 <li className="relative">
-                  <span
-                    className="menu-toggle"
-                    onClick={toggleMenuMobileCat}
-                  ></span>
-                  <a className="transition-all duration-[0.3s] ease-in-out mb-[12px] p-[12px] block font-Poppins capitalize text-[#686e7d] border-[1px] border-solid border-[#eee] rounded-[10px] text-[15px] font-medium leading-[28px] tracking-[0.03rem]">
+                  <a
+                    className="transition-all duration-[0.3s] ease-in-out mb-[12px] p-[12px] block font-Poppins capitalize text-[#686e7d] border-[1px] border-solid border-[#eee] rounded-[10px] text-[15px] font-medium leading-[28px] tracking-[0.03rem]">
                     Categories
                   </a>
-                  <ul
-                    className={`sub-menu w-full min-w-[auto] p-[0] mb-[10px] static ${isOpenCategory ? "block" : "hidden"
-                      } visible opacity-[1]`}
-                  >
-                    {/* <ul className={`sub-menu w-full min-w-[auto] p-[0] mb-[10px] ${isOpen ? 'block' : 'hidden'}`}></ul> */}
-                    <li className="relative">
-                      <span
-                        className="menu-toggle"
-                        onClick={toggleMenuMobileSubcat}
-                      ></span>
-                      <a
 
-                        className="transition-all duration-[0.3s] ease-in-out mb-[0] pl-[15px] pr-[0] py-[12px] capitalize block text-[14px] font-normal text-[#686e7d]"
-                      >
-                        Classic
-                      </a>
-                      <ul
-                        className={`sub-menu w-full min-w-[auto] p-[0] mb-[10px] static ${isOpenSubCategory ? "block" : "hidden"
-                          } opacity-[1]`}
-                      >
-                        <li className="relative">
-                          <a
-                            href="shop-left-sidebar-col-3.html"
-                            className="font-Poppins leading-[28px] tracking-[0.03rem] transition-all duration-[0.3s] ease-in-out font-normal pl-[30px] text-[14px] text-[#777] mb-[0] capitalize block py-[12px]"
-                          >
-                            Left sidebar 3 column
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
                 </li>
                 <li className="relative">
                   <Link
@@ -552,23 +513,13 @@ export default function Header() {
 
                 </li>
                 <li className="relative">
-                  <span className="menu-toggle"></span>
-                  <a
-
+                  <Link
+                    href="/about-us"
                     className="transition-all duration-[0.3s] ease-in-out mb-[12px] p-[12px] block font-Poppins capitalize text-[#686e7d] border-[1px] border-solid border-[#eee] rounded-[10px] text-[15px] font-medium leading-[28px] tracking-[0.03rem]"
                   >
-                    Pages
-                  </a>
-                  <ul className="sub-menu w-full min-w-[auto] p-[0] mb-[10px] static hidden visible opacity-[1]">
-                    <li className="relative">
-                      <Link
-                        href="/about-us"
-                        className="font-Poppins leading-[28px] tracking-[0.03rem] transition-all duration-[0.3s] ease-in-out font-normal pl-[12px] text-[14px] text-[#777] mb-[0] capitalize block py-[12px]"
-                      >
-                        About Us
-                      </Link>
-                    </li>
-                  </ul>
+                    About-us
+                  </Link>
+
                 </li>
                 <li className="relative">
                   <Link

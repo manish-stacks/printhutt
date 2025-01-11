@@ -49,8 +49,13 @@ const Login = () => {
       setTimer(30);
       setIsResendEnabled(false);
 
+      if(data){
+        toast.success(`Otp send ${emailOrMobile}`);
+      }else{
+        toast.error(`Otp not send ${emailOrMobile}`);
+      }
       // console.log(data);
-      toast.success(`Otp send ${emailOrMobile}`);
+      
       setIsOtpSent(true);
     } catch (error) {
       if (error instanceof Error) {
@@ -134,8 +139,13 @@ const Login = () => {
       const { data } = await axios.post("/api/auth/login", {
         emailOrMobile,
       });
+
+      if(data){
+        toast.success(`Otp send ${emailOrMobile}`);
+      }else{
+        toast.error('Failed to send OTP');
+      }
       // console.log(data)
-      toast.success(`Otp send ${emailOrMobile}`);
     } catch (error) {
       if(error instanceof Error){
             

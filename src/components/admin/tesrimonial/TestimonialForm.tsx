@@ -1,12 +1,12 @@
 'use client';
 
-import { ISlider } from '@/lib/types';
+import { ITestimonial } from '@/lib/types';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { RiLoader2Line } from 'react-icons/ri';
 import Select from 'react-select';
 
-interface SliderFormProps {
-  formData: Partial<ISlider>;
+interface FormProps {
+  formData: Partial<ITestimonial>;
   isSubmitting: boolean;
   onSubmit: (e: FormEvent) => void;
   onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
@@ -14,19 +14,19 @@ interface SliderFormProps {
   mode: 'add' | 'edit';
 }
 
-export function SliderForm({
+export function TestimonialForm({
   formData,
   isSubmitting,
   onSubmit,
   onChange,
   onClose,
   mode
-}: SliderFormProps) {
+}: FormProps) {
   const [image, setImage] = useState<string | null>(null);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    formData.slider = file;
+    formData.image = file;
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -41,13 +41,14 @@ export function SliderForm({
     { value: 'false', label: 'Inactive' }
   ];
 
+
   return (
     <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
       <div className="relative p-4 w-full max-w-4xl max-h-full">
         <div className="px-3 relative bg-white rounded-lg shadow">
           <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
             <h3 className="text-xl font-semibold text-gray-900">
-              {mode === 'add' ? 'Add Slider' : 'Edit Slider'}
+              {mode === 'add' ? 'Add Testimonial' : 'Edit Testimonial'}
             </h3>
             <button
               type="button"
@@ -61,12 +62,12 @@ export function SliderForm({
             <form onSubmit={onSubmit} className="space-y-4" encType='multipart/form-data'>
               <div>
                 <label className="block mb-2 text-sm font-medium text-gray-900">
-                  Title
+                  User Name
                 </label>
                 <input
                   type="text"
-                  name="title"
-                  value={formData.title || ''}
+                  name="name"
+                  value={formData.name || ''}
                   onChange={onChange}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="Enter slider title"
@@ -109,53 +110,36 @@ export function SliderForm({
 
               <div>
                 <label className="block mb-2 text-sm font-medium text-gray-900">
-                  Link
+                  feedback
                 </label>
-                <input
-                  type="text"
-                  name="link"
-                  value={formData.link || ''}
+                <textarea
+                  rows={4}
+                  name="feedback"
+                  value={formData.feedback || ''}
                   onChange={onChange}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  placeholder="Enter slider link"
+                  placeholder="Enter feedback"
                 />
               </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-900">
-                    Level
-                  </label>
-                  <input
-                    type="number"
-                    name="level"
-                    value={formData.level || ''}
-                    onChange={onChange}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                    min="0"
-                  />
-                </div>
-
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-900">
-                    Status
-                  </label>
-                  <Select
-                    name="isActive"
-                    value={options.find(option => option.value === formData.isActive)}
-                    options={options}
-                    onChange={(selectedOption) => {
-                      onChange({
-                        target: {
-                          name: 'isActive',
-                          value: selectedOption?.value || ''
-                        }
-                      } );
-                    }}
-                    className="basic-single"
-                    classNamePrefix="select"
-                  />
-                </div>
+              <div>
+                <label className="block mb-2 text-sm font-medium text-gray-900">
+                  Status
+                </label>
+                <Select
+                  name="isActive"
+                  value={options.find(option => option.value === formData.isActive)}
+                  options={options}
+                  onChange={(selectedOption) => {
+                    onChange({
+                      target: {
+                        name: 'isActive',
+                        value: selectedOption?.value || ''
+                      }
+                    } );
+                  }}
+                  className="basic-single"
+                  classNamePrefix="select"
+                />
               </div>
 
               <button

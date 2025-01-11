@@ -15,7 +15,7 @@ export async function GET(request: Request) {
     const limit = limitParam === 'all' || !limitParam ? null : parseInt(limitParam);
 
 
-    let query: Record<string, any> = {};
+    const query = {};
     if (type === 'customize') {
       query.isCustomize = true;
     } else if (type === 'pre') {
@@ -35,10 +35,6 @@ export async function GET(request: Request) {
       { status: 200 }
     );
   } catch (error: unknown) {
-    console.error('Error fetching trending products:', error);
-    return NextResponse.json(
-      { error: (error as Error).message },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: (error as Error).message }, { status: 500 });
   }
 }

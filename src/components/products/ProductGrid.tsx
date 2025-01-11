@@ -29,7 +29,7 @@ export function ProductGrid({ products, viewMode }: ProductGridProps) {
                     data-aos-duration={1000}
                     data-aos-delay={200}
                 >
-                    <ProductCard product={product} viewMode={viewMode} />
+                    <ProductCard product={product}  />
                 </div>
             ))}
 

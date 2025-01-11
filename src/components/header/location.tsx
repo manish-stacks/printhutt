@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
+import { toast } from 'react-toastify';
 
 const Headerlocation = () => {
 
     const [location, setLocation] = useState({ city: '', country: '' });
-    const [error, setError] = useState('');
+    //const [error, setError] = useState('');
 
 
     useEffect(() => {
@@ -22,18 +23,16 @@ const Headerlocation = () => {
                         const city = data.address?.state || data.address?.city || data.address?.town || 'Unknown City';
                         const country = data.address?.country || 'Unknown Country';
                         setLocation({ city, country });
-                    } catch (err) {
-                        if (err instanceof Error) {
-                            setError('Unable to fetch location data');
-                        }
+                    } catch {
+                        toast.error('Unable to fetch location data');
                     }
                 },
                 () => {
-                    setError('Location permission denied');
+                    toast.error('Location permission denied');
                 }
             );
         } else {
-            setError('Geolocation is not supported by this browser');
+            toast.error('Geolocation is not supported by this browser');
         }
     }, []);
 

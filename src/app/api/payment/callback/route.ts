@@ -53,6 +53,8 @@ export async function POST(request: NextRequest) {
         order.status = 'confirmed';
 
         await order.save();
+        await sendOrderConfirmationEmail(order);
+        
         return NextResponse.redirect(`${baseUrl}/orders/confirmation?id=${merchantTransactionId}&success=true`, { status: 301, });
 
     } catch (error) {

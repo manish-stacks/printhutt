@@ -8,9 +8,14 @@ interface ITestimonials extends Document {
         fileType: string;
     };
     name: string;
+    isActive: boolean;
 }
 
 const testimonialsSchema: Schema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
     feedback: {
         type: String,
         required: true
@@ -19,11 +24,8 @@ const testimonialsSchema: Schema = new mongoose.Schema({
         url: String,
         public_id: String,
         fileType: String,
-    },
-    name: {
-        type: String,
-        required: true
-    }
+    }, isActive: { type: Boolean, default: true },
+
 }, { timestamps: true });
 
 const Testimonials = mongoose.models.Testimonials || mongoose.model<ITestimonials>('Testimonials', testimonialsSchema);

@@ -7,7 +7,7 @@ const OurServices = () => {
         <div className="flex flex-wrap justify-between relative items-center mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">
           <div className="flex flex-wrap w-full mb-[-24px]">
             <div
-              className="min-[992px]:w-[25%] min-[768px]:w-[50%] w-full px-[12px] mb-[24px]"
+              className="min-[992px]:w-[25%] min-[768px]:w-[50%] max-[480px]:w-[50%] w-full px-[12px] mb-[24px]"
               data-aos="flip-up"
               data-aos-duration={1000}
               data-aos-delay={200}
@@ -31,7 +31,7 @@ const OurServices = () => {
               </div>
             </div>
             <div
-              className="min-[992px]:w-[25%] min-[768px]:w-[50%] w-full px-[12px] mb-[24px]"
+              className="min-[992px]:w-[25%] min-[768px]:w-[50%] max-[480px]:w-[50%] w-full px-[12px] mb-[24px]"
               data-aos="flip-up"
               data-aos-duration={1000}
               data-aos-delay={400}
@@ -55,7 +55,7 @@ const OurServices = () => {
               </div>
             </div>
             <div
-              className="min-[992px]:w-[25%] min-[768px]:w-[50%] w-full px-[12px] mb-[24px]"
+              className="min-[992px]:w-[25%] min-[768px]:w-[50%] max-[480px]:w-[50%] w-full px-[12px] mb-[24px]"
               data-aos="flip-up"
               data-aos-duration={1000}
               data-aos-delay={600}
@@ -79,7 +79,7 @@ const OurServices = () => {
               </div>
             </div>
             <div
-              className="min-[992px]:w-[25%] min-[768px]:w-[50%] w-full px-[12px] mb-[24px]"
+              className="min-[992px]:w-[25%] min-[768px]:w-[50%] max-[480px]:w-[50%] w-full px-[12px] mb-[24px]"
               data-aos="flip-up"
               data-aos-duration={1000}
               data-aos-delay={800}

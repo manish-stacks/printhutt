@@ -24,7 +24,7 @@ const DayoftheDeal = () => {
                     <div className="flex flex-wrap w-full">
                         <div className="w-full px-[12px]">
                             <div
-                                className="section-title bb-deal mb-[20px] pb-[20px] z-[5] relative flex justify-between max-[991px]:pb-[0] max-[991px]:flex-col max-[991px]:justify-center max-[991px]:text-center"
+                                className="section-title bb-deal mb-[20px] pb-[20px] z-[1] relative flex justify-between max-[991px]:pb-[0] max-[991px]:flex-col max-[991px]:justify-center max-[991px]:text-center"
                                 data-aos="fade-up"
                                 data-aos-duration={1000}
                                 data-aos-delay={200}

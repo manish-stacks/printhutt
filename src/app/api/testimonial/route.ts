@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connect } from '@/dbConfig/dbConfig'
 import { getDataFromToken } from '@/helpers/getDataFromToken';
-import Slider from '@/models/sliderModel';
 import { uploadImage } from '@/lib/cloudinary';
+import Testimonials from '@/models/testimonialsModel';
 
 connect();
 
@@ -14,28 +14,27 @@ export async function GET(req: NextRequest) {
     const search = url.searchParams.get('search') || '';
 
     const query = search
-      ? { title: { $regex: search, $options: 'i' } }
+      ? { name: { $regex: search, $options: 'i' } }
       : {};
 
     const skip = (page - 1) * limit;
 
-    const [sliders, total] = await Promise.all([
-      Slider.find(query)
+    const [testimonials, total] = await Promise.all([
+      Testimonials.find(query)
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit),
-      Slider.countDocuments(query)
+        Testimonials.countDocuments(query)
     ]);
 
     return NextResponse.json({
-      sliders,
+      testimonials,
       pagination: {
         total,
         pages: Math.ceil(total / limit),
         page,
         limit
       }
-
     });
   } catch (error: unknown) {
     return NextResponse.json({ error: (error as Error).message }, { status: 500 });
@@ -50,28 +49,27 @@ export async function POST(req: NextRequest) {
     const formData = await req.formData();
     
   
-    const slider = formData.get('slider');
+    const userImage = formData.get('image');
 
-    if (!slider || !(slider instanceof File)) {
+    if (!userImage || !(userImage instanceof File)) {
       return NextResponse.json(
         { success: false, message: 'Slider is required and must be a file' },
         { status: 400 }
       );
     }
 
-    const sliderResponse = await uploadImage(slider, 'slider', 1900, 550);
+    const imageResponse = await uploadImage(userImage, 'testimonial', 280, 280);
 
-    const returnData = new Slider({
-      title: formData.get('title')?.toString() || '',
-      imageUrl: sliderResponse || '',
-      link: formData.get('link')?.toString() || '',
+    const returnData = new Testimonials({
+      name: formData.get('name')?.toString() || '',
+      image: imageResponse || '',
+      feedback: formData.get('feedback')?.toString() || '',
       isActive: formData.get('isActive')?.toString() === 'true',
-      level: formData.get('level') || '',
     });
     await returnData.save();
     return NextResponse.json({
       success: true,
-      message: 'Slider created successfully',
+      message: 'Testimonials created successfully',
       data: returnData
     }, {
       status: 201

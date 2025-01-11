@@ -4,27 +4,26 @@ import { ChangeEvent, FormEvent, useCallback, useEffect, useState } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation';
 import { FaSearch } from 'react-icons/fa';
 import { Pagination } from '@/components/admin/Pagination';
-import { SliderForm } from '@/components/admin/slider/SliderForm';
 import { toast } from 'react-toastify';
-import { getSlider, createSlider, updateSlider, deleteSlider } from '@/_services/admin/slider';
-import { ISlider } from '@/lib/types';
+import {  ITestimonial } from '@/lib/types';
 import { RiDeleteBin2Line, RiEdit2Fill, RiLoader2Line } from 'react-icons/ri';
 import Swal from 'sweetalert2';
+import { TestimonialForm } from '@/components/admin/tesrimonial/TestimonialForm';
+import { createTestimonial, deleteTestimonial, getTestimonial, updateTestimonial } from '@/_services/admin/testimonial';
 
-export default function HeroBanner() {
+export default function Testimonials() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [editingId, setEditingId] = useState<string | null>(null);
-    const [sliders, setSliders] = useState<ISlider[]>([]);
+    const [testimonials, setTestimonials] = useState<ITestimonial[]>([]);
     const [pagination, setPagination] = useState<number>();
     const [isLoading, setIsLoading] = useState(true);
 
     const [formData, setFormData] = useState({
-        title: '',
-        slider: '',
-        link: '',
+        name: '',
+        image: '',
+        feedback: '',
         isActive: '',
-        level: ''
     });
 
     const searchParams = useSearchParams();
@@ -32,22 +31,22 @@ export default function HeroBanner() {
     const page = searchParams?.get('page') || '1';
     const search = searchParams?.get('search') || '';
 
-    const fetchSlider = useCallback(async () => {
+    const fetchTestimonial = useCallback(async () => {
         try {
             setIsLoading(true);
-            const response = await getSlider(page, search);
-            setSliders(response.sliders);
+            const response = await getTestimonial(page, search);
+            setTestimonials(response.testimonials);
             setPagination(response.pagination);
         } catch {
-            toast.error('Failed to fetch sliders');
+            toast.error('Failed to fetch Testimonials');
         } finally {
             setIsLoading(false);
         }
     }, [page, search]);
 
     useEffect(() => {
-        fetchSlider();
-    }, [fetchSlider]);
+        fetchTestimonial();
+    }, [fetchTestimonial]);
 
     const handleSearch = (value: string) => {
         const params = new URLSearchParams(searchParams!);
@@ -79,12 +78,12 @@ export default function HeroBanner() {
         setIsSubmitting(true);
 
         const formDataToSend = new FormData();
-        if (formData.slider instanceof File) {
-            formDataToSend.append('slider', formData.slider);
+        if (formData.image instanceof File) {
+            formDataToSend.append('image', formData.image);
         }
 
         Object.entries(formData).forEach(([key, value]) => {
-            if (key !== 'slider') {
+            if (key !== 'image') {
                 if (typeof value === 'object') {
                     formDataToSend.append(key, JSON.stringify(value));
                 } else {
@@ -95,30 +94,29 @@ export default function HeroBanner() {
 
         try {
             if (editingId) {
-                await updateSlider(editingId, formDataToSend);
-                toast.success('Slider updated successfully');
+                await updateTestimonial(editingId, formDataToSend);
+                toast.success('Testimonial updated successfully');
             } else {
-                await createSlider(formDataToSend);
-                toast.success('Slider created successfully');
+                await createTestimonial(formDataToSend);
+                toast.success('Testimonial created successfully');
             }
-            await fetchSlider();
+            await fetchTestimonial();
             handleCloseModal();
         } catch {
-            toast.error('Failed to save slider');
+            toast.error('Failed to save Testimonial');
         } finally {
             setIsSubmitting(false);
         }
     };
 
     const handleEdit = (id: string) => {
-        const sliderToEdit = sliders.find(slider => slider._id === id);
-        if (sliderToEdit) {
+        const ToEdit = testimonials.find(testimonial => testimonial._id === id);
+        if (ToEdit) {
             setFormData({
-                title: sliderToEdit.title,
-                slider: sliderToEdit.imageUrl?.url || '',
-                link: sliderToEdit.link,
-                isActive: sliderToEdit.isActive ? 'true' : 'false',
-                level: sliderToEdit.level || ''
+                name: ToEdit.name,
+                image: ToEdit.image?.url || '',
+                feedback: ToEdit.feedback,
+                isActive: ToEdit.isActive ? 'true' : 'false',
             });
             setEditingId(id);
             setIsOpen(true);
@@ -137,13 +135,13 @@ export default function HeroBanner() {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    const response = await deleteSlider(id);
+                    const response = await deleteTestimonial(id);
 
                     if (!response.success) {
                         throw new Error('There was an issue deleting the slider.');
                     }
 
-                    setSliders(prev => prev.filter(slider => slider._id !== id));
+                    setTestimonials(prev => prev.filter(testimonial => testimonial._id !== id));
                     Swal.fire({
                         title: "Deleted!",
                         text: "Slider has been deleted.",
@@ -164,13 +162,15 @@ export default function HeroBanner() {
         setIsOpen(false);
         setEditingId(null);
         setFormData({
-            title: '',
-            slider: '',
-            link: '',
+            name: '',
+            image: '',
+            feedback: '',
             isActive: '',
-            level: ''
         });
     };
+
+
+    console.log(testimonials)
 
     return (
         <>
@@ -178,15 +178,15 @@ export default function HeroBanner() {
                 <div className="w-full md:w-12/12 lg:w-12/12 mb-5">
                     <div className="bg-white text-black flex justify-between align-middle p-6 rounded-lg shadow-md">
                         <div>
-                            <h2 className="text-2xl font-bold text-gray-900">Slider</h2>
-                            <p className="text-gray-600">Manage hero banner</p>
+                            <h2 className="text-2xl font-bold text-gray-900">Testimonial</h2>
+
                         </div>
                         <div>
                             <button
                                 className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                                 onClick={() => setIsOpen(true)}
                             >
-                                Add Slider
+                                Add Testimonial
                             </button>
                         </div>
                     </div>
@@ -215,50 +215,48 @@ export default function HeroBanner() {
                             <table className="min-w-full table-auto text-left text-sm text-gray-600">
                                 <thead>
                                     <tr className="bg-gray-100 border-b">
-                                        <th className="py-3 px-4">Title</th>
-                                        <th className="py-3 px-4">Hero Banner</th>
-                                        <th className="py-3 px-4">Banner link</th>
+                                        <th className="py-3 px-4">User Name</th>
+                                        <th className="py-3 px-4">User Image</th>
+                                        <th className="py-3 px-4">FeedBack</th>
                                         <th className="py-3 px-4">Status</th>
-                                        <th className="py-3 px-4">Level</th>
                                         <th className="py-3 px-4">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {sliders.length === 0 ? (
+                                    {testimonials.length === 0 ? (
                                         <tr>
                                             <td colSpan={6} className="py-3 px-4 text-center">No sliders found.</td>
                                         </tr>
                                     ) : (
-                                        sliders.map((slider) => (
-                                            <tr key={slider._id} className="border-b hover:bg-gray-50">
-                                                <td className="py-3 px-4">{slider.title}</td>
+                                        testimonials.map((testimonial) => (
+                                            <tr key={testimonial._id} className="border-b hover:bg-gray-50">
+                                                <td className="py-3 px-4">{testimonial.name}</td>
                                                 <td className="py-3 px-4">
-                                                    {slider.imageUrl?.url && (
+                                                    {testimonial.image && (
                                                         <img
-                                                            src={slider.imageUrl.url}
-                                                            alt={slider.title}
+                                                            src={testimonial.image.url}
+                                                            alt={testimonial.title}
                                                             className="w-20 h-20 object-cover rounded"
                                                         />
                                                     )}
                                                 </td>
-                                                <td className="py-3 px-4">{slider.link}</td>
                                                 <td className="py-3 px-4">
-                                                    <span className={`px-2 py-1 rounded-full text-xs ${slider.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                                                    <span className={`px-2 py-1 rounded-full text-xs ${testimonial.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                                                         }`}>
-                                                        {slider.isActive ? 'Active' : 'Inactive'}
+                                                        {testimonial.isActive ? 'Active' : 'Inactive'}
                                                     </span>
                                                 </td>
-                                                <td className="py-3 px-4">{slider?.level}</td>
+                                                <td className="py-3 px-4">{testimonial?.feedback}</td>
                                                 <td className="py-3 px-4">
                                                     <div className="flex space-x-2">
                                                         <button
-                                                            onClick={() => handleEdit(slider?._id)}
+                                                            onClick={() => handleEdit(testimonial?._id)}
                                                             className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600"
                                                         >
                                                             <RiEdit2Fill />
                                                         </button>
                                                         <button
-                                                            onClick={() => handleDelete(slider._id)}
+                                                            onClick={() => handleDelete(testimonial._id)}
                                                             className="bg-red-500 text-white p-2 rounded-full hover:bg-red-600"
                                                         >
                                                             <RiDeleteBin2Line />
@@ -282,7 +280,7 @@ export default function HeroBanner() {
                 </div>
 
                 {isOpen && (
-                    <SliderForm
+                    <TestimonialForm
                         formData={formData}
                         isSubmitting={isSubmitting}
                         onSubmit={handleSubmit}

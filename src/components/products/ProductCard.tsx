@@ -8,11 +8,11 @@ import { toast } from 'react-toastify';
 
 interface PopupProps {
     product: Product;
-    viewMode: 'grid' | 'list'
+    //viewMode: 'grid' | 'list'
 }
 
 
-const ProductCard = ({ product, viewMode }: PopupProps) => {
+const ProductCard = ({ product }: PopupProps) => {
 
     const addToCart = useCartStore(state => state.addToCart);
     const handleAddToCart = (product: Product) => {
@@ -88,6 +88,29 @@ const ProductCard = ({ product, viewMode }: PopupProps) => {
                         </li>
                     </ul>
                 </div>
+
+
+                {/* <div className="dealend-timer">
+                        <div className="time-block">
+                            <div className="time">323</div>
+                            <span className="day">Days</span>
+                        </div>
+                        <div className="time-block">
+                            <div className="time">12</div>
+                            <span className="dots">:</span>
+                        </div>
+                        <div className="time-block">
+                            <div className="time">53</div>
+                            <span className="dots">:</span>
+                        </div>
+                        <div className="time-block">
+                            <div className="time">22</div>
+                        </div>
+                    </div> 
+                           
+                        </div>
+                */}
+
                 <div className="bb-pro-contact p-[20px]">
                     <div className="bb-pro-subtitle mb-[8px] flex flex-wrap justify-between">
                         <Link

@@ -1,6 +1,6 @@
 import { getDataFromToken } from "@/helpers/getDataFromToken";
 import { deleteImage, uploadImage } from "@/lib/cloudinary";
-import Slider from "@/models/sliderModel";
+import Testimonials from "@/models/testimonialsModel";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -15,32 +15,32 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
     }
 
-    const slider = await Slider.findById(id);
-    if (!slider) {
-      return NextResponse.json({ success: false, message: 'Slider not found' }, { status: 404 });
+    const testimonial = await Testimonials.findById(id);
+    if (!testimonial) {
+      return NextResponse.json({ success: false, message: 'Testimonial not found' }, { status: 404 });
     }
 
     const formData = await request.formData();
-    
-    const sliderImage = formData.get('slider');
 
-    if (sliderImage instanceof File) {
-      const sliderResponse = await uploadImage(sliderImage, 'slider', 1900, 550);
-      if (sliderResponse) {
-        const cloudinaryImage = slider.imageUrl.public_id
+    const userImage = formData.get('userImage');
+
+    if (userImage instanceof File) {
+      const imageResponse = await uploadImage(userImage, 'testimonial', 280, 280);
+      if (imageResponse) {
+        const cloudinaryImage = testimonial.image.public_id
         if (cloudinaryImage) await deleteImage(cloudinaryImage);
-        slider.imageUrl = sliderResponse;
+        testimonial.image = imageResponse;
       }
     }
 
-    slider.title = formData.get('title')?.toString() || slider.title;
-    slider.link = formData.get('link')?.toString() || slider.link;
-    slider.isActive = formData.get('isActive')?.toString() || slider.isActive;
-    slider.level = formData.get('level') || slider.level;
+    testimonial.name = formData.get('name')?.toString() || testimonial.name;
+    testimonial.feedback = formData.get('feedback')?.toString() || testimonial.feedback;
+    testimonial.isActive = formData.get('isActive')?.toString() || testimonial.isActive;
 
-    await slider.save();
 
-    return NextResponse.json({ success: true, message: 'Slider updated successfully' }, { status: 200 });
+    await testimonial.save();
+
+    return NextResponse.json({ success: true, message: 'Testimonial updated successfully' }, { status: 200 });
 
   } catch (error: unknown) {
     return NextResponse.json({ error: (error as Error).message }, { status: 500 });
@@ -61,15 +61,15 @@ export async function DELETE(
     const { role } = await getDataFromToken(request)
     if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
 
-    const slider = await Slider.findById(id);
-    if (!slider) return NextResponse.json({ success: false, message: "Slider not found" }, { status: 404 });
+    const testimonial = await Testimonials.findById(id);
+    if (!testimonial) return NextResponse.json({ success: false, message: "Testimonial not found" }, { status: 404 });
 
-    const CloudinaryImage = slider.imageUrl.public_id
+    const CloudinaryImage = testimonial.image.public_id
     if (CloudinaryImage) {
       await deleteImage(CloudinaryImage);
     }
-    await slider.deleteOne();
-    return NextResponse.json({ success: true, message: 'Slider deleted successfully' }, { status: 200 });
+    await testimonial.deleteOne();
+    return NextResponse.json({ success: true, message: 'Testimonial deleted successfully' }, { status: 200 });
 
   } catch (error: unknown) {
     return NextResponse.json({ error: (error as Error).message }, { status: 500 });
