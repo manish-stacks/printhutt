@@ -34,7 +34,9 @@ export default function Header() {
   const [isMobileMenu, setMobileMenu] = useState(false);
   const toggleMenu = () => setMobileMenu((prev) => !prev);
 
-  const { items } = useCartStore();
+  // const { items } = useCartStore();
+    const items = useCartStore((state) => state.items);
+  
   const totalItem = items.length;
 
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);

@@ -4,9 +4,17 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { useCartStore } from "@/store/useCartStore";
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 
 export default function OrderConfirmation() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <OrderConfirmationContent />
+        </Suspense>
+    );
+}
+
+function OrderConfirmationContent() {
     const searchParams = useSearchParams();
     const orderId = searchParams?.get("id");
     const success = searchParams?.get("success") === "true";
@@ -16,7 +24,6 @@ export default function OrderConfirmation() {
         removeAllItems();
     }, [orderId]);
 
-    
     if (!success || !orderId) {
         return (
             <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
@@ -42,7 +49,7 @@ export default function OrderConfirmation() {
             </div>
         );
     }
-    
+
     return (
         <div className="min-h-screen bg-gray-50 py-12">
             <div className="max-w-3xl mx-auto px-4">
@@ -64,7 +71,7 @@ export default function OrderConfirmation() {
                         </p>
 
                         <p className="text-gray-600 mt-2">
-                            We'll email you an order confirmation with details and tracking info.
+                            {`We'll email you an order confirmation with details and tracking info.`}
                         </p>
                     </div>
 

@@ -9,7 +9,7 @@ export async function middleware(request: NextRequest) {
     const token = request.cookies.get('token')?.value;
     const isPublicPath = ['/login', '/admin/login'].includes(path);
 
-    if (isPublicPath && token) {
+    if (token) {
         try {
             const { payload } = await jwtVerify(token, new TextEncoder().encode(process.env.TOKEN_SECRET!));
             const redirectPath = payload.role === 'admin' ? '/admin/dashboard' : '/user/dashboard';

@@ -24,7 +24,7 @@ export function ProductGrid({ products, viewMode }: ProductGridProps) {
             {products.map((product, index) => (
                 <div
                     key={index}
-                    className={`min-[768px]:w-[33.33%] w-[50%] max-[480px]:w-full px-[12px] mb-[24px] pro-bb-content ${viewMode === 'list' ? 'width-100' : ''}`}
+                    className={`min-[768px]:w-[33.33%] w-[50%] max-[480px]:w-[50%] px-[12px] mb-[24px] pro-bb-content ${viewMode === 'list' ? 'width-100' : ''}`}
                     data-aos="fade-up"
                     data-aos-duration={1000}
                     data-aos-delay={200}

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import SingleProductSlider from "@/components/SingleProductSlider";
-import ProductSlider from "@/components/ProductSlider";
+// import ProductSlider from "@/components/ProductSlider";
 import Breadcrumb from "@/components/Breadcrumb";
 import { useCartStore } from "@/store/useCartStore";
 import { toast } from "react-toastify";
@@ -18,8 +18,10 @@ const ProductDetails = ({ product }: ProductProps) => {
   const [activeInformation, setActiveInformation] = useState(false);
   const [activeReviews, setActiveReviews] = useState(false);
   const addToCart = useCartStore(state => state.addToCart);
-  const { items } = useCartStore();
+  // const { items } = useCartStore();
   const [isCartOpen, setIsOpenCart] = useState(false);
+
+  const items = useCartStore((state) => state.items);
 
   const toggelCartSidebarClose = () => setIsOpenCart(false);
 
@@ -174,7 +176,7 @@ const ProductDetails = ({ product }: ProductProps) => {
                             <span className="font-Poppins text-[#777] text-[14px]">
                               Offers :
                             </span>{" "}
-                            {product?.offers.map((offer) => offer.offerTitle).join(', ') || 'No offers available'}
+                            {product?.offers?.map((offer) => offer.offerTitle).join(', ') || 'No offers available'}
                           </li>
                           <li className="my-[8px] font-Poppins text-[14px] font-light leading-[28px] tracking-[0.03rem] text-[#777] list-disc">
                             <span className="font-Poppins text-[#777] text-[14px]">
@@ -449,7 +451,7 @@ const ProductDetails = ({ product }: ProductProps) => {
                           <div className="bb-reviews">
 
                             {
-                              product?.reviews.length > 0 ? (
+                              product?.reviews?.length > 0 ? (
 
                                 product?.reviews.map((review, index) => (
                                   <div key={index} className="reviews-bb-box flex mb-[24px] max-[575px]:flex-col">
@@ -586,7 +588,7 @@ const ProductDetails = ({ product }: ProductProps) => {
             <div className="w-full px-[12px]">
               <div className="bb-deal-slider m-[-12px]">
                 <div className="bb-deal-block">
-                  <ProductSlider />
+                  {/* <ProductSlider /> */}
                 </div>
               </div>
             </div>

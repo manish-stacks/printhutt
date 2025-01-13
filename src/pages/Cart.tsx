@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import ProductSlider from "@/components/ProductSlider";
+// import ProductSlider from "@/components/ProductSlider";
 import Breadcrumb from "@/components/Breadcrumb";
 import { useCartStore } from "@/store/useCartStore";
 import Image from "next/image";
@@ -10,7 +10,9 @@ import { useRouter } from "next/navigation";
 const Cart = () => {
   const router = useRouter();
   const [totalPrice, setTotalPrice] = useState<number>(0);
-  const { items, updateQuantity, removeFromCart, getTotalPrice } = useCartStore();
+  const { updateQuantity, removeFromCart, getTotalPrice } = useCartStore();
+
+  const items = useCartStore((state) => state.items);
 
   const handleQuantityChange = (productId: string, newQuantity: number) => {
     if (newQuantity < 1) {
@@ -235,7 +237,7 @@ const Cart = () => {
             <div className="w-full px-[12px]">
               <div className="bb-deal-slider m-[-12px]">
                 <div className="bb-deal-block owl-carousel">
-                  <ProductSlider />
+                  {/* <ProductSlider /> */}
                 </div>
               </div>
             </div>
