@@ -135,7 +135,7 @@ const CategoryHome = () => {
                                 <div className="category-sub-contact">
                                   <h5 className="mb-[2px] text-[16px] font-quicksand text-[#3d4750] font-semibold tracking-[0.03rem] leading-[1.2]">
                                     <a
-                                      href={`/${category.slug}`}
+                                      href={`/category/${category.slug}`}
                                       className="font-Poppins text-[16px] font-medium leading-[1.2] tracking-[0.03rem] text-[#3d4750] capitalize"
                                     >
                                       {category.name}

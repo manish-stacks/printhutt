@@ -31,7 +31,7 @@ export const get_product_by_id = async (id: string): Promise<Product> => {
 
 
 export const get_product_by_category_id = async (id: string) => {
-  return axiosInstance.get(`/product/by_category/${id}`);
+  return axiosInstance.get(`/product/by_category?id=${id}&limit=6`);
 }
 
 export const update_product_status = async (categoryId: string, newStatus: boolean) => {

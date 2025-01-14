@@ -5,7 +5,8 @@ import type { mallerType } from '@/lib/types';
 import { formatCurrency } from '../../helpers/helpers';
 import { getCustomerEmailTemplate } from './templates/customer';
 import { getOwnerEmailTemplate } from './templates/owner';
-
+import dotenv from "dotenv"
+dotenv.config()
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,

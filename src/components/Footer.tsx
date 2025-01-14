@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import {
   FaCartPlus,
   FaFacebookF,
@@ -15,9 +15,22 @@ import {
 
 import BackToTop from "./BackToTop";
 import Image from "next/image";
+import QuickView from "./QuickView";
+import useQuickStore from "@/store/useQuickStore";
+
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+
+  const isQuickViewOpen = useQuickStore(state => state.isOpen);
+  const product = useQuickStore(state => state.product);
+  console.log(product)
+
+  const handleQuickViewClose = () => {
+    useQuickStore.setState({ isOpen: false });
+  };
+
+
   return (
     <>
       {/* footer */}
@@ -379,7 +392,7 @@ const Footer = () => {
       <div className="fixed z-50 w-full h-16 max-w-lg -translate-x-1/2 bg-white border border-gray-200 rounded-full bottom-4 left-1/2 dark:bg-gray-700 dark:border-gray-600 block lg:hidden md:hidden">
         <div className="grid h-full max-w-lg grid-cols-5 mx-auto">
           <Link
-            href="/cart"  
+            href="/cart"
             className="inline-flex flex-col items-center justify-center px-5 rounded-s-full hover:bg-gray-50 dark:hover:bg-gray-800 group"
           >
             <FaCartPlus className="text-gray-600 text-xl" />
@@ -417,7 +430,19 @@ const Footer = () => {
 
         </div>
       </div>
-     
+
+      
+
+
+
+
+      {isQuickViewOpen && (
+        <QuickView
+          product={product}
+          onClose={handleQuickViewClose}
+        />
+      )}
+
       <BackToTop />
     </>
   )

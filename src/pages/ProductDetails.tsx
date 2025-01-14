@@ -8,11 +8,13 @@ import { toast } from "react-toastify";
 import CartSidebar from "@/components/CartSidebar";
 import type { Product } from "@/lib/types/product";
 import { formatCurrency } from "@/helpers/helpers";
+import ProductSlider from "@/components/ProductSlider";
 
 interface ProductProps {
   product: Product | null;
+  relatedProduct: Product[];
 }
-const ProductDetails = ({ product }: ProductProps) => {
+const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
 
   const [activeDetails, setActiveDetails] = useState(true);
   const [activeInformation, setActiveInformation] = useState(false);
@@ -25,25 +27,26 @@ const ProductDetails = ({ product }: ProductProps) => {
 
   const toggelCartSidebarClose = () => setIsOpenCart(false);
 
+  const [quantity, setQuantity] = useState(1);
+
   const handleAddToCart = () => {
-    if (!product || product?.quantity <= 0) {
+    if (!product || quantity <= 0) {
       toast.error('Please select quantity');
       return;
     }
-    addToCart(product);
+    addToCart(product, quantity);
     setIsOpenCart(true);
-    toast('Added to cart');
+    //toast('Added to cart');
   }
 
   // console.log(product)
 
   const item = items.find(item => item._id === product?._id) || { _id: '', quantity: 0 };
 
-  const quantity = item.quantity || 1;
-
-
-  const handleQuantityChange = () => {
-    toast.info('Updated quantity');
+  const handleQuantityChange = (change: number) => {
+    const newQuantity = Math.max(1, quantity + change);
+    setQuantity(newQuantity);
+    //toast.info('Updated quantity');
   };
 
   const viwCart = () => {
@@ -111,10 +114,10 @@ const ProductDetails = ({ product }: ProductProps) => {
 
                               <span className="text-[#3d4750] text-[20px]">
                                 -{product?.discountType && product?.discountPrice !== undefined
-                                ? product.discountType === 'percentage'
-                                ? `${product?.discountPrice}%`
-                                : `${product?.discountPrice.toFixed(2)}₹`
-                                : "N/A"}
+                                  ? product.discountType === 'percentage'
+                                    ? `${product?.discountPrice}%`
+                                    : `${product?.discountPrice.toFixed(2)}₹`
+                                  : "N/A"}
                               </span>
                             </h5>
                           </div>
@@ -217,7 +220,7 @@ const ProductDetails = ({ product }: ProductProps) => {
 
                       <div className="bb-single-qty flex flex-wrap m-[-2px]">
                         <div className="qty-plus-minus m-[2px] w-[85px] h-[40px] py-[7px] border-[1px] border-solid border-[#eee] overflow-hidden relative flex items-center justify-between bg-[#fff] rounded-[10px]">
-                          <div className="dec bb-qtybtn" onClick={() => handleQuantityChange()} >-</div>
+                          <div className="dec bb-qtybtn" onClick={() => handleQuantityChange(-1)}>-</div>
                           <input
                             className="qty-input text-[#777] float-left text-[14px] h-auto m-[0] p-[0] text-center w-[32px] outline-[0] font-normal leading-[35px] rounded-[10px]"
                             type="text"
@@ -226,7 +229,7 @@ const ProductDetails = ({ product }: ProductProps) => {
                             min="1"
                             readOnly
                           />
-                          <div className="inc bb-qtybtn" onClick={() => handleQuantityChange()}>+</div>
+                          <div className="inc bb-qtybtn" onClick={() => handleQuantityChange(1)}>+</div>
                         </div>
                         <div className="buttons m-[2px]">
                           {
@@ -588,7 +591,7 @@ const ProductDetails = ({ product }: ProductProps) => {
             <div className="w-full px-[12px]">
               <div className="bb-deal-slider m-[-12px]">
                 <div className="bb-deal-block">
-                  {/* <ProductSlider /> */}
+                  <ProductSlider products={relatedProduct} />
                 </div>
               </div>
             </div>
