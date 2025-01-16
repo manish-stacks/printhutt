@@ -2,8 +2,10 @@ import { formatCurrency } from '@/helpers/helpers';
 import { Product } from '@/lib/types/product';
 import { useCartStore } from '@/store/useCartStore';
 import useQuickStore from '@/store/useQuickStore';
+import { useUserStore } from '@/store/useUserStore';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React from 'react'
 import { toast } from 'react-toastify';
 
@@ -16,7 +18,8 @@ interface PopupProps {
 const ProductCard = ({ product }: PopupProps) => {
 
     const addToCart = useCartStore(state => state.addToCart);
-
+    const isLoggedIn = useUserStore((state) => state.isLoggedIn);
+    const router = useRouter();
     const handleAddToCart = (product: Product) => {
         addToCart(product, 1);
         toast('Added to cart');
@@ -26,6 +29,14 @@ const ProductCard = ({ product }: PopupProps) => {
 
     const quickViewModel = () => {
         openQuickView(product);
+    }
+
+
+    const handleAddToWishlist = (product: Product) => {
+        if (!isLoggedIn)  return router.push('/login');
+           
+
+        toast('Added to wishlist');
     }
     return (
         <>
@@ -58,17 +69,17 @@ const ProductCard = ({ product }: PopupProps) => {
                     </Link>
                     <ul className="bb-pro-actions transition-all duration-[0.3s] ease-in-out my-[0] mx-[auto] absolute z-[9] left-[0] right-[0] bottom-[0] flex flex-row items-center justify-center opacity-[0]">
                         <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
-                            <a
-
+                            <button
+                                onClick={ () => handleAddToWishlist(product)}
                                 title="Wishlist"
                                 className="w-[35px] h-[35px] flex items-center justify-center"
                             >
                                 <i className="ri-heart-line transition-all duration-[0.3s] ease-in-out text-[18px] text-[#777] leading-[10px]" />
-                            </a>
+                            </button>
                         </li>
                         <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                             <button
-                                onClick={() => quickViewModel(product)}
+                                onClick={ quickViewModel}
                                 title="Quick View"
                                 className="bb-modal-toggle w-[35px] h-[35px] flex items-center justify-center"
                             >
@@ -76,13 +87,13 @@ const ProductCard = ({ product }: PopupProps) => {
                             </button>
                         </li>
                         <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
-                            <a
-                                href="compare.html"
+                            <Link
+                                href={"/compare"}
                                 title="Compare"
                                 className="w-[35px] h-[35px] flex items-center justify-center"
                             >
                                 <i className="ri-repeat-line transition-all duration-[0.3s] ease-in-out text-[18px] text-[#777] leading-[10px]" />
-                            </a>
+                            </Link>
                         </li>
                         <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                             <button

@@ -173,7 +173,7 @@ const CategoriesEdit = () => {
             if (res.success) {
                 toast.success(res?.message);
                 setTimeout(() => {
-                    router.push('/admin/sub-categories')
+                   return router.push('/admin/sub-categories')
                 }, 1000);
                 setIsSubmitting(false);
             } else {

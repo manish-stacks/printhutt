@@ -10,6 +10,11 @@ export async function get_all_orders_of_user(page: string, search: string, statu
   return axiosInstance.get(`/order?status=${status}&page=${page}&search=${search}&limit=10`);
 }
 
+
+export async function get_order_by_id(id: string) {
+  return axiosInstance.get(`/order/${id}`);
+}
+
 interface IOrderDetails {
   _id: string;
   payAmt: number;

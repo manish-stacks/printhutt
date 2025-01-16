@@ -102,11 +102,11 @@ const Login = () => {
       fetchUserDetails();
       if (data.role === 'user') {
         setSuccess(data.message);
-        router.push('/user/dashboard');
         toast.success(data.message);
+        return router.push('/user/dashboard');
       } else {
         toast.error('Unauthorized access');
-        router.push('/login');
+        return router.push('/login');
       }
 
     } catch (err) {

@@ -36,7 +36,7 @@ export default async function OrderDetailsPage({
 }: {
     params: { id: string };
 }) {
-    const {id} = await params;
+    const { id } = await params;
     const order = await Order.findById(id)
         .lean();
 
@@ -70,7 +70,7 @@ export default async function OrderDetailsPage({
 
                 <div className="grid gap-8 md:grid-cols-2 border border-gray-200 rounded-lg shadow-lg">
                     <div className="space-y-8 ">
-                        
+
 
                         {/* Order Status */}
                         <div className="p-6">
@@ -86,9 +86,9 @@ export default async function OrderDetailsPage({
                         <div className="p-6">
                             <h2 className="text-xl font-semibold mb-4">Order Items</h2>
                             <div className="space-y-4">
-                                {order.items.map((item) => (
+                                {order.items.map((item, index) => (
                                     <div
-                                        key={item._id}
+                                        key={index}
                                         className="flex items-center justify-between py-4 border-b last:border-0"
                                     >
                                         <div className="flex-1">
@@ -178,97 +178,6 @@ export default async function OrderDetailsPage({
                 </div>
             </div>
         </div>
-
-        /*
-        <div className="bg-white p-10 border max-w-screen-md mx-auto shadow-lg">
-           
-            <div className="border-b pb-6 mb-6">
-                <div className="flex justify-between items-center">
-                    <div>
-                        <h1 className="text-4xl font-bold uppercase">Invoice</h1>
-                        <p className="text-sm text-gray-500">Invoice No: #{order.orderId}</p>
-                    </div>
-                    <div>
-                        <p className="text-sm">Date: {formatDate(order.createdAt)}</p>
-                    </div>
-                </div>
-            </div>
-
-       
-            <div className="grid grid-cols-2 gap-6 mb-8">
-                <div>
-                    <h2 className="text-lg font-semibold">Billed To:</h2>
-                    <p>Manish</p>
-                    <p>{order.shipping.addressLine}</p>
-                    <p>{order.shipping.city}, {order.shipping.state} {order.shipping.postCode}</p>
-                    <p>{order.shipping.mobileNumber}</p>
-                </div>
-                <div>
-                    <h2 className="text-lg font-semibold">Shipped To:</h2>
-                    <p>Manish</p>
-                    <p>{order.shipping.addressLine}</p>
-                    <p>{order.shipping.city}, {order.shipping.state} {order.shipping.postCode}</p>
-                    <p>{order.shipping.mobileNumber}</p>
-                </div>
-            </div>
-
-          
-            <div className="mb-8">
-                <h2 className="text-lg font-semibold mb-4">Order Details</h2>
-                <table className="w-full border-collapse border text-sm">
-                    <thead>
-                        <tr className="bg-gray-200">
-                            <th className="border p-2 text-left">#</th>
-                            <th className="border p-2 text-left">Item Name</th>
-                            <th className="border p-2 text-right">Quantity</th>
-                            <th className="border p-2 text-right">Price</th>
-                            <th className="border p-2 text-right">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {order.items.map((item: any, index: number) => (
-                            <tr key={item._id} className="hover:bg-gray-50">
-                                <td className="border p-2">{index + 1}</td>
-                                <td className="border p-2">{item.name}</td>
-                                <td className="border p-2 text-right">{item.quantity}</td>
-                                <td className="border p-2 text-right">{formatCurrency(item.price)}</td>
-                                <td className="border p-2 text-right">
-                                    {formatCurrency(item.price * item.quantity)}
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-
-            
-            <div className="mb-8">
-                <h2 className="text-lg font-semibold mb-4">Payment Summary</h2>
-                <div className="flex justify-between items-center mb-2">
-                    <span>Subtotal:</span>
-                    <span>{formatCurrency(22)}</span>
-                </div>
-                <div className="flex justify-between items-center mb-2">
-                    <span>Tax:</span>
-                    <span>{formatCurrency(22)}</span>
-                </div>
-                <div className="flex justify-between items-center mb-2">
-                    <span>Discount:</span>
-                    <span>- {formatCurrency(10)}</span>
-                </div>
-                <div className="flex justify-between items-center border-t pt-2 font-semibold">
-                    <span>Total Amount:</span>
-                    <span>{formatCurrency(order.totalAmount)}</span>
-                </div>
-            </div>
-
-            
-            <div className="text-center text-xs text-gray-500 border-t pt-4">
-                <p>Thank you for your business!</p>
-                <p>Invoice generated on {formatDate(new Date())}.</p>
-            </div>
-        </div>
-        */
 
     );
 }

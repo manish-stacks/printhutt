@@ -20,16 +20,17 @@ import { productService } from "@/_services/common/productService";
 import HeaderCategoryList from "./category-list";
 import CartSidebar from "../CartSidebar";
 import CategoryPopup from "../CategoryPopup";
-import Headerlocation from "./location";
+// import Headerlocation from "./location";
 import SearchBar from "./SearchBar";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
-  const toggelCategory = () => setIsOpen((prev) => !prev);
+  const toggleCategory = () => setIsOpen((prev) => !prev);
   const toggleClose = () => setIsOpen(false);
   const [isCartOpen, setIsOpenCart] = useState(false);
-  const toggelCartSidebar = () => setIsOpenCart((prev) => !prev);
-  const toggelCartSidebarClose = () => setIsOpenCart(false);
+  const toggleCartSidebar = () => setIsOpenCart((prev) => !prev);
+  const toggleCartSidebarClose  = () => setIsOpenCart(false);
+  
   const [isMobileMenu, setMobileMenu] = useState(false);
   const toggleMenu = () => setMobileMenu((prev) => !prev);
   const items = useCartStore((state) => state.items);
@@ -141,7 +142,7 @@ export default function Header() {
                     </div>
                     {/* Header Logo End */}
                     <a
-                      onClick={toggelCategory}
+                      onClick={toggleCategory}
                       className="bb-sidebar-toggle bb-category-toggle hidden max-[991px]:flex max-[991px]:items-center max-[991px]:ml-[20px] max-[991px]:border-[1px] max-[991px]:border-solid max-[991px]:border-[#eee] max-[991px]:w-[40px] max-[991px]:h-[40px] max-[991px]:rounded-[15px] justify-center transition-all duration-[0.3s] ease-in-out font-Poppins text-[15px] text-[#686e7d] font-light leading-[28px] tracking-[0.03rem]"
                     >
                       <svg
@@ -244,7 +245,7 @@ export default function Header() {
                           </div>
                         </Link>
                         <a
-                          onClick={toggelCartSidebar}
+                          onClick={toggleCartSidebar}
                           className="bb-header-btn bb-cart-toggle transition-all duration-[0.3s] ease-in-out relative flex w-[auto] items-center ml-[30px] max-[1199px]:ml-[20px] cursor-pointer"
                           title="Cart"
                         >
@@ -294,7 +295,7 @@ export default function Header() {
               <div className="w-full px-[12px]">
                 <div className="bb-inner-menu-desk flex max-[1199px]:relative max-[991px]:justify-between">
                   <a
-                    onClick={toggelCategory}
+                    onClick={toggleCategory}
                     className="bb-header-btn bb-sidebar-toggle bb-category-toggle transition-all duration-[0.3s] ease-in-out h-[45px] w-[45px] mr-[30px] p-[8px] flex items-center justify-center bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px] relative max-[767px]:m-[0] max-[575px]:hidden"
                   >
                     <svg
@@ -401,7 +402,7 @@ export default function Header() {
                     </ul>
                   </div>
 
-                  <div className="bb-dropdown-menu flex max-[991px]:hidden">
+                  {/* <div className="bb-dropdown-menu flex max-[991px]:hidden">
                     <div className="inner-select w-[180px] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px] flex items-center">
                       <svg
                         className="svg-icon m-[10px] w-[25px] h-[25px] align-middle"
@@ -424,7 +425,7 @@ export default function Header() {
                         <Headerlocation />
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
@@ -536,7 +537,7 @@ export default function Header() {
           <CategoryPopup onClose={toggleClose} category={categoriesData} products={productData} />
         </Suspense>
       )}
-      {isCartOpen && <CartSidebar onClose={toggelCartSidebarClose} />}
+      {isCartOpen && <CartSidebar onClose={toggleCartSidebarClose } />}
     </>
   );
 };

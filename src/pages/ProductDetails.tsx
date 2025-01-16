@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SingleProductSlider from "@/components/SingleProductSlider";
 // import ProductSlider from "@/components/ProductSlider";
 import Breadcrumb from "@/components/Breadcrumb";
@@ -9,6 +9,7 @@ import CartSidebar from "@/components/CartSidebar";
 import type { Product } from "@/lib/types/product";
 import { formatCurrency } from "@/helpers/helpers";
 import ProductSlider from "@/components/ProductSlider";
+import useQuickStore from "@/store/useQuickStore";
 
 interface ProductProps {
   product: Product | null;
@@ -53,7 +54,9 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
     setIsOpenCart(true);
   }
 
-
+  useEffect(()=>{
+    useQuickStore.setState({ isOpen: false });
+  })
 
   return (
     <>
@@ -228,6 +231,7 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                             value={quantity}
                             min="1"
                             readOnly
+                            onChange={(e) => setQuantity(Number(e.target.value))}
                           />
                           <div className="inc bb-qtybtn" onClick={() => handleQuantityChange(1)}>+</div>
                         </div>

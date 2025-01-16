@@ -28,8 +28,8 @@ export function UserMenu() {
         try {
             await axios.get("/api/auth/logout");
             toast("logout successfully");
-            router.push("/login");
-            return;
+            return router.push("/login");
+      
         } catch {
             toast.error("Whoops Server error");
         }
@@ -45,14 +45,14 @@ export function UserMenu() {
                 <div className="rounded-full bg-gray-200 p-1">
                     <FaUser className="h-5 w-5" />
                 </div>
-                <span className="hidden sm:inline">John Doe</span>
+                <span className="hidden sm:inline">PrintHutt</span>
             </button>
 
             {isOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 z-50">
                     <div className="px-4 py-2 border-b">
-                        <p className="font-medium">John Doe</p>
-                        <p className="text-sm text-gray-500">john@example.com</p>
+                        <p className="font-medium">PrintHutt</p>
+                        {/* <p className="text-sm text-gray-500">john@example.com</p> */}
                     </div>
 
                     <a

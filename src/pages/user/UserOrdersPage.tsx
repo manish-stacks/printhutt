@@ -8,7 +8,7 @@ import { Pagination } from "@/components/admin/Pagination";
 import { RiLoader2Line } from "react-icons/ri";
 import { IOrder } from "@/lib/types/order";
 import { get_all_orders_of_user } from "@/_services/common/order";
-import { FaSearch } from "react-icons/fa";
+import { FaDownload, FaEye, FaSearch } from "react-icons/fa";
 import Link from "next/link";
 
 const UserOrdersPage = () => {
@@ -102,7 +102,7 @@ const UserOrdersPage = () => {
                           <th className="py-3 px-4">Amount</th>
                           <th className="py-3 px-4">Items</th>
                           <th className="py-3 px-4">Status</th>
-                          <th className="py-3 px-4">Actions</th>
+                          <th className="py-3 px-4 text-center">Actions</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -119,12 +119,28 @@ const UserOrdersPage = () => {
                               <td className="py-3 px-4">{order.totalquantity}</td>
                               <td className="py-3 px-4">{order.status}</td>
                               <td className="py-3 px-4">
-                                <Link
-                                  href={`/orders/${order._id}`}
-                                  className="text-blue-500 hover:underline"
-                                >
-                                  View Details
-                                </Link>
+                                <div className="flex justify-center space-x-2">
+                                  <Link
+                                    href={`/orders/${order._id}`}
+                                    className="text-blue-700 px-2 py-2 bg-blue-300 rounded-full"
+                                  >
+                                    <FaEye />
+                                  </Link>
+                                  <Link
+                                    target="_blank"
+                                    href={`/orders/${order._id}/billing`}
+                                    className="text-rose-700 px-2 py-2 bg-rose-300 rounded-full"
+                                  >
+                                    <FaDownload />
+                                  </Link>
+                                  <Link
+                                    href={`/user/order-track/${order.shipment.trackingId}`}
+                                    className="text-blue-700 underline"
+                                  >
+                                    Track
+                                  </Link>
+
+                                </div>
                               </td>
                             </tr>
                           ))

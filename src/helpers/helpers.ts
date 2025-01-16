@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export function isEmail(input: string): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(input);
@@ -21,10 +23,19 @@ export function formatCurrency(amount: number): string {
 
 export function formatDate(date: string | Date): string {
     return new Intl.DateTimeFormat('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
     }).format(new Date(date));
-  }
+}
+
+
+export async function shiprocketAuth() {
+    const authResponse = await axios.post(`https://apiv2.shiprocket.in/v1/external/auth/login`, {
+        email: process.env.SHIPROCKET_EMAIL,
+        password: process.env.SHIPROCKET_PASSWORD,
+    });
+    return authResponse.data.token;
+}

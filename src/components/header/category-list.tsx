@@ -37,7 +37,7 @@ const HeaderCategoryList = ({ categories }: CategoryProps) => {
                                             return (
                                                 <li key={subIndex} className="flex items-center leading-[28px]">
                                                     <Link
-                                                        href={`/category/${subCategory.slug}`}
+                                                        href={`/category/${category.slug}/${subCategory.slug}`}
                                                         className="transition-all duration-[0.3s] ease-in-out font-Poppins py-[10px] leading-[22px] text-[14px] font-normal tracking-[0.03rem] text-[#686e7d] hover:text-[#6c7fd8] capitalize"
                                                     >
                                                         {subCategory.name}

@@ -7,6 +7,7 @@ interface PriceFilterProps {
 }
 
 export function PriceFilter({ range, value, onChange }: PriceFilterProps) {
+  // console.log(range)
   return (
     <div className="bb-sidebar-block p-[20px] border-b-[1px] border-solid border-[#eee]">
       <h3 className="font-quicksand text-[18px] tracking-[0.03rem] leading-[1.2] font-bold text-[#3d4750] mb-4">
@@ -38,7 +39,7 @@ export function PriceFilter({ range, value, onChange }: PriceFilterProps) {
           max={range.max}
           value={value[1]}
           onChange={(e) => onChange([value[0], Number(e.target.value)])}
-          className="w-full"
+          className="w-full hidden"
         />
       </div>
     </div>

@@ -5,10 +5,8 @@ interface ProductHeaderProps {
     viewMode: "grid" | "list"
     onViewModeChange: (mode: "grid" | "list") => void
     totalProducts: number
+    onFilterChange: (filters: Partial<FilterState>) => void
 }
-
-
-
 
 interface Option {
     value: string;
@@ -16,8 +14,8 @@ interface Option {
 }
 
 const options: Option[] = [
-    { value: 'featured', label: 'Featured' },
     { value: 'newest', label: 'Newest' },
+    { value: 'featured', label: 'Featured' },
     { value: 'price-asc', label: 'Price: Low to High' },
     { value: 'price-desc', label: 'Price: High to Low' }
 ];
@@ -62,8 +60,14 @@ const customStyles: StylesConfig<Option, false> = {
         fontSize: '14px',
     }),
 };
+ 
+export function ProductHeader({ viewMode, onViewModeChange, onFilterChange }: ProductHeaderProps) {
+    const handleSortChange = (selectedOption: Option | null) => {
+        if (selectedOption) {
+            onFilterChange({ sort: selectedOption.value });
+        }
+    };
 
-export function ProductHeader({ viewMode, onViewModeChange }: ProductHeaderProps) {
     return (
         <>
             <div className="w-full px-[12px]">
@@ -101,7 +105,7 @@ export function ProductHeader({ viewMode, onViewModeChange }: ProductHeaderProps
                                         options={options}
                                         styles={customStyles}
                                         placeholder="Choose an option"
-                                    // onChange={handleChange}
+                                        onChange={handleSortChange}
                                     />
                                 </div>
                             </div>

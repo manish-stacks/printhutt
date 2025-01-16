@@ -1,6 +1,6 @@
 "use client";
 
-import { notFound, useParams, useRouter } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import Link from "next/link";
 import { BiCheckCircle } from "react-icons/bi";
 import { formatCurrency } from "@/helpers/helpers";
@@ -10,9 +10,10 @@ import { IOrder } from "@/lib/types/order";
 import { toast } from "react-toastify";
 import { useCartStore } from "@/store/useCartStore";
 
+
 export default function OrderConfirmationPage() {
   const params = useParams();
-  const router = useRouter();
+  // const router = useRouter();
   const [order, setOrder] = useState<IOrder | null>(null);
   const [loading, setLoading] = useState(true);
   const { removeAllItems } = useCartStore();
@@ -26,7 +27,7 @@ export default function OrderConfirmationPage() {
         setOrder(orderData);
       } catch (error) {
         console.error("Error fetching order details:", error);
-        router.push("/404");
+        notFound()
       } finally {
         setLoading(false);
       }

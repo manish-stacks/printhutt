@@ -31,8 +31,8 @@ const Cart = () => {
 
 
   const gotoCheckout = () => {
-    router.push('/checkout');
-    return;
+    return router.push('/checkout');
+    
   }
 
 

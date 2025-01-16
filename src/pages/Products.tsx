@@ -11,6 +11,7 @@ import ProductGrid from "@/components/products/ProductGrid";
 import type { Product } from "@/lib/types/product";
 import { Pagination } from "@/components/admin/Pagination";
 import { productService } from "@/_services/common/productService";
+import { categoryService } from "@/_services/common/categoryService";
 
 function Products() {
 
@@ -21,14 +22,16 @@ function Products() {
   const router = useRouter();
   const [filters, setFilters] = useState<FilterState>({
     categories: [],
-    priceRange: [0, 1000],
+    priceRange: [0, 10000],
     rating: null,
-    tags: []
+    tags: [],
+    sort: 'newest'
   })
 
   const searchParams = useSearchParams();
   const page = searchParams?.get('page') || '1';
   const search = searchParams?.get('search') || '';
+  const [categoriesData, setCategoriesData] = useState([]);
 
 
   const fetchProducts = async () => {
@@ -40,15 +43,16 @@ function Products() {
         minPrice: String(filters.priceRange[0]),
         maxPrice: String(filters.priceRange[1]),
         ...(filters.rating && { rating: String(filters.rating) }),
-        tags: filters.tags.join(',')
-      })
+        tags: filters.tags.join(','),
+        sort: filters.sort
+      });
       const data = await productService.getAll(queryParams);
-      console.log(data);
-      // const response = await fetch(`/api/v1/products?${queryParams}`)
-      // const data = await response.json()
+      const categories = await categoryService.getAll('all');
+      setCategoriesData(categories?.categories);
 
-      setProducts(data.products)
+      setProducts(data.products);
       setPagination(data.pagination);
+  
     } catch (error) {
       if (error instanceof Error) {
 
@@ -63,21 +67,20 @@ function Products() {
     fetchProducts()
   }, [page, search, filters])
 
-
-
-
   const handlePageChange = (newPage: number) => {
     const params = new URLSearchParams(searchParams!);
     params.set('page', newPage.toString());
     router.push(`?${params.toString()}`);
-    return params;
   };
 
-  // if (loading) {
-  //   return (
-  //     <LoadingSpinner />
-  //   );
-  // }
+  const handleFilterChange = (newFilters: Partial<FilterState>) => {
+    // console.log(newFilters)
+    setFilters(prev => ({ ...prev, ...newFilters }));
+    const params = new URLSearchParams(searchParams!);
+    params.set('page', '1'); // Reset to first page on filter change
+    router.push(`?${params.toString()}`);
+  };
+
   const skeletonItems = Array(6).fill(null);
 
   return (
@@ -169,7 +172,8 @@ function Products() {
                   <ProductSidebar
                     products={products}
                     filters={filters}
-                    onFilterChange={(newFilters) => setFilters(prev => ({ ...prev, ...newFilters }))}
+                    categoriesData={categoriesData}
+                    onFilterChange={handleFilterChange}
                   />
 
                 </div>
@@ -181,6 +185,7 @@ function Products() {
                         viewMode={viewMode}
                         onViewModeChange={setViewMode}
                         totalProducts={products.length}
+                        onFilterChange={handleFilterChange}
                       />
                       <ProductGrid products={products} viewMode={viewMode} />
                       {/* <ProductsPagination /> */}

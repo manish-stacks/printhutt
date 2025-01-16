@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
 
     const userData = (await User.findById(tokenData.id))
 
-    if (!userData.email) {
+    if (!userData?.email) {
       return NextResponse.json(
         { message: "Email address is required to send order confirmation." },
         { status: 401 }
@@ -108,11 +108,13 @@ export async function POST(request: NextRequest) {
       },
       offerId: null,
       shipping: {
+        userName: addressData.fullName,
         addressLine: addressData.addressLine,
         city: addressData.city,
         state: addressData.state,
         postCode: addressData.postCode,
         mobileNumber: addressData.mobileNumber,
+        email: userData.email
       },
       coupon: {
         code: body.couponCode,

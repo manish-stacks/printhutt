@@ -27,6 +27,7 @@ export type FilterState = {
     priceRange: [number, number]
     rating: number | null
     tags: string[]
+    sort: string
 }
 
 
@@ -88,4 +89,25 @@ export interface ITestimonial extends Document {
     }
     feedback: string;
     isActive: boolean;
+}
+
+
+export interface OrderDetails {
+	orderId: string;
+	customerName: string;
+	status: string;
+	items: { name: string; quantity: number; price: number }[];
+	totalAmount: number;
+    shipping: {
+        userName:string;
+        addressLine: string,
+        city: string,
+        state: string,
+        postCode: string,
+        mobileNumber: string,
+        email: string
+    };
+    shipment:{
+        trackingId:string;
+    }
 }

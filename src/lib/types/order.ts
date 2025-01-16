@@ -8,10 +8,11 @@ export interface IOrder extends Document {
         name: string;
         quantity: number;
         price: number;
+        sku:string
     }[];
     totalAmount: number;
     payAmt: number;
-    paymentType:string;
+    paymentType: string;
     payment: {
         method: string;
         transactionId?: string;
@@ -21,16 +22,27 @@ export interface IOrder extends Document {
     offerId: mongoose.Types.ObjectId;
     userId: mongoose.Types.ObjectId;
     shipping: {
+        userName:string;
         addressLine: string;
         city: string;
         state: string;
         postCode: string;
         mobileNumber: string;
+        email: string;
     };
+    shipment: {
+        provider: string;
+        trackingId: string;
+        order_id: string;
+        height: string;
+        width: string;
+        length: string;
+        weight: string;
+    },
     coupon: {
         code: string;
         discountAmount: number;
-        discountType:string;
+        discountType: string;
         isApplied: boolean;
     };
     totalquantity: number;

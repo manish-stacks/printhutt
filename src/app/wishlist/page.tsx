@@ -1,4 +1,5 @@
 import Wishlist from "@/pages/Wishlist"
+import { notFound } from "next/navigation"
 
 
 export const metadata = {
@@ -6,8 +7,10 @@ export const metadata = {
   description: 'wishlist-page',
 }
 const wishlistPage = () => {
-  
-  return <Wishlist />
+  return (
+    notFound()
+  )
+  //return <Wishlist />
 }
 
 export default wishlistPage

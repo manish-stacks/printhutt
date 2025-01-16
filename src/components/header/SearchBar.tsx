@@ -4,39 +4,11 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
 const SearchBar = () => {
-    // const [options, setOptions] = useState([]);
     const [searchInput, setSearchInput] = useState('');
-    // const [filteredOptions, setFilteredOptions] = useState([]);
     const [suggestions, setSuggestions] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
-    // useEffect(() => {
-    //     const formattedOptions = categoriesData.map((category) => ({
-    //         value: category.slug,
-    //         label: category.name,
-    //     }));
-    //     setOptions(formattedOptions);
-    // }, [categoriesData]);
-
-    // useEffect(() => {
-    //     if (searchInput) {
-    //         const filtered = options.filter((option) =>
-    //             option.label.toLowerCase().includes(searchInput.toLowerCase())
-    //         );
-    //         setFilteredOptions(filtered);
-    //     } else {
-    //         setFilteredOptions(options);
-    //     }
-    // }, [searchInput, options]);
-
-    // const handleSearchChange = (e) => {
-    //     setSearchInput(e.target.value);
-    // };
-
-    // const handleSelectChange = (selectedOption) => {
-    //     console.log('Selected option:', selectedOption.value);
-    // };
-
+   
     const debounce = (func, delay) => {
         let timer;
         return (...args) => {
@@ -53,7 +25,7 @@ const SearchBar = () => {
         try {
             setIsLoading(true);
             const { data } = await axios.get(`/api/v1/products/search-suggestions?q=${query}`);
-            console.log(data)
+            //console.log(data)
             setSuggestions(data.products);
         } catch (error) {
             console.error('Error fetching suggestions:', error);
@@ -71,11 +43,11 @@ const SearchBar = () => {
     };
 
     const handleSuggestionClick = (suggestion) => {
-        console.log('Selected suggestion:', suggestion);
+        //console.log('Selected suggestion:', suggestion);
         setSearchInput(suggestion);
         setSuggestions([]);
-        router.push(`/product-details/${suggestion}`);
-        return;
+        return router.push(`/product-details/${suggestion}`);
+        
     };
 
     const customStyles = {
@@ -92,15 +64,7 @@ const SearchBar = () => {
 
     return (
         <form className="bb-btn-group-form flex relative max-[991px]:ml-[20px] max-[767px]:m-[0]" action="#">
-            {/* <div className="inner-select border-r-[1px] border-solid border-[#eee] h-full px-[20px] flex items-center absolute top-[0] left-[0] max-[991px]:hidden">
-                <div className="w-[100px] capitalize text-[#777] flex items-center justify-between transition-all duration-[0.2s] ease-in text-[14px] relative">
-                    <Select
-                        options={filteredOptions}
-                        onChange={handleSelectChange}
-                        styles={customStyles}
-                    />
-                </div>
-            </div> */}
+            
             <button
                 className="submit absolute top-[0] left-[auto]  flex items-center justify-center w-[45px] h-full bg-transparent text-[#555] text-[16px] rounded-[0] outline-[0] border-[0] padding-[0]"
                 type="submit"

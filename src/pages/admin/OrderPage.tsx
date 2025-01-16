@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { FaSearch } from 'react-icons/fa';
+import { FaDownload, FaEdit,  FaSearch } from 'react-icons/fa';
 import { RiLoader2Line } from 'react-icons/ri';
 import Link from 'next/link';
 import { Pagination } from '@/components/admin/Pagination';
@@ -23,8 +23,8 @@ export default function OrderPage() {
     const fetchOrders = useCallback(async () => {
         try {
             setIsLoading(true);
-            const response = await get_all_orders_of_user(page, search, status);
-            const data = response.data;
+            const data = await get_all_orders_of_user(page, search, status);
+            
             setOrders(data.orders);
             setPagination(data.pagination);
         } catch (error) {
@@ -116,13 +116,20 @@ export default function OrderPage() {
                                                 <td className="py-3 px-4">{order.totalAmount.toFixed(2)}</td>
                                                 <td className="py-3 px-4">{order.totalquantity}</td>
                                                 <td className="py-3 px-4">{order.status}</td>
-                                                <td className="py-3 px-4">
+                                                <td className="py-3 px-4 flex space-x-2">
+                                                    <Link
+                                                        
+                                                        href={`/admin/orders/orders-details/${order._id}`}
+                                                        className="text-green-800 bg-green-300 p-2 rounded-full"
+                                                    >
+                                                        <FaEdit />
+                                                    </Link>
                                                     <Link
                                                         target="_blank"
-                                                        href={`/orders/${order._id}`}
-                                                        className="text-blue-500 hover:underline"
+                                                        href={`/orders/${order._id}/billing`}
+                                                        className="text-blue-800 bg-blue-300 p-2 rounded-full"
                                                     >
-                                                        View Details
+                                                        <FaDownload />
                                                     </Link>
                                                 </td>
                                             </tr>

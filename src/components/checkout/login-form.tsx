@@ -91,7 +91,7 @@ export const CheckoutloginForm = () => {
                 toast.success(data.message);
             } else {
                 toast.error('Unauthorized access');
-                router.push('/login');
+                return router.push('/login');
             }
 
         } catch (err: unknown) {

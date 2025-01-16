@@ -28,10 +28,9 @@ const Checkout = () => {
     setSelectAddress(id);
   };
 
-
   const placeOrder = async () => {
     const order = {
-      items: items.map((item) => ({ productId: item._id, slug: item.slug, quantity: item.quantity, name: item.title, price: item.price })),
+      items: items.map((item) => ({ productId: item._id, slug: item.slug, quantity: item.quantity, name: item.title, price: item.price, sku: item.sku })),
       getTotalItems: getTotalItems(),
       totalPrice: getTotalPrice(),
       paymentMethod: paymentMethod,

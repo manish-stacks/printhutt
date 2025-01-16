@@ -6,7 +6,6 @@ import Product from '@/models/productModel';
 
 connect();
 
-
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const page = parseInt(searchParams.get('page') || '1')
@@ -16,8 +15,15 @@ export async function GET(request: NextRequest) {
   const maxPrice = parseFloat(searchParams.get('maxPrice') || '999999')
   const rating = parseInt(searchParams.get('rating') || '0')
   const tags = searchParams.get('tags')?.split(',').filter(Boolean) || []
+  const sort = searchParams.get('sort') || 'newest'
 
-  const products = await Product.find().populate({ path: 'category', model: Category }).populate({ path: 'subcategory', model: SubCategory });;
+  const products = await Product.find().populate({ path: 'category', model: Category }).populate({ path: 'subcategory', model: SubCategory }).sort({ createdAt: -1 });
+
+  if (!products) {
+    return NextResponse.json({
+      error: 'Failed to fetch products'
+    }, { status: 500 });
+  }
 
   let filteredProducts = [...products]
 
@@ -48,6 +54,26 @@ export async function GET(request: NextRequest) {
     )
   }
 
+  // Apply sorting
+  switch (sort) {
+    case 'featured':
+      // Assuming 'featured' products are sorted by some 'featured' field
+      filteredProducts = filteredProducts.sort((a, b) => b.featured - a.featured);
+      break;
+    case 'newest':
+      filteredProducts = filteredProducts.sort((a, b) => b.createdAt - a.createdAt);
+      break;
+    case 'price-asc':
+      filteredProducts = filteredProducts.sort((a, b) => a.price - b.price);
+      break;
+    case 'price-desc':
+      filteredProducts = filteredProducts.sort((a, b) => b.price - a.price);
+      break;
+    default:
+      filteredProducts = filteredProducts.sort((a, b) => b.createdAt - a.createdAt);
+      break;
+  }
+
   // Pagination
   const perPage = 12
   const total = filteredProducts.length
@@ -58,6 +84,7 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.json({
     products: paginatedProducts,
+    totalProducts: total, // Added total products count
     pagination: {
       page,
       perPage,

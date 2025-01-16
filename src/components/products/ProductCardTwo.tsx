@@ -1,6 +1,7 @@
 import { formatCurrency } from '@/helpers/helpers';
 import { Product } from '@/lib/types/product';
 import { useCartStore } from '@/store/useCartStore';
+import useQuickStore from '@/store/useQuickStore';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
@@ -15,9 +16,16 @@ const ProductCardTwo = ({ product }: PopupProps) => {
 
     const addToCart = useCartStore(state => state.addToCart);
     const handleAddToCart = (product: Product) => {
-        addToCart(product,1);
+        addToCart(product, 1);
         toast('Added to cart');
     };
+
+
+    const { openQuickView } = useQuickStore();
+
+    const quickViewModel = () => {
+        openQuickView(product);
+    }
 
     return (
         <>
@@ -67,13 +75,13 @@ const ProductCardTwo = ({ product }: PopupProps) => {
                                 </a>
                             </li>
                             <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
-                                <a
-
+                                <button
+                                    onClick={quickViewModel}
                                     title="Quick View"
                                     className="bb-modal-toggle w-[35px] h-[35px] flex items-center justify-center"
                                 >
                                     <i className="ri-eye-line transition-all duration-[0.3s] ease-in-out text-[18px] text-[#777] leading-[10px]" />
-                                </a>
+                                </button>
                             </li>
                             <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                                 <Link
@@ -133,7 +141,7 @@ const ProductCardTwo = ({ product }: PopupProps) => {
                                     {product.discountPrice > 0 ? formatCurrency(product.price) : ''}
                                 </span>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>

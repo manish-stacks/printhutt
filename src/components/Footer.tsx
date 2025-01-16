@@ -24,7 +24,7 @@ const Footer = () => {
 
   const isQuickViewOpen = useQuickStore(state => state.isOpen);
   const product = useQuickStore(state => state.product);
-  console.log(product)
+  // console.log(product)
 
   const handleQuickViewClose = () => {
     useQuickStore.setState({ isOpen: false });

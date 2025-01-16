@@ -41,12 +41,13 @@ const CartSidebar = ({ onClose }) => {
 
   const cartPage = () => {
     onClose();
-    router.push('/cart');
+    return router.push('/cart');
+
   }
   const checkoutPage = () => {
     onClose();
-    router.push('/checkout');
-    return;
+    return router.push('/checkout');
+
   }
 
 
@@ -90,7 +91,7 @@ const CartSidebar = ({ onClose }) => {
                     <ul className="bb-pro-actions transition-all duration-[0.3s] ease-in-out my-[0] mx-[auto] absolute z-[9] left-[0] right-[0] bottom-[0] flex flex-row items-center justify-center opacity-[0]">
                       <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                         <a
-                          
+
                           title="Wishlist"
                           className="w-[35px] h-[35px] flex items-center justify-center"
                         >
@@ -99,7 +100,7 @@ const CartSidebar = ({ onClose }) => {
                       </li>
                       <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                         <a
-                          
+
                           title="Quick View"
                           className="bb-modal-toggle w-[35px] h-[35px] flex items-center justify-center"
                         >
@@ -117,7 +118,7 @@ const CartSidebar = ({ onClose }) => {
                       </li>
                       <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                         <a
-                          
+
                           title="Add To Cart"
                           className="w-[35px] h-[35px] flex items-center justify-center"
                         >
@@ -295,7 +296,7 @@ const CartSidebar = ({ onClose }) => {
                 </div>
                 <div className="cart-btn flex justify-between mb-[20px]">
                   <button
-                    onClick={cartPage }
+                    onClick={cartPage}
                     className="bb-btn-1 transition-all duration-[0.3s] ease-in-out font-Poppins leading-[28px] tracking-[0.03rem] py-[5px] px-[15px] text-[14px] font-normal text-[#3d4750] bg-transparent rounded-[10px] border-[1px] border-solid border-[#3d4750] hover:bg-[#6c7fd8] hover:border-[#6c7fd8] hover:text-[#fff]"
                   >
                     View Cart

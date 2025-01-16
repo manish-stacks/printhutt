@@ -1,11 +1,12 @@
 import nodemailer from "nodemailer";
 import { v4 as uuidv4 } from 'uuid';
 import UserModel from '@/models/userModel'
-import type { mallerType } from '@/lib/types';
+import type { mallerType, OrderDetails } from '@/lib/types';
 import { formatCurrency } from '../../helpers/helpers';
 import { getCustomerEmailTemplate } from './templates/customer';
 import { getOwnerEmailTemplate } from './templates/owner';
 import dotenv from "dotenv"
+import { generateOrderStatusEmail, getShippedEmailTemplate } from "./templates/order-status";
 dotenv.config()
 
 const transporter = nodemailer.createTransport({
@@ -45,8 +46,8 @@ export const sendVerifyEmail = async ({ email, emailType, userId }: mallerType) 
     const mailResponce = await transporter.sendMail(mailOption)
     return mailResponce;
   } catch (error) {
-    if(error instanceof Error){
-            
+    if (error instanceof Error) {
+
       throw new Error((error as Error).message)
     }
   }
@@ -65,7 +66,7 @@ export const sendVerifyEmail = async ({ email, emailType, userId }: mallerType) 
 //     return mailResponce;
 //   } catch (error) {
 //     if(error instanceof Error){
-            
+
 //       throw new Error((error as Error).message)
 //     }
 //   }
@@ -107,13 +108,13 @@ export const sendOtpByEmail = async (email: string, otp: string) => {
 
 export const sendOtpBySms = async (mobile: string, otp: string) => {
   return ({
-      to: mobile,
-      message: `Your OTP is ${otp}`,
+    to: mobile,
+    message: `Your OTP is ${otp}`,
   });
 }
 
 export async function sendOrderConfirmationEmail(orderData: {
-  userId:{email: string};
+  userId: { email: string };
   orderId: string;
   items: { name: string; quantity: number; price: number }[];
   totalAmount: number;
@@ -152,4 +153,24 @@ export async function sendOrderConfirmationEmail(orderData: {
       formatCurrency,
     }),
   });
+}
+
+
+export async function sendOrderStatus(order: OrderDetails) {
+
+  let emailContent;
+
+  if (order.status === 'shipped') {
+    emailContent = getShippedEmailTemplate(order);
+  } else {
+    emailContent = generateOrderStatusEmail(order);
+  }
+
+  await transporter.sendMail({
+    from: process.env.SMTP_FROM,
+    to: order.shipping.email,
+    subject: `Order Status - ${order.orderId}`,
+    html: emailContent,
+  });
+  
 }

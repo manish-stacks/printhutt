@@ -7,7 +7,7 @@ const Page = () => {
   const router = useRouter();
 
   useEffect(() => {
-    router.push('/user/dashboard');
+    return router.push('/user/dashboard');
   }, [router]);
 
   return <div>Redirecting...</div>;
