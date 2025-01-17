@@ -49,7 +49,7 @@ const ProductSlider = ({ products }: PopupProps) => {
   return (
     <>
       <Slider {...settings}>
-        {products.map((product, index) => (
+        {products && products.map((product, index) => (
           <div key={index}>
             <ProductCardTwo product={product} />
           </div>

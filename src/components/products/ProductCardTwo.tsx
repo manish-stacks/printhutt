@@ -26,6 +26,12 @@ const ProductCardTwo = ({ product }: PopupProps) => {
     const quickViewModel = () => {
         openQuickView(product);
     }
+    const handleAddToWishlist = async (product: Product) => {
+        if (!isLoggedIn) return router.push('/login');
+        const response = await wishlistService.addWishlist(product._id);
+
+        toast(response.message);
+    }
 
     return (
         <>
@@ -66,13 +72,13 @@ const ProductCardTwo = ({ product }: PopupProps) => {
                         </Link>
                         <ul className="bb-pro-actions transition-all duration-[0.3s] ease-in-out my-[0] mx-[auto] absolute z-[9] left-[0] right-[0] bottom-[0] flex flex-row items-center justify-center opacity-[0]">
                             <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
-                                <a
-
+                                <button
+                                    onClick={() => handleAddToWishlist(product)}
                                     title="Wishlist"
                                     className="w-[35px] h-[35px] flex items-center justify-center"
                                 >
                                     <i className="ri-heart-line transition-all duration-[0.3s] ease-in-out text-[18px] text-[#777] leading-[10px]" />
-                                </a>
+                                </button>
                             </li>
                             <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                                 <button

@@ -1,3 +1,4 @@
+import { wishlistService } from '@/_services/common/wishlist';
 import { formatCurrency } from '@/helpers/helpers';
 import { Product } from '@/lib/types/product';
 import { useCartStore } from '@/store/useCartStore';
@@ -32,11 +33,11 @@ const ProductCard = ({ product }: PopupProps) => {
     }
 
 
-    const handleAddToWishlist = (product: Product) => {
+    const handleAddToWishlist = async(product: Product) => {
         if (!isLoggedIn)  return router.push('/login');
-           
-
-        toast('Added to wishlist');
+        const response = await wishlistService.addWishlist(product._id);
+  
+        toast(response.message);
     }
     return (
         <>

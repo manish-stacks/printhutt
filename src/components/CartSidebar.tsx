@@ -66,111 +66,34 @@ const CartSidebar = ({ onClose }) => {
               </div>
             </div>
             <div className="bb-cart-box cart-related bb-border-right flex flex-col pr-[24px] border-r-[1px] border-solid border-[#eee] overflow-auto mb-[-24px]">
-              <div className="bb-deal-card mb-[24px]">
-                <div className="bb-pro-box bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[20px]">
-                  <div className="bb-pro-img overflow-hidden relative border-b-[1px] border-solid border-[#eee] z-[4]">
-                    <span className="flags transition-all duration-[0.3s] ease-in-out absolute z-[5] top-[10px] left-[6px]">
-                      <span className="text-[14px] text-[#777] font-medium uppercase">
-                        Hot
-                      </span>
-                    </span>
-                    <a >
-                      <div className="inner-img relative block overflow-hidden rounded-tl-[20px] rounded-tr-[20px]">
-                        <img
-                          className="main-img transition-all duration-[0.3s] ease delay-[0s] max-w-full"
-                          src="https://printhutt.com/media/custom-name-lemp.png"
-                          alt="product-2"
-                        />
-                        <img
-                          className="hover-img transition-all duration-[0.3s] ease-in-out absolute z-[2] top-[0] left-[0] opacity-[0] w-full"
-                          src="https://printhutt.com/media/custom-name-lemp.png"
-                          alt="product-2"
-                        />
-                      </div>
-                    </a>
-                    <ul className="bb-pro-actions transition-all duration-[0.3s] ease-in-out my-[0] mx-[auto] absolute z-[9] left-[0] right-[0] bottom-[0] flex flex-row items-center justify-center opacity-[0]">
-                      <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
-                        <a
 
-                          title="Wishlist"
-                          className="w-[35px] h-[35px] flex items-center justify-center"
-                        >
-                          <i className="ri-heart-line text-[18px] text-[#777] leading-[10px]" />
-                        </a>
-                      </li>
-                      <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
-                        <a
-
-                          title="Quick View"
-                          className="bb-modal-toggle w-[35px] h-[35px] flex items-center justify-center"
-                        >
-                          <i className="ri-eye-line text-[18px] text-[#777] leading-[10px]" />
-                        </a>
-                      </li>
-                      <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
-                        <Link
-                          href="/compare"
-                          title="Compare"
-                          className="w-[35px] h-[35px] flex items-center justify-center"
-                        >
-                          <i className="ri-repeat-line text-[18px] text-[#777] leading-[10px]" />
-                        </Link>
-                      </li>
-                      <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
-                        <a
-
-                          title="Add To Cart"
-                          className="w-[35px] h-[35px] flex items-center justify-center"
-                        >
-                          <i className="ri-shopping-bag-4-line text-[18px] text-[#777] leading-[10px]" />
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="bb-pro-contact p-[20px]">
-                    <div className="bb-pro-subtitle mb-[8px] flex flex-wrap justify-between">
-                      <a
-                        href="shop-left-sidebar-col-3.html"
-                        className="font-Poppins text-[13px] leading-[16px] text-[#777] font-light tracking-[0.03rem]"
-                      >
-                        Juice
-                      </a>
-                      <span className="bb-pro-rating">
-                        <i className="ri-star-fill float-left text-[15px] mr-[3px] leading-[18px] text-[#fea99a]" />
-                        <i className="ri-star-fill float-left text-[15px] mr-[3px] leading-[18px] text-[#fea99a]" />
-                        <i className="ri-star-fill float-left text-[15px] mr-[3px] leading-[18px] text-[#fea99a]" />
-                        <i className="ri-star-fill float-left text-[15px] mr-[3px] leading-[18px] text-[#fea99a]" />
-                        <i className="ri-star-line float-left text-[15px] mr-[3px] leading-[18px] text-[#777]" />
-                      </span>
-                    </div>
-                    <h4 className="bb-pro-title mb-[8px] text-[16px] leading-[18px]">
-                      <a
-                        href="product-left-sidebar.html"
-                        className="transition-all duration-[0.3s] ease-in-out font-quicksand w-full block whitespace-nowrap overflow-hidden text-ellipsis text-[15px] leading-[18px] text-[#3d4750] font-semibold tracking-[0.03rem]"
-                      >
-                        Organic Apple Juice Pack
-                      </a>
+              <div className="bb-cart-banner mb-[24px]">
+                <div className="banner rounded-[20px] relative overflow-hidden">
+                  <img
+                    src="https://res.cloudinary.com/dkprths9f/image/upload/v1735209905/categories/loi5p36j7ezhhgk32ply.png"
+                    alt="cart-banner"
+                    className="w-full transition-all duration-[0.3s] ease-in-out"
+                  />
+                  <div className="detail w-full p-[15px] absolute left-[0] bottom-[0] bg-[#000000b3] flex flex-col">
+                    <h4 className="font-Poppins text-[15px] mb-[5px] leading-[22px] font-light text-[#fff] tracking-[0.03rem]">
+                      Couple &amp; Lamp
                     </h4>
-                    <div className="bb-price flex flex-wrap justify-between">
-                      <div className="inner-price mx-[-3px]">
-                        <span className="new-price px-[3px] text-[16px] text-[#686e7d] font-bold">
-                          ₹15
-                        </span>
-                        <span className="item-left px-[3px] text-[14px] text-[#6c7fd8]">
-                          3 Left
-                        </span>
-                      </div>
-                      <span className="last-items text-[14px] text-[#6c7fd8]">
-                        100 ml
-                      </span>
-                    </div>
+                    <h3 className="font-quicksand font-semibold tracking-[0.03rem] text-[#fff] text-[22px] leading-[30px]">
+                      Customize
+                    </h3>
+                    <Link
+                      href="/category/lamps"
+                      className="transition-all duration-[0.3s] ease-in-out w-[100px] mt-[15px] py-[5px] px-[10px] border-[1px] border-solid border-[#fff] rounded-[10px] text-[#fff] font-Poppins text-[15px] font-light leading-[28px] tracking-[0.03rem] flex items-center justify-center hover:bg-[#fff] hover:text-[#3d4750]"
+                    >
+                      Buy Now
+                    </Link>
                   </div>
                 </div>
               </div>
               <div className="bb-cart-banner mb-[24px]">
                 <div className="banner rounded-[20px] relative overflow-hidden">
                   <img
-                    src="https://printhutt.com/media/custom-name-lemp.png"
+                    src="https://res.cloudinary.com/dkprths9f/image/upload/v1735900376/products/thumbnails/aaabwgrbbmfnd6km1ksq.jpg"
                     alt="cart-banner"
                     className="w-full transition-all duration-[0.3s] ease-in-out"
                   />
@@ -181,12 +104,12 @@ const CartSidebar = ({ onClose }) => {
                     <h3 className="font-quicksand font-semibold tracking-[0.03rem] text-[#fff] text-[22px] leading-[30px]">
                       Customize
                     </h3>
-                    <a
-                      href="shop-left-sidebar-col-3.html"
+                    <Link
+                      href="/category/neon"
                       className="transition-all duration-[0.3s] ease-in-out w-[100px] mt-[15px] py-[5px] px-[10px] border-[1px] border-solid border-[#fff] rounded-[10px] text-[#fff] font-Poppins text-[15px] font-light leading-[28px] tracking-[0.03rem] flex items-center justify-center hover:bg-[#fff] hover:text-[#3d4750]"
                     >
                       Buy Now
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>

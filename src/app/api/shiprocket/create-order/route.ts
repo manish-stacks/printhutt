@@ -1,4 +1,4 @@
-import { formatDate, shiprocketAuth } from '@/helpers/helpers';
+import { shiprocketAuth } from '@/helpers/helpers';
 import { sendOrderStatus } from '@/lib/mail/mailer';
 import Order from '@/models/orderModel';
 import axios from 'axios';
@@ -78,14 +78,8 @@ export async function POST(request: Request) {
             order_id: shipmentData.order_id,
             ...shipmentDetails,
         };
-
         await sendOrderStatus(order)
-
-
         await order.save();
-
-
-
         return NextResponse.json(shipmentData);
     } catch (error) {
         if (error.response && error.response.status === 422) {

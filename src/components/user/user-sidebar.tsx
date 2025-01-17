@@ -68,15 +68,15 @@ const UserSidebar = ({ activemenu }: Props) => {
                             12
                         </span>
                     </a>
-                    <a
-                        href="#"
+                    <Link
+                        href="/wishlist"
                         className={`flex items-center hover:text-purple-600 ${activemenu == '' ? ' text-purple-600 font-semibold' : 'text-gray-600'}`}
                     >
                         <span className="mr-2">
                             <RiHeart2Fill />
                         </span>{" "}
                         Wishlist
-                    </a>
+                    </Link>
                     <a
                         href="#"
                         className={`flex items-center hover:text-purple-600 ${activemenu == '' ? ' text-purple-600 font-semibold' : 'text-gray-600'}`}

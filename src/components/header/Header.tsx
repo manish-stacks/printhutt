@@ -22,6 +22,7 @@ import CartSidebar from "../CartSidebar";
 import CategoryPopup from "../CategoryPopup";
 // import Headerlocation from "./location";
 import SearchBar from "./SearchBar";
+import { wishlistService } from "@/_services/common/wishlist";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,8 +30,8 @@ export default function Header() {
   const toggleClose = () => setIsOpen(false);
   const [isCartOpen, setIsOpenCart] = useState(false);
   const toggleCartSidebar = () => setIsOpenCart((prev) => !prev);
-  const toggleCartSidebarClose  = () => setIsOpenCart(false);
-  
+  const toggleCartSidebarClose = () => setIsOpenCart(false);
+
   const [isMobileMenu, setMobileMenu] = useState(false);
   const toggleMenu = () => setMobileMenu((prev) => !prev);
   const items = useCartStore((state) => state.items);
@@ -39,20 +40,16 @@ export default function Header() {
 
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
 
-  const socialLinks = [
-    { icon: RiFacebookFill, link: "https://www.facebook.com/print.hutt" },
-    { icon: RiInstagramFill, link: "https://www.instagram.com/printhutt/" },
-    { icon: RiTwitterFill, link: "https://twitter.com/printhutt" },
-    { icon: RiLinkedinFill, link: "https://www.linkedin.com/company/print-hutt" },
-  ];
-
   const [categoriesData, setCategoriesData] = useState([]);
   const [productData, setProductData] = useState([]);
+  const [wishlistCount, setWishlistCount] = useState(0);
+
+
   const fetchData = async () => {
     try {
       const [categories, products] = await Promise.all([
         categoryService.getAll(6),
-        productService.getTopProducts(6)
+        productService.getTopProducts(6),
       ]);
 
       setCategoriesData(categories?.categories);
@@ -64,7 +61,27 @@ export default function Header() {
 
   useEffect(() => {
     fetchData();
+
+
+    // const response = wishlistService.getAll();
+    // if (response.data.length > 0) {
+    //   setWishlistCount(response.data.length)
+    // } else {
+      setWishlistCount(0)
+    // }
+
+
   }, []);
+
+
+
+  const socialLinks = [
+    { icon: RiFacebookFill, link: "https://www.facebook.com/print.hutt" },
+    { icon: RiInstagramFill, link: "https://www.instagram.com/printhutt/" },
+    { icon: RiTwitterFill, link: "https://twitter.com/printhutt" },
+    { icon: RiLinkedinFill, link: "https://www.linkedin.com/company/print-hutt" },
+  ];
+
 
   return (
     <>
@@ -93,6 +110,7 @@ export default function Header() {
                     </div>
                     <div className="cols px-[12px]">
                       <a
+                        href="https://www.shiprocket.in/shipment-tracking/"
                         className="transition-all duration-[0.3s] ease-in-out font-Poppins text-[16px] text-[#fff] font-light leading-[28px] tracking-[0.03rem]"
                       >
                         Track Order
@@ -237,7 +255,7 @@ export default function Header() {
                           </div>
                           <div className="bb-btn-desc flex flex-col ml-[10px] max-[1199px]:hidden">
                             <span className="bb-btn-title font-Poppins transition-all duration-[0.3s] ease-in-out text-[12px] leading-[1] text-[#3d4750] mb-[4px] tracking-[0.6px] capitalize font-medium whitespace-nowrap">
-                              <b className="bb-wishlist-count">0</b> items
+                              <b className="bb-wishlist-count">{wishlistCount}</b> items
                             </span>
                             <span className="bb-btn-stitle font-Poppins transition-all duration-[0.3s] ease-in-out text-[14px] leading-[16px] font-semibold text-[#3d4750]  tracking-[0.03rem] whitespace-nowrap">
                               Wishlist
@@ -537,7 +555,7 @@ export default function Header() {
           <CategoryPopup onClose={toggleClose} category={categoriesData} products={productData} />
         </Suspense>
       )}
-      {isCartOpen && <CartSidebar onClose={toggleCartSidebarClose } />}
+      {isCartOpen && <CartSidebar onClose={toggleCartSidebarClose} />}
     </>
   );
 };
