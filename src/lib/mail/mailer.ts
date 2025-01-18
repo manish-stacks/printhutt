@@ -7,6 +7,7 @@ import { getCustomerEmailTemplate } from './templates/customer';
 import { getOwnerEmailTemplate } from './templates/owner';
 import dotenv from "dotenv"
 import { generateOrderStatusEmail, getShippedEmailTemplate } from "./templates/order-status";
+import axios from "axios";
 dotenv.config()
 
 const transporter = nodemailer.createTransport({
@@ -107,6 +108,22 @@ export const sendOtpByEmail = async (email: string, otp: string) => {
 
 
 export const sendOtpBySms = async (mobile: string, otp: string) => {
+
+  const receiver = `+91${mobile}`;
+  const template = "OTP1";
+  const apiKey = process.env.TWO_FACTOR_API;
+
+  const url = `https://2factor.in/API/V1/${apiKey}/SMS/${receiver}/${otp}/${template}`;
+  // console.log('url', url)
+  try {
+    const response = await axios.post(url);
+    // console.log('OTP sent successfully:', response.data);
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error((error as Error).message);
+    }
+  }
+
   return ({
     to: mobile,
     message: `Your OTP is ${otp}`,
@@ -172,5 +189,5 @@ export async function sendOrderStatus(order: OrderDetails) {
     subject: `Order Status - ${order.orderId}`,
     html: emailContent,
   });
-  
+
 }

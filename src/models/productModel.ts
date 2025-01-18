@@ -19,7 +19,6 @@ const productSchema = new Schema<IProduct>(
     slug: {
       type: String,
       required: true,
-      unique: true,
     },
     short_description: {
       type: String,

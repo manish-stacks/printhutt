@@ -12,6 +12,7 @@ export const POST = async (request: NextRequest) => {
         const reqBody = await request.json();
         const { otp, emailOrMobile } = reqBody;
 
+        
         if (!emailOrMobile || !otp) {
             return NextResponse.json({
                 message: "OTP and emailOrMobile are required.",
@@ -23,7 +24,7 @@ export const POST = async (request: NextRequest) => {
         const queryKey = isEmailInput ? 'email' : 'number';
 
         const user = await UserModel.findOne({ [queryKey]: emailOrMobile });
-
+        
         if (!user) {
             return NextResponse.json({
                 message: 'User not found.',

@@ -2,10 +2,17 @@
 import React from "react";
 import Breadcrumb from "@/components/Breadcrumb";
 import UserSidebar from "@/components/user/user-sidebar";
+import { useUserStore } from "@/store/useUserStore";
+import { useRouter } from "next/navigation";
 
 
 const Dashboard = () => {
-
+  const userData = useUserStore((state) => state.userDetails);
+  const router = useRouter();
+  console.log(userData);
+  if (!userData?.email) {
+    return router.push('/user/profile');
+  }
 
   return (
     <>

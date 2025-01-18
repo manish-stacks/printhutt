@@ -38,15 +38,15 @@ const UserSidebar = ({ activemenu }: Props) => {
                         </span>{" "}
                         Dashboard
                     </Link>
-                    <a
-                        href="#"
-                        className={`flex items-center hover:text-purple-600 ${activemenu == '' ? ' text-purple-600 font-semibold' : 'text-gray-600'}`}
+                    <Link
+                        href="/user/profile"
+                        className={`flex items-center hover:text-purple-600 ${activemenu == 'profile' ? ' text-purple-600 font-semibold' : 'text-gray-600'}`}
                     >
                         <span className="mr-2">
                             <RiUser2Fill />
                         </span>{" "}
                         My Profile
-                    </a>
+                    </Link>
                     <Link
                         href="/user/address"
                         className={`flex items-center hover:text-purple-600 ${activemenu == 'address' ? ' text-purple-600 font-semibold' : 'text-gray-600'}`}
@@ -70,7 +70,7 @@ const UserSidebar = ({ activemenu }: Props) => {
                     </a>
                     <Link
                         href="/wishlist"
-                        className={`flex items-center hover:text-purple-600 ${activemenu == '' ? ' text-purple-600 font-semibold' : 'text-gray-600'}`}
+                        className={`flex items-center hover:text-purple-600 ${activemenu == 'wishlist' ? ' text-purple-600 font-semibold' : 'text-gray-600'}`}
                     >
                         <span className="mr-2">
                             <RiHeart2Fill />
