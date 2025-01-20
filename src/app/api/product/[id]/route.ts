@@ -26,7 +26,7 @@ export async function GET(request: NextRequest, context: { params: { id: string 
         return NextResponse.json(product);
 
     } catch (error) {
-        if(error instanceof Error){
+        if (error instanceof Error) {
 
             return NextResponse.json({ error: "Failed to fetch product" }, { status: 500 });
         }
@@ -50,7 +50,7 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
 
 
         const formData = await request.formData();
-        console.log(formData)
+        // console.log(formData)
 
         const product = await ProductModel.findById(id);
         if (!product) return NextResponse.json({ success: false, message: "Product not found" }, { status: 404 });
@@ -86,20 +86,21 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
             returnPolicy: formData.get('returnPolicy')?.toString() || product.returnPolicy,
             demoVideo: formData.get('demoVideo') || product.demoVideo,
             imgAlt: formData.get('imgAlt')?.toString() || product.imgAlt,
-            status: formData.get('status')  || product.status,
-            ishome: formData.get('ishome')  || product.ishome,
-            trending: formData.get('trending')  || product.trending,
-            hot: formData.get('hot')  || product.hot,
-            sale: formData.get('sale')  || product.sale,
-            new: formData.get('new')  || product.new,
-            isCustomize: formData.get('isCustomize')  || product.isCustomize,
+            status: formData.get('status') || product.status,
+            ishome: formData.get('ishome') || product.ishome,
+            trending: formData.get('trending') || product.trending,
+            hot: formData.get('hot') || product.hot,
+            sale: formData.get('sale') || product.sale,
+            new: formData.get('new') || product.new,
+            isCustomize: formData.get('isCustomize') || product.isCustomize,
+            customizeLink: formData.get('customizeLink') || product.customizeLink,
             meta: {
                 keywords: formData.get('keywords')?.toString() || product.meta.keywords,
                 meta_description: formData.get('meta_description')?.toString() || product.meta.meta_description,
             },
             shippingFee: parseFloat(formData.get('shippingFee')?.toString() || product.shippingFee),
             offers: offersAsObjectIds || product.offers,
-            isVarientStatus: formData.get('isVarientStatus')  || product.isVarientStatus,
+            isVarientStatus: formData.get('isVarientStatus') || product.isVarientStatus,
             varient: JSON.parse(formData.get('varient')?.toString() || JSON.stringify(product.varient)),
         };
 
@@ -155,7 +156,7 @@ export async function DELETE(request: NextRequest, context: { params: { id: stri
         const product = await ProductModel.findById(id);
 
         if (!product) {
-            return NextResponse.json({ error: "Return not found" }, { status: 404 });
+            return NextResponse.json({ error: "Product not found" }, { status: 404 });
         }
 
         const images = product.images
@@ -166,7 +167,7 @@ export async function DELETE(request: NextRequest, context: { params: { id: stri
 
         await deleteImage(product.thumbnail.public_id);
 
-        await product.delete();
+        await await ProductModel.findByIdAndDelete(id);
 
         return NextResponse.json({
             success: true,
@@ -174,8 +175,9 @@ export async function DELETE(request: NextRequest, context: { params: { id: stri
         });
 
     } catch (error) {
-        if(error instanceof Error){
-            
+        console.log('error', error.message)
+        if (error instanceof Error) {
+
             return NextResponse.json(
                 { error: "Failed to delete post" },
                 { status: 500 }
@@ -222,8 +224,8 @@ export async function PATCH(request: NextRequest, context: { params: { id: strin
             { status: 200 }
         );
     } catch (error) {
-        if(error instanceof Error){
-            
+        if (error instanceof Error) {
+
             return NextResponse.json(
                 { error: "Something went wrong" },
                 { status: 500 }

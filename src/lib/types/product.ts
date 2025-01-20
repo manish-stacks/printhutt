@@ -67,6 +67,7 @@ export interface IProduct extends Document {
   imgAlt?: string;
   createdAt: Date;
   updatedAt: Date;
+  customizeLink: string;
 }
 
 export interface ProductVariant {
@@ -114,6 +115,7 @@ export interface ProductFormData {
   offers: string[];
   isVarientStatus: boolean;
   varient: ProductVariant[];
+  customizeLink: string;
 }
 
 export interface PageProductFormData {

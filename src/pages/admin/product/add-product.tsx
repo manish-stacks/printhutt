@@ -66,7 +66,8 @@ const initialFormData: ProductFormData = {
   shippingFee: 0,
   offers: [],
   isVarientStatus: false,
-  varient: []
+  varient: [],
+  customizeLink:''
 };
 
 
@@ -217,8 +218,8 @@ export default function AddProduct() {
       const categoryData = await get_parent_sub_categories(value);
       setSubCategories(categoryData.category);
     } catch (error) {
-      if(error instanceof Error){
-            
+      if (error instanceof Error) {
+
         toast.error('Failed to fetch sub categories');
       }
     } finally {
@@ -843,6 +844,27 @@ export default function AddProduct() {
                 ))}
               </div>
             </div>
+            {
+              formData.isCustomize && (
+                <div className="bg-white p-6 rounded-lg shadow-md">
+                  <h3 className="text-lg font-bold mb-4">Customize Options</h3>
+                  <div className="space-y-4">
+
+                    <input
+                      type="text"
+                      placeholder='link'
+                      name='customizeLink'
+                      value={formData.customizeLink}
+                      onChange={handleInputChange}
+                      className="block w-full h-10 rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                    />
+                  </div>
+                </div>
+
+              )
+            }
+
+
             {/* Varient status */}
             {formData.isVarientStatus && (
               <div className="bg-white text-black p-6 rounded-lg space-y-5 shadow-md">

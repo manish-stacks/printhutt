@@ -5,7 +5,7 @@ import { delete_a_product, get_all_products, update_product_status } from '@/_se
 import { toast } from 'react-toastify';
 import Link from 'next/link';
 import { FaSearch } from 'react-icons/fa';
-import { RiDeleteBin2Line, RiEdit2Fill, RiLoader2Line } from 'react-icons/ri';
+import { RiDeleteBin2Line, RiEdit2Fill, RiEyeFill, RiLoader2Line } from 'react-icons/ri';
 import Image from 'next/image';
 
 import { Pagination } from '@/components/admin/Pagination';
@@ -160,7 +160,7 @@ const ProductListPage: React.FC = () => {
                             <h2 className="text-2xl font-bold text-gray-900">All Products</h2>
                         </div>
                         <div>
-                            <Link href={'/admin/categories/add'} className="bg-blue-500 text-white py-1 px-6 rounded">Add</Link>
+                            <Link href={'/admin/products/new'} className="bg-blue-500 text-white py-1 px-6 rounded">Add</Link>
                         </div>
                     </div>
                 </div>
@@ -255,6 +255,12 @@ const ProductListPage: React.FC = () => {
                                             </td>
                                             <td>
                                                 <div className='flex space-x-2'>
+                                                    <Link 
+                                                        href={`/product-details/${product?.slug}`}
+                                                        target="_blank"
+                                                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-full">
+                                                        <RiEyeFill />
+                                                    </Link>
                                                     <button
                                                         onClick={() => editHandel(product?._id || '')}
                                                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-full">

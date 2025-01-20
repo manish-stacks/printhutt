@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connect } from '@/dbConfig/dbConfig'
+import { connect } from '@/dbConfig/dbConfig';
 import { getDataFromToken } from '@/helpers/getDataFromToken';
 import { uploadImage } from '@/lib/cloudinary';
 import ProductModel from '@/models/productModel';
@@ -8,18 +8,13 @@ import Category from '@/models/categoryModel';
 import SubCategory from '@/models/subCategoryModel';
 connect();
 
-
 export async function GET(req: NextRequest) {
   try {
     const url = new URL(req.url);
     const page = parseInt(url.searchParams.get('page') || '1');
     const limit = parseInt(url.searchParams.get('limit') || '10');
     const search = url.searchParams.get('search') || '';
-
-    const query = search
-      ? { title: { $regex: search, $options: 'i' } }
-      : {};
-
+    const query = search ? { title: { $regex: search, $options: 'i' } } : {};
     const skip = (page - 1) * limit;
 
     const [products, total] = await Promise.all([
@@ -47,32 +42,22 @@ export async function GET(req: NextRequest) {
   }
 }
 
-
 export async function POST(req: NextRequest) {
   try {
-
     const { role } = await getDataFromToken(req);
     if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
 
-
     const formData = await req.formData();
-
     const imagesRaw = formData.getAll('images');
     const thumbnail = formData.get('thumbnail');
-
     if (!thumbnail || !(thumbnail instanceof File)) {
-      return NextResponse.json(
-        { success: false, message: 'Thumbnail is required and must be a file' },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, message: 'Thumbnail is required and must be a file' }, { status: 400 });
     }
 
     const offers = formData.get('offers');
     const offersAsObjectIds = offers ? JSON.parse(offers as string).map((id: string) => new mongoose.Types.ObjectId(id)) : [];
-
     const tags = formData.get('tags');
     const tagsAsObject = tags ? JSON.parse(tags as string).map((id: string) => id) : [];
-
 
     const productData = {
       title: formData.get('title')?.toString() || '',
@@ -103,6 +88,7 @@ export async function POST(req: NextRequest) {
       sale: formData.get('sale') === 'true',
       new: formData.get('new') === 'true',
       isCustomize: formData.get('isCustomize') === 'true',
+      customizeLink: formData.get('warrantycustomizeLinkInformation')?.toString() || '',
       meta: {
         keywords: formData.get('keywords')?.toString() || '',
         meta_description: formData.get('meta_description')?.toString() || '',
@@ -113,9 +99,9 @@ export async function POST(req: NextRequest) {
       varient: JSON.parse(formData.get('varient')?.toString() || '[]'),
     };
 
-
     const product = new ProductModel(productData);
-    if (product) {
+    const savedProduct = await product.save();
+    if (savedProduct) {
       const uploadedImages = await Promise.all(
         imagesRaw.map(async (image) => {
           if (image instanceof File) {
@@ -127,26 +113,16 @@ export async function POST(req: NextRequest) {
       );
 
       const thumbnailResponse = await uploadImage(thumbnail, 'products/thumbnails', 800, 800);
-
       product.images = uploadedImages;
       product.thumbnail = thumbnailResponse;
       await product.save();
     }
-    return NextResponse.json(
-      {
-        success: true,
-        message: 'Data inserted successfully',
-        data: product,
-      },
-      { status: 201 }
-    );
+
+    return NextResponse.json({ success: true, message: 'Data inserted successfully', data: product }, { status: 201 });
   } catch (error: unknown) {
     const err = error as Error;
     console.error('Product creation error:', err);
-    return NextResponse.json(
-      { success: false, message: err.message },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, message: err.message }, { status: 500 });
   }
 }
 

@@ -1,3 +1,4 @@
+"use client"
 import { wishlistService } from '@/_services/common/wishlist';
 import { formatCurrency } from '@/helpers/helpers';
 import { Product } from '@/lib/types/product';

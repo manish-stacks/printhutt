@@ -10,6 +10,7 @@ import type { Product } from "@/lib/types/product";
 import { formatCurrency } from "@/helpers/helpers";
 import ProductSlider from "@/components/ProductSlider";
 import useQuickStore from "@/store/useQuickStore";
+import Link from "next/link";
 
 interface ProductProps {
   product: Product | null;
@@ -54,7 +55,7 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
     setIsOpenCart(true);
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     useQuickStore.setState({ isOpen: false });
   })
 
@@ -222,38 +223,52 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                       }
 
                       <div className="bb-single-qty flex flex-wrap m-[-2px]">
-                        <div className="qty-plus-minus m-[2px] w-[85px] h-[40px] py-[7px] border-[1px] border-solid border-[#eee] overflow-hidden relative flex items-center justify-between bg-[#fff] rounded-[10px]">
-                          <div className="dec bb-qtybtn" onClick={() => handleQuantityChange(-1)}>-</div>
-                          <input
-                            className="qty-input text-[#777] float-left text-[14px] h-auto m-[0] p-[0] text-center w-[32px] outline-[0] font-normal leading-[35px] rounded-[10px]"
-                            type="text"
-                            name="bb-qtybtn"
-                            value={quantity}
-                            min="1"
-                            readOnly
-                            onChange={(e) => setQuantity(Number(e.target.value))}
-                          />
-                          <div className="inc bb-qtybtn" onClick={() => handleQuantityChange(1)}>+</div>
-                        </div>
+                        {
+                          !product?.isCustomize &&
+                          <div className="qty-plus-minus m-[2px] w-[85px] h-[40px] py-[7px] border-[1px] border-solid border-[#eee] overflow-hidden relative flex items-center justify-between bg-[#fff] rounded-[10px]">
+                            <div className="dec bb-qtybtn" onClick={() => handleQuantityChange(-1)}>-</div>
+                            <input
+                              className="qty-input text-[#777] float-left text-[14px] h-auto m-[0] p-[0] text-center w-[32px] outline-[0] font-normal leading-[35px] rounded-[10px]"
+                              type="text"
+                              name="bb-qtybtn"
+                              value={quantity}
+                              min="1"
+                              readOnly
+                              onChange={(e) => setQuantity(Number(e.target.value))}
+                            />
+                            <div className="inc bb-qtybtn" onClick={() => handleQuantityChange(1)}>+</div>
+                          </div>
+                        }
                         <div className="buttons m-[2px]">
                           {
-                            item.quantity > 0 ? (
-                              <button
-                                onClick={() => viwCart()}
-                                className="bb-btn-2 transition-all duration-[0.3s] ease-in-out h-[40px] flex font-Poppins leading-[28px] tracking-[0.03rem] py-[6px] px-[25px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
-                              >
-                                View Cart
-                              </button>
-                            ) : (
-                              <button
-                                onClick={() => handleAddToCart()}
-                                className="bb-btn-2 transition-all duration-[0.3s] ease-in-out h-[40px] flex font-Poppins leading-[28px] tracking-[0.03rem] py-[6px] px-[25px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
-                              >
-                                Add to Cart
-                              </button>
+                            product?.isCustomize ?
+
+                              (
+                                <Link
+                                  href={product?.customizeLink}
+                                  className="bb-btn-2 transition-all duration-[0.3s] ease-in-out h-[40px] flex font-Poppins leading-[28px] tracking-[0.03rem] py-[6px] px-[25px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
+                                >
+                                  Customize
+                                </Link>
+                              ) : (
+                                item.quantity > 0 ? (
+                                  <button
+                                    onClick={() => viwCart()}
+                                    className="bb-btn-2 transition-all duration-[0.3s] ease-in-out h-[40px] flex font-Poppins leading-[28px] tracking-[0.03rem] py-[6px] px-[25px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
+                                  >
+                                    View Cart
+                                  </button>
+                                ) : (
+                                  <button
+                                    onClick={() => handleAddToCart()}
+                                    className="bb-btn-2 transition-all duration-[0.3s] ease-in-out h-[40px] flex font-Poppins leading-[28px] tracking-[0.03rem] py-[6px] px-[25px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
+                                  >
+                                    Add to Cart
+                                  </button>
 
 
-                            )
+                                )
+                              )
                           }
 
                         </div>

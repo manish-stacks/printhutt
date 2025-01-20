@@ -1,9 +1,14 @@
+"use client"
+import { wishlistService } from '@/_services/common/wishlist';
 import { formatCurrency } from '@/helpers/helpers';
 import { Product } from '@/lib/types/product';
 import { useCartStore } from '@/store/useCartStore';
 import useQuickStore from '@/store/useQuickStore';
+import { useUserStore } from '@/store/useUserStore';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
 import React from 'react'
 import { toast } from 'react-toastify';
 
@@ -15,6 +20,8 @@ interface PopupProps {
 const ProductCardThree = ({ product }: PopupProps) => {
 
     const addToCart = useCartStore(state => state.addToCart);
+    const isLoggedIn = useUserStore((state) => state.isLoggedIn);
+    const router = useRouter();
     const handleAddToCart = (product: Product) => {
         addToCart(product, 1);
         toast('Added to cart');

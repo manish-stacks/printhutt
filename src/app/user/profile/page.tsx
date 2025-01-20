@@ -8,8 +8,8 @@ import { userService } from "@/_services/common/userService";
 
 const Address = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const fetchUserDetails = useUserStore((state) => state.fetchUserDetails);
   const userData = useUserStore((state) => state.userDetails);
-  console.log(userData);
 
   const [formData, setFormData] = useState({
     number: userData?.number || '',
@@ -20,8 +20,10 @@ const Address = () => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      formData.id = userData?._id;
-      await userService.updateProfile(formData);
+      formData.userId = userData?._id;
+      const response = await userService.updateProfile(formData);
+      console.log(response);
+      fetchUserDetails();
       toast.success("Profile updated successfully");
     } catch (error) {
       toast.error("Failed to update address");

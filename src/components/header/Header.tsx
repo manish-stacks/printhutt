@@ -54,6 +54,10 @@ export default function Header() {
 
       setCategoriesData(categories?.categories);
       setProductData(products?.products);
+
+      const response = await wishlistService.getAll();
+      setWishlistCount(response.data?.items.length || 0);
+
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -61,16 +65,6 @@ export default function Header() {
 
   useEffect(() => {
     fetchData();
-
-
-    // const response = wishlistService.getAll();
-    // if (response.data.length > 0) {
-    //   setWishlistCount(response.data.length)
-    // } else {
-      setWishlistCount(0)
-    // }
-
-
   }, []);
 
 

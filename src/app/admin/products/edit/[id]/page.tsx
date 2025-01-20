@@ -64,6 +64,7 @@ interface ProductFormData {
   offers: string[];
   isVarientStatus: boolean;
   varient: ProductVariant[];
+  customizeLink: string;
 }
 
 
@@ -206,7 +207,7 @@ export default function EditProduct() {
       }
 
       if (name === 'shippingInformation') {
-        const shippingfilter = shippings.find(ship => ship._id === value) ;
+        const shippingfilter = shippings.find(ship => ship._id === value);
         updatedData.shippingFee = shippingfilter?.shippingFee ? shippingfilter?.shippingFee : 0;
       }
 
@@ -919,6 +920,25 @@ export default function EditProduct() {
                 ))}
               </div>
             </div>
+            {
+              formData.isCustomize && (
+                <div className="bg-white p-6 rounded-lg shadow-md">
+                  <h3 className="text-lg font-bold mb-4">Customize Options</h3>
+                  <div className="space-y-4">
+
+                    <input
+                      type="text"
+                      placeholder='link'
+                      name='customizeLink'
+                      value={formData.customizeLink}
+                      onChange={handleInputChange}
+                      className="block w-full h-10 rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                    />
+                  </div>
+                </div>
+
+              )
+            }
             {/* Varient status */}
             {formData.isVarientStatus && (
               <div className="bg-white text-black p-6 rounded-lg space-y-5 shadow-md">

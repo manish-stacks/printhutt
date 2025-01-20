@@ -1,23 +1,27 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
 import UserSidebar from "@/components/user/user-sidebar";
 import { useUserStore } from "@/store/useUserStore";
 import { useRouter } from "next/navigation";
 
-
 const Dashboard = () => {
   const userData = useUserStore((state) => state.userDetails);
   const router = useRouter();
-  console.log(userData);
+
+  useEffect(() => {
+    if (!userData?.email) {
+      router.push('/user/profile');
+    }
+  }, [userData, router]);
+
   if (!userData?.email) {
-    return router.push('/user/profile');
+    return null; // or a loading spinner
   }
 
   return (
     <>
       <Breadcrumb title={"Dashboard"} />
-
       <section className="section-about py-[50px] max-[1199px]:py-[35px]">
         <div className="flex flex-wrap justify-between items-center mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">
           <div className="flex flex-wrap w-full mb-[-24px]">

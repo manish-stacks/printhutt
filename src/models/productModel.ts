@@ -163,6 +163,9 @@ const productSchema = new Schema<IProduct>(
       type: Boolean,
       default: false,
     },
+    customizeLink: {
+      type: String
+    },
     demoVideo: {
       type: String,
     },
