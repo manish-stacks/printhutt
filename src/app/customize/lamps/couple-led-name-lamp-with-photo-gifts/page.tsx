@@ -1,14 +1,56 @@
 "use client"
-import React, { useState, useRef } from 'react';
-import { BiHeart, BiRefresh, BiUpload } from 'react-icons/bi';
-import { BsHearts, BsUpload } from 'react-icons/bs';
-// import { Heart, Upload, RefreshCw, Heart as Hearts } from 'lucide-react';
+import Image from 'next/image';
+import React, { useState, useRef, useEffect } from 'react';
+import { BiRefresh, BiUpload } from 'react-icons/bi';
+import { BsUpload } from 'react-icons/bs';
+import { Canvas, IText } from 'fabric';
+import { CustomizationButton } from '@/components/CustomizationButton';
+import { useCartStore } from '@/store/useCartStore';
+import html2canvas from 'html2canvas';
 
 function App() {
     const [names, setNames] = useState({ name1: '', name2: '' });
+    const [loading, setLoading] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
-    const [selectedShape, setSelectedShape] = useState('single-heart');
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const canvasRefTwo = useRef<HTMLCanvasElement>(null);
+    const [previewCanvas, setPreviewCanvas] = useState<string>('');
+    const [selectedFont, setSelectedFont] = useState("Barbara-Calligraphy");
+    const addToCart = useCartStore(state => state.addToCart);
+
+    useEffect(() => {
+        if (canvasRef.current && canvasRefTwo.current) {
+            const canvas = new Canvas(canvasRef.current);
+            const text1 = new IText(names.name1 || 'First Name', {
+                left: 80,
+                top: 80,
+                fill: '#fde68a',
+                fontSize: 32,
+                fontFamily: selectedFont,
+            });
+            canvas.add(text1);
+            canvas.renderAll();
+
+            const canvas2 = new Canvas(canvasRefTwo.current);
+            const text2 = new IText(names.name2 || 'Second Name', {
+                left: 70,
+                top: 20,
+                fill: '#fde68a',
+                fontSize: 32,
+                fontFamily: selectedFont,
+            });
+            canvas2.add(text2);
+            canvas2.renderAll();
+
+            return () => {
+                canvas.dispose();
+                canvas2.dispose();
+            };
+        }
+
+
+    }, [names, selectedFont]);
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -21,20 +63,45 @@ function App() {
         }
     };
 
-    const renderHeartShape = () => {
-        switch (selectedShape) {
-            case 'double-heart':
-                return (
-                    <div className="relative">
-                        <BiHeart className="w-8 h-8 text-pink-500 mx-auto drop-shadow-glow absolute -left-2" />
-                        <BiHeart className="w-8 h-8 text-pink-500 mx-auto drop-shadow-glow absolute -right-2" />
-                    </div>
-                );
-            case 'hearts':
-                return <BsHearts className="w-10 h-10 text-pink-500 mx-auto drop-shadow-glow" />;
-            default:
-                return <BiHeart className="w-8 h-8 text-pink-500 mx-auto drop-shadow-glow" />;
+    const handleFontChange = (font: string) => {
+        setSelectedFont(font);
+    };
+
+    const handleDownload = async () => {
+        console.log("first")
+        const previewElement = document.getElementById('preview-section');
+        if (previewElement) {
+            const canvas = await html2canvas(previewElement);
+            const img = canvas.toDataURL('image/png');
+            setPreviewCanvas(img);
+            // const link = document.createElement('a');
+            // link.href = canvas.toDataURL('image/png');
+            // link.download = 'preview.png';
+            // link.click();
         }
+    };
+
+    useEffect(() => {
+        handleDownload()
+    }, [previewCanvas])
+
+    const handleAddToCart = async () => {
+        await handleDownload();
+        if (previewCanvas) {
+
+            const data = {
+                name1: names.name1,
+                name2: names.name2,
+                previewImage,
+                previewCanvas,
+                selectedFont,
+            };
+            console.log(data);
+        }
+        // console.log('Add to Cart');
+
+      
+
     };
 
     return (
@@ -52,9 +119,10 @@ function App() {
 
                     <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
                         {/* Preview Section */}
+
                         <div className="relative">
-                            <div className="absolute inset-0 bg-gradient-to-b from-amber-100/20 to-amber-500/20 rounded-lg blur-xl"></div>
-                            <div className="relative bg-black/80 rounded-lg p-8 backdrop-blur-sm border border-white/10">
+                            {/* <div className="absolute inset-0 bg-gradient-to-b from-amber-100/20 to-amber-500/20 rounded-lg blur-xl"></div> */}
+                            <div id="preview-section" className=" relative md:sticky top-0 bg-black/80 rounded-lg p-8 backdrop-blur-sm border border-white/10">
                                 <div className="aspect-[16/9] rounded-lg overflow-hidden flex items-center justify-center">
                                     <div className="relative w-full h-full flex items-center justify-center">
                                         <div className="absolute inset-0 flex items-center">
@@ -73,21 +141,30 @@ function App() {
                                                 </div>
                                             )}
                                             <div className="flex-1 text-center">
-                                                <h2 className="text-4xl font-script text-amber-200 mb-2 text-shadow">
-                                                    {names.name1 || 'First Name'}
-                                                </h2>
-                                                <div className="h-12 flex items-center justify-center">
-                                                    {renderHeartShape()}
+                                                <div className="text-4xl font-script text-amber-200 mb-2 text-shadow">
+                                                    {/* {names.name1 || 'First Name'} */}
+                                                    <canvas ref={canvasRef} className="w-full h-full"></canvas>
                                                 </div>
-                                                <h2 className="text-4xl font-script text-amber-200 text-shadow">
-                                                    {names.name2 || 'Second Name'}
-                                                </h2>
+                                                <div className="h-12 flex items-center justify-center">
+                                                    <Image
+                                                        src="https://res.cloudinary.com/dkprths9f/image/upload/v1737534586/heart-2_kvhmjm.png"
+                                                        alt="heart"
+                                                        width={48}
+                                                        height={48}
+                                                        className="w-12 h-12 text-amber-500/70" />
+                                                </div>
+                                                <div className="text-4xl font-script text-amber-200 text-shadow">
+                                                    {/* {names.name2 || 'Second Name'} */}
+                                                    <canvas ref={canvasRefTwo} className="w-full h-full"></canvas>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+
 
                         {/* Customization Section */}
                         <div className="bg-white/95 backdrop-blur-sm rounded-lg p-8 shadow-xl">
@@ -121,44 +198,6 @@ function App() {
                                     />
                                 </div>
 
-                                <div className="space-y-4">
-                                    <h3 className="text-xl font-semibold text-gray-800">Choose Heart Style</h3>
-                                    <div className="grid grid-cols-3 gap-4">
-                                        <button
-                                            onClick={() => setSelectedShape('single-heart')}
-                                            className={`p-4 rounded-lg border-2 transition-all ${selectedShape === 'single-heart'
-                                                    ? 'border-amber-500 bg-amber-50'
-                                                    : 'border-gray-200 hover:border-amber-200'
-                                                }`}
-                                        >
-                                            <BiHeart className="w-8 h-8 text-pink-500 mx-auto" />
-                                            <span className="text-sm mt-2 block text-gray-600">Single Heart</span>
-                                        </button>
-                                        <button
-                                            onClick={() => setSelectedShape('double-heart')}
-                                            className={`p-4 rounded-lg border-2 transition-all ${selectedShape === 'double-heart'
-                                                    ? 'border-amber-500 bg-amber-50'
-                                                    : 'border-gray-200 hover:border-amber-200'
-                                                }`}
-                                        >
-                                            <div className="relative h-8 flex items-center justify-center">
-                                                <BiHeart className="w-6 h-6 text-pink-500 absolute -left-1" />
-                                                <BiHeart className="w-6 h-6 text-pink-500 absolute -right-1" />
-                                            </div>
-                                            <span className="text-sm mt-2 block text-gray-600">Double Hearts</span>
-                                        </button>
-                                        <button
-                                            onClick={() => setSelectedShape('hearts')}
-                                            className={`p-4 rounded-lg border-2 transition-all ${selectedShape === 'hearts'
-                                                    ? 'border-amber-500 bg-amber-50'
-                                                    : 'border-gray-200 hover:border-amber-200'
-                                                }`}
-                                        >
-                                            <BsHearts className="w-8 h-8 text-pink-500 mx-auto" />
-                                            <span className="text-sm mt-2 block text-gray-600">Multiple Hearts</span>
-                                        </button>
-                                    </div>
-                                </div>
 
                                 <div className="space-y-4">
                                     <h3 className="text-xl font-semibold text-gray-800">Enter Names</h3>
@@ -183,8 +222,13 @@ function App() {
                                         />
                                     </div>
                                 </div>
-
-                                <button className="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-lg hover:from-amber-600 hover:to-amber-700 transition-colors font-semibold shadow-lg">
+                                <div className="max-w-lg mx-auto mt-10">
+                                    <h2 className="text-xl font-semibold text-gray-800">Choose Your Font Family</h2>
+                                    <CustomizationButton selectedFont={selectedFont} handleFontChange={handleFontChange} />
+                                </div>
+                                <button
+                                    onClick={handleAddToCart}
+                                    className="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-lg hover:from-amber-600 hover:to-amber-700 transition-colors font-semibold shadow-lg">
                                     Add to Cart
                                 </button>
                             </div>

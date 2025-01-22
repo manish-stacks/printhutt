@@ -215,6 +215,141 @@
   font-style: normal;
 }
 
+/* custom font */
+
+@font-face {
+  font-family: "Barbara-Calligraphy";
+  src: url("./fonts/customize/Barbara-Calligraphy.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "bellamona-webfont";
+  src: url("./fonts/customize/bellamona-webfont.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Bellarina";
+  src: url("./fonts/customize/Bellarina.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "brittanysignature-webfont";
+  src: url("./fonts/customize/brittanysignature-webfont.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Buttervill";
+  src: url("./fonts/customize/Buttervill.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "combine-script";
+  src: url("./fonts/customize/combine-script.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "cosmodrome-monoline-webfont";
+  src: url("./fonts/customize/cosmodrome-monoline-webfont_bfcb9a5e-8962-4b6a-8ac2-31bae38f6f29.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "DancingScript-VariableFont";
+  src: url("./fonts/customize/DancingScript-VariableFont_wght.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "dream_angel-webfont";
+  src: url("./fonts/customize/dream_angel-webfont_7340341f-e6ed-4749-b751-f2bb8a8215a9.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "foundry-font_pack-webfont";
+  src: url("./fonts/customize/foundry-font_pack-webfont_9d131044-032a-4771-ab30-f5ebdb5d02fd.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "funky_signature-webfont";
+  src: url("./fonts/customize/funky_signature-webfont_887d1918-ad15-4bdd-95f7-d9b43a5866a4.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "HaloHandletter";
+  src: url("./fonts/customize/HaloHandletter.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "hexore-webfont";
+  src: url("./fonts/customize/hexore-webfont.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Korian";
+  src: url("./fonts/customize/Korian.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Lavanderia-Regular";
+  src: url("./fonts/customize/lavanderia_regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Modesta";
+  src: url("./fonts/customize/Modesta.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Monteryn";
+  src: url("./fonts/customize/Monteryn.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "neoneon-webfont";
+  src: url("./fonts/customize/neoneon-webfont.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Neris";
+  src: url("./fonts/customize/zorate-webfont.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
 /* Utilities ( Import Utilities ) */
 /* mixing */
 /* variables */
