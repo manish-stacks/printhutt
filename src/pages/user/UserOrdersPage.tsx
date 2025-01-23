@@ -133,13 +133,17 @@ const UserOrdersPage = () => {
                                   >
                                     <FaDownload />
                                   </Link>
-                                  <Link
-                                    href={`/user/order-track/${order.shipment.trackingId}`}
-                                    className="text-blue-700 underline"
-                                  >
-                                    Track
-                                  </Link>
-
+                                  {
+                                    order?.shipment?.trackingId && (
+                                      <Link
+                                        href={`/user/order-track/${order?.shipment?.trackingId}`}
+                                        className="text-blue-700 underline"
+                                      >
+                                        Track
+                                      </Link>
+                                    )
+                                  }
+                                 
                                 </div>
                               </td>
                             </tr>

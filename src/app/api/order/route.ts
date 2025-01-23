@@ -5,6 +5,7 @@ import { getDataFromToken } from "@/helpers/getDataFromToken";
 import Order from "@/models/orderModel";
 // import { sendOrderConfirmationEmail } from "@/lib/mail/mailer";
 import User from "@/models/userModel";
+import { uploadImageOrder } from "@/lib/cloudinary";
 
 connect();
 
@@ -61,7 +62,6 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     if (error instanceof Error) {
-      console.error("Error fetching orders:", error);
       return NextResponse.json(
         { error: error.message || "Internal Server Error" },
         { status: 500 }
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const userData = (await User.findById(tokenData.id))
+    const userData = await User.findById(tokenData.id);
 
     if (!userData?.email) {
       return NextResponse.json(
@@ -89,14 +89,47 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
 
-    const timestamp = Date.now();
-    // const randomStr = Math.random().toString(36).substring(2, 8);
+    const itemData = await Promise.all(body.items.map(async (item) => {
+      if (!item.custom_data) {
+        return {
+          productId: item.productId,
+          slug: item.slug,
+          name: item.name,
+          quantity: item.quantity,
+          price: item.price,
+          sku: item.sku,
+          product_image: item.product_image,
+        };
+      } else {
+        const customData = item.custom_data;
+        const updatedProductData = {
+          ...customData,
+          previewCanvas: await uploadImageOrder(customData.previewCanvas, 'customized preview canvas'),
+          previewImage: await uploadImageOrder(customData.previewImage, 'customized image')
+        };
 
-    const addressData = (await Address.findById(body.address))
+        // console.log(updatedProductData)
+        return {
+          productId: item.productId,
+          slug: item.slug,
+          name: item.name,
+          quantity: item.quantity,
+          price: item.price,
+          sku: item.sku,
+          product_image: updatedProductData.previewCanvas.url,
+          isCustomized: true,
+          custom_data: updatedProductData,
+        };
+      }
+    }));
+
+    const timestamp = Date.now();
+
+    const addressData = await Address.findById(body.address);
 
     const orderData = {
       orderId: `ORD-${timestamp}`,
-      items: body.items,
+      items: itemData,
       totalAmount: body.totalPrice,
       payAmt: body.paymentMethod === 'online' ? body.totalPrice : body.totalPrice * 0.20,
       paymentType: body.paymentMethod,
@@ -133,9 +166,6 @@ export async function POST(request: NextRequest) {
 
     //await sendOrderConfirmationEmail(orderData);
 
-
-
-
     return NextResponse.json({
       success: true,
       message: "Order saved successfully",
@@ -144,10 +174,12 @@ export async function POST(request: NextRequest) {
         user: userData
       },
     });
-  } catch {
-    return NextResponse.json(
-      { success: false, message: "Internal server error" },
-      { status: 500 }
-    );
+  } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json(
+        { error: error.message || "Internal Server Error" },
+        { status: 500 }
+      );
+    }
   }
 }

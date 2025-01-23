@@ -7,6 +7,7 @@ import { BsArrowLeft, BsCheckCircle, BsClock, BsTruck, BsXCircle } from 'react-i
 import { BiCheckCircle, BiMapPin, BiPackage, BiPhone, BiXCircle } from 'react-icons/bi';
 import Order from '@/models/orderModel';
 import { formatCurrency, formatDate } from '@/helpers/helpers';
+import Image from 'next/image';
 
 const statusConfig = {
     pending: {
@@ -92,7 +93,18 @@ export default async function OrderDetailsPage({
                                         className="flex items-center justify-between py-4 border-b last:border-0"
                                     >
                                         <div className="flex-1">
-                                            <p className="font-medium"><Link href={`/product-details/${item.slug}`} ></Link>{item.name}</p>
+                                            <p className="font-medium flex gap-2">
+                                                <Image
+                                                    alt={item.name}
+                                                    src={item.product_image || 'https://res.cloudinary.com/dkprths9f/image/upload/v1737632594/elementor-placeholder-image_wps86z.webp'}
+                                                   
+                                                    width={60}
+                                                    height={60}
+                                                    className="rounded-md w-10 h-10 object-cover"
+
+                                                />
+                                                <Link href={`/product-details/${item.slug}`} >{item.name}</Link>
+                                            </p>
                                             <p className="text-sm text-muted-foreground">
                                                 Quantity: {item.quantity}
                                             </p>

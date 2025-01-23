@@ -7,49 +7,62 @@ import { Canvas, IText } from 'fabric';
 import { CustomizationButton } from '@/components/CustomizationButton';
 import { useCartStore } from '@/store/useCartStore';
 import html2canvas from 'html2canvas';
+import { get_product_by_id } from '@/_services/admin/product';
+import { Product } from '@/lib/types/product';
+import { useRouter } from 'next/navigation';
 
-function App() {
+export default function App() {
     const [names, setNames] = useState({ name1: '', name2: '' });
     const [loading, setLoading] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
+    const [product, setProduct] = useState<Product>();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const canvasRefTwo = useRef<HTMLCanvasElement>(null);
     const [previewCanvas, setPreviewCanvas] = useState<string>('');
     const [selectedFont, setSelectedFont] = useState("Barbara-Calligraphy");
+    const [isAddingToCart, setIsAddingToCart] = useState(false);
     const addToCart = useCartStore(state => state.addToCart);
+    const router = useRouter();
+    const fetchProduct = async (id: string) => {
+        try {
+            const product = await get_product_by_id(id);
+            setProduct(product);
+        } catch (error) {
+            console.error('Error fetching product:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
 
     useEffect(() => {
-        if (canvasRef.current && canvasRefTwo.current) {
-            const canvas = new Canvas(canvasRef.current);
-            const text1 = new IText(names.name1 || 'First Name', {
-                left: 80,
-                top: 80,
+        setLoading(true);
+        fetchProduct('678e356cdc2bb80cb1dc2cb4');
+    }, []);
+
+    useEffect(() => {
+        const initializeCanvas = (canvasElement: HTMLCanvasElement, text: string, left: number, top: number) => {
+            const canvas = new Canvas(canvasElement);
+            const textObj = new IText(text, {
+                left,
+                top,
                 fill: '#fde68a',
                 fontSize: 32,
                 fontFamily: selectedFont,
             });
-            canvas.add(text1);
+            canvas.add(textObj);
             canvas.renderAll();
+            return canvas;
+        };
 
-            const canvas2 = new Canvas(canvasRefTwo.current);
-            const text2 = new IText(names.name2 || 'Second Name', {
-                left: 70,
-                top: 20,
-                fill: '#fde68a',
-                fontSize: 32,
-                fontFamily: selectedFont,
-            });
-            canvas2.add(text2);
-            canvas2.renderAll();
+        const canvas1 = canvasRef.current && initializeCanvas(canvasRef.current, names.name1 || 'First Name', 80, 80);
+        const canvas2 = canvasRefTwo.current && initializeCanvas(canvasRefTwo.current, names.name2 || 'Second Name', 70, 30);
 
-            return () => {
-                canvas.dispose();
-                canvas2.dispose();
-            };
-        }
-
-
+        return () => {
+            canvas1?.dispose();
+            canvas2?.dispose();
+        };
     }, [names, selectedFont]);
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,40 +81,56 @@ function App() {
     };
 
     const handleDownload = async () => {
-        console.log("first")
         const previewElement = document.getElementById('preview-section');
         if (previewElement) {
             const canvas = await html2canvas(previewElement);
-            const img = canvas.toDataURL('image/png');
-            setPreviewCanvas(img);
-            // const link = document.createElement('a');
-            // link.href = canvas.toDataURL('image/png');
-            // link.download = 'preview.png';
-            // link.click();
+            const link = document.createElement('a');
+            link.download = 'preview.jpg';
+            link.href = canvas.toDataURL('image/jpeg');
+            link.click();
         }
     };
 
-    useEffect(() => {
-        handleDownload()
-    }, [previewCanvas])
-
     const handleAddToCart = async () => {
-        await handleDownload();
-        if (previewCanvas) {
+        try {
+            setIsAddingToCart(true);
 
-            const data = {
-                name1: names.name1,
-                name2: names.name2,
-                previewImage,
-                previewCanvas,
-                selectedFont,
-            };
-            console.log(data);
+            const previewElement = document.getElementById('preview-section');
+            if (!previewElement) {
+                console.error("Preview section not found.");
+                return;
+            }
+
+            const canvas = await html2canvas(previewElement);
+            const previewCanvas = canvas.toDataURL('image/png');
+
+            if (previewCanvas && product) {
+                const custom_data = {
+                    name1: names.name1,
+                    name2: names.name2,
+                    previewImage,
+                    previewCanvas,
+                    selectedFont,
+                };
+
+                const updatedProduct = {
+                    ...product,
+                    thumbnail: { ...product.thumbnail, url: previewCanvas },
+                    custom_data,
+                };
+
+                //setProduct(updatedProduct);
+
+                addToCart(updatedProduct, 1);
+                router.push('/cart');
+                console.log("Product added to cart:", updatedProduct);
+                return;
+            }
+        } catch (error) {
+            console.error("Error while adding to cart:", error);
+        } finally {
+            setIsAddingToCart(false);
         }
-        // console.log('Add to Cart');
-
-      
-
     };
 
     return (
@@ -226,11 +255,26 @@ function App() {
                                     <h2 className="text-xl font-semibold text-gray-800">Choose Your Font Family</h2>
                                     <CustomizationButton selectedFont={selectedFont} handleFontChange={handleFontChange} />
                                 </div>
+
+
+
                                 <button
                                     onClick={handleAddToCart}
-                                    className="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-lg hover:from-amber-600 hover:to-amber-700 transition-colors font-semibold shadow-lg">
-                                    Add to Cart
+                                    disabled={isAddingToCart} // Disable button while loading
+                                    className={`w-full py-3 rounded-lg font-semibold shadow-lg ${isAddingToCart
+                                        ? 'bg-gray-400 cursor-not-allowed'
+                                        : 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 transition-colors'
+                                        }`}
+                                >
+                                    {isAddingToCart ? 'Adding to Cart...' : 'Add to Cart'}
                                 </button>
+
+                                <button
+                                    onClick={handleDownload}
+                                    className="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-lg hover:from-amber-600 hover:to-amber-700 transition-colors font-semibold shadow-lg">
+                                    Download Preview
+                                </button>
+
                             </div>
                         </div>
                     </div>
@@ -240,4 +284,3 @@ function App() {
     );
 }
 
-export default App;

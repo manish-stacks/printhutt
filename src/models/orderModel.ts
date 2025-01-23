@@ -7,14 +7,6 @@ const orderSchema: Schema<IOrder> = new Schema({
     orderId: {
         type: String,
     },
-    isCustomized: {
-        type: Boolean,
-        default: false
-    },
-    custom_data: {
-        type: Object,
-        default: null
-    },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -28,8 +20,14 @@ const orderSchema: Schema<IOrder> = new Schema({
             quantity: { type: Number, required: true },
             price: { type: Number, required: true },
             sku: { type: String, required: true },
-            product_image: {
-                type: String
+            product_image: {type: String },
+            isCustomized: {
+                type: Boolean,
+                default: false
+            },
+            custom_data: {
+                type: Object,
+                default: null
             },
             _id: false,
         },

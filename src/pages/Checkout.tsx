@@ -30,7 +30,7 @@ const Checkout = () => {
 
   const placeOrder = async () => {
     const order = {
-      items: items.map((item) => ({ productId: item._id, slug: item.slug, quantity: item.quantity, name: item.title, price: item.price, sku: item.sku })),
+      items: items.map((item) => ({ productId: item._id, slug: item.slug, quantity: item.quantity, name: item.title, price: item.price, sku: item.sku, product_image: item.thumbnail.url, custom_data: item.custom_data || null })),
       getTotalItems: getTotalItems(),
       totalPrice: getTotalPrice(),
       paymentMethod: paymentMethod,
@@ -40,13 +40,14 @@ const Checkout = () => {
     try {
       setIsSubmitting(true);
       const response: { order: { _id: string } } = await create_a_new_order(order);
-      const paymentResponse = await initiate_Payment(response.order);
-      if (paymentResponse) {
-        const redirectUrl = paymentResponse?.instrumentResponse?.redirectInfo?.url;
-        window.location.href = redirectUrl;
-      } else {
-        toast.error("Payment initiation failed!");
-      }
+      console.log("response", response);
+      // const paymentResponse = await initiate_Payment(response.order);
+      // if (paymentResponse) {
+      //   const redirectUrl = paymentResponse?.instrumentResponse?.redirectInfo?.url;
+      //   window.location.href = redirectUrl;
+      // } else {
+      //   toast.error("Payment initiation failed!");
+      // }
       return;
     } catch (error) {
       console.error(error);
@@ -56,6 +57,10 @@ const Checkout = () => {
     }
 
   }
+
+
+
+  console.log("items", items);
 
   return (
     <>
@@ -207,11 +212,21 @@ const Checkout = () => {
                     totalPrice={totalPrice}
                   />
                 </div>
-                <div
-                  className="checkout-items border-[1px] border-solid border-[#eee] p-[20px] rounded-[20px] mb-[24px]"
+                <button
+                  className="w-full bb-btn-2 mt-[24px] inline-flex items-center justify-center check-btn transition-all duration-[0.3s] ease-in-out font-Poppins leading-[28px] tracking-[0.03rem] py-[8px] px-[20px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
                   data-aos="fade-up"
                   data-aos-duration={1000}
-                  data-aos-delay={400}
+                  data-aos-delay={200}
+                  onClick={placeOrder}
+                >
+                  {isSubmitting ? 'Submiting...' : 'Place Order'}
+                </button>
+
+                <div
+                  className=" mt-5 checkout-items border-[1px] border-solid border-[#eee] p-[20px] rounded-[20px] mb-[24px]"
+                  data-aos="fade-up"
+                  data-aos-duration={1000}
+                  data-aos-delay={200}
                 >
                   <div className="sub-title mb-[12px]">
                     <h4 className="font-quicksand tracking-[0.03rem] leading-[1.2] text-[20px] font-bold text-[#3d4750]">
@@ -228,15 +243,6 @@ const Checkout = () => {
                 </div>
 
 
-                <button
-                  className="w-full bb-btn-2 mt-[24px] inline-flex items-center justify-center check-btn transition-all duration-[0.3s] ease-in-out font-Poppins leading-[28px] tracking-[0.03rem] py-[8px] px-[20px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
-                  data-aos="fade-up"
-                  data-aos-duration={1000}
-                  data-aos-delay={400}
-                  onClick={placeOrder}
-                >
-                  {isSubmitting ? 'Submiting...' : 'Place Order'}
-                </button>
               </div>
             </div>
           </div>

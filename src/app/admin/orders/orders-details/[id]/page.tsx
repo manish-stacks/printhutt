@@ -13,6 +13,8 @@ import { toast } from 'react-toastify';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import Image from 'next/image';
+import CustomizeOderModel from '@/components/admin/order/CustomizeOderModel';
 
 const statusConfig = {
     pending: {
@@ -38,7 +40,6 @@ const statusConfig = {
 };
 
 export default function OrderDetailsPage() {
-
     const params = useParams();
     const id = params?.id as string | undefined;
 
@@ -62,14 +63,14 @@ export default function OrderDetailsPage() {
         } catch (error) {
             toast.error('Error fetching order:');
         }
-    }
+    };
+
     useEffect(() => {
         fetchOrder();
     }, [id]);
 
-
     if (!order) {
-        return <LoadingSpinner />
+        return <LoadingSpinner />;
     }
 
     const StatusIcon = statusConfig[order.status as keyof typeof statusConfig].icon;
@@ -81,7 +82,6 @@ export default function OrderDetailsPage() {
         { value: 'delivered', label: 'Delivered' },
         { value: 'cancelled', label: 'Cancelled' },
     ];
-
 
     const handleStatusChange = async (selectedOption) => {
         setOrderStatus(selectedOption.value);
@@ -147,15 +147,12 @@ export default function OrderDetailsPage() {
             setShowShipmentForm(false);
         } catch (error) {
             console.error('Error creating shipment:', error);
-        }
-        finally {
+        } finally {
             setLoading(false);
         }
     };
 
-
     return (
-
         <div className="max-w-10xl mx-auto lg:px-10 py-20">
             <div className="w-full md:w-12/12 lg:w-12/12 mb-5">
                 <div className="bg-white text-black flex justify-between align-middle p-6 rounded-lg shadow-md">
@@ -167,7 +164,6 @@ export default function OrderDetailsPage() {
             </div>
 
             <div className="bg-white px-5 py-10">
-
                 <div className="max-w-7xl mx-auto px-4 py-8">
                     <div className="space-y-8">
                         {/* Header */}
@@ -175,16 +171,11 @@ export default function OrderDetailsPage() {
                             <div className="flex flex-col gap-2">
                                 <div className="flex items-center gap-2">
                                     <h1 className="text-3xl font-bold">Order Details</h1>
-
                                     <StatusIcon className="h-5 w-5" />
-                                    {/* <div className={statusConfig[order.status as keyof typeof statusConfig].color}>
-                                        {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-                                    </div> */}
                                     <div className={statusConfig[orderStatus as keyof typeof statusConfig].color}>
                                         {orderStatus.charAt(0).toUpperCase() + orderStatus.slice(1)}
                                     </div>
                                 </div>
-
                                 <div className="flex flex-col gap-1 text-muted-foreground">
                                     <p>Order ID: {order.orderId}</p>
                                     <p>Placed on: {formatDate(order.createdAt)}</p>
@@ -193,25 +184,46 @@ export default function OrderDetailsPage() {
                         </div>
 
                         <div className="grid gap-8 md:grid-cols-2 border-t border-b border-gray-200 rounded-lg">
-                            <div className="space-y-8 ">
-
-
+                            <div className="space-y-8">
                                 {/* Order Items */}
                                 <div className="p-6">
                                     <h2 className="text-xl font-semibold mb-4">Order Items</h2>
                                     <div className="space-y-4">
                                         {order.items.map((item, index) => (
-                                            <div
-                                                key={index}
-                                                className="flex items-center justify-between py-4 border-b last:border-0"
-                                            >
-                                                <div className="flex-1">
-                                                    <p className="font-medium"><Link href={`/product-details/${item.slug}`} ></Link>{item.name}</p>
-                                                    <p className="text-sm text-muted-foreground">
-                                                        Quantity: {item.quantity}
-                                                    </p>
+                                            <div key={index}>
+                                                <div className="flex items-center justify-between py-4 border-b last:border-0">
+                                                    <div className="flex-1">
+                                                        <p className="font-medium flex gap-2">
+                                                            <Image
+                                                                alt={item.name}
+                                                                src={item.product_image || 'https://res.cloudinary.com/dkprths9f/image/upload/v1737632594/elementor-placeholder-image_wps86z.webp'}
+                                                                width={60}
+                                                                height={60}
+                                                                className="rounded-md w-10 h-10 object-cover"
+                                                            />
+                                                            <Link href={`/product-details/${item.slug}`}>
+                                                                {item.name}
+
+
+
+                                                            </Link>
+
+
+                                                        </p>
+
+                                                        <p className="text-sm text-muted-foreground">
+                                                            Quantity: {item.quantity}
+                                                        </p>
+                                                    </div>
+                                                    <p className="font-medium">{formatCurrency(item.price)}</p>
                                                 </div>
-                                                <p className="font-medium">{formatCurrency(item.price)}</p>
+
+                                                {item?.custom_data && (
+                                                    <>
+                                                        {/* <span className="text-xs text-green-700  bg-green-300 py-2 px-4" > Customized</span> */}
+                                                        <CustomizeOderModel item={item?.custom_data} />
+                                                    </>
+                                                )}
                                             </div>
                                         ))}
                                     </div>
@@ -233,23 +245,19 @@ export default function OrderDetailsPage() {
                                             <span>Total Amount:</span>
                                             <span>{formatCurrency(order.totalAmount)}</span>
                                         </div>
-                                        {
-                                            order.paymentType === 'offline' && (
-                                                <>
-                                                    <div className="flex justify-between items-center ">
-                                                        <span>Pay Amount:</span>
-                                                        <span className='text-green-500'>-{formatCurrency(order.payAmt)}</span>
-                                                    </div>
-                                                    <div className="flex justify-between items-center ">
-                                                        <span>Due Amount:</span>
-                                                        <span className='text-rose-600'>{formatCurrency(order.totalAmount - order.payAmt)}</span>
-                                                    </div>
-                                                </>
-                                            )
-                                        }
-
+                                        {order.paymentType === 'offline' && (
+                                            <>
+                                                <div className="flex justify-between items-center">
+                                                    <span>Pay Amount:</span>
+                                                    <span className='text-green-500'>-{formatCurrency(order.payAmt)}</span>
+                                                </div>
+                                                <div className="flex justify-between items-center">
+                                                    <span>Due Amount:</span>
+                                                    <span className='text-rose-600'>{formatCurrency(order.totalAmount - order.payAmt)}</span>
+                                                </div>
+                                            </>
+                                        )}
                                     </div>
-
                                 </div>
                             </div>
 
@@ -262,7 +270,6 @@ export default function OrderDetailsPage() {
                                             <span>Payment Method</span>
                                             <span className="capitalize">{order.payment.method}</span>
                                         </div>
-
                                         <div className="flex justify-between items-center">
                                             <span>Payment Status</span>
                                             <div className="flex items-center gap-2">
@@ -279,21 +286,18 @@ export default function OrderDetailsPage() {
                                                 )}
                                             </div>
                                         </div>
-
                                         {order.payment.transactionId && (
                                             <div className="flex justify-between items-center">
                                                 <span>Transaction ID</span>
                                                 <span className="font-mono">{order.payment.transactionId}</span>
                                             </div>
                                         )}
-
                                         {order.payment.paidAt && (
                                             <div className="flex justify-between items-center">
                                                 <span>Paid At</span>
                                                 <span>{formatDate(order.payment.paidAt)}</span>
                                             </div>
                                         )}
-
                                         <div className="pt-4 border-t">
                                             <div className="flex justify-between items-center font-semibold">
                                                 <span>Pay Amount</span>
@@ -317,7 +321,6 @@ export default function OrderDetailsPage() {
                                                 </p>
                                             </div>
                                         </div>
-
                                         <div className="flex items-center gap-3">
                                             <BiPhone className="h-5 w-5 text-muted-foreground" />
                                             <p>{order.shipping.mobileNumber}</p>
@@ -327,7 +330,6 @@ export default function OrderDetailsPage() {
                             </div>
                         </div>
 
-
                         <div className="grid gap-8 md:grid-cols-2 border-t border-b border-gray-200 rounded-lg py-10">
                             <div>
                                 <h2 className="text-xl font-semibold mb-4">Order Status</h2>
@@ -336,7 +338,6 @@ export default function OrderDetailsPage() {
                                     onChange={handleStatusChange}
                                     options={statusOptions}
                                 />
-
                                 {showShipmentForm && (
                                     <div className="border rounded-lg p-6 bg-gray-50 mt-4">
                                         <h3 className="text-lg font-semibold mb-4">Shipment Details</h3>
@@ -383,14 +384,12 @@ export default function OrderDetailsPage() {
                                                     />
                                                 </div>
                                             </div>
-
                                             <button type="submit" className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
                                                 {loading ? 'Creating Shipment...' : "Create Shipment"}
                                             </button>
                                         </form>
                                     </div>
                                 )}
-
                             </div>
                         </div>
                     </div>

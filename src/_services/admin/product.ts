@@ -26,7 +26,7 @@ export const get_product_by_slug = async (slug: string): Promise<Product> => {
 }
 
 export const get_product_by_id = async (id: string): Promise<Product> => {
-  return axiosInstance.get(`/product/${id}`);
+  return axiosInstance.get(`/v1/products/${id}`);
 }
 
 

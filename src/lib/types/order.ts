@@ -2,13 +2,16 @@ import mongoose, { Document } from "mongoose";
 
 export interface IOrder extends Document {
     orderId: string;
+    custom_data: object;
     items: {
         productId: mongoose.Types.ObjectId;
         slug: string;
         name: string;
         quantity: number;
         price: number;
-        sku:string
+        sku: string;
+        product_image?: string;
+        isCustomized?: boolean;
     }[];
     totalAmount: number;
     payAmt: number;
@@ -22,7 +25,7 @@ export interface IOrder extends Document {
     offerId: mongoose.Types.ObjectId;
     userId: mongoose.Types.ObjectId;
     shipping: {
-        userName:string;
+        userName: string;
         addressLine: string;
         city: string;
         state: string;

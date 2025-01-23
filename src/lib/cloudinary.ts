@@ -30,6 +30,23 @@ export const uploadImage = async (file, folderName = 'common', width: number, he
   }
 };
 
+
+export const uploadImageOrder = async (dataUri:string, folderName:string): Promise<{ url: string; public_id: string; fileType: string }> => {
+  try {
+    const result = await cloudinary.uploader.upload(dataUri, {
+      folder: folderName
+    });
+    return {
+      url: result.secure_url,
+      public_id: result.public_id,
+      fileType: result.format
+    };
+  } catch (error) {
+    console.error('Error uploading to Cloudinary:', error);
+    throw new Error('Failed to upload image');
+  }
+};
+
 export const deleteImage = async (public_id: string): Promise<void> => {
   try {
     await cloudinary.uploader.destroy(public_id);

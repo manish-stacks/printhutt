@@ -7,6 +7,7 @@ import type{ Product } from '@/lib/types/product'
 
 interface CartItem extends Product {
   quantity: number
+  custom_data?: object
 }
 
 interface CartStore {

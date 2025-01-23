@@ -27,7 +27,7 @@ export const CheckoutAddressForm = ({ onChangeAddress }: TypeSelectorProps) => {
     }, [selectedAddress])
 
 
-    useEffect(()=>{
+    useEffect(() => {
         const defaultAddress = addresslist.find((address) => address.isDefault);
         if (defaultAddress) {
             onChangeAddress(defaultAddress._id);
@@ -309,8 +309,8 @@ export const CheckoutAddressForm = ({ onChangeAddress }: TypeSelectorProps) => {
                                                 <label className="inline-block font-Poppins leading-[26px] tracking-[0.02rem] mb-[8px] text-[14px] font-medium text-[#3d4750]">
                                                     Region State *
                                                 </label>
-                                                <div className="custom-select p-[10px] border-[1px] border-solid border-[#eee] leading-[26px] rounded-[10px]">
-                                                    <select
+                                                {/* <div className="custom-select p-[10px] border-[1px] border-solid border-[#eee] leading-[26px] rounded-[10px]"> */}
+                                                    {/* <select
                                                         name="state"
                                                         value={formData.state || ''}
                                                         onChange={handleChange}
@@ -319,11 +319,19 @@ export const CheckoutAddressForm = ({ onChangeAddress }: TypeSelectorProps) => {
                                                         <option value="">Select State</option>
                                                         <option value="delhi">Delhi</option>
                                                         <option value="maharashtra">Maharashtra</option>
-                                                    </select>
+                                                    </select> */}
+                                                    <input
+                                                        type="text"
+                                                        name="state"
+                                                        placeholder="State"
+                                                        className="w-full p-[10px] text-[14px] font-normal text-[#686e7d] border-[1px] border-solid border-[#eee] leading-[26px] outline-[0] rounded-[10px]"
+                                                        value={formData.state || ''}
+                                                        onChange={handleChange}
+                                                    />
                                                     {errors.state && (
                                                         <p className="text-red-500 text-sm mt-1">{errors.state}</p>
                                                     )}
-                                                </div>
+                                                {/* </div> */}
                                             </div>
                                         </div>
 
