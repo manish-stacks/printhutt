@@ -88,7 +88,7 @@ export async function POST(req: NextRequest) {
       sale: formData.get('sale') === 'true',
       new: formData.get('new') === 'true',
       isCustomize: formData.get('isCustomize') === 'true',
-      customizeLink: formData.get('warrantycustomizeLinkInformation')?.toString() || '',
+      customizeLink: formData.get('customizeLink')?.toString() || '',
       meta: {
         keywords: formData.get('keywords')?.toString() || '',
         meta_description: formData.get('meta_description')?.toString() || '',

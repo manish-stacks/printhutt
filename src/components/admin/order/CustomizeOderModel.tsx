@@ -21,6 +21,14 @@ const CustomizeOderModel = ({ item }) => {
                             )
                         );
                     })}
+                    {
+                        item?.selectedDesign && (
+                            <div className="flex items-center justify-between py-2 border-b last:border-0">
+                                <p>Selected Design</p>
+                                <p>{item?.selectedDesign}</p>
+                            </div>
+                        )
+                    }
 
                     <div className='flex space-x-3'>
                         {item?.previewImage && (

@@ -105,7 +105,7 @@ export async function POST(request: NextRequest) {
         const updatedProductData = {
           ...customData,
           previewCanvas: await uploadImageOrder(customData.previewCanvas, 'customized preview canvas'),
-          previewImage: await uploadImageOrder(customData.previewImage, 'customized image')
+          previewImage: customData?.previewImage && await uploadImageOrder(customData.previewImage, 'customized image')
         };
 
         // console.log(updatedProductData)

@@ -13,16 +13,13 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 
 export default function App() {
-    const [names, setNames] = useState({ name1: '', name2: '' });
-    const [loading, setLoading] = useState(false);
-    const [previewImage, setPreviewImage] = useState('');
+    const [names, setNames] = useState({ name1: '' });
     const [product, setProduct] = useState<Product>();
-    const fileInputRef = useRef<HTMLInputElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const canvasRefTwo = useRef<HTMLCanvasElement>(null);
-    const [previewCanvas, setPreviewCanvas] = useState<string>('');
     const [selectedFont, setSelectedFont] = useState("Barbara-Calligraphy");
     const [isAddingToCart, setIsAddingToCart] = useState(false);
+    const [selectedDesign, setSelectedDesign] = useState('cutout');
+
     const addToCart = useCartStore(state => state.addToCart);
     const router = useRouter();
     const fetchProduct = async (id: string) => {
@@ -31,15 +28,13 @@ export default function App() {
             setProduct(product);
         } catch (error) {
             console.error('Error fetching product:', error);
-        } finally {
-            setLoading(false);
+            toast.error('Error fetching product.');
         }
     };
 
 
     useEffect(() => {
-        setLoading(true);
-        fetchProduct('678e356cdc2bb80cb1dc2cb4');
+        fetchProduct('679277f42f3c20b2851e939c');
     }, []);
 
     useEffect(() => {
@@ -58,24 +53,12 @@ export default function App() {
         };
 
         const canvas1 = canvasRef.current && initializeCanvas(canvasRef.current, names.name1 || 'First Name', 80, 80);
-        const canvas2 = canvasRefTwo.current && initializeCanvas(canvasRefTwo.current, names.name2 || 'Second Name', 70, 30);
 
         return () => {
             canvas1?.dispose();
-            canvas2?.dispose();
         };
     }, [names, selectedFont]);
 
-    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setPreviewImage(reader.result as string);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
 
     const handleFontChange = (font: string) => {
         setSelectedFont(font);
@@ -92,15 +75,16 @@ export default function App() {
         }
     };
 
+    const changeDesign = (design: string) => {
+        setSelectedDesign(design);
+    };
+
     const handleAddToCart = async () => {
-        if (names.name1 === '' || names.name2 === '') {
+        if (names.name1 === '') {
             toast.error('Please enter both names.');
             return;
         }
-        if (!previewImage) {
-            toast.error('Please upload a preview image.');
-            return;
-        }
+
         try {
             setIsAddingToCart(true);
 
@@ -116,8 +100,7 @@ export default function App() {
             if (previewCanvas && product) {
                 const custom_data = {
                     name1: names.name1,
-                    name2: names.name2,
-                    previewImage,
+                    selectedDesign,
                     previewCanvas,
                     selectedFont,
                 };
@@ -146,7 +129,8 @@ export default function App() {
         <div
             className="min-h-screen bg-cover bg-center bg-no-repeat"
             style={{
-                backgroundImage: 'url("https://res.cloudinary.com/dkprths9f/image/upload/v1737650777/photo-1506744038136-46273834b3fb_hq8v7q.avif")',
+
+                backgroundImage: 'url("https://res.cloudinary.com/dkprths9f/image/upload/v1737650717/photo-15_gyd3jd.avif")',
             }}
         >
             <div className="min-h-screen bg-black/40 backdrop-blur-sm py-8">
@@ -163,39 +147,8 @@ export default function App() {
                             <div id="preview-section" className=" relative md:sticky top-0 bg-black/80 rounded-lg p-8 backdrop-blur-sm border border-white/10">
                                 <div className="aspect-[16/9] rounded-lg overflow-hidden flex items-center justify-center">
                                     <div className="relative w-full h-full flex items-center justify-center">
-                                        <div className="absolute inset-0 flex items-center">
-                                            {previewImage ? (
-                                                <div className="w-1/3 h-full relative mr-4">
-                                                    <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent"></div>
-                                                    <img
-                                                        src={previewImage}
-                                                        alt="Preview"
-                                                        className="w-full h-full object-cover rounded-lg"
-                                                    />
-                                                </div>
-                                            ) : (
-                                                <div className="w-1/3 h-full mr-4 border-2 border-dashed border-amber-500/50 rounded-lg flex items-center justify-center bg-black/40">
-                                                    <BiUpload className="w-12 h-12 text-amber-500/70" />
-                                                </div>
-                                            )}
-                                            <div className="flex-1 text-center">
-                                                <div className="text-4xl font-script text-amber-200 mb-2 text-shadow">
-                                                    {/* {names.name1 || 'First Name'} */}
-                                                    <canvas ref={canvasRef} className="w-full h-full"></canvas>
-                                                </div>
-                                                <div className="h-12 flex items-center justify-center">
-                                                    <Image
-                                                        src="https://res.cloudinary.com/dkprths9f/image/upload/v1737534586/heart-2_kvhmjm.png"
-                                                        alt="heart"
-                                                        width={48}
-                                                        height={48}
-                                                        className="w-12 h-12 text-amber-500/70" />
-                                                </div>
-                                                <div className="text-4xl font-script text-amber-200 text-shadow">
-                                                    {/* {names.name2 || 'Second Name'} */}
-                                                    <canvas ref={canvasRefTwo} className="w-full h-full"></canvas>
-                                                </div>
-                                            </div>
+                                        <div className="absolute inset-0 flex items-center justify-center">
+                                            <canvas ref={canvasRef} className="w-full h-full"></canvas>
                                         </div>
                                     </div>
                                 </div>
@@ -207,36 +160,6 @@ export default function App() {
                         {/* Customization Section */}
                         <div className="bg-white/95 backdrop-blur-sm rounded-lg p-8 shadow-xl">
                             <div className="space-y-6">
-                                <div>
-                                    <h3 className="text-xl font-semibold text-gray-800 mb-4">Upload Your Photo</h3>
-                                    <div className="flex items-center gap-4">
-                                        <button
-                                            onClick={() => fileInputRef.current?.click()}
-                                            className="px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-lg hover:from-amber-600 hover:to-amber-700 transition-colors flex items-center gap-2 shadow-lg"
-                                        >
-                                            <BsUpload className="w-4 h-4" />
-                                            Choose Photo
-                                        </button>
-                                        {previewImage && (
-                                            <button
-                                                onClick={() => setPreviewImage('')}
-                                                className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2"
-                                            >
-                                                <BiRefresh className="w-4 h-4" />
-                                                Reset
-                                            </button>
-                                        )}
-                                    </div>
-                                    <input
-                                        type="file"
-                                        ref={fileInputRef}
-                                        onChange={handleImageUpload}
-                                        accept="image/*"
-                                        className="hidden"
-                                    />
-                                </div>
-
-
                                 <div className="space-y-4">
                                     <h3 className="text-xl font-semibold text-gray-800">Enter Names</h3>
                                     <div>
@@ -249,24 +172,76 @@ export default function App() {
                                             placeholder="Enter first name"
                                         />
                                     </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Second Name</label>
-                                        <input
-                                            type="text"
-                                            value={names.name2}
-                                            onChange={(e) => setNames({ ...names, name2: e.target.value })}
-                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
-                                            placeholder="Enter second name"
-                                        />
-                                    </div>
+
                                 </div>
                                 <div className="max-w-lg mx-auto mt-10">
                                     <h2 className="text-xl font-semibold text-gray-800">Choose Your Font Family</h2>
                                     <CustomizationButton selectedFont={selectedFont} handleFontChange={handleFontChange} />
                                 </div>
 
+                                <div className="list-group-item mb-10 mt-10">
+
+                                    <div className="flex flex-wrap">
 
 
+                                        <div className="w-full md:w-1/2 mb-4 md:mb-0">
+                                            <label className="text-gray-800 text-lg font-semibold">Select Your Design</label>
+                                            <div className="radio-itens mr-[20px]" onClick={() => changeDesign('cutout')}>
+                                                <input
+                                                    type="radio"
+                                                    id="address"
+                                                    name="addres"
+                                                    className="w-auto mr-[2px] p-[10px]"
+                                                    checked={selectedDesign === 'cutout'}
+                                                    onChange={() => changeDesign('cutout')}
+                                                />
+                                                <label
+                                                    className="relative font-normal text-[14px] text-[#686e7d] pl-[26px] cursor-pointer leading-[16px] inline-block tracking-[0]"
+                                                >
+                                                    Cutout Design
+                                                </label>
+                                            </div>
+
+                                            <div className="radio-itens mr-[20px]" onClick={() => changeDesign('rectangle')}>
+                                                <input
+                                                    type="radio"
+                                                    id="address"
+                                                    name="addres"
+                                                    className="w-auto mr-[2px] p-[10px]"
+                                                    checked={selectedDesign === 'rectangle'}
+                                                    onChange={() => changeDesign('rectangle')}
+                                                />
+                                                <label
+                                                    className="relative font-normal text-[14px] text-[#686e7d] pl-[26px] cursor-pointer leading-[16px] inline-block tracking-[0]"
+                                                >
+                                                    Rectangle Design
+                                                </label>
+                                            </div>
+
+
+                                        </div>
+                                        <div className="w-full md:w-1/2">
+                                            {selectedDesign === 'cutout' && (
+                                                <div id="cutoutDesign">
+                                                    <img
+                                                        src="https://res.cloudinary.com/dkprths9f/image/upload/v1737654372/510341279_20240810_152907_nioxer.jpg"
+                                                        alt="cutout"
+                                                        className="h-[96px] w-[170px] object-cover rounded-xl"
+                                                    />
+                                                </div>
+                                            )}
+                                            {selectedDesign === 'rectangle' && (
+                                                <div id="rectangleDesign">
+                                                    <img
+                                                        src="https://res.cloudinary.com/dkprths9f/image/upload/v1737654373/rect_n4e399.jpg"
+                                                        alt="rectangle"
+                                                        className="h-[96px] w-[170px] object-cover rounded-xl"
+                                                    />
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
                                 <button
                                     onClick={handleAddToCart}
                                     disabled={isAddingToCart} // Disable button while loading
