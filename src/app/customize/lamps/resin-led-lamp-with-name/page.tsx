@@ -1,10 +1,8 @@
 "use client"
-import Image from 'next/image';
+
 import React, { useState, useRef, useEffect } from 'react';
-import { BiRefresh, BiUpload } from 'react-icons/bi';
-import { BsUpload } from 'react-icons/bs';
 import { Canvas, IText } from 'fabric';
-import { CustomizationButton } from '@/components/CustomizationButton';
+import { CustomizationButtonTwo } from '@/components/CustomizationButton';
 import { useCartStore } from '@/store/useCartStore';
 import html2canvas from 'html2canvas';
 import { get_product_by_id } from '@/_services/admin/product';
@@ -16,9 +14,8 @@ export default function App() {
     const [names, setNames] = useState({ name1: '' });
     const [product, setProduct] = useState<Product>();
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const [selectedFont, setSelectedFont] = useState("Barbara-Calligraphy");
+    const [selectedFont, setSelectedFont] = useState("orangina_demo");
     const [isAddingToCart, setIsAddingToCart] = useState(false);
-    const [selectedDesign, setSelectedDesign] = useState('cutout');
 
     const addToCart = useCartStore(state => state.addToCart);
     const router = useRouter();
@@ -34,7 +31,7 @@ export default function App() {
 
 
     useEffect(() => {
-        fetchProduct('679277f42f3c20b2851e939c');
+        fetchProduct('6793374553f4c79e4665548f');
     }, []);
 
     useEffect(() => {
@@ -44,7 +41,7 @@ export default function App() {
                 left,
                 top,
                 fill: '#fde68a',
-                fontSize: 32,
+                fontSize: 45,
                 fontFamily: selectedFont,
             });
             canvas.add(textObj);
@@ -52,7 +49,7 @@ export default function App() {
             return canvas;
         };
 
-        const canvas1 = canvasRef.current && initializeCanvas(canvasRef.current, names.name1 || 'First Name', 80, 80);
+        const canvas1 = canvasRef.current && initializeCanvas(canvasRef.current, names.name1 || 'First Name', 20, 40);
 
         return () => {
             canvas1?.dispose();
@@ -75,9 +72,6 @@ export default function App() {
         }
     };
 
-    const changeDesign = (design: string) => {
-        setSelectedDesign(design);
-    };
 
     const handleAddToCart = async () => {
         if (names.name1 === '') {
@@ -100,7 +94,6 @@ export default function App() {
             if (previewCanvas && product) {
                 const custom_data = {
                     name1: names.name1,
-                    selectedDesign,
                     previewCanvas,
                     selectedFont,
                 };
@@ -177,72 +170,10 @@ export default function App() {
                                 </div>
                                 <div className="max-w-lg mx-auto mt-10">
                                     <h2 className="text-xl font-semibold text-gray-800">Choose Your Font Family</h2>
-                                    <CustomizationButton selectedFont={selectedFont} handleFontChange={handleFontChange} />
+                                    <CustomizationButtonTwo selectedFont={selectedFont} handleFontChange={handleFontChange} />
                                 </div>
 
-                                <div className="list-group-item mb-10 mt-10">
-
-                                    <div className="flex flex-wrap">
-
-
-                                        <div className="w-full md:w-1/2 mb-4 md:mb-0">
-                                            <label className="text-gray-800 text-lg font-semibold">Select Your Design</label>
-                                            <div className="radio-itens mr-[20px]" onClick={() => changeDesign('cutout')}>
-                                                <input
-                                                    type="radio"
-                                                    id="address"
-                                                    name="addres"
-                                                    className="w-auto mr-[2px] p-[10px]"
-                                                    checked={selectedDesign === 'cutout'}
-                                                    onChange={() => changeDesign('cutout')}
-                                                />
-                                                <label
-                                                    className="relative font-normal text-[14px] text-[#686e7d] pl-[26px] cursor-pointer leading-[16px] inline-block tracking-[0]"
-                                                >
-                                                    Cutout Design
-                                                </label>
-                                            </div>
-
-                                            <div className="radio-itens mr-[20px]" onClick={() => changeDesign('rectangle')}>
-                                                <input
-                                                    type="radio"
-                                                    id="address"
-                                                    name="addres"
-                                                    className="w-auto mr-[2px] p-[10px]"
-                                                    checked={selectedDesign === 'rectangle'}
-                                                    onChange={() => changeDesign('rectangle')}
-                                                />
-                                                <label
-                                                    className="relative font-normal text-[14px] text-[#686e7d] pl-[26px] cursor-pointer leading-[16px] inline-block tracking-[0]"
-                                                >
-                                                    Rectangle Design
-                                                </label>
-                                            </div>
-
-
-                                        </div>
-                                        <div className="w-full md:w-1/2">
-                                            {selectedDesign === 'cutout' && (
-                                                <div id="cutoutDesign">
-                                                    <img
-                                                        src="https://res.cloudinary.com/dkprths9f/image/upload/v1737654372/510341279_20240810_152907_nioxer.jpg"
-                                                        alt="cutout"
-                                                        className="h-[96px] w-[170px] object-cover rounded-xl"
-                                                    />
-                                                </div>
-                                            )}
-                                            {selectedDesign === 'rectangle' && (
-                                                <div id="rectangleDesign">
-                                                    <img
-                                                        src="https://res.cloudinary.com/dkprths9f/image/upload/v1737654373/rect_n4e399.jpg"
-                                                        alt="rectangle"
-                                                        className="h-[96px] w-[170px] object-cover rounded-xl"
-                                                    />
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
+                                
                                 <button
                                     onClick={handleAddToCart}
                                     disabled={isAddingToCart} // Disable button while loading

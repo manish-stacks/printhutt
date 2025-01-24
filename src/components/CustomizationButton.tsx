@@ -4,24 +4,6 @@ interface CustomizationButtonProps {
     selectedFont: string;
     handleFontChange: (font: string) => void;
 }
-export const CustomizationButton = ({ selectedFont, handleFontChange }: CustomizationButtonProps) => {
-    return (
-        <>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-5">
-                {fonts.map((font, index) => (
-                    <button
-                        key={index}
-                        className={`py-2 px-3 rounded-lg border ${selectedFont === font.font ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-lg hover:from-amber-600 hover:to-amber-700 transition-colors' : 'bg-gray-300 text-gray-700'} font-medium`}
-                        style={{ fontFamily: font.font }}
-                        onClick={() => handleFontChange(font.font)}
-                    >
-                        {font.name}
-                    </button>
-                ))}
-            </div>
-        </>
-    )
-}
 
 const fonts = [{
     'font': "Barbara-Calligraphy",
@@ -79,3 +61,63 @@ const fonts = [{
     'name': "Neoneon",
 }
 ];
+
+export const CustomizationButton = ({ selectedFont, handleFontChange }: CustomizationButtonProps) => {
+    return (
+        <>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-5">
+                {fonts.map((font, index) => (
+                    <button
+                        key={index}
+                        className={`py-2 px-3 rounded-lg border ${selectedFont === font.font ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-lg hover:from-amber-600 hover:to-amber-700 transition-colors' : 'bg-gray-300 text-gray-700'} font-medium `}
+                        style={{ fontFamily: font.font }}
+                        onClick={() => handleFontChange(font.font)}
+                    >
+                        {font.name}
+                    </button>
+                ))}
+            </div>
+        </>
+    )
+}
+
+
+const fontsTwo = [{
+    'font': "orangina_demo",
+    'name': "Orangina",
+}, {
+    'font': "ariblk",
+    'name': "Arial Black",
+},{
+    'font': "impact",
+    'name': "Impact",
+}, {
+    'font': "bookma",
+    'name': "Bookma",
+}, {
+    'font': "coopbl",
+    'name': "Coopbl",
+}, {
+    'font': "aurorac",
+    'name': "Aurorac",
+}
+]
+export const CustomizationButtonTwo = ({ selectedFont, handleFontChange }: CustomizationButtonProps) => {
+    return (
+        <>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-5">
+                {fontsTwo.map((font, index) => (
+                    <button
+                        key={index}
+                        className={`py-2 px-3 rounded-lg border ${selectedFont === font.font ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-lg hover:from-amber-600 hover:to-amber-700 transition-colors' : 'bg-gray-300 text-gray-700'} font-medium`}
+                        style={{ fontFamily: font.font }}
+                        onClick={() => handleFontChange(font.font)}
+                    >
+                        {font.name}
+                    </button>
+                ))}
+            </div>
+        </>
+    )
+}
+

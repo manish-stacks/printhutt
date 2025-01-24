@@ -350,6 +350,57 @@
   font-style: normal;
 }
 
+
+
+
+/*************/
+
+
+@font-face {
+  font-family: "orangina_demo";
+  src: url("./fonts/customize/Orangina-Demo.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal
+}
+
+@font-face {
+  font-family: "ariblk";
+  src: url('./fonts/customize/ariblk.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal
+}
+
+
+@font-face {
+  font-family: "impact";
+  src: url('./fonts/customize/impact.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal
+}
+
+
+
+@font-face {
+  font-family: "bookma";
+  src: url('./fonts/customize/BOOKMA.TTF') format('truetype');
+  font-weight: 400;
+  font-style: normal
+}
+
+@font-face {
+  font-family: "coopbl";
+  src: url('./fonts/customize/COOPBL.TTF') format('truetype');
+  font-weight: 400;
+  font-style: normal
+}
+
+@font-face {
+  font-family: "aurorac";
+  src: url('./fonts/customize/AURORAC.TTF') format('truetype');
+  font-weight: 400;
+  font-style: normal
+}
+
 /* Utilities ( Import Utilities ) */
 /* mixing */
 /* variables */

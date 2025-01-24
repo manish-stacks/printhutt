@@ -1,8 +1,5 @@
 "use client"
-import Image from 'next/image';
 import React, { useState, useRef, useEffect } from 'react';
-import { BiRefresh, BiUpload } from 'react-icons/bi';
-import { BsUpload } from 'react-icons/bs';
 import { Canvas, IText } from 'fabric';
 import { CustomizationButton } from '@/components/CustomizationButton';
 import { useCartStore } from '@/store/useCartStore';
@@ -18,7 +15,7 @@ export default function App() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [selectedFont, setSelectedFont] = useState("Barbara-Calligraphy");
     const [isAddingToCart, setIsAddingToCart] = useState(false);
-    const [selectedDesign, setSelectedDesign] = useState('cutout');
+    const [selectedColor, setSelectedColor] = useState('White');
 
     const addToCart = useCartStore(state => state.addToCart);
     const router = useRouter();
@@ -34,7 +31,7 @@ export default function App() {
 
 
     useEffect(() => {
-        fetchProduct('679277f42f3c20b2851e939c');
+        fetchProduct('67934192624b716ca19da403');
     }, []);
 
     useEffect(() => {
@@ -43,8 +40,8 @@ export default function App() {
             const textObj = new IText(text, {
                 left,
                 top,
-                fill: '#fde68a',
-                fontSize: 32,
+                fill: selectedColor=='White'?'#fff':'#fde68a',
+                fontSize: 42,
                 fontFamily: selectedFont,
             });
             canvas.add(textObj);
@@ -52,12 +49,12 @@ export default function App() {
             return canvas;
         };
 
-        const canvas1 = canvasRef.current && initializeCanvas(canvasRef.current, names.name1 || 'First Name', 80, 80);
+        const canvas1 = canvasRef.current && initializeCanvas(canvasRef.current, names.name1 || 'First Name', 50, 60);
 
         return () => {
             canvas1?.dispose();
         };
-    }, [names, selectedFont]);
+    }, [names, selectedFont,selectedColor]);
 
 
     const handleFontChange = (font: string) => {
@@ -75,8 +72,8 @@ export default function App() {
         }
     };
 
-    const changeDesign = (design: string) => {
-        setSelectedDesign(design);
+    const changeColor = (color: string) => {
+        setSelectedColor(color);
     };
 
     const handleAddToCart = async () => {
@@ -100,7 +97,7 @@ export default function App() {
             if (previewCanvas && product) {
                 const custom_data = {
                     name1: names.name1,
-                    selectedDesign,
+                    selectedColor,
                     previewCanvas,
                     selectedFont,
                 };
@@ -186,61 +183,42 @@ export default function App() {
 
 
                                         <div className="w-full md:w-1/2 mb-4 md:mb-0">
-                                            <label className="text-gray-800 text-lg font-semibold">Select Your Design</label>
-                                            <div className="radio-itens mr-[20px]" onClick={() => changeDesign('cutout')}>
+                                            <label className="text-gray-800 text-lg font-semibold">Light Colour</label>
+                                            <div className="radio-itens mr-[20px]" onClick={() => changeColor('White')}>
                                                 <input
                                                     type="radio"
                                                     id="address"
                                                     name="addres"
                                                     className="w-auto mr-[2px] p-[10px]"
-                                                    checked={selectedDesign === 'cutout'}
-                                                    onChange={() => changeDesign('cutout')}
+                                                    checked={selectedColor === 'White'}
+                                                    onChange={() => changeColor('White')}
                                                 />
                                                 <label
                                                     className="relative font-normal text-[14px] text-[#686e7d] pl-[26px] cursor-pointer leading-[16px] inline-block tracking-[0]"
                                                 >
-                                                    Cutout Design
+                                                    White
                                                 </label>
                                             </div>
 
-                                            <div className="radio-itens mr-[20px]" onClick={() => changeDesign('rectangle')}>
+                                            <div className="radio-itens mr-[20px]" onClick={() => changeColor('Warm White')}>
                                                 <input
                                                     type="radio"
                                                     id="address"
                                                     name="addres"
                                                     className="w-auto mr-[2px] p-[10px]"
-                                                    checked={selectedDesign === 'rectangle'}
-                                                    onChange={() => changeDesign('rectangle')}
+                                                    checked={selectedColor === 'Warm White'}
+                                                    onChange={() => changeColor('Warm White')}
                                                 />
                                                 <label
                                                     className="relative font-normal text-[14px] text-[#686e7d] pl-[26px] cursor-pointer leading-[16px] inline-block tracking-[0]"
                                                 >
-                                                    Rectangle Design
+                                                    Warm White
                                                 </label>
                                             </div>
 
 
                                         </div>
-                                        <div className="w-full md:w-1/2">
-                                            {selectedDesign === 'cutout' && (
-                                                <div id="cutoutDesign">
-                                                    <img
-                                                        src="https://res.cloudinary.com/dkprths9f/image/upload/v1737654372/510341279_20240810_152907_nioxer.jpg"
-                                                        alt="cutout"
-                                                        className="h-[96px] w-[170px] object-cover rounded-xl"
-                                                    />
-                                                </div>
-                                            )}
-                                            {selectedDesign === 'rectangle' && (
-                                                <div id="rectangleDesign">
-                                                    <img
-                                                        src="https://res.cloudinary.com/dkprths9f/image/upload/v1737654373/rect_n4e399.jpg"
-                                                        alt="rectangle"
-                                                        className="h-[96px] w-[170px] object-cover rounded-xl"
-                                                    />
-                                                </div>
-                                            )}
-                                        </div>
+                                       
                                     </div>
                                 </div>
                                 <button
