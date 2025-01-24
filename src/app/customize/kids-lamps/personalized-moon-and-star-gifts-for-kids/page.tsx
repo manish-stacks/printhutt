@@ -2,23 +2,12 @@
 import React, { useState, useRef } from 'react';
 import { BiHeart, BiRefresh, BiUpload } from 'react-icons/bi';
 import { BsHearts } from 'react-icons/bs';
-import { text } from 'stream/consumers';
 
 function App() {
+  const [names, setNames] = useState({ name1: '', name2: '' });
   const [previewImage, setPreviewImage] = useState('');
   const [selectedShape, setSelectedShape] = useState('single-heart');
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const [textName, setText] = useState({title:''})
-
-  const textChange = (e) => {
-    
-    const {name, value} = e.target;
-    setText(pre => ({
-        ...pre,
-        [name]: value
-    }))
-  }
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -74,7 +63,7 @@ function App() {
                         />
                     </div>
                     <div className='text-box absolute top-[72%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center'>
-                        <h1 className='text-4xl font-script text-amber-400 mb-2 text-shadow max-[480px]:text-lg'>{textName.title}</h1>
+                        <h1 className='text-4xl font-script text-amber-400 mb-2 text-shadow max-[480px]:text-lg'>Hello</h1>
                     </div>
                 </div>
             </div>
@@ -89,10 +78,8 @@ function App() {
                     <label className="block text-sm font-medium text-gray-700">First Name</label>
                     <input
                       type="text"
-                      name="title"
-                      value={textName.title}
-                    //   onChange={(e) => setNames({ ...names, name1: e.target.value })}
-                        onChange={textChange}
+                      value={names.name1}
+                      onChange={(e) => setNames({ ...names, name1: e.target.value })}
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
                       placeholder="Enter first name"
                     />
