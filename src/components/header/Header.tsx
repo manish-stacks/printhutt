@@ -56,9 +56,10 @@ export default function Header() {
       setProductData(products?.products);
 
       const response = await wishlistService.getAll();
-      setWishlistCount(response.data?.items.length || 0);
+      setWishlistCount(response.data?.items?.length || 0);
 
     } catch (error) {
+      setWishlistCount(0);
       console.error("Error fetching data:", error);
     }
   };

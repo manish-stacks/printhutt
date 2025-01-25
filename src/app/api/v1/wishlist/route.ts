@@ -48,13 +48,16 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
   try {
     const { id } = await getDataFromToken(req);
-    if (!id) return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+    if (!id) {
+      return NextResponse.json({ success: false, message: 'Not logged in',data:[] }, { status: 200 });
+    }
 
     const wishlist = await Wishlist.findOne({ userId: id }).populate('items.productId');
     return NextResponse.json({ success: true, message: 'Data fetched successfully', data: wishlist }, { status: 200 });
 
   } catch (error: unknown) {
-    return NextResponse.json({ error: (error as Error).message }, { status: 500 });
+    return NextResponse.json({ success: false, message: 'Not logged in',data:[] }, { status: 200 });
+    //return NextResponse.json({ error: (error as Error).message }, { status: 500 });
   }
 }
 
