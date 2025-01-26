@@ -10,8 +10,9 @@ import { useRouter } from 'next/navigation';
 import { CustomizationButtonTwo } from '@/components/CustomizationButton';
 
 export default function page() {
-  const [names, setNames] = useState({ name1: '' });
+  const [names, setNames] = useState({ name1: '', name2: '' });
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRefTwo = useRef<HTMLCanvasElement>(null);
   const [selectedFont, setSelectedFont] = useState("orangina_demo");
   const [product, setProduct] = useState<Product>();
   const [isAddingToCart, setIsAddingToCart] = useState(false);
@@ -22,7 +23,7 @@ export default function page() {
   useEffect(() => {
     (async () => {
       try {
-        const fetchedProduct = await get_product_by_id("67934b59624b716ca19da4cb");
+        const fetchedProduct = await get_product_by_id("67967b025ab5c7966823e330");
         setProduct(fetchedProduct);
       } catch {
         toast.error("Error fetching product.");
@@ -37,9 +38,9 @@ export default function page() {
         left,
         top,
         fill: '#FEEDBF',
-        fontSize: 32,
-        width: 220,
-        height: 100,
+        fontSize: 26,
+        // width: 220,
+        // height: 100,
         fontFamily: selectedFont,
       });
       canvas.add(textObj);
@@ -47,10 +48,12 @@ export default function page() {
       return canvas;
     };
 
-    const canvas1 = canvasRef.current && initializeCanvas(canvasRef.current, names.name1 || 'First Name', 20, 40);
+    const canvas1 = canvasRef.current && initializeCanvas(canvasRef.current, names.name1 || 'Preview', 40, 60);
+    const canvas2 = canvasRefTwo.current && initializeCanvas(canvasRefTwo.current, names.name2 || 'Preview', 70, 30);
 
     return () => {
       canvas1?.dispose();
+      canvas2?.dispose();
     };
   }, [names, selectedFont]);
 
@@ -132,6 +135,7 @@ export default function page() {
       if (previewCanvas && product) {
         const custom_data = {
           name1: names.name1,
+          name2: names.name2,
           previewCanvas,
           selectedFont,
         };
@@ -172,13 +176,17 @@ export default function page() {
               <div id="preview-section" className="relative rounded-lg p-2 backdrop-blur-sm border border-white/10">
                 <div className="img-box relative">
                   <img
-                    src="https://res.cloudinary.com/dkprths9f/image/upload/v1737713785/2.1_nzb4wy.jpg"
+                    src="https://res.cloudinary.com/dkprths9f/image/upload/v1737914834/693708685_love-heart-1_vytboe.png"
                     alt="Preview"
                     className="w-full h-full object-cover rounded-lg"
                     crossOrigin="anonymous"
                   />
-                  <div className="text-box absolute top-[72%] left-[48%] transform -translate-x-1/2 -translate-y-1/2 text-center">
-                    <canvas ref={canvasRef} width="220" height="100" className="w-full h-full"></canvas>
+                  <div className="text-box absolute top-[30%] left-[20%]">
+                    <canvas ref={canvasRef} width="250" height="120" className="w-full h-full"></canvas>
+                  </div>
+
+                  <div className="text-box absolute top-[50%] left-[48%]">
+                    <canvas ref={canvasRefTwo} width="220" height="100" className="w-full h-full"></canvas>
                   </div>
                 </div>
               </div>
@@ -196,7 +204,18 @@ export default function page() {
                       onChange={(e) => setNames({ ...names, name1: e.target.value })}
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
                       placeholder="Enter name"
-                      maxLength={20}
+                      maxLength={15}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Second Name</label>
+                    <input
+                      type="text"
+                      value={names.name2}
+                      onChange={(e) => setNames({ ...names, name2: e.target.value })}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
+                      placeholder="Enter second name"
+                      maxLength={15}
                     />
                   </div>
                 </div>
@@ -210,8 +229,8 @@ export default function page() {
                   onClick={handleAddToCart}
                   disabled={isAddingToCart}
                   className={`w-full py-3 rounded-lg font-semibold shadow-lg ${isAddingToCart
-                      ? 'bg-gray-400 cursor-not-allowed'
-                      : 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 transition-colors'
+                    ? 'bg-gray-400 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 transition-colors'
                     }`}
                 >
                   {isAddingToCart ? 'Adding to Cart...' : 'Add to Cart'}
@@ -221,8 +240,8 @@ export default function page() {
                   onClick={handleDownload}
                   disabled={isDownloading}
                   className={`w-full py-3 rounded-lg font-semibold shadow-lg ${isDownloading
-                      ? 'bg-gray-400 cursor-not-allowed'
-                      : 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 transition-colors'
+                    ? 'bg-gray-400 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 transition-colors'
                     }`}
                 >
                   {isDownloading ? 'Downloading...' : 'Download Preview'}

@@ -22,7 +22,7 @@ export default function page() {
   useEffect(() => {
     (async () => {
       try {
-        const fetchedProduct = await get_product_by_id("67934b59624b716ca19da4cb");
+        const fetchedProduct = await get_product_by_id("6796534553a2fda27c09d72b");
         setProduct(fetchedProduct);
       } catch {
         toast.error("Error fetching product.");
@@ -37,9 +37,9 @@ export default function page() {
         left,
         top,
         fill: '#FEEDBF',
-        fontSize: 32,
-        width: 220,
-        height: 100,
+        fontSize: 36,
+        // width: 220,
+        // height: 100,
         fontFamily: selectedFont,
       });
       canvas.add(textObj);
@@ -47,7 +47,7 @@ export default function page() {
       return canvas;
     };
 
-    const canvas1 = canvasRef.current && initializeCanvas(canvasRef.current, names.name1 || 'First Name', 20, 40);
+    const canvas1 = canvasRef.current && initializeCanvas(canvasRef.current, names.name1 || 'First Name', 40, 30);
 
     return () => {
       canvas1?.dispose();
@@ -172,13 +172,13 @@ export default function page() {
               <div id="preview-section" className="relative rounded-lg p-2 backdrop-blur-sm border border-white/10">
                 <div className="img-box relative">
                   <img
-                    src="https://res.cloudinary.com/dkprths9f/image/upload/v1737713785/2.1_nzb4wy.jpg"
+                    src="https://res.cloudinary.com/dkprths9f/image/upload/v1737904780/7.1_rlmzy3.jpg"
                     alt="Preview"
                     className="w-full h-full object-cover rounded-lg"
                     crossOrigin="anonymous"
                   />
                   <div className="text-box absolute top-[72%] left-[48%] transform -translate-x-1/2 -translate-y-1/2 text-center">
-                    <canvas ref={canvasRef} width="220" height="100" className="w-full h-full"></canvas>
+                    <canvas ref={canvasRef} width="260" height="100" className="w-full h-full"></canvas>
                   </div>
                 </div>
               </div>
