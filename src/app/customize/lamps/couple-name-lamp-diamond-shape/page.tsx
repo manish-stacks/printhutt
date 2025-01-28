@@ -8,6 +8,8 @@ import { useCartStore } from '@/store/useCartStore';
 import html2canvas from 'html2canvas';
 import { useRouter } from 'next/navigation';
 import { CustomizationButtonTwo } from '@/components/CustomizationButton';
+import { BiRefresh, BiUpload } from 'react-icons/bi';
+import { BsUpload } from 'react-icons/bs';
 
 export default function page() {
   const [names, setNames] = useState({ name1: '' });
@@ -18,6 +20,8 @@ export default function page() {
   const [isDownloading, setIsDownloading] = useState(false);
   const addToCart = useCartStore(state => state.addToCart);
   const router = useRouter();
+  const [previewImage, setPreviewImage] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     (async () => {
@@ -57,7 +61,16 @@ export default function page() {
   const handleFontChange = (font: string) => {
     setSelectedFont(font);
   };
-
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
   const handleCanvasAction = async () => {
     try {
       setIsDownloading(true);
@@ -120,7 +133,7 @@ export default function page() {
 
   };
   const handleAddToCart = async () => {
-    if (names.name1 === '') {
+    if (names.name1 === ''|| previewImage === '') {
       toast.error('Please enter the name.');
       return;
     }
@@ -132,6 +145,7 @@ export default function page() {
       if (previewCanvas && product) {
         const custom_data = {
           name1: names.name1,
+          previewImage,
           previewCanvas,
           selectedFont,
         };
@@ -177,6 +191,24 @@ export default function page() {
                     className="w-full h-full object-cover rounded-lg"
                     crossOrigin="anonymous"
                   />
+                  <div className='absolute top-[14%] left-[26%] w-full h-full '>
+                    {previewImage ? (
+                      <div className="w-[280px] h-[280px] relative ">
+                        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent rounded-full"></div>
+                        <img
+                          src={previewImage}
+                          alt="Preview"
+                          className="w-full h-full object-cover rounded-full"
+                        />
+                      </div>
+                    ) : (
+                      <div className="w-[280px] h-[280px]  border-2 border-dashed border-amber-500/50 rounded-full flex items-center justify-center bg-black/40">
+                        <BiUpload className="w-12 h-12 text-amber-500/70" />
+                      </div>
+                    )}
+
+                  </div>
+                  
                   <div className="text-box absolute top-[74%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 text-center">
                     <canvas ref={canvasRef} width="340" height="100" className="w-full h-full"></canvas>
                   </div>
@@ -186,6 +218,34 @@ export default function page() {
 
             <div className="bg-white/95 backdrop-blur-sm rounded-lg p-8 shadow-xl">
               <div className="space-y-6">
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-4">Upload Your Photo</h3>
+                  <div className="flex items-center gap-4">
+                    <button
+                      onClick={() => fileInputRef.current?.click()}
+                      className="px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-lg hover:from-amber-600 hover:to-amber-700 transition-colors flex items-center gap-2 shadow-lg"
+                    >
+                      <BsUpload className="w-4 h-4" />
+                      Choose Photo
+                    </button>
+                    {previewImage && (
+                      <button
+                        onClick={() => setPreviewImage('')}
+                        className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2"
+                      >
+                        <BiRefresh className="w-4 h-4" />
+                        Reset
+                      </button>
+                    )}
+                  </div>
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleImageUpload}
+                    accept="image/*"
+                    className="hidden"
+                  />
+                </div>
                 <div className="space-y-4">
                   <h3 className="text-xl font-semibold text-gray-800">Enter Name</h3>
                   <div>
@@ -209,8 +269,8 @@ export default function page() {
                   onClick={handleAddToCart}
                   disabled={isAddingToCart}
                   className={`w-full py-3 rounded-lg font-semibold shadow-lg ${isAddingToCart
-                      ? 'bg-gray-400 cursor-not-allowed'
-                      : 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 transition-colors'
+                    ? 'bg-gray-400 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 transition-colors'
                     }`}
                 >
                   {isAddingToCart ? 'Adding to Cart...' : 'Add to Cart'}
@@ -220,8 +280,8 @@ export default function page() {
                   onClick={handleDownload}
                   disabled={isDownloading}
                   className={`w-full py-3 rounded-lg font-semibold shadow-lg ${isDownloading
-                      ? 'bg-gray-400 cursor-not-allowed'
-                      : 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 transition-colors'
+                    ? 'bg-gray-400 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 transition-colors'
                     }`}
                 >
                   {isDownloading ? 'Downloading...' : 'Download Preview'}

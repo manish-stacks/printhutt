@@ -24,13 +24,10 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
   const addToCart = useCartStore(state => state.addToCart);
   // const { items } = useCartStore();
   const [isCartOpen, setIsOpenCart] = useState(false);
-
   const items = useCartStore((state) => state.items);
-
   const toggelCartSidebarClose = () => setIsOpenCart(false);
-
   const [quantity, setQuantity] = useState(1);
-
+  const [activeVarient, setActiveVarient] = useState(product?.varient[0]?._id || '0');
   const handleAddToCart = () => {
     if (!product || quantity <= 0) {
       toast.error('Please select quantity');
@@ -45,6 +42,13 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
 
   const item = items.find(item => item._id === product?._id) || { _id: '', quantity: 0 };
 
+
+  const onchangeVarient = (id: string) => {
+    setActiveVarient(id)
+    const varient = product?.varient.find(item => item._id === id);
+    product.price = varient?.price || 0
+    // console.log(varient);
+  }
   const handleQuantityChange = (change: number) => {
     const newQuantity = Math.max(1, quantity + change);
     setQuantity(newQuantity);
@@ -204,14 +208,14 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                           <div className="bb-single-pro-weight mb-[24px]">
                             <div className="pro-title mb-[12px]">
                               <h4 className="font-quicksand leading-[1.2] tracking-[0.03rem] text-[16px] font-bold uppercase text-[#3d4750]">
-                                Weight
+                                Varient
                               </h4>
                             </div>
                             <div className="bb-pro-variation-contant">
                               <ul className="flex flex-wrap m-[-2px]">
                                 {product?.varient.map((v, index) => (
-                                  <li key={index} className="my-[10px] mx-[2px] py-[2px] px-[15px] border-[1px] border-solid border-[#eee] rounded-[10px] cursor-pointer active-variation">
-                                    <span className="font-Poppins text-[#686e7d] font-light text-[14px] leading-[28px] tracking-[0.03rem]">
+                                  <li key={index} className={`my-[10px] mx-[2px] py-[2px] px-[15px] border-[1px] border-solid border-[#eee] rounded-[10px] cursor-pointer ${activeVarient === v?._id ? 'active-variation' : ''}`}>
+                                    <span onClick={() => onchangeVarient(v?._id)} className="font-Poppins text-[#686e7d] font-light text-[14px] leading-[28px] tracking-[0.03rem]">
                                       {v.size}
                                     </span>
                                   </li>

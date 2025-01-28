@@ -8,6 +8,8 @@ import { useCartStore } from '@/store/useCartStore';
 import html2canvas from 'html2canvas';
 import { useRouter } from 'next/navigation';
 import { CustomizationButtonTwo } from '@/components/CustomizationButton';
+import { BiRefresh, BiUpload } from 'react-icons/bi';
+import { BsUpload } from 'react-icons/bs';
 
 export default function page() {
   const [names, setNames] = useState({ name1: '' });
@@ -18,6 +20,10 @@ export default function page() {
   const [isDownloading, setIsDownloading] = useState(false);
   const addToCart = useCartStore(state => state.addToCart);
   const router = useRouter();
+  const [previewImage, setPreviewImage] = useState('');
+  const [previewImageTwo, setPreviewImageTwo] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRefTwo = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     (async () => {
@@ -37,7 +43,7 @@ export default function page() {
         left,
         top,
         fill: '#FEEDBF',
-        fontSize: 26,
+        fontSize: 36,
         // width: 220,
         // height: 100,
         fontFamily: selectedFont,
@@ -47,7 +53,7 @@ export default function page() {
       return canvas;
     };
 
-    const canvas1 = canvasRef.current && initializeCanvas(canvasRef.current, names.name1 || 'Preview', 80, 60);
+    const canvas1 = canvasRef.current && initializeCanvas(canvasRef.current, names.name1 || 'Preview', 100, 60);
 
     return () => {
       canvas1?.dispose();
@@ -58,6 +64,26 @@ export default function page() {
     setSelectedFont(font);
   };
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  const handleImageUploadTwo = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImageTwo(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
   const handleCanvasAction = async () => {
     try {
       setIsDownloading(true);
@@ -120,7 +146,7 @@ export default function page() {
 
   };
   const handleAddToCart = async () => {
-    if (names.name1 === '') {
+    if (names.name1 === '' || previewImage === '' || previewImageTwo === '') {
       toast.error('Please enter the name.');
       return;
     }
@@ -132,6 +158,8 @@ export default function page() {
       if (previewCanvas && product) {
         const custom_data = {
           name1: names.name1,
+          previewImage,
+          previewImageTwo,
           previewCanvas,
           selectedFont,
         };
@@ -177,6 +205,41 @@ export default function page() {
                     className="w-full h-full object-cover rounded-lg"
                     crossOrigin="anonymous"
                   />
+                  <div className='absolute top-[14%] left-[15%] w-full h-full '>
+                    {previewImage ? (
+                      <div className="w-[180px] h-[180px] relative rotate-[352deg]">
+                        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent rounded-sm "></div>
+                        <img
+                          src={previewImage}
+                          alt="Preview"
+                          className="w-full h-full object-cover rounded-sm"
+                        />
+                      </div>
+                    ) : (
+                      <div className="w-[180px] h-[180px]  border-2 border-dashed border-amber-500/50 rounded-sm rotate-[352deg] flex items-center justify-center bg-black/40">
+                        <BiUpload className="w-12 h-12 text-amber-500/70" />
+                      </div>
+                    )}
+
+                  </div>
+
+                  <div className='absolute top-[31%] left-[51%] w-full h-full '>
+                    {previewImageTwo ? (
+                      <div className="w-[180px] h-[180px] relative rotate-[8deg]">
+                        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent rounded-sm "></div>
+                        <img
+                          src={previewImageTwo}
+                          alt="Preview"
+                          className="w-full h-full object-cover rounded-sm"
+                        />
+                      </div>
+                    ) : (
+                      <div className="w-[180px] h-[180px]  border-2 border-dashed border-amber-500/50 rounded-sm rotate-[8deg] flex items-center justify-center bg-black/40">
+                        <BiUpload className="w-12 h-12 text-amber-500/70" />
+                      </div>
+                    )}
+
+                  </div>
                   <div className="text-box absolute top-[72%] left-[48%] transform -translate-x-1/2 -translate-y-1/2 text-center">
                     <canvas ref={canvasRef} width="340" height="100" className="w-full h-full"></canvas>
                   </div>
@@ -186,6 +249,64 @@ export default function page() {
 
             <div className="bg-white/95 backdrop-blur-sm rounded-lg p-8 shadow-xl">
               <div className="space-y-6">
+
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-4">Upload Your Photo</h3>
+                  <div className="flex items-center gap-4">
+                    <button
+                      onClick={() => fileInputRef.current?.click()}
+                      className="px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-lg hover:from-amber-600 hover:to-amber-700 transition-colors flex items-center gap-2 shadow-lg"
+                    >
+                      <BsUpload className="w-4 h-4" />
+                      Choose Photo
+                    </button>
+                    {previewImage && (
+                      <button
+                        onClick={() => setPreviewImage('')}
+                        className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2"
+                      >
+                        <BiRefresh className="w-4 h-4" />
+                        Reset
+                      </button>
+                    )}
+                  </div>
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleImageUpload}
+                    accept="image/*"
+                    className="hidden"
+                  />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-4">Upload Your Photo</h3>
+                  <div className="flex items-center gap-4">
+                    <button
+                      onClick={() => fileInputRefTwo.current?.click()}
+                      className="px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-lg hover:from-amber-600 hover:to-amber-700 transition-colors flex items-center gap-2 shadow-lg"
+                    >
+                      <BsUpload className="w-4 h-4" />
+                      Choose Photo
+                    </button>
+                    {previewImageTwo && (
+                      <button
+                        onClick={() => setPreviewImageTwo('')}
+                        className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2"
+                      >
+                        <BiRefresh className="w-4 h-4" />
+                        Reset
+                      </button>
+                    )}
+                  </div>
+                  <input
+                    type="file"
+                    ref={fileInputRefTwo}
+                    onChange={handleImageUploadTwo}
+                    accept="image/*"
+                    className="hidden"
+                  />
+                </div>
+
                 <div className="space-y-4">
                   <h3 className="text-xl font-semibold text-gray-800">Enter Name</h3>
                   <div>
@@ -209,8 +330,8 @@ export default function page() {
                   onClick={handleAddToCart}
                   disabled={isAddingToCart}
                   className={`w-full py-3 rounded-lg font-semibold shadow-lg ${isAddingToCart
-                      ? 'bg-gray-400 cursor-not-allowed'
-                      : 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 transition-colors'
+                    ? 'bg-gray-400 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 transition-colors'
                     }`}
                 >
                   {isAddingToCart ? 'Adding to Cart...' : 'Add to Cart'}
@@ -220,8 +341,8 @@ export default function page() {
                   onClick={handleDownload}
                   disabled={isDownloading}
                   className={`w-full py-3 rounded-lg font-semibold shadow-lg ${isDownloading
-                      ? 'bg-gray-400 cursor-not-allowed'
-                      : 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 transition-colors'
+                    ? 'bg-gray-400 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 transition-colors'
                     }`}
                 >
                   {isDownloading ? 'Downloading...' : 'Download Preview'}
