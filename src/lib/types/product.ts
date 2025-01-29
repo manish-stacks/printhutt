@@ -223,6 +223,12 @@ export type Product = {
   thumbnail: {
     url: string;
   };
+  varient?: {
+    size: string;
+    color: string;
+    price: number;
+    stock: number;
+  };
   new: boolean;
   sale: boolean;
   hot: boolean;

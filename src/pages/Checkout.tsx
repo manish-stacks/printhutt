@@ -4,6 +4,7 @@ import Breadcrumb from "@/components/Breadcrumb";
 import { CheckoutAddressForm } from "@/components/checkout/address-form";
 import { CheckoutloginForm } from "@/components/checkout/login-form";
 import PaymentMethod from "@/components/checkout/payment-method";
+import { formatCurrency } from "@/helpers/helpers";
 import { useCartStore } from "@/store/useCartStore";
 import { useUserStore } from "@/store/useUserStore";
 import Image from "next/image";
@@ -12,7 +13,7 @@ import { toast } from "react-toastify";
 
 
 const Checkout = () => {
-  const [totalPrice, setTotalPrice] = useState<number>(0);
+  const [totalPrice, setTotalPrice] = useState({ totalPrice: 0, discountPrice: 0, shippingTotal: 0 });
   const { items, getTotalPrice, getTotalItems } = useCartStore();
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
   const [paymentMethod, setPaymentMethod] = useState<'online' | 'offline'>('online');
@@ -101,7 +102,7 @@ const Checkout = () => {
                           Sub-total
                         </span>
                         <span className="font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] font-medium text-[#686e7d]">
-                          ₹{totalPrice.toFixed(2)}
+                          <span className="text-[15px] line-through">{totalPrice.totalPrice.toFixed(2)}</span> ₹{totalPrice.discountPrice.toFixed(2)}
                         </span>
                       </li>
                       <li className="flex justify-between leading-[28px] mb-[8px]">
@@ -109,23 +110,32 @@ const Checkout = () => {
                           Delivery Charges
                         </span>
                         <span className="font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] font-medium text-[#686e7d]">
-                          {/* ₹{totalPrice.toFixed(2)} */}Free
+                          {totalPrice.shippingTotal > 0 ? `₹${totalPrice.shippingTotal.toFixed(2)}` : 'Free'}
                         </span>
                       </li>
                       <li className="flex justify-between leading-[28px] mb-[8px]">
                         <span className="left-item font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] font-medium text-[#686e7d]">
-                          Coupon Discount
+                          Coupon Discount <span className="text-[12px] bg-rose-500 text-rose-100 py-[2px] px-[4px] rounded">FLAT20</span>
                         </span>
                         <span className="font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] font-medium text-[#686e7d]">
                           <a
 
-                            className="apply drop-coupon font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] font-medium text-[#ff0000]"
+                            className="apply drop-coupon font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] font-medium text-[#49941e]"
                           >
-                            Apply Coupon
+                           0
                           </a>
                         </span>
                       </li>
-                      <li className="flex justify-between leading-[28px]">
+                      <li className="flex justify-between leading-[28px] mb-[8px]">
+                        <span className="left-item font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] font-medium text-[#686e7d]">
+                          Total :
+                        </span>
+                        <span className="font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] font-medium text-[#686e7d]">
+                          <span className="text-[15px] line-through">{(totalPrice.totalPrice + totalPrice.shippingTotal).toFixed(2)}</span> ₹{(totalPrice.discountPrice + totalPrice.shippingTotal).toFixed(2)}
+                        </span>
+                      </li>
+
+                      <li className="flex justify-between leading-[28px] mt-6">
                         <div className="coupon-down-box w-full">
                           <form method="post" className="relative">
                             <input
@@ -179,7 +189,17 @@ const Checkout = () => {
                             </span>
                             <div className="inner-price flex items-center justify-left mb-[4px]">
                               <span className="new-price font-Poppins text-[#3d4750] font-semibold leading-[26px] tracking-[0.02rem] text-[15px]">
-                                ₹{item.price} x {item.quantity}
+                                {item?.price &&
+                                  item?.discountType &&
+                                  item?.discountPrice
+                                  ? item.discountType === 'percentage'
+                                    ? formatCurrency(
+                                      item.price -
+                                      (item.price * item.discountPrice) / 100
+                                    )
+                                    : formatCurrency(item.price - item.discountPrice)
+                                  : "0"
+                                } x {item.quantity}
                               </span>
 
                             </div>
@@ -189,8 +209,17 @@ const Checkout = () => {
                                   <span
                                     className="bb-opt-sz font-Poppins text-[12px] leading-[22px] font-normal text-[#ff] tracking-[0.03rem]"
                                     data-tooltip="Small"
-                                  >
-                                    ₹{item.quantity * item.price}
+                                  >{
+                                      formatCurrency((item.discountType === 'percentage' ? (
+                                        item.price - (item.price * item.discountPrice) / 100
+                                      ) : item.price - item.discountPrice) * item.quantity)
+                                    }
+                                    {/* {formatCurrency(item.quantity * item.discountType === 'percentage'
+                                      ?
+                                      item.price -
+                                      (item.price * item.discountPrice) / 100
+
+                                      : item.price - item.discountPrice)} */}
                                   </span>
                                 </li>
                               </ul>

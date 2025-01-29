@@ -1,3 +1,4 @@
+import { formatCurrency } from "@/helpers/helpers";
 import { useCartStore } from "@/store/useCartStore";
 import Image from "next/image";
 import Link from "next/link";
@@ -22,9 +23,9 @@ const CartSidebar = ({ onClose }) => {
     };
   }, []);
 
-  const [totalPrice, setTotalPrice] = useState<number>(0);
+  const [totalPrice, setTotalPrice] = useState({ totalPrice: 0, discountPrice: 0, shippingTotal: 0 });
   const { items, updateQuantity, removeFromCart, getTotalPrice } = useCartStore();
-
+  // console.log(items);
   const handleQuantityChange = (productId: string, newQuantity: number) => {
     if (newQuantity < 1) {
       removeFromCart(productId);
@@ -37,7 +38,7 @@ const CartSidebar = ({ onClose }) => {
 
   useEffect(() => {
     setTotalPrice(getTotalPrice());
-  }, [handleQuantityChange]);
+  }, [items]);
 
   const cartPage = () => {
     onClose();
@@ -165,8 +166,19 @@ const CartSidebar = ({ onClose }) => {
                           </a>
                           <span className="cart-price mb-[8px] text-[14px] leading-[18px] block font-Poppins text-[#686e7d] font-light tracking-[0.03rem]">
                             <span className="new-price px-[3px] text-[15px] leading-[18px] text-[#686e7d] font-bold">
-                              ₹{item.price}
+                              {item?.price &&
+                                item?.discountType &&
+                                item?.discountPrice
+                                ? item.discountType === 'percentage'
+                                  ? formatCurrency(
+                                    item.price -
+                                    (item.price * item.discountPrice) / 100
+                                  )
+                                  : formatCurrency(item.price - item.discountPrice)
+                                : "0"
+                              }
                             </span>
+                            <span className="text-[15px] line-through">{item.price.toFixed(2)}</span>
                           </span>
 
                           <div className="qty-plus-minus h-[28px] w-[85px] py-[7px] border-[1px] border-solid border-[#eee] overflow-hidden relative flex items-center justify-between bg-[#fff] rounded-[10px]">
@@ -195,7 +207,7 @@ const CartSidebar = ({ onClose }) => {
                           Sub-Total :
                         </td>
                         <td className="price text-[#777] text-right p-[.5rem]">
-                          ₹{totalPrice.toFixed(2)}
+                          <span className="text-[15px] line-through">{totalPrice.totalPrice.toFixed(2)}</span> ₹{totalPrice.discountPrice.toFixed(2)}
                         </td>
                       </tr>
                       <tr>
@@ -203,7 +215,7 @@ const CartSidebar = ({ onClose }) => {
                           Shipping :
                         </td>
                         <td className="price text-[#777] text-right p-[.5rem]">
-                          Free
+                          {totalPrice.shippingTotal > 0 ? `₹${totalPrice.shippingTotal.toFixed(2)}` : 'Free'}
                         </td>
                       </tr>
                       <tr>
@@ -211,7 +223,7 @@ const CartSidebar = ({ onClose }) => {
                           Total :
                         </td>
                         <td className="price text-[#777] text-right p-[.5rem]">
-                          ₹{totalPrice.toFixed(2)}
+                          <span className="text-[15px] line-through">{(totalPrice.totalPrice + totalPrice.shippingTotal).toFixed(2)}</span> ₹{(totalPrice.discountPrice + totalPrice.shippingTotal).toFixed(2)}
                         </td>
                       </tr>
                     </tbody>

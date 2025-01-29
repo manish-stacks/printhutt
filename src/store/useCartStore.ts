@@ -3,7 +3,7 @@
 
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type{ Product } from '@/lib/types/product'
+import type { Product } from '@/lib/types/product'
 
 interface CartItem extends Product {
   quantity: number
@@ -17,7 +17,7 @@ interface CartStore {
   removeAllItems: () => void;
   updateQuantity: (productId: string, quantity: number) => void;
   getTotalItems: () => number
-  getTotalPrice: () => number
+  getTotalPrice: () => { discountPrice: number, totalPrice: number ,shippingTotal: number}
 }
 
 export const useCartStore = create<CartStore>()(
@@ -27,7 +27,7 @@ export const useCartStore = create<CartStore>()(
       addToCart: (product, quantity) => {
         set((state) => {
           const existingItem = state.items.find(item => item._id === product._id)
-          
+
           if (existingItem) {
             return {
               items: state.items.map(item =>
@@ -63,7 +63,22 @@ export const useCartStore = create<CartStore>()(
         return get().items.reduce((total, item) => total + item.quantity, 0)
       },
       getTotalPrice: () => {
-        return get().items.reduce((total, item) => total + (item.price * item.quantity), 0)
+        const items = get().items;
+        const totalPrice = items.reduce((total, item) => total + (item.price * item.quantity), 0);
+        const discountPrice = items.reduce((total, item) => {
+          if (item.discountType === 'percentage') {
+            return total + ((item.price - (item.price * item.discountPrice / 100)) * item.quantity);
+          } else {
+            return total + ((item.price - item.discountPrice) * item.quantity);
+          }
+        }, 0);
+
+        const shippingTotal = items.reduce((total, item) => total + (item.shippingFee), 0);
+        return {
+          totalPrice,
+          discountPrice,
+          shippingTotal
+        };
       },
     }),
     {
