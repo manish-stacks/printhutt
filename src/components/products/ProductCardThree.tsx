@@ -23,6 +23,9 @@ const ProductCardThree = ({ product }: PopupProps) => {
     const isLoggedIn = useUserStore((state) => state.isLoggedIn);
     const router = useRouter();
     const handleAddToCart = (product: Product) => {
+        if (product?.isCustomize) {
+            return router.push(product?.customizeLink);
+        }
         addToCart(product, 1);
         toast('Added to cart');
     };
@@ -149,12 +152,12 @@ const ProductCardThree = ({ product }: PopupProps) => {
                             {
                                 product.stock > 0 ?
                                     (
-                                        <span className="item-left px-[3px] text-[14px] text-[#6c7fd8]">
-                                            Out Of Stock
-                                        </span>
-                                    ) : (
                                         <span className="old-price px-[3px] text-[14px] text-[#686e7d] line-through">
                                             {product.discountPrice > 0 ? formatCurrency(product.price) : ''}
+                                        </span>
+                                    ) : (
+                                        <span className="item-left px-[3px] text-[14px] text-[#6c7fd8]">
+                                            Out Of Stock
                                         </span>
                                     )
                             }

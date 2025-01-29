@@ -23,6 +23,9 @@ const ProductCardTwo = ({ product }: PopupProps) => {
     const isLoggedIn = useUserStore((state) => state.isLoggedIn);
     const router = useRouter();
     const handleAddToCart = (product: Product) => {
+        if (product?.isCustomize) {
+            return router.push(product?.customizeLink);
+        }
         addToCart(product, 1);
         toast('Added to cart');
     };

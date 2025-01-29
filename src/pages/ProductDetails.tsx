@@ -246,7 +246,6 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                         <div className="buttons m-[2px]">
                           {
                             product?.isCustomize ?
-
                               (
                                 <Link
                                   href={product?.customizeLink}

@@ -1,6 +1,7 @@
 import { formatCurrency } from '@/helpers/helpers';
 import { useCartStore } from '@/store/useCartStore';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React from 'react'
 import { toast } from 'react-toastify';
 
@@ -23,7 +24,7 @@ const QuickView = ({ product, onClose }: QuickViewProps) => {
 
     const [quantity, setQuantity] = React.useState(1);
     const addToCart = useCartStore(state => state.addToCart);
-
+    const router = useRouter();
 
     const handleQuantityChange = (change: number) => {
         const newQuantity = Math.max(1, quantity + change);
@@ -35,6 +36,11 @@ const QuickView = ({ product, onClose }: QuickViewProps) => {
         if (!product || quantity <= 0) {
             toast.error('Please select quantity');
             return;
+        }
+        if (product?.isCustomize) {
+            onClose();
+            return router.push(product?.customizeLink);
+
         }
         addToCart(product, quantity);
         onClose();

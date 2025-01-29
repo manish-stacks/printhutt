@@ -255,10 +255,10 @@ const ProductListPage: React.FC = () => {
                                             </td>
                                             <td>
                                                 <div className='flex space-x-2'>
-                                                    <Link 
+                                                    <Link
                                                         href={`/product-details/${product?.slug}`}
                                                         target="_blank"
-                                                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-full">
+                                                        className="bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-2 rounded-full">
                                                         <RiEyeFill />
                                                     </Link>
                                                     <button
@@ -266,11 +266,16 @@ const ProductListPage: React.FC = () => {
                                                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-full">
                                                         <RiEdit2Fill />
                                                     </button>
-                                                    <button
-                                                        onClick={() => handleDelete(product?._id || '')}
-                                                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 rounded-full">
-                                                        <RiDeleteBin2Line />
-                                                    </button>
+                                                    {
+                                                        !product?.isCustomize && (
+                                                            <button
+                                                                onClick={() => handleDelete(product?._id || '')}
+                                                                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 rounded-full">
+                                                                <RiDeleteBin2Line />
+                                                            </button>
+                                                        )
+                                                    }
+
 
                                                 </div>
                                             </td>
