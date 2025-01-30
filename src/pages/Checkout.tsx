@@ -214,12 +214,7 @@ const Checkout = () => {
                                         item.price - (item.price * item.discountPrice) / 100
                                       ) : item.price - item.discountPrice) * item.quantity)
                                     }
-                                    {/* {formatCurrency(item.quantity * item.discountType === 'percentage'
-                                      ?
-                                      item.price -
-                                      (item.price * item.discountPrice) / 100
-
-                                      : item.price - item.discountPrice)} */}
+                                   
                                   </span>
                                 </li>
                               </ul>

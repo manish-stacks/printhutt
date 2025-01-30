@@ -6,10 +6,11 @@ import { useCartStore } from "@/store/useCartStore";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { formatCurrency } from "@/helpers/helpers";
 
 const Cart = () => {
   const router = useRouter();
-  const [totalPrice, setTotalPrice] = useState<number>(0);
+  const [totalPrice, setTotalPrice] = useState({ totalPrice: 0, discountPrice: 0, shippingTotal: 0 });
   const { updateQuantity, removeFromCart, getTotalPrice } = useCartStore();
 
   const items = useCartStore((state) => state.items);
@@ -26,13 +27,13 @@ const Cart = () => {
 
   useEffect(() => {
     setTotalPrice(getTotalPrice());
-  }, [handleQuantityChange]);
+  }, [items, getTotalPrice]);
 
 
 
   const gotoCheckout = () => {
     return router.push('/checkout');
-    
+
   }
 
 
@@ -97,7 +98,17 @@ const Cart = () => {
                           </td>
                           <td className="p-[12px]">
                             <span className="price font-Poppins text-[15px] font-medium leading-[26px] tracking-[0.02rem] text-[#686e7d]">
-                              ₹{item.price}
+                              {item?.price &&
+                                item?.discountType &&
+                                item?.discountPrice
+                                ? item.discountType === 'percentage'
+                                  ? formatCurrency(
+                                    item.price -
+                                    (item.price * item.discountPrice) / 100
+                                  )
+                                  : formatCurrency(item.price - item.discountPrice)
+                                : "0"
+                              }
                             </span>
                           </td>
                           <td className="p-[12px]">
@@ -116,7 +127,11 @@ const Cart = () => {
                           </td>
                           <td className="p-[12px]">
                             <span className="price font-Poppins text-[15px] font-medium leading-[26px] tracking-[0.02rem] text-[#686e7d]">
-                              ₹{item.quantity * item.price}
+                              {
+                                formatCurrency((item.discountType === 'percentage' ? (
+                                  item.price - (item.price * item.discountPrice) / 100
+                                ) : item.price - item.discountPrice) * item.quantity)
+                              }
                             </span>
                           </td>
                           <td className="p-[12px]">
@@ -159,7 +174,8 @@ const Cart = () => {
                             Sub-Total
                           </span>
                           <span className="text-right font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] text-[#686e7d] font-semibold">
-                            ₹{totalPrice.toFixed(2)}
+                            <span className="text-[15px] line-through">{totalPrice.totalPrice.toFixed(2)}</span> ₹{totalPrice.discountPrice.toFixed(2)}
+
                           </span>
                         </li>
                         <li className="mb-[12px] flex justify-between leading-[28px]">
@@ -190,7 +206,8 @@ const Cart = () => {
                             Total Amount
                           </span>
                           <span className="text-right font-Poppins text-[16px] leading-[28px] tracking-[0.03rem] font-semibold text-[#686e7d]">
-                            ₹{totalPrice.toFixed(2)}
+                            <span className="text-[15px] line-through">{(totalPrice.totalPrice + totalPrice.shippingTotal).toFixed(2)}</span> ₹{(totalPrice.discountPrice + totalPrice.shippingTotal).toFixed(2)}
+
                           </span>
                         </li>
                       </ul>
