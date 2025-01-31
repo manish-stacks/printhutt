@@ -31,7 +31,7 @@ export async function GET(request: NextRequest, context: { params: { id: string 
         return NextResponse.json(order, { status: 200 });
 
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         return NextResponse.json(
             { error: "Failed to fetch post" },
             { status: 500 }

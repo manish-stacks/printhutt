@@ -21,7 +21,7 @@ const couponSchema = new Schema<CouponDocument>({
   },
   discountValue: {
     type: Number,
-    required: true,
+   
     min: 0,
   },
   minimumPurchaseAmount: {
@@ -37,7 +37,7 @@ const couponSchema = new Schema<CouponDocument>({
   },
   validUntil: {
     type: Date,
-    required: true,
+    // required: true,
   },
   usageLimit: {
     type: Number,
@@ -55,24 +55,21 @@ const couponSchema = new Schema<CouponDocument>({
     type: Schema.Types.ObjectId,
     ref: 'Category',
   }],
-  isActive: {
-    type: Boolean,
-    default: true,
-  }
+  isActive: { type: Boolean, required: true, default: false },
 }, { 
   timestamps: true 
 });
 
 
-couponSchema.index({ code: 1, isActive: 1, validUntil: 1 });
+couponSchema.index({ code: 1});
 
 
-couponSchema.pre('save', function(next) {
-  if (this.validUntil < new Date()) {
-    this.isActive = false;
-  }
-  next();
-});
+// couponSchema.pre('save', function(next) {
+//   if (this.validUntil < new Date()) {
+//     this.isActive = false;
+//   }
+//   next();
+// });
 
 
 couponSchema.methods.isValidForUse = function(): boolean {

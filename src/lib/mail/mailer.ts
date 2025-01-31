@@ -134,7 +134,11 @@ export async function sendOrderConfirmationEmail(orderData: {
   userId: { email: string };
   orderId: string;
   items: { name: string; quantity: number; price: number }[];
-  totalAmount: number;
+  totalAmount: {
+    discountPrice: number;
+    shippingTotal: number;
+    totalPrice: number;
+  };
   payment: string;
   shipping: string;
   coupon?: string;

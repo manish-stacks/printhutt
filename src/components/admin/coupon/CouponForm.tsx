@@ -39,7 +39,7 @@ export function CouponForm({
           </div>
           <div className="p-4 md:p-5 space-y-4">
             <form onSubmit={onSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <label className="block mb-2 text-sm font-medium text-gray-900">
                     Coupon Code
@@ -72,6 +72,22 @@ export function CouponForm({
                     <option value="free_shipping">Free Shipping</option>
                   </select>
                 </div>
+
+                <div>
+                <label className="block mb-2 text-sm font-medium text-gray-900">
+                  Status Of Coupons
+                </label>
+                <select
+                  name="isActive"
+                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  value={formData.isActive || ''}
+                  onChange={onChange}
+                >
+                  <option value="">Select status</option>
+                  <option value="true">Active</option>
+                  <option value="false">Inactive</option>
+                </select>
+              </div>
               </div>
 
               <div>
@@ -88,7 +104,7 @@ export function CouponForm({
                   required
                 />
               </div>
-
+             
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <label className="block mb-2 text-sm font-medium text-gray-900">
@@ -148,7 +164,7 @@ export function CouponForm({
                     value={formData.validFrom || ''}
                     onChange={onChange}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                    required
+
                   />
                 </div>
 
@@ -162,7 +178,7 @@ export function CouponForm({
                     value={formData.validUntil || ''}
                     onChange={onChange}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                    required
+
                   />
                 </div>
 

@@ -36,11 +36,13 @@ export function generateOrderStatusEmail(order: OrderDetails): string {
 							<tr>
 								<td>${item.name}</td>
 								<td>${item.quantity}</td>
-								<td>₹${item.price.toFixed(2)}</td>
+								<td>₹${(item.discountType === 'percentage' ? (
+			item.price - (item.price * item.discountPrice) / 100
+		) : item.price - item.discountPrice) * item.quantity}</td>
 							</tr>
 						`).join('')}
 					</table>
-					<p><strong>Total: ₹${order.totalAmount.toFixed(2)}</strong></p>
+					<p><strong>Total: ₹${order.totalAmount.discountPrice.toFixed(2)}</strong></p>
 				</div>
 				<div class="footer">
 					<p>Thank you for shopping with us!</p>
@@ -89,11 +91,13 @@ export function getShippedEmailTemplate(order: OrderDetails): string {
 							<tr>
 								<td>${item.name}</td>
 								<td>${item.quantity}</td>
-								<td>₹${item.price.toFixed(2)}</td>
+								<td>₹${(item.discountType === 'percentage' ? (
+			item.price - (item.price * item.discountPrice) / 100
+		) : item.price - item.discountPrice) * item.quantity}</td>
 							</tr>
 						`).join('')}
 					</table>
-					<p><strong>Total: ₹${order.totalAmount.toFixed(2)}</strong></p>
+					<p><strong>Total: ₹${order.totalAmount.discountPrice.toFixed(2)}</strong></p>
 				</div>
 				<div class="footer">
 					<p>Thank you for shopping with us!</p>

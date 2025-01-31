@@ -46,9 +46,10 @@ export default function CouponPage() {
         try {
             setIsLoading(true);
             const response = await getAllCouponsPagination(page, search);
-            const data = response.data as unknown as { coupons: CouponAttributes[], pagination: number };
-            setCoupons(data.coupons);
-            setPagination(data.pagination);
+            
+            const data = response?.coupons as unknown as { coupons: CouponAttributes[], pagination: number };
+            setCoupons(data);
+            setPagination(response?.pagination);
         } catch (error) {
             console.error('Failed to fetch return methods:', error);
             toast.error('Failed to fetch return methods');
@@ -70,13 +71,13 @@ export default function CouponPage() {
             params.delete('search');
         }
         params.set('page', '1');
-        router.push(`?${params.toString()}`);
+        router.push(?${params.toString()});
     };
 
     const handlePageChange = (newPage: number) => {
         const params = new URLSearchParams(searchParams!);
         params.set('page', newPage.toString());
-        router.push(`?${params.toString()}`);
+        router.push(?${params.toString()});
     };
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -90,19 +91,36 @@ export default function CouponPage() {
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
+    
         try {
+            if (!formData) {
+                throw new Error("Form data is empty or invalid.");
+            }
+    
+            console.log("Submitting Form Data:", formData);
+    
             const success = editingId
                 ? await updateCoupon(editingId, formData)
                 : await addNewCoupon(formData);
-
+    
             if (success) {
-                fetchCoupons();
-                handleCloseModal();
+                console.log("Coupon added/updated successfully.");
+                try {
+                    await fetchCoupons();
+                } catch (fetchError) {
+                    console.error("Failed to fetch coupons:", fetchError);
+                }
+                handleCloseModal?.();
+            } else {
+                throw new Error("Coupon operation failed.");
             }
+        } catch (error) {
+            console.error("Failed to add/edit coupon:", error);
         } finally {
             setIsSubmitting(false);
         }
     };
+    
 
     const handleEdit = (id: string) => {
         const couponToEdit = coupons.find(coupon => coupon._id === id);

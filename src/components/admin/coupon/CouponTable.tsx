@@ -47,9 +47,9 @@ export function CouponTable({
           <th className="py-3 px-4">Code</th>
           <th className="py-3 px-4">Description</th>
           <th className="py-3 px-4">Discount</th>
-          <th className="py-3 px-4">Valid From</th>
+          {/* <th className="py-3 px-4">Valid From</th>
           <th className="py-3 px-4">Valid Until</th>
-          <th className="py-3 px-4">Usage</th>
+          <th className="py-3 px-4">Usage</th> */}
           <th className="py-3 px-4">Status</th>
           <th className="py-3 px-4">Actions</th>
         </tr>
@@ -65,11 +65,11 @@ export function CouponTable({
               <td className="py-3 px-4 font-medium">{coupon.code}</td>
               <td className="py-3 px-4">{coupon.description}</td>
               <td className="py-3 px-4">{getDiscountDisplay(coupon)}</td>
-              <td className="py-3 px-4">{formatDate(coupon.validFrom)}</td>
+              {/* <td className="py-3 px-4">{formatDate(coupon.validFrom)}</td>
               <td className="py-3 px-4">{formatDate(coupon.validUntil)}</td>
               <td className="py-3 px-4">
                 {coupon.usageLimit ? `${coupon.usedCount}/${coupon.usageLimit}` : `${coupon.usedCount}/∞`}
-              </td>
+              </td> */}
               <td className="py-3 px-4">
                 <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                   coupon.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'

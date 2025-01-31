@@ -12,8 +12,14 @@ export interface IOrder extends Document {
         sku: string;
         product_image?: string;
         isCustomized?: boolean;
+        discountType?: string;
+        discountPrice?: number;
     }[];
-    totalAmount: number;
+    totalAmount: {
+        discountPrice: number;
+        shippingTotal: number;
+        totalPrice: number;
+    };
     payAmt: number;
     paymentType: string;
     payment: {

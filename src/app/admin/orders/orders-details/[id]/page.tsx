@@ -215,7 +215,14 @@ export default function OrderDetailsPage() {
                                                             Quantity: {item.quantity}
                                                         </p>
                                                     </div>
-                                                    <p className="font-medium">{formatCurrency(item.price)}</p>
+                                                    <p className="font-medium">
+                                                        <span className='text-[15px] line-through'>{item.price.toFixed(2)}</span>{" "}
+                                                        {
+                                                            formatCurrency((item.discountType === 'percentage' ? (
+                                                                item.price - (item.price * item.discountPrice) / 100
+                                                            ) : item.price - item.discountPrice) * item.quantity)
+                                                        }
+                                                    </p>
                                                 </div>
 
                                                 {item?.custom_data && (
@@ -231,19 +238,22 @@ export default function OrderDetailsPage() {
                                         <h2 className="text-lg font-semibold mb-4">Payment Summary</h2>
                                         <div className="flex justify-between items-center mb-2">
                                             <span>Subtotal:</span>
-                                            <span>{formatCurrency(order.totalAmount)}</span>
+                                            <span>{formatCurrency(order.totalAmount.discountPrice - order.totalAmount.shippingTotal)}</span>
                                         </div>
-                                        <div className="flex justify-between items-center mb-2">
-                                            <span>Tax:</span>
-                                            <span>{formatCurrency(order.totalAmount * 0.05)}</span>
-                                        </div>
+                                        {
+                                            <div className="flex justify-between items-center mb-2">
+                                                <span>Shipping:</span>
+                                                <span>{formatCurrency(order.totalAmount.shippingTotal)}</span>
+                                            </div>
+                                        }
+
                                         <div className="flex justify-between items-center mb-2">
                                             <span>Discount:</span>
                                             <span>- {formatCurrency(order.coupon.discountAmount)}</span>
                                         </div>
                                         <div className="flex justify-between items-center border-t pt-2 font-semibold">
                                             <span>Total Amount:</span>
-                                            <span>{formatCurrency(order.totalAmount)}</span>
+                                            <span>{formatCurrency(order.totalAmount.discountPrice)}</span>
                                         </div>
                                         {order.paymentType === 'offline' && (
                                             <>
@@ -253,7 +263,7 @@ export default function OrderDetailsPage() {
                                                 </div>
                                                 <div className="flex justify-between items-center">
                                                     <span>Due Amount:</span>
-                                                    <span className='text-rose-600'>{formatCurrency(order.totalAmount - order.payAmt)}</span>
+                                                    <span className='text-rose-600'>{formatCurrency(order.totalAmount.discountPrice - order.payAmt)}</span>
                                                 </div>
                                             </>
                                         )}

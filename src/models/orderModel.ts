@@ -19,6 +19,8 @@ const orderSchema: Schema<IOrder> = new Schema({
             name: { type: String, required: true },
             quantity: { type: Number, required: true },
             price: { type: Number, required: true },
+            discountType: { type: String, required: true },
+            discountPrice: { type: Number, required: true },
             sku: { type: String, required: true },
             product_image: {type: String },
             isCustomized: {
@@ -32,7 +34,11 @@ const orderSchema: Schema<IOrder> = new Schema({
             _id: false,
         },
     ],
-    totalAmount: { type: Number, required: true },
+    totalAmount: {
+        discountPrice: { type: Number, required: true },
+        shippingTotal: { type: Number, required: true },
+        totalPrice: { type: Number, required: true },
+    },
     payAmt: { type: Number, required: true },
     paymentType: { type: String, enum: ['online', 'offline'], required: true },
     payment: {

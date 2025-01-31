@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { RiCheckFill } from 'react-icons/ri'
 import { toast } from 'react-toastify';
 import { ZodError } from 'zod';
+import LoadingSpinner from '../LoadingSpinner';
 
 interface TypeSelectorProps {
     onChangeAddress: (type: string) => void;
@@ -18,14 +19,21 @@ export const CheckoutAddressForm = ({ onChangeAddress }: TypeSelectorProps) => {
         const fetchAddress = async () => {
             try {
                 const response: AddressFormData[] = await getAddress();
-                setAddresslist(response);
+            
+                if (response.length > 0) {
+                    setSelectedAddress(true);
+                    setAddresslist(response);
+                } else {
+                    setSelectedAddress(false);
+                    setAddresslist([]);
+                }
+
             } catch (error) {
                 console.error(error);
             }
         };
         fetchAddress();
     }, [selectedAddress])
-
 
     useEffect(() => {
         const defaultAddress = addresslist.find((address) => address.isDefault);
@@ -202,7 +210,7 @@ export const CheckoutAddressForm = ({ onChangeAddress }: TypeSelectorProps) => {
                                         </div>
                                     ) : (
                                         <div className="text-center text-gray-500">
-                                            <p>No addresses found.</p>
+                                           <LoadingSpinner/>
                                         </div>
                                     )
                                 }

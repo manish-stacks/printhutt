@@ -96,8 +96,11 @@ export interface OrderDetails {
 	orderId: string;
 	customerName: string;
 	status: string;
-	items: { name: string; quantity: number; price: number }[];
-	totalAmount: number;
+	items: { name: string; quantity: number; price: number,
+        discountType: string, discountPrice: number }[];
+	totalAmount: {
+        discountPrice: number;
+    };
     shipping: {
         userName:string;
         addressLine: string,

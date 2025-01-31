@@ -53,7 +53,7 @@ export async function PATCH(
         return NextResponse.json(order);
     } catch (error) {
         
-        console.error('Error creating shipment:', error.response);
+        console.error('Error creating shipment:', error);
         return NextResponse.json(
             { error: 'Internal server error' },
             { status: 500 }

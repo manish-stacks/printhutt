@@ -7,6 +7,7 @@ import Order from "@/models/orderModel";
 import User from "@/models/userModel";
 import { uploadImageOrder } from "@/lib/cloudinary";
 
+
 connect();
 
 export async function GET(request: NextRequest) {
@@ -93,15 +94,18 @@ export async function POST(request: NextRequest) {
       if (!item.custom_data) {
         return {
           productId: item.productId,
-          slug: item.slug,
           name: item.name,
+          slug: item.slug,
           quantity: item.quantity,
-          price: item.price,
           sku: item.sku,
           product_image: item.product_image,
+          price: item.price,
+          discountType: item.discountType,
+          discountPrice: item.discountPrice
         };
       } else {
         const customData = item.custom_data;
+
         const updatedProductData = {
           ...customData,
           previewCanvas: await uploadImageOrder(customData.previewCanvas, 'customized preview canvas'),
@@ -112,14 +116,17 @@ export async function POST(request: NextRequest) {
         // console.log(updatedProductData)
         return {
           productId: item.productId,
-          slug: item.slug,
           name: item.name,
+          slug: item.slug,
           quantity: item.quantity,
-          price: item.price,
           sku: item.sku,
           product_image: updatedProductData.previewCanvas.url,
           isCustomized: true,
           custom_data: updatedProductData,
+          
+          price: item.price,
+          discountType: item.discountType,
+          discountPrice: item.discountPrice
         };
       }
     }));
@@ -131,8 +138,12 @@ export async function POST(request: NextRequest) {
     const orderData = {
       orderId: `ORD-${timestamp}`,
       items: itemData,
-      totalAmount: body.totalPrice,
-      payAmt: body.paymentMethod === 'online' ? body.totalPrice : body.totalPrice * 0.20,
+      totalAmount: {
+        discountPrice: body.totalPrice.discountPrice,
+        shippingTotal: body.totalPrice.shippingTotal,
+        totalPrice: body.totalPrice.totalPrice,
+      },
+      payAmt: body.paymentMethod === 'online' ? body.totalPrice.discountPrice : body.totalPrice.discountPrice * 0.20,
       paymentType: body.paymentMethod,
       payment: {
         method: body.paymentMethod,
@@ -165,7 +176,8 @@ export async function POST(request: NextRequest) {
     const order = new Order(orderData);
     await order.save();
 
-    //await sendOrderConfirmationEmail(orderData);
+    // console.log(order)
+    // await sendOrderConfirmationEmail(orderData);
 
     return NextResponse.json({
       success: true,

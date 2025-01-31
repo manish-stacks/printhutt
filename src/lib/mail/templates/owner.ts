@@ -37,7 +37,11 @@ export function getOwnerEmailTemplate({
 }: {
   orderId: string;
   items: Item[];
-  totalAmount: number;
+  totalAmount: {
+    discountPrice: number;
+    shippingTotal: number;
+    totalPrice: number;
+  };
   shipping: Shipping;
   payment: Payment;
   coupon: Coupon;
@@ -110,7 +114,7 @@ export function getOwnerEmailTemplate({
                             <tr>
                               <td style="padding: 8px 0; color: #111827; font-weight: 600;">Total Amount</td>
                               <td style="padding: 8px 0; text-align: right; color: #111827; font-weight: 600;">
-                                ${formatCurrency(totalAmount)}
+                                ${formatCurrency(totalAmount.totalPrice)}
                               </td>
                             </tr>
                           </table>

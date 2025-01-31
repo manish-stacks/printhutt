@@ -75,12 +75,12 @@ const PaymentMethod = ({ value, onChange, totalPrice }: TypeSelectorProps) => {
                                 <tbody>
                                     <tr>
                                         <td className="py-2 text-gray-600 border border-slate-300 px-3">Total Product Price</td>
-                                        <td className="py-2 font-medium text-gray-800 border border-slate-300">₹ {totalPrice.toFixed(2)}</td>
+                                        <td className="py-2 font-medium text-gray-800 border border-slate-300">₹ {totalPrice.discountPrice.toFixed(2)}</td>
                                     </tr>
                                     <tr>
                                         <td className="py-2 text-gray-600 border border-slate-300 px-3">20% Payable before order</td>
                                         <td className="py-2 font-bold text-gray-900 border border-slate-300">
-                                             {formatCurrency((totalPrice* 0.20))}
+                                             {formatCurrency((totalPrice.discountPrice* 0.20))}
                                         </td>
                                     </tr>
                                 </tbody>
