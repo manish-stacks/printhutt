@@ -15,29 +15,24 @@ const orderSchema: Schema<IOrder> = new Schema({
     items: [
         {
             productId: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
-            slug: { type: String, required: true },
             name: { type: String, required: true },
+            slug: { type: String, required: true },
+            sku: { type: String, required: true },
             quantity: { type: Number, required: true },
             price: { type: Number, required: true },
             discountType: { type: String, required: true },
             discountPrice: { type: Number, required: true },
-            sku: { type: String, required: true },
             product_image: {type: String },
-            isCustomized: {
-                type: Boolean,
-                default: false
-            },
-            custom_data: {
-                type: Object,
-                default: null
-            },
+            isCustomized: {type: Boolean, default: false},
+            custom_data: {type: Object,default: null},
             _id: false,
         },
     ],
     totalAmount: {
+        totalPrice: { type: Number, required: true },
         discountPrice: { type: Number, required: true },
         shippingTotal: { type: Number, required: true },
-        totalPrice: { type: Number, required: true },
+        coupon_discount: { type: Number},
     },
     payAmt: { type: Number, required: true },
     paymentType: { type: String, enum: ['online', 'offline'], required: true },
@@ -75,7 +70,7 @@ const orderSchema: Schema<IOrder> = new Schema({
         discountType: { type: String },
         isApplied: { type: Boolean, default: false },
     },
-    totalquantity: {
+    totalQuantity: {
         type: Number,
         required: true
     },

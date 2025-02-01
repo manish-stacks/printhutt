@@ -54,7 +54,7 @@ export interface IOrder extends Document {
         discountType: string;
         isApplied: boolean;
     };
-    totalquantity: number;
+    totalQuantity: number;
     status: 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
     createdAt: Date;
     updatedAt: Date;

@@ -2,6 +2,9 @@ interface Item {
   name: string;
   quantity: number;
   price: number;
+  discountPrice: number;
+  product_image: string;
+  sku: string;
 }
 
 interface Payment {
@@ -12,11 +15,13 @@ interface Payment {
 }
 
 interface Shipping {
+  userName: string;
   addressLine: string;
   city: string;
   state: string;
   postCode: string;
   mobileNumber: string;
+  email: string;
 }
 
 interface Coupon {
@@ -33,6 +38,8 @@ export function getCustomerEmailTemplate({
   shipping,
   coupon,
   formatCurrency,
+  paymentType,
+  payAmt
 }: {
   orderId: string;
   items: Item[];
@@ -40,19 +47,27 @@ export function getCustomerEmailTemplate({
     discountPrice: number;
     shippingTotal: number;
     totalPrice: number;
+    coupon_discount: number;
   };
   payment: Payment;
   shipping: Shipping;
   coupon: Coupon;
   formatCurrency: (amount: number) => string;
+  paymentType: string;
+  payAmt: number;
 }) {
   const itemsHtml = items
     .map(item => `
       <tr>
-        <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
-          <p style="margin: 0; color: #374151; font-weight: 500;">${item.name}</p>
-          <p style="margin: 4px 0 0; color: #6b7280; font-size: 14px;">Quantity: ${item.quantity}</p>
-        </td>
+        <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb; display: flex;">
+          <img src="${item.product_image}" alt="${item.name}" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;">
+          <div>
+            <p style="margin: 0; color: #374151; font-weight: 500;">${item.name}</p>
+            <p style="margin: 4px 0 0; color: #6b7280; font-size: 14px;">
+              Quantity: ${item.quantity} | SKU: ${item.sku}
+            </p>
+          </div>
+          </td>
         <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb; text-align: right; color: #374151;">
           ${formatCurrency(item.price)}
         </td>
@@ -104,9 +119,11 @@ export function getCustomerEmailTemplate({
                     <div style="margin-bottom: 24px; padding: 16px; background-color: #f9fafb; border-radius: 6px;">
                       <h3 style="margin: 0 0 12px; color: #111827; font-size: 16px; font-weight: 600;">Shipping Details</h3>
                       <p style="margin: 0; color: #374151;">
+                        ${shipping.userName}<br>
                         ${shipping.addressLine}<br>
                         ${shipping.city}, ${shipping.state} ${shipping.postCode}<br>
-                        Phone: ${shipping.mobileNumber}
+                        Phone: ${shipping.mobileNumber}<br>
+                        Email: ${shipping.email}
                       </p>
                     </div>
 
@@ -121,26 +138,46 @@ export function getCustomerEmailTemplate({
                       <tr>
                         <td colspan="2" style="padding-top: 24px;">
                           <table width="100%" cellpadding="0" cellspacing="0">
-                            ${coupon.isApplied ? `
+                            
                               <tr>
                                 <td style="padding: 8px 0; color: #374151;">Subtotal</td>
                                 <td style="padding: 8px 0; text-align: right; color: #374151;">
-                                  ${formatCurrency(totalAmount.discountPrice)}
+                                  ${formatCurrency(totalAmount.totalPrice)}
                                 </td>
                               </tr>
                               <tr>
+                                <td style="padding: 8px 0; color: #374151;">Shipping Charges</td>
+                                <td style="padding: 8px 0; text-align: right; color: #374151;">
+                                  ${totalAmount.shippingTotal > 0 ? formatCurrency(totalAmount.shippingTotal) : 'Free'}
+                                </td>
+                              </tr>
+                              ${coupon.isApplied ? `
+                              <tr>
                                 <td style="padding: 8px 0; color: #374151;">Discount (${coupon.code})</td>
                                 <td style="padding: 8px 0; text-align: right; color: #22c55e;">
-                                  -${formatCurrency(coupon.discountAmount)}
+                                  -${formatCurrency(totalAmount.coupon_discount)}
                                 </td>
                               </tr>
                             ` : ''}
                             <tr>
+                                <td style="padding: 8px 0; color: #374151;">Extra Discount</td>
+                                <td style="padding: 8px 0; text-align: right; color: #22c55e;">
+                                  -${formatCurrency((totalAmount.totalPrice + totalAmount.shippingTotal) - (totalAmount.discountPrice + totalAmount.shippingTotal))} </td>
+                              </tr>
+                            <tr>
                               <td style="padding: 8px 0; color: #111827; font-weight: 600;">Total Amount</td>
                               <td style="padding: 8px 0; text-align: right; color: #111827; font-weight: 600;">
-                                ${formatCurrency(totalAmount.totalPrice)}
+                                ${formatCurrency((totalAmount.discountPrice + totalAmount.shippingTotal) - totalAmount.coupon_discount)}
                               </td>
                             </tr>
+                            ${paymentType === 'offline' ? `
+                              <tr>
+                                <td style="padding: 8px 0; color: #111827; font-weight: 600;">Due Amount</td>
+                                <td style="padding: 8px 0; text-align: right; color: #111827; font-weight: 600;">
+                                  ${formatCurrency((totalAmount.discountPrice + totalAmount.shippingTotal - totalAmount.coupon_discount) - payAmt)}
+                                </td>
+                              </tr>
+                          ` : ''}                          
                           </table>
                         </td>
                       </tr>
@@ -149,7 +186,7 @@ export function getCustomerEmailTemplate({
                     <table width="100%" cellpadding="0" cellspacing="0">
                       <tr>
                         <td style="padding: 32px 0;">
-                          <a href="${process.env.NEXT_PUBLIC_APP_URL}/orders/${orderId}" 
+                          <a href="${process.env.APP_URL}/orders/${orderId}" 
                              style="display: inline-block; padding: 12px 24px; background-color: #000000; color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: 500; text-align: center;">
                             View Order Details
                           </a>

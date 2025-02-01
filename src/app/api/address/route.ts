@@ -34,6 +34,8 @@ export async function POST(request: NextRequest) {
 
         const validatedData = addressSchema.parse(body);
 
+        const existingAddress = await Address.findOne({ userId: id });
+        const isDefault = existingAddress ? false : true;
 
         const address = new Address({
             userId: id,
@@ -45,6 +47,7 @@ export async function POST(request: NextRequest) {
             postCode: validatedData.postCode,
             addressType: validatedData.addressType,
             alternatePhone: validatedData.alternatePhone,
+            isDefault:isDefault
         });
 
         await address.save()

@@ -7,6 +7,7 @@ import Image from "next/image";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { formatCurrency } from "@/helpers/helpers";
+import Link from "next/link";
 
 const Cart = () => {
   const router = useRouter();
@@ -82,7 +83,7 @@ const Cart = () => {
                       items.map(item => (
                         <tr className="border-b-[1px] border-solid border-[#eee]" key={item._id}>
                           <td className="p-[12px]">
-                            <a >
+                            <Link  href={`/product-details/${item.slug}`}>
                               <div className="Product-cart flex items-center">
                                 <Image
                                   className="w-[70px] border-[1px] border-solid border-[#eee] rounded-[10px]"
@@ -94,7 +95,7 @@ const Cart = () => {
                                   {item.title}
                                 </span>
                               </div>
-                            </a>
+                            </Link>
                           </td>
                           <td className="p-[12px]">
                             <span className="price font-Poppins text-[15px] font-medium leading-[26px] tracking-[0.02rem] text-[#686e7d]">

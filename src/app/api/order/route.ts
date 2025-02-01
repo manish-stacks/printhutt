@@ -3,9 +3,10 @@ import { connect } from "@/dbConfig/dbConfig";
 import { Address } from "@/models/addressModel";
 import { getDataFromToken } from "@/helpers/getDataFromToken";
 import Order from "@/models/orderModel";
-// import { sendOrderConfirmationEmail } from "@/lib/mail/mailer";
 import User from "@/models/userModel";
 import { uploadImageOrder } from "@/lib/cloudinary";
+import { sendOrderConfirmationEmail } from "@/lib/mail/mailer";
+import UserModel from '@/models/userModel';
 
 
 connect();
@@ -72,7 +73,22 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+
+
+
+
   try {
+    // const orders = await Order.findById("679dec2c9dce0b05bc3d3784").populate({ path: 'userId', model: UserModel });
+
+    // await sendOrderConfirmationEmail(orders);
+
+    // console.log(orders)
+    // return NextResponse.json({
+    //   success: true,
+    //   message: "Order saved successfully",
+    // }, { status: 200 });
+
+
     const tokenData = await getDataFromToken(request);
 
     if (!tokenData.id) {
@@ -83,12 +99,21 @@ export async function POST(request: NextRequest) {
 
     if (!userData?.email) {
       return NextResponse.json(
-        { message: "Email address is required to send order confirmation." },
+        { success: false, message: "Email address is required to send order confirmation." },
         { status: 401 }
       );
     }
 
     const body = await request.json();
+
+    const addressData = await Address.findById(body.address);
+
+    if (!addressData) {
+      return NextResponse.json(
+        { success: false, message: "Address not found" },
+        { status: 404 }
+      );
+    }
 
     const itemData = await Promise.all(body.items.map(async (item) => {
       if (!item.custom_data) {
@@ -123,7 +148,7 @@ export async function POST(request: NextRequest) {
           product_image: updatedProductData.previewCanvas.url,
           isCustomized: true,
           custom_data: updatedProductData,
-          
+
           price: item.price,
           discountType: item.discountType,
           discountPrice: item.discountPrice
@@ -133,17 +158,18 @@ export async function POST(request: NextRequest) {
 
     const timestamp = Date.now();
 
-    const addressData = await Address.findById(body.address);
+    
 
     const orderData = {
       orderId: `ORD-${timestamp}`,
       items: itemData,
       totalAmount: {
+        totalPrice: body.totalPrice.totalPrice,
         discountPrice: body.totalPrice.discountPrice,
         shippingTotal: body.totalPrice.shippingTotal,
-        totalPrice: body.totalPrice.totalPrice,
+        coupon_discount: body.totalPrice.coupon_discount,
       },
-      payAmt: body.paymentMethod === 'online' ? body.totalPrice.discountPrice : body.totalPrice.discountPrice * 0.20,
+      payAmt: body.paymentMethod === 'online' ? body.totalPrice.discountPrice.toFixed(2) : (body.totalPrice.discountPrice * 0.20).toFixed(2),
       paymentType: body.paymentMethod,
       payment: {
         method: body.paymentMethod,
@@ -162,22 +188,20 @@ export async function POST(request: NextRequest) {
         email: userData.email
       },
       coupon: {
-        code: body.couponCode,
-        discountAmount: 0,
-        discountType: "",
-        isApplied: false,
+        code: body.coupon.code,
+        discountAmount: body.coupon.discountAmount,
+        discountType: body.coupon.discountType,
+        isApplied: body.coupon.isApplied,
       },
-      totalquantity: body.getTotalItems,
+      totalQuantity: body.getTotalItems,
       status: "pending",
       userId: tokenData.id,
-      email: userData.email,
     };
+
+
 
     const order = new Order(orderData);
     await order.save();
-
-    // console.log(order)
-    // await sendOrderConfirmationEmail(orderData);
 
     return NextResponse.json({
       success: true,

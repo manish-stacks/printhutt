@@ -155,6 +155,8 @@ export async function sendOrderConfirmationEmail(orderData: {
       payment: orderData.payment,
       shipping: orderData.shipping,
       coupon: orderData.coupon,
+      paymentType: orderData.payment,
+      payAmt: orderData.payAmt,
       formatCurrency,
     }),
   });
@@ -171,6 +173,8 @@ export async function sendOrderConfirmationEmail(orderData: {
       payment: orderData.payment,
       shipping: orderData.shipping,
       coupon: orderData.coupon,
+      paymentType: orderData.payment,
+      payAmt: orderData.payAmt,
       formatCurrency,
     }),
   });

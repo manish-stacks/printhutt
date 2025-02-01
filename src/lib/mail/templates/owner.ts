@@ -3,14 +3,19 @@ interface Item {
   quantity: number;
   productId: string;
   price: number;
+  discountPrice: number;
+  product_image: string;
+  sku: string;
 }
 
 interface Shipping {
+  userName: string;
   addressLine: string;
   city: string;
   state: string;
   postCode: string;
   mobileNumber: string;
+  email: string;
 }
 
 interface Payment {
@@ -24,6 +29,7 @@ interface Coupon {
   isApplied: boolean;
   code?: string;
   discountAmount?: number;
+  discountType?: string;
 }
 
 export function getOwnerEmailTemplate({
@@ -34,6 +40,8 @@ export function getOwnerEmailTemplate({
   payment,
   coupon,
   formatCurrency,
+  paymentType,
+  payAmt
 }: {
   orderId: string;
   items: Item[];
@@ -41,20 +49,26 @@ export function getOwnerEmailTemplate({
     discountPrice: number;
     shippingTotal: number;
     totalPrice: number;
+    coupon_discount: string;
   };
   shipping: Shipping;
   payment: Payment;
   coupon: Coupon;
   formatCurrency: (amount: number) => string;
+  paymentType: string;
+  payAmt: number;
 }) {
   const itemsHtml = items
     .map(item => `
       <tr>
-        <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
-          <p style="margin: 0; color: #374151; font-weight: 500;">${item.name}</p>
-          <p style="margin: 4px 0 0; color: #6b7280; font-size: 14px;">
-            Quantity: ${item.quantity} | SKU: ${item.productId}
-          </p>
+        <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;display: flex;">
+          <img src="${item.product_image}" alt="${item.name}" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;">
+          <div>
+            <p style="margin: 0; color: #374151; font-weight: 500;">${item.name}</p>
+            <p style="margin: 4px 0 0; color: #6b7280; font-size: 14px;">
+              Quantity: ${item.quantity} | SKU: ${item.sku}
+            </p>
+          </div>
         </td>
         <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb; text-align: right; color: #374151;">
           ${formatCurrency(item.price)}
@@ -95,9 +109,11 @@ export function getOwnerEmailTemplate({
                     <div style="margin-bottom: 24px;">
                       <h3 style="margin: 0 0 12px; color: #111827; font-size: 16px; font-weight: 600;">Shipping Details</h3>
                       <p style="margin: 0; color: #374151;">
+                        ${shipping.userName}<br>
                         ${shipping.addressLine}<br>
                         ${shipping.city}, ${shipping.state} ${shipping.postCode}<br>
-                        Phone: ${shipping.mobileNumber}
+                        Phone: ${shipping.mobileNumber}<br>
+                        Email: ${shipping.email}
                       </p>
                     </div>
 
@@ -111,12 +127,46 @@ export function getOwnerEmailTemplate({
                       <tr>
                         <td colspan="2" style="padding-top: 24px;">
                           <table width="100%" cellpadding="0" cellspacing="0">
+                            
+                              <tr>
+                                <td style="padding: 8px 0; color: #374151;">Subtotal</td>
+                                <td style="padding: 8px 0; text-align: right; color: #374151;">
+                                  ${formatCurrency(totalAmount.totalPrice)}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td style="padding: 8px 0; color: #374151;">Shipping Charges</td>
+                                <td style="padding: 8px 0; text-align: right; color: #374151;">
+                                  ${totalAmount.shippingTotal > 0 ? formatCurrency(totalAmount.shippingTotal) : 'Free'}
+                                </td>
+                              </tr>
+                              ${coupon.isApplied ? `
+                              <tr>
+                                <td style="padding: 8px 0; color: #374151;">Discount (${coupon.code})</td>
+                                <td style="padding: 8px 0; text-align: right; color: #22c55e;">
+                                  -${formatCurrency(totalAmount?.coupon_discount)}
+                                </td>
+                              </tr>
+                            ` : ''}
+                            <tr>
+                                <td style="padding: 8px 0; color: #374151;">Extra Discount</td>
+                                <td style="padding: 8px 0; text-align: right; color: #22c55e;">
+                                  -${formatCurrency((totalAmount.totalPrice + totalAmount.shippingTotal) - (totalAmount.discountPrice + totalAmount.shippingTotal))}                                </td>
+                              </tr>
                             <tr>
                               <td style="padding: 8px 0; color: #111827; font-weight: 600;">Total Amount</td>
                               <td style="padding: 8px 0; text-align: right; color: #111827; font-weight: 600;">
-                                ${formatCurrency(totalAmount.totalPrice)}
+                                ${formatCurrency((totalAmount.discountPrice + totalAmount.shippingTotal) - totalAmount?.coupon_discount)}
                               </td>
                             </tr>
+                            ${paymentType === 'offline' ? `
+                              <tr>
+                                <td style="padding: 8px 0; color: #111827; font-weight: 600;">Due Amount</td>
+                                <td style="padding: 8px 0; text-align: right; color: #111827; font-weight: 600;">
+                                  ${formatCurrency((totalAmount.discountPrice + totalAmount.shippingTotal - totalAmount.coupon_discount) - payAmt)}
+                                </td>
+                              </tr>
+                          ` : ''}        
                           </table>
                         </td>
                       </tr>
@@ -129,13 +179,13 @@ export function getOwnerEmailTemplate({
                         Status: ${payment.isPaid ? 'Paid' : 'Pending'}<br>
                         ${payment.transactionId ? `Transaction ID: ${payment.transactionId}<br>` : ''}
                         ${payment.paidAt ? `Payment Date: ${new Date(payment.paidAt).toLocaleDateString()}<br>` : ''}
-                        Coupon ${coupon.isApplied ? `Code: ${coupon.code}<br>Discount: ${formatCurrency(coupon.discountAmount)}` : 'Not Applied'}
-                        </p>
+                        Coupon ${coupon.isApplied ? `Code: ${coupon.code}<br>Discount: ${formatCurrency(coupon.discountType == 'percentage' ? (totalAmount.discountPrice * (coupon.discountValue / 100)) : coupon.discountValue)}` : 'Not Applied'}
+                      </p>
                     </div>
                     <table width="100%" cellpadding="0" cellspacing="0">
                       <tr>
                         <td style="padding: 32px 0;">
-                          <a href="${process.env.NEXT_PUBLIC_APP_URL}/admin/orders/${orderId}" 
+                          <a href="${process.env.APP_URL}/admin/orders/orders-details/${orderId}" 
                              style="display: inline-block; padding: 12px 24px; background-color: #000000; color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: 500; text-align: center;">
                             Process Order
                           </a>

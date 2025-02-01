@@ -3,7 +3,7 @@
 import type React from "react"
 import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { FaCheckCircle, FaTimes, FaTag, FaRupeeSign } from "react-icons/fa"
+import { FaTimes, FaTag, FaRupeeSign } from "react-icons/fa"
 import confetti from "canvas-confetti"
 
 interface CouponSuccessModalProps {
@@ -116,7 +116,7 @@ const CouponSuccessModal: React.FC<CouponSuccessModalProps> = ({
                                     <span className="text-gray-600 font-medium">Discount Applied:</span>
                                     <div className="flex items-center text-2xl font-bold text-green-600">
                                         <FaRupeeSign className="mr-1" size={20} />
-                                        {discountAmount}
+                                        {parseFloat(discountAmount).toFixed(2)}
                                     </div>
                                 </div>
                             </div>

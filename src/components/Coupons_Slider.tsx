@@ -21,10 +21,11 @@ interface CouponsSliderProps {
     onClose: () => void
     handle_select: (coupon: Coupon) => void
     total_money: { discountPrice: number }
+    selectCoupon: { code: string }
 }
 
 
-const Coupons_Slider: React.FC<CouponsSliderProps> = ({ isOpen, onClose, handle_select, total_money }) => {
+const Coupons_Slider: React.FC<CouponsSliderProps> = ({ isOpen, onClose, handle_select, total_money, selectCoupon }) => {
     const [coupons, setCoupons] = useState<Coupon[]>([])
     const [page, setPage] = useState<number>(1)
     const [search, setSearch] = useState<string>("")
@@ -45,11 +46,11 @@ const Coupons_Slider: React.FC<CouponsSliderProps> = ({ isOpen, onClose, handle_
             if (response && response.coupons) {
                 setCoupons(response.coupons || [])
             } else {
-                console.error("No coupons found in response", response)
+                // console.error("No coupons found in response", response)
             }
             setLoading(false)
         } catch (error) {
-            console.error(error)
+            // console.error(error)
             setLoading(false)
         }
     }
@@ -94,6 +95,7 @@ const Coupons_Slider: React.FC<CouponsSliderProps> = ({ isOpen, onClose, handle_
         return <LoadingSpinner />
     }
 
+    // console.log(selectCoupon)
     return (
         <motion.div
             initial={{ opacity: 0 }}
@@ -137,7 +139,7 @@ const Coupons_Slider: React.FC<CouponsSliderProps> = ({ isOpen, onClose, handle_
                         {coupons.length > 0 ? (
                             coupons.map((coupon) => {
                                 const isValid = isCouponValid(coupon)
-                                const isSelected = selectedCoupon?.code === coupon.code
+                                const isSelected = selectCoupon?.code === coupon.code
 
                                 return (
                                     <motion.div

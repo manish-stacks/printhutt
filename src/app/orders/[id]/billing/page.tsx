@@ -11,7 +11,7 @@ export default function OrderDetailsPage() {
     // const router = useRouter();
     const [order, setOrder] = useState<IOrder | null>(null);
     const [loading, setLoading] = useState(true);
-    const { toPDF, targetRef } = usePDF({filename: 'invoice.pdf'});
+    const { toPDF, targetRef } = usePDF({ filename: 'invoice.pdf' });
 
     const fetchOrder = async () => {
         try {
@@ -36,12 +36,12 @@ export default function OrderDetailsPage() {
     };
 
     // const handleDownload = () => {
-        // const doc = new jsPDF();
-        // doc.text("Invoice", 10, 10);
-        // doc.save(`invoice_${order.orderId}.pdf`);
+    // const doc = new jsPDF();
+    // doc.text("Invoice", 10, 10);
+    // doc.save(`invoice_${order.orderId}.pdf`);
     // };
-// 
-   
+    // 
+
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-screen">
@@ -85,14 +85,14 @@ export default function OrderDetailsPage() {
             <div className="grid grid-cols-2 gap-6 mb-8">
                 <div>
                     <h2 className="text-lg font-semibold">Billed To:</h2>
-                    <p>{order?.userName}</p>
+                    <p>{order.shipping.userName || 'Guest'}</p>
                     <p>{order.shipping.addressLine}</p>
                     <p>{order.shipping.city}, {order.shipping.state} {order.shipping.postCode}</p>
                     <p>{order.shipping.mobileNumber}</p>
                 </div>
                 <div>
                     <h2 className="text-lg font-semibold">Shipped To:</h2>
-                    <p>{order.userName}</p>
+                    <p>{order.shipping.userName || 'Guest'}</p>
                     <p>{order.shipping.addressLine}</p>
                     <p>{order.shipping.city}, {order.shipping.state} {order.shipping.postCode}</p>
                     <p>{order.shipping.mobileNumber}</p>
@@ -131,35 +131,42 @@ export default function OrderDetailsPage() {
                 <h2 className="text-lg font-semibold mb-4">Payment Summary</h2>
                 <div className="flex justify-between items-center mb-2">
                     <span>Subtotal:</span>
-                    <span>{formatCurrency(order.totalAmount)}</span>
+                    <span>{formatCurrency(order.totalAmount.totalPrice)}</span>
                 </div>
+
                 <div className="flex justify-between items-center mb-2">
-                    <span>Tax:</span>
-                    <span>{formatCurrency(order.totalAmount * 0.05)}</span>
+                    <span>Shipping:</span>
+                    <span>{order.totalAmount.shippingTotal > 0 ? formatCurrency(order.totalAmount.shippingTotal) : 'Free'}</span>
                 </div>
+
+                {
+                    order.coupon.isApplied && (
+                        <div className="flex justify-between items-center mb-2">
+                            <span>Discount {order.coupon.code}:</span>
+                            <span>- {formatCurrency(order.totalAmount.coupon_discount)}</span>
+                        </div>
+                    )
+                }
                 <div className="flex justify-between items-center mb-2">
-                    <span>Discount:</span>
-                    <span>- {formatCurrency(order.coupon.discountAmount)}</span>
+                    <span>Extra Discount:</span>
+                    <span>- {formatCurrency((order.totalAmount.totalPrice + order.totalAmount.shippingTotal) - (order.totalAmount.discountPrice + order.totalAmount.shippingTotal))}</span>
                 </div>
                 <div className="flex justify-between items-center border-t pt-2 font-semibold">
                     <span>Total Amount:</span>
-                    <span>{formatCurrency(order.totalAmount)}</span>
+                    <span>{formatCurrency((order.totalAmount.discountPrice + order.totalAmount.shippingTotal) - order.totalAmount.coupon_discount)}</span>
                 </div>
-                {
-                    order.paymentType === 'offline' && (
-                        <>
-                            <div className="flex justify-between items-center ">
-                                <span>Pay Amount:</span>
-                                <span className='text-green-500'>-{formatCurrency(order.payAmt)}</span>
-                            </div>
-                            <div className="flex justify-between items-center ">
-                                <span>Due Amount:</span>
-                                <span className='text-rose-600'>{formatCurrency(order.totalAmount - order.payAmt)}</span>
-                            </div>
-                        </>
-                    )
-                }
-
+                {order.paymentType === 'offline' && (
+                    <>
+                        <div className="flex justify-between items-center">
+                            <span>Pay Amount:</span>
+                            <span className='text-green-500'>-{formatCurrency(order.payAmt)}</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                            <span>Due Amount:</span>
+                            <span className='text-rose-600'>{formatCurrency((order.totalAmount.discountPrice + order.totalAmount.shippingTotal - order.totalAmount.coupon_discount) - order.payAmt)}</span>
+                        </div>
+                    </>
+                )}
             </div>
 
             <div className="text-center text-xs text-gray-500 border-t pt-4">

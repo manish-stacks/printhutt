@@ -8,6 +8,7 @@ interface TypeSelectorProps {
 }
 
 const PaymentMethod = ({ value, onChange, totalPrice }: TypeSelectorProps) => {
+    
     return (
         <>
             <div className="sub-title mb-[12px]">
@@ -63,9 +64,7 @@ const PaymentMethod = ({ value, onChange, totalPrice }: TypeSelectorProps) => {
                 {value === 'offline' && (
                     <div className="border p-4 md:p-6 rounded-lg bg-white mt-3">
                         <div className="alert bg-red-100 text-red-700 p-3 rounded text-sm">
-                            In the case of cash on delivery, a partial payment will be made. This is due
-                            to the nature of the product and may take up to 2 to 3 additional days due
-                            to the lengthy processing required compared to usual.
+                        For Cash on Delivery (COD) orders, a partial payment is required, and processing may take 2-3 additional business days due to product handling.
                         </div>
                         <div className="my-3">
                             <h4 className="text-lg font-bold">Price Details</h4>
@@ -75,12 +74,12 @@ const PaymentMethod = ({ value, onChange, totalPrice }: TypeSelectorProps) => {
                                 <tbody>
                                     <tr>
                                         <td className="py-2 text-gray-600 border border-slate-300 px-3">Total Product Price</td>
-                                        <td className="py-2 font-medium text-gray-800 border border-slate-300">₹ {totalPrice.discountPrice.toFixed(2)}</td>
+                                        <td className="py-2 font-medium text-gray-800 border border-slate-300">{formatCurrency(totalPrice)}</td>
                                     </tr>
                                     <tr>
                                         <td className="py-2 text-gray-600 border border-slate-300 px-3">20% Payable before order</td>
                                         <td className="py-2 font-bold text-gray-900 border border-slate-300">
-                                             {formatCurrency((totalPrice.discountPrice* 0.20))}
+                                             {formatCurrency((totalPrice* 0.20))}
                                         </td>
                                     </tr>
                                 </tbody>

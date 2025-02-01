@@ -29,18 +29,18 @@ export const CheckoutAddressForm = ({ onChangeAddress }: TypeSelectorProps) => {
                 }
 
             } catch (error) {
-                console.error(error);
+                // console.error(error);
             }
         };
         fetchAddress();
-    }, [selectedAddress])
+    }, [])
 
     useEffect(() => {
         const defaultAddress = addresslist.find((address) => address.isDefault);
         if (defaultAddress) {
             onChangeAddress(defaultAddress._id);
         }
-    })
+    },[])
     const handleAddressChange = () => {
         setSelectedAddress((prev) => !prev);
     }
@@ -109,15 +109,7 @@ export const CheckoutAddressForm = ({ onChangeAddress }: TypeSelectorProps) => {
 
     return (
         <>
-            <div className="min-[992px]:w-[66.66%] w-full px-[12px] mb-[24px]" >
-                <div
-                    className="bb-checkout-contact border-[1px] border-solid border-[#eee] p-[20px] bg-[#f1f3f6]"
-                    data-aos="fade-up"
-                    data-aos-duration={1000}
-                    data-aos-delay={400}
-                    style={{ position: 'sticky', top: '20px' }}
-                >
-
+           
                     <div className="bg-white mb-4 p-4 rounded shadow-sm">
                         <div className="flex justify-between">
                             <div className="flex items-center">
@@ -417,8 +409,7 @@ export const CheckoutAddressForm = ({ onChangeAddress }: TypeSelectorProps) => {
                         )}
                     </div>
 
-                </div>
-            </div>
+                
         </>
     )
 }

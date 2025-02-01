@@ -115,8 +115,8 @@ const UserOrdersPage = () => {
                             <tr key={index} className="border-b hover:bg-gray-50">
                               <td className="py-3 px-4">{order.orderId}</td>
                               <td className="py-3 px-4">{new Date(order.createdAt).toLocaleDateString()}</td>
-                              <td className="py-3 px-4">{order.totalAmount.toFixed(2)}</td>
-                              <td className="py-3 px-4">{order.totalquantity}</td>
+                              <td className="py-3 px-4">{order.totalAmount.discountPrice.toFixed(2)}</td>
+                              <td className="py-3 px-4">{order.totalQuantity}</td>
                               <td className="py-3 px-4">{order.status}</td>
                               <td className="py-3 px-4">
                                 <div className="flex justify-center space-x-2">

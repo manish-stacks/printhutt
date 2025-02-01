@@ -114,7 +114,7 @@ export default function OrderPage() {
                                                     {new Date(order.createdAt).toLocaleDateString()}
                                                 </td>
                                                 <td className="py-3 px-4">{order.totalAmount.discountPrice.toFixed(2)}</td>
-                                                <td className="py-3 px-4">{order.totalquantity}</td>
+                                                <td className="py-3 px-4">{order.totalQuantity}</td>
                                                 <td className="py-3 px-4">{order.status}</td>
                                                 <td className="py-3 px-4 flex space-x-2">
                                                     <Link

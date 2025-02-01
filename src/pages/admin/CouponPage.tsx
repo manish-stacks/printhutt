@@ -71,13 +71,13 @@ export default function CouponPage() {
             params.delete('search');
         }
         params.set('page', '1');
-        router.push(?${params.toString()});
+        router.push(`?${params.toString()}`);
     };
 
     const handlePageChange = (newPage: number) => {
         const params = new URLSearchParams(searchParams!);
         params.set('page', newPage.toString());
-        router.push(?${params.toString()});
+        router.push(`?${params.toString()}`);
     };
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {

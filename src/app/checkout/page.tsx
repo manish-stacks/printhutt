@@ -1,9 +1,9 @@
 import Checkout from "@/pages/Checkout";
 
-export const metadata = {
-  title: "checkout",
-  description: "checkout",
-};
+// export const metadata = {
+//   title: "checkout",
+//   description: "checkout",
+// };
 
 const CheckoutPage = () => {
   return <Checkout />;

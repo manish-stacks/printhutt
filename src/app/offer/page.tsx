@@ -1,9 +1,9 @@
 import Offer from "@/pages/Offer"
 
-export const metadata = {
-  title: 'offer',
-  description: 'offer',
-}
+// export const metadata = {
+//   title: 'offer',
+//   description: 'offer',
+// }
 
 const offerPage = () => {
   return <Offer />

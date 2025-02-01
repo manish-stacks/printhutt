@@ -1,9 +1,8 @@
 "use client";
-import { notFound, useParams } from 'next/navigation';
+import {useParams } from 'next/navigation';
 import Link from 'next/link';
 import { BsCheckCircle, BsClock, BsTruck, BsXCircle } from 'react-icons/bs';
 import { BiCheckCircle, BiMapPin, BiPackage, BiPhone, BiXCircle } from 'react-icons/bi';
-import Order from '@/models/orderModel';
 import { formatCurrency, formatDate } from '@/helpers/helpers';
 import Select from 'react-select';
 import { useEffect, useState } from 'react';
@@ -203,25 +202,23 @@ export default function OrderDetailsPage() {
                                                             />
                                                             <Link href={`/product-details/${item.slug}`}>
                                                                 {item.name}
-
-
-
                                                             </Link>
 
 
                                                         </p>
 
                                                         <p className="text-sm text-muted-foreground">
-                                                            Quantity: {item.quantity}
+                                                            Quantity: {item.quantity} | SKU: {item.sku}
                                                         </p>
                                                     </div>
                                                     <p className="font-medium">
-                                                        <span className='text-[15px] line-through'>{item.price.toFixed(2)}</span>{" "}
-                                                        {
+                                                        {/* <span className='text-[15px] line-through'>{item.price.toFixed(2)}</span>{" "} */}
+                                                        {/* {
                                                             formatCurrency((item.discountType === 'percentage' ? (
                                                                 item.price - (item.price * item.discountPrice) / 100
                                                             ) : item.price - item.discountPrice) * item.quantity)
-                                                        }
+                                                        } */}
+                                                        {formatCurrency(item.price)}
                                                     </p>
                                                 </div>
 
@@ -238,22 +235,29 @@ export default function OrderDetailsPage() {
                                         <h2 className="text-lg font-semibold mb-4">Payment Summary</h2>
                                         <div className="flex justify-between items-center mb-2">
                                             <span>Subtotal:</span>
-                                            <span>{formatCurrency(order.totalAmount.discountPrice - order.totalAmount.shippingTotal)}</span>
+                                            <span>{formatCurrency(order.totalAmount.totalPrice)}</span>
                                         </div>
-                                        {
-                                            <div className="flex justify-between items-center mb-2">
-                                                <span>Shipping:</span>
-                                                <span>{formatCurrency(order.totalAmount.shippingTotal)}</span>
-                                            </div>
-                                        }
 
                                         <div className="flex justify-between items-center mb-2">
-                                            <span>Discount:</span>
-                                            <span>- {formatCurrency(order.coupon.discountAmount)}</span>
+                                            <span>Shipping:</span>
+                                            <span>{order.totalAmount.shippingTotal > 0 ? formatCurrency(order.totalAmount.shippingTotal) : 'Free'}</span>
+                                        </div>
+
+                                        {
+                                            order.coupon.isApplied && (
+                                                <div className="flex justify-between items-center mb-2">
+                                                    <span>Discount {order.coupon.code}:</span>
+                                                    <span>- {formatCurrency(order.totalAmount.coupon_discount)}</span>
+                                                </div>
+                                            )
+                                        }
+                                        <div className="flex justify-between items-center mb-2">
+                                            <span>Extra Discount:</span>
+                                            <span>- {formatCurrency((order.totalAmount.totalPrice + order.totalAmount.shippingTotal) - (order.totalAmount.discountPrice + order.totalAmount.shippingTotal))}</span>
                                         </div>
                                         <div className="flex justify-between items-center border-t pt-2 font-semibold">
                                             <span>Total Amount:</span>
-                                            <span>{formatCurrency(order.totalAmount.discountPrice)}</span>
+                                            <span>{formatCurrency((order.totalAmount.discountPrice + order.totalAmount.shippingTotal) - order.totalAmount.coupon_discount)}</span>
                                         </div>
                                         {order.paymentType === 'offline' && (
                                             <>
@@ -263,7 +267,7 @@ export default function OrderDetailsPage() {
                                                 </div>
                                                 <div className="flex justify-between items-center">
                                                     <span>Due Amount:</span>
-                                                    <span className='text-rose-600'>{formatCurrency(order.totalAmount.discountPrice - order.payAmt)}</span>
+                                                    <span className='text-rose-600'>{formatCurrency((order.totalAmount.discountPrice + order.totalAmount.shippingTotal - order.totalAmount.coupon_discount) - order.payAmt)}</span>
                                                 </div>
                                             </>
                                         )}
