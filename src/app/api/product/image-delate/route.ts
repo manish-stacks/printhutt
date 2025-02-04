@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connect } from '@/dbConfig/dbConfig'
+import  dbConnect  from '@/dbConfig/dbConfig'
 import { getDataFromToken } from '@/helpers/getDataFromToken';
 import ProductModel from '@/models/productModel';
 import { deleteImage } from '@/lib/cloudinary';
 
-connect();
+await dbConnect();
 
 
 export async function POST(req: NextRequest) {

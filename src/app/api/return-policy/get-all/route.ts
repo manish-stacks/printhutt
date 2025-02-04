@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { connect } from '@/dbConfig/dbConfig'
+import  dbConnect  from '@/dbConfig/dbConfig'
 import ReturnPolicy from '@/models/returnPolicyModule';
-connect();
+await dbConnect();
 
 
 export async function GET() {

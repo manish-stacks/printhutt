@@ -1,22 +1,25 @@
 import { NextResponse } from 'next/server';
-import { connect } from '@/dbConfig/dbConfig'
+import dbConnect from '@/dbConfig/dbConfig';
 import WarrantyInformation from '@/models/warrantyInformationModel';
-connect();
 
 
 export async function GET() {
     try {
+        await dbConnect();
         const warranty = await WarrantyInformation.find().select('_id warrantyType');
 
         return NextResponse.json(
             {
-                message: 'data fetch',
-                warranty: warranty
+                message: 'Data fetched successfully',
+                warranty
             },
-            { status: 201 }
+            { status: 200 }
         );
-
     } catch (error) {
-        return NextResponse.json({ error: (error as Error).message }, { status: 500 });
+        console.error('Error fetching warranty information:', error);
+        return NextResponse.json(
+            { error: (error as Error).message || 'Failed to fetch data' },
+            { status: 500 }
+        );
     }
 }

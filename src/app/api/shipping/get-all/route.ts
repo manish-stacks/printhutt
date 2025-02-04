@@ -1,26 +1,17 @@
 import { NextResponse } from 'next/server';
-import { connect } from '@/dbConfig/dbConfig'
+import dbConnect from '@/dbConfig/dbConfig';
 import ShippingInformation from '@/models/shippingInformationModel';
-connect();
 
 
 export async function GET() {
     try {
-        const shipping = await ShippingInformation.find().select('_id shippingMethod shippingFee');
-
-        return NextResponse.json(
-            {
-                message: 'data fetch',
-                shipping: shipping
-            },
-            { status: 201 }
-        );
-
+        await dbConnect();
+        const shipping = await ShippingInformation.find({}, '_id shippingMethod shippingFee');
+        return NextResponse.json({ message: 'Data fetched', shipping }, { status: 200 });
     } catch (error: unknown) {
-        if (error instanceof Error) {
-            return NextResponse.json({ error: error.message }, { status: 500 });
-        } else {
-            return NextResponse.json({ error: 'An unknown error occurred' }, { status: 500 });
-        }
+        return NextResponse.json(
+            { error: error instanceof Error ? error.message : 'An unknown error occurred' },
+            { status: 500 }
+        );
     }
 }

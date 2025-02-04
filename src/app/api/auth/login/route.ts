@@ -1,13 +1,13 @@
-import { connect } from '@/dbConfig/dbConfig'
+import dbConnect from '@/dbConfig/dbConfig';
 import { sendOtpByEmail, sendOtpBySms } from '@/lib/mail/mailer';
-import { NextRequest, NextResponse } from 'next/server'
-import UserModel from '@/models/userModel'
+import { NextRequest, NextResponse } from 'next/server';
+import UserModel from '@/models/userModel';
 import { isEmail } from '@/helpers/helpers';
-
-connect()
 
 export async function POST(request: NextRequest) {
     try {
+        await dbConnect(); 
+
         const reqBody = await request.json();
         const { emailOrMobile } = reqBody;
 
@@ -19,34 +19,31 @@ export async function POST(request: NextRequest) {
         }
 
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
-        const otpExpiry = Date.now() + 3600000; // OTP expiry time: 1 hour
+        const otpExpiry = Date.now() + 3600000; // 1 hour expiry
 
         const isEmailInput = isEmail(emailOrMobile);
         const queryKey = isEmailInput ? 'email' : 'number';
 
         let user = await UserModel.findOne({ [queryKey]: emailOrMobile });
 
-        if (!user) {
-            user = new UserModel({
-                [queryKey]: emailOrMobile,
-                otpVerification: otp,
-                otpVerificationExpiry: otpExpiry,
-            });
-            await user.save();
-        } else {
+        if (user) {
             user.otpVerification = otp;
             user.otpVerificationExpiry = otpExpiry;
             await user.save();
+        } else {
+            return NextResponse.json(
+                { message: 'User not found' }, 
+                { status: 404 }
+            );
         }
 
-        if (isEmailInput) {
-            await sendOtpByEmail(emailOrMobile, otp);
-        } else {
-            await sendOtpBySms(emailOrMobile, otp);
-        }
+        // Send OTP via email or SMS
+        isEmailInput
+            ? await sendOtpByEmail(emailOrMobile, otp)
+            : await sendOtpBySms(emailOrMobile, otp);
 
         return NextResponse.json(
-            { message: 'OTP sent successfully',otp:otp },
+            { message: 'OTP sent successfully' }, 
             { status: 200 }
         );
     } catch (error: unknown) {
@@ -57,4 +54,3 @@ export async function POST(request: NextRequest) {
         );
     }
 }
-

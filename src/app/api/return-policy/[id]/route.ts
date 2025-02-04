@@ -1,115 +1,108 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connect } from '@/dbConfig/dbConfig'
+import dbConnect from '@/dbConfig/dbConfig';
 import ReturnPolicy from '@/models/returnPolicyModule';
 import { getDataFromToken } from '@/helpers/getDataFromToken';
 import mongoose from 'mongoose';
 
-connect()
+
+
+const isValidObjectId = (id: string): boolean => mongoose.Types.ObjectId.isValid(id);
+
+const isAdmin = (role: string): boolean => role === 'admin';
+
+const unauthorizedResponse = () =>
+    NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+
+const invalidIdResponse = () =>
+    NextResponse.json({ success: false, message: 'Invalid Return Policy ID' }, { status: 400 });
+
+const notFoundResponse = () =>
+    NextResponse.json({ success: false, message: 'Return Policy not found' }, { status: 404 });
+
+const serverErrorResponse = (error: Error) => {
+    console.error('Error:', error.message);
+    return NextResponse.json(
+        { success: false, message: 'Internal Server Error', error: error.message },
+        { status: 500 }
+    );
+};
 
 export async function GET(request: NextRequest, context: { params: { id: string } }) {
     try {
-       const { id } = await context.params;
+        const { id } = await context.params;
+        await dbConnect();
+        if (!isValidObjectId(id)) return invalidIdResponse();
 
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            return NextResponse.json({ success: false, message: "Invalid Product ID" }, { status: 400 });
-        }
+        const { role } = await getDataFromToken(request);
+        if (!isAdmin(role)) return unauthorizedResponse();
 
-        const { role } = await getDataFromToken(request)
-        if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+        const returnPolicy = await ReturnPolicy.findById(id).exec();
 
+        if (!returnPolicy) return notFoundResponse();
 
-        const post = await ReturnPolicy.findById(id);
-        if (!post) {
-            return NextResponse.json(
-                { error: "Post not found" },
-                { status: 404 }
-            );
-        }
-        return NextResponse.json(post);
-    } catch {
-        return NextResponse.json(
-            { error: "Failed to fetch post" },
-            { status: 500 }
-        );
+        return NextResponse.json(returnPolicy, { status: 200 });
+    } catch (error) {
+        if (error instanceof Error) return serverErrorResponse(error);
+        return serverErrorResponse(new Error('Unknown error occurred'));
     }
 }
 
 export async function PUT(request: NextRequest, context: { params: { id: string } }) {
     try {
-       const { id } = await context.params;
+        const { id } = await context.params;
+        await dbConnect();
+        if (!isValidObjectId(id)) return invalidIdResponse();
 
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            return NextResponse.json({ success: false, message: "Invalid Product ID" }, { status: 400 });
-        }
         const { role } = await getDataFromToken(request);
-        if (role !== 'admin') {
-            return NextResponse.json(
-                { success: false, message: 'Unauthorized' },
-                { status: 401 }
-            );
-        }
+        if (!isAdmin(role)) return unauthorizedResponse();
 
         const { returnPeriod, restockingFee, policyDetails } = await request.json();
 
+        const existingPolicy = await ReturnPolicy.findById(id).exec();
+        if (!existingPolicy) return notFoundResponse();
 
-        const existing = await ReturnPolicy.findById(id);
+        existingPolicy.returnPeriod = returnPeriod || existingPolicy.returnPeriod;
+        existingPolicy.restockingFee = restockingFee || existingPolicy.restockingFee;
+        existingPolicy.policyDetails = policyDetails || existingPolicy.policyDetails;
 
-        if (!existing) {
-            return NextResponse.json(
-                { error: 'Policy Details not found' },
-                { status: 404 }
-            );
-        }
-
-        existing.returnPeriod = returnPeriod || existing.returnPeriod;
-        existing.restockingFee = restockingFee || existing.restockingFee;
-        existing.policyDetails = policyDetails || existing.policyDetails;
-
-        await existing.save();
+        await existingPolicy.save();
 
         return NextResponse.json(
             {
                 success: true,
-                message: 'Policy Details updated successfully',
-                data: existing,
+                message: 'Return Policy updated successfully',
+                data: existingPolicy,
             },
-            { status: 201 }
+            { status: 200 }
         );
-    } catch {
-        return NextResponse.json(
-            { error: 'Failed to update' },
-            { status: 500 }
-        );
+    } catch (error) {
+        if (error instanceof Error) return serverErrorResponse(error);
+        return serverErrorResponse(new Error('Unknown error occurred'));
     }
 }
-
 
 export async function DELETE(request: NextRequest, context: { params: { id: string } }) {
     try {
-       const { id } = await context.params;
+        const { id } = await context.params;
+        await dbConnect();
+        if (!isValidObjectId(id)) return invalidIdResponse();
 
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            return NextResponse.json({ success: false, message: "Invalid Product ID" }, { status: 400 });
-        }
-        const { role } = await getDataFromToken(request)
-        if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+        const { role } = await getDataFromToken(request);
+        if (!isAdmin(role)) return unauthorizedResponse();
 
-        const deleteData = await ReturnPolicy.findByIdAndDelete(id);
+        const deletedPolicy = await ReturnPolicy.findByIdAndDelete(id).exec();
 
-        if (!deleteData) {
-            return NextResponse.json({ error: "Return not found" }, { status: 404 });
-        }
+        if (!deletedPolicy) return notFoundResponse();
 
-        return NextResponse.json({
-            success: true,
-            message: "Return Deleted successfully!",
-        });
-
-    } catch {
         return NextResponse.json(
-            { error: "Failed to delete post" },
-            { status: 500 }
+            {
+                success: true,
+                message: 'Return Policy deleted successfully',
+            },
+            { status: 200 }
         );
+    } catch (error) {
+        if (error instanceof Error) return serverErrorResponse(error);
+        return serverErrorResponse(new Error('Unknown error occurred'));
     }
 }
-

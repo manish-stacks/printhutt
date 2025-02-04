@@ -1,22 +1,24 @@
-import { NextResponse } from 'next/server'
+import { NextResponse } from 'next/server';
 
 export async function GET() {
     try {
-        const reponse = NextResponse.json({
+        const response = NextResponse.json({
             message: "Logout successfully",
             success: true
-        }, { status: 200 })
+        }, { status: 200 });
 
-        reponse.cookies.set("token", "", {
+        response.cookies.set("token", "", {
             httpOnly: true,
-            expires: new Date(0)
-        })
+            secure: process.env.NODE_ENV === "production",
+            maxAge: 0,
+            path: "/", 
+        });
 
-        return reponse;
+        return response;
 
     } catch (error: unknown) {
         return NextResponse.json({
-            error: (error as Error).message || 'Internal server error',
+            error: (error as Error).message || "Internal server error",
         }, { status: 500 });
     }
 }

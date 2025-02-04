@@ -1,43 +1,41 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connect } from '@/dbConfig/dbConfig'
+import dbConnect from '@/dbConfig/dbConfig';
 import { getDataFromToken } from '@/helpers/getDataFromToken';
 import { deleteImage, uploadImage } from '@/lib/cloudinary';
 import SubCategory from '@/models/subCategoryModel';
 import mongoose from 'mongoose';
 
-connect()
 
 export async function GET(request: NextRequest, context: { params: { id: string } }) {
     try {
-       const { id } = await context.params;
+        await dbConnect();
+        const { id } = await context.params;
 
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return NextResponse.json({ success: false, message: "Invalid Product ID" }, { status: 400 });
         }
 
-        const { role } = await getDataFromToken(request)
-        if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
-
+        const { role } = await getDataFromToken(request);
+        if (role !== 'admin') {
+            return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+        }
 
         const post = await SubCategory.findById(id);
         if (!post) {
-            return NextResponse.json(
-                { error: "Post not found" },
-                { status: 404 }
-            );
+            return NextResponse.json({ error: "Post not found" }, { status: 404 });
         }
+
         return NextResponse.json(post);
     } catch {
-        return NextResponse.json(
-            { error: "Failed to fetch post" },
-            { status: 500 }
-        );
+        return NextResponse.json({ error: "Failed to fetch post" }, { status: 500 });
     }
 }
 
 export async function PUT(request: NextRequest, context: { params: { id: string } }) {
     try {
-        const { id } = context.params;
+        await dbConnect();
+
+        const { id } = await context.params;
 
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return NextResponse.json({ success: false, message: "Invalid Product ID" }, { status: 400 });
@@ -52,13 +50,9 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
 
         const existingCategory = await SubCategory.findById(id);
         if (!existingCategory) {
-            return NextResponse.json(
-                { error: 'Category not found' },
-                { status: 404 }
-            );
+            return NextResponse.json({ error: 'Category not found' }, { status: 404 });
         }
 
-        // Handle image upload
         const file = formData.get('imageUrl');
         let imageUrl = existingCategory.image;
 
@@ -69,13 +63,11 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
             }
         }
 
-        // Safely get and type form data values
         const getStringValue = (key: string): string => {
             const value = formData.get(key);
             return value && typeof value === 'string' ? value : '';
         };
 
-        // Update category with type-safe values
         const updates = {
             name: getStringValue('name') || existingCategory.name,
             slug: getStringValue('slug') || existingCategory.slug,
@@ -91,40 +83,36 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
         Object.assign(existingCategory, updates);
         await existingCategory.save();
 
-        return NextResponse.json(
-            {
-                success: true,
-                message: 'Category updated successfully',
-                data: existingCategory,
-            },
-            { status: 201 }
-        );
+        return NextResponse.json({
+            success: true,
+            message: 'Category updated successfully',
+            data: existingCategory,
+        }, { status: 201 });
     } catch (error) {
         console.error('Error updating category:', error);
-        return NextResponse.json(
-            { error: 'Failed to update category' },
-            { status: 500 }
-        );
+        return NextResponse.json({ error: 'Failed to update category' }, { status: 500 });
     }
 }
 
-
 export async function DELETE(request: NextRequest, context: { params: { id: string } }) {
     try {
-        const { id } = context.params;
+        await dbConnect();
+
+        const { id } = await context.params;
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return NextResponse.json({ success: false, message: "Invalid Product ID" }, { status: 400 });
         }
+
         const { role } = await getDataFromToken(request);
         if (role !== 'admin') {
             return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
         }
+
         const deleteData = await SubCategory.findById(id);
-        
         if (!deleteData) {
             return NextResponse.json({ error: "Category not found" }, { status: 404 });
         }
-     
+
         if (deleteData.image?.public_id) {
             await deleteImage(deleteData.image.public_id);
         }
@@ -138,25 +126,23 @@ export async function DELETE(request: NextRequest, context: { params: { id: stri
 
     } catch (error) {
         console.error('Error deleting category:', error);
-        return NextResponse.json(
-            { error: "Failed to delete category" },
-            { status: 500 }
-        );
+        return NextResponse.json({ error: "Failed to delete category" }, { status: 500 });
     }
 }
 
-
 export async function PATCH(request: NextRequest, context: { params: { id: string } }) {
     try {
-       const { id } = await context.params;
+        await dbConnect();
+        const { id } = await context.params;
 
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return NextResponse.json({ success: false, message: "Invalid Product ID" }, { status: 400 });
         }
 
         const { role } = await getDataFromToken(request);
-        if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
-
+        if (role !== 'admin') {
+            return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+        }
 
         const { status } = await request.json();
 
@@ -167,23 +153,14 @@ export async function PATCH(request: NextRequest, context: { params: { id: strin
         );
 
         if (!updatedCategory) {
-            return NextResponse.json(
-                { success: false, message: 'Category not found' },
-                { status: 404 }
-            );
+            return NextResponse.json({ success: false, message: 'Category not found' }, { status: 404 });
         }
 
-        return NextResponse.json(
-            {
-                success: true,
-                message: "Successfully updated category"
-            },
-            { status: 200 }
-        );
+        return NextResponse.json({
+            success: true,
+            message: "Successfully updated category"
+        }, { status: 200 });
     } catch {
-        return NextResponse.json(
-            { error: "Something went wrong" },
-            { status: 500 }
-        );
+        return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
     }
 }

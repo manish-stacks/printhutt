@@ -1,33 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connect } from '@/dbConfig/dbConfig'
+import dbConnect from '@/dbConfig/dbConfig';
 import { getDataFromToken } from '@/helpers/getDataFromToken';
 import ShippingInformation from '@/models/shippingInformationModel';
 
-connect();
 
 export async function POST(req: NextRequest) {
   try {
-    const { role } = await getDataFromToken(req)
+    await dbConnect();
+    const { role } = await getDataFromToken(req);
     if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
-
 
     const { shippingMethod, shippingFee, shippingTime } = await req.json();
 
-    const warranty = new ShippingInformation({
+    const newShipping = new ShippingInformation({
       shippingMethod,
       shippingFee,
       shippingTime,
     });
-    await warranty.save()
 
-    return NextResponse.json(
-      {
-        success: true,
-        message: 'Data inserted successfully',
-        data: warranty
-      },
-      { status: 201 }
-    );
+    await newShipping.save();
+
+    return NextResponse.json({
+      success: true,
+      message: 'Data inserted successfully',
+      data: newShipping
+    }, { status: 201 });
   } catch (error: unknown) {
     return NextResponse.json({ error: (error as Error).message }, { status: 500 });
   }
@@ -35,6 +32,7 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   try {
+    await dbConnect();
     const url = new URL(req.url);
     const page = parseInt(url.searchParams.get('page') || '1');
     const limit = parseInt(url.searchParams.get('limit') || '10');
@@ -67,5 +65,3 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: (error as Error).message }, { status: 500 });
   }
 }
-
-

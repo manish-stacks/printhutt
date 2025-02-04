@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
-import { connect } from '@/dbConfig/dbConfig'
+import  dbConnect  from '@/dbConfig/dbConfig'
 import Testimonials from '@/models/testimonialsModel';
 
 
-connect();
+await dbConnect();
 
 export async function GET() {
     try {

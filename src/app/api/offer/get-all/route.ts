@@ -1,22 +1,24 @@
 import { NextResponse } from 'next/server';
-import { connect } from '@/dbConfig/dbConfig'
+import dbConnect from '@/dbConfig/dbConfig';
 import Offer from '@/models/offerModel';
-connect();
-
 
 export async function GET() {
     try {
-        const returnData = await Offer.find().select('_id offerTitle');
+        await dbConnect(); 
+
+        const offers = await Offer.find().select('_id offerTitle');
 
         return NextResponse.json(
             {
-                message: 'data fetch',
-                returnData: returnData
+                success: true,
+                message: 'Data fetched successfully',
+                data: offers,
             },
-            { status: 201 }
+            { status: 200 } 
         );
 
     } catch (error) {
-        return NextResponse.json({ error: (error as Error).message }, { status: 500 });
+        console.error('Error fetching offers:', error);
+        return NextResponse.json({ success: false, error: (error as Error).message }, { status: 500 });
     }
 }

@@ -1,22 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connect } from '@/dbConfig/dbConfig'
+import dbConnect from '@/dbConfig/dbConfig';
 import { getDataFromToken } from '@/helpers/getDataFromToken';
 import Coupon from '@/models/couponModel';
 
-connect();
 
 export async function POST(req: NextRequest) {
   try {
-    // Extract role from token
+    await dbConnect();
+    // Extract role from token and ensure admin access
     const { role } = await getDataFromToken(req);
     if (role !== "admin") {
       return NextResponse.json({ success: false, message: "Unauthorized" }, { status: 401 });
     }
 
-    // Parse request body
+    // Parse and validate request body
     const requestBody = await req.json();
-    
-    // Extract fields and explicitly convert isActive to a boolean
+
     const {
       code,
       description,
@@ -27,12 +26,19 @@ export async function POST(req: NextRequest) {
       validFrom,
       validUntil,
       usageLimit,
-      isActive
+      isActive,
     } = requestBody;
 
+    // Check required fields
+    if (!code || !discountValue || !validFrom || !validUntil) {
+      return NextResponse.json(
+        { success: false, message: "Missing required fields" },
+        { status: 400 }
+      );
+    }
 
-    const activeStatus = Boolean(isActive);
-    // console.log("Parsed Data:", { ...requestBody, isActive: activeStatus });
+    // Validate 'isActive' as a boolean (true/false)
+    const activeStatus = typeof isActive === 'boolean' ? isActive : Boolean(isActive);
 
     const newCoupon = new Coupon({
       code,
@@ -44,17 +50,16 @@ export async function POST(req: NextRequest) {
       validFrom,
       validUntil,
       usageLimit,
-      isActive: activeStatus // Ensure correct boolean value
+      isActive: activeStatus,
     });
 
-    // Save to database
+    // Save the coupon to the database
     const savedCoupon = await newCoupon.save();
-    // console.log("Saved Data:", savedCoupon);
 
     return NextResponse.json(
       {
         success: true,
-        message: "Coupon inserted successfully",
+        message: "Coupon created successfully",
         data: savedCoupon,
       },
       { status: 201 }
@@ -75,31 +80,31 @@ export async function GET(req: NextRequest) {
     const limit = parseInt(url.searchParams.get('limit') || '10');
     const search = url.searchParams.get('search') || '';
 
+    // Build the query object based on search
     const query = search
-      ? { returnPeriod: { $regex: search, $options: 'i' } }
+      ? { code: { $regex: search, $options: 'i' } }  // Changed from 'returnPeriod' to 'code' for relevancy
       : {};
 
     const skip = (page - 1) * limit;
 
+    // Fetch coupons and total count
     const [coupons, total] = await Promise.all([
-      Coupon.find(query)
-        .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limit),
-      Coupon.countDocuments(query)
+      Coupon.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit),
+      Coupon.countDocuments(query),
     ]);
 
     return NextResponse.json({
+      success: true,
       coupons,
       pagination: {
         total,
         pages: Math.ceil(total / limit),
         page,
-        limit
-      }
+        limit,
+      },
     });
   } catch (error: unknown) {
-    console.log("fetching",error)
-    return NextResponse.json({ error: (error as Error).message }, { status: 500 });
+    console.error("Error in GET /api/coupons:", error);
+    return NextResponse.json({ success: false, error: (error as Error).message }, { status: 500 });
   }
 }

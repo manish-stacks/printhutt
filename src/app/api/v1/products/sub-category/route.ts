@@ -1,43 +1,58 @@
 import { NextResponse } from 'next/server';
-import { connect } from '@/dbConfig/dbConfig'
+import dbConnect from '@/dbConfig/dbConfig';
 import Product from '@/models/productModel';
-import Category from '@/models/categoryModel';
 import SubCategory from '@/models/subCategoryModel';
 
-connect();
 
 export async function GET(request: Request) {
   try {
+    await dbConnect();
     const { searchParams } = new URL(request.url);
+    const subCategorySlug = searchParams.get('subCategory');
     const limitParam = searchParams.get('limit');
-    const subCategory = searchParams.get('subCategory');
-    const limit = limitParam === 'all' || !limitParam ? null : parseInt(limitParam);
+    const pageParam = searchParams.get('page');
 
-    const category = await SubCategory.findOne({ slug: subCategory }).lean();
+    // Validate and parse pagination values
+    const page = pageParam ? Math.max(1, parseInt(pageParam, 10)) : 1;
+    const limit = limitParam === 'all' || !limitParam ? 10 : Math.max(1, parseInt(limitParam, 10));
 
-    if (!category) {
-      return NextResponse.json({ error: 'Category not found' }, { status: 404 });
+    // Ensure subCategorySlug is provided
+    if (!subCategorySlug) {
+      return NextResponse.json({ error: 'Subcategory is required' }, { status: 400 });
     }
 
-    const query = Product.find({ subcategory: category._id, status: true }).sort({ createdAt: -1 });
-
-    if (limit !== null) {
-      query.limit(limit);
+    // Find the subcategory
+    const subcategory = await SubCategory.findOne({ slug: subCategorySlug }).lean();
+    if (!subcategory) {
+      return NextResponse.json({ error: 'Subcategory not found' }, { status: 404 });
     }
-    const productsData = await query.lean();
 
+    // Fetch products associated with the subcategory
+    const [productsData, totalProducts] = await Promise.all([
+      Product.find({ subcategory: subcategory._id, status: true })
+        .sort({ createdAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .lean(),
+      Product.countDocuments({ subcategory: subcategory._id, status: true }),
+    ]);
 
-    return NextResponse.json(
-      { products: productsData },
-      { status: 200 }
-    );
+    return NextResponse.json({
+      success: true,
+      products: productsData,
+      pagination: {
+        total: totalProducts,
+        page,
+        limit,
+        totalPages: Math.ceil(totalProducts / limit),
+      },
+    }, { status: 200 });
+
   } catch (error: unknown) {
-    console.error('Error fetching trending products:', error);
+    console.error('Error fetching products:', error);
     return NextResponse.json(
-      { error: (error as Error).message },
+      { success: false, error: (error as Error).message || 'Internal Server Error' },
       { status: 500 }
     );
   }
 }
-
-

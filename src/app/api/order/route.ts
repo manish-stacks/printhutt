@@ -1,49 +1,36 @@
 import { NextRequest, NextResponse } from "next/server";
-import { connect } from "@/dbConfig/dbConfig";
+import dbConnect from "@/dbConfig/dbConfig";
 import { Address } from "@/models/addressModel";
 import { getDataFromToken } from "@/helpers/getDataFromToken";
 import Order from "@/models/orderModel";
 import User from "@/models/userModel";
 import { uploadImageOrder } from "@/lib/cloudinary";
 import { sendOrderConfirmationEmail } from "@/lib/mail/mailer";
-import UserModel from '@/models/userModel';
-
-
-connect();
 
 export async function GET(request: NextRequest) {
   try {
+    await dbConnect(); 
+
     const { id, role } = await getDataFromToken(request);
     if (!id) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     const url = new URL(request.url);
-    const page = Math.max(parseInt(url.searchParams.get("page") || "1", 10), 1); // Ensure `page` is at least 1
-    const limit = Math.min(
-      Math.max(parseInt(url.searchParams.get("limit") || "10", 10), 1),
-      100
-    ); // Limit between 1 and 100
+    const page = Math.max(parseInt(url.searchParams.get("page") || "1", 10), 1);
+    const limit = Math.min(Math.max(parseInt(url.searchParams.get("limit") || "10", 10), 1), 100);
     const search = url.searchParams.get("search") || "";
     const status = url.searchParams.get("status") || "";
 
     const query: {
-      status?: boolean | string;
+      status?: string;
       userId?: string;
       orderId?: { $regex: string; $options: string };
     } = {};
 
-    if (status) {
-      query.status = status;
-    }
-
-    if (role !== "admin") {
-      query.userId = String(id);
-    }
-
-    if (search) {
-      query.orderId = { $regex: search, $options: "i" };
-    }
+    if (status) query.status = status;
+    if (role !== "admin") query.userId = String(id);
+    if (search) query.orderId = { $regex: search, $options: "i" };
 
     const skip = (page - 1) * limit;
 
@@ -52,8 +39,8 @@ export async function GET(request: NextRequest) {
       Order.countDocuments(query),
     ]);
 
-    // Response with paginated data
     return NextResponse.json({
+      success: true,
       orders,
       pagination: {
         total,
@@ -63,40 +50,24 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    if (error instanceof Error) {
-      return NextResponse.json(
-        { error: error.message || "Internal Server Error" },
-        { status: 500 }
-      );
-    }
+    console.error("Error fetching orders:", error);
+    return NextResponse.json(
+      { success: false, message: error instanceof Error ? error.message : "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
 
 export async function POST(request: NextRequest) {
-
-
-
-
   try {
-    // const orders = await Order.findById("679dec2c9dce0b05bc3d3784").populate({ path: 'userId', model: UserModel });
-
-    // await sendOrderConfirmationEmail(orders);
-
-    // console.log(orders)
-    // return NextResponse.json({
-    //   success: true,
-    //   message: "Order saved successfully",
-    // }, { status: 200 });
-
+    await dbConnect(); 
 
     const tokenData = await getDataFromToken(request);
-
     if (!tokenData.id) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     const userData = await User.findById(tokenData.id);
-
     if (!userData?.email) {
       return NextResponse.json(
         { success: false, message: "Email address is required to send order confirmation." },
@@ -105,60 +76,52 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-
     const addressData = await Address.findById(body.address);
-
     if (!addressData) {
-      return NextResponse.json(
-        { success: false, message: "Address not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ success: false, message: "Address not found" }, { status: 404 });
     }
 
-    const itemData = await Promise.all(body.items.map(async (item) => {
-      if (!item.custom_data) {
-        return {
-          productId: item.productId,
-          name: item.name,
-          slug: item.slug,
-          quantity: item.quantity,
-          sku: item.sku,
-          product_image: item.product_image,
-          price: item.price,
-          discountType: item.discountType,
-          discountPrice: item.discountPrice
-        };
-      } else {
-        const customData = item.custom_data;
+    const itemData = await Promise.all(
+      body.items.map(async (item) => {
+        if (!item.custom_data) {
+          return {
+            productId: item.productId,
+            name: item.name,
+            slug: item.slug,
+            quantity: item.quantity,
+            sku: item.sku,
+            product_image: item.product_image,
+            price: item.price,
+            discountType: item.discountType,
+            discountPrice: item.discountPrice,
+          };
+        } else {
+          const customData = item.custom_data;
+          const updatedProductData = {
+            ...customData,
+            previewCanvas: await uploadImageOrder(customData.previewCanvas, "customized preview canvas"),
+            previewImage: customData?.previewImage && await uploadImageOrder(customData.previewImage, "customized image"),
+            previewImageTwo: customData?.previewImageTwo && await uploadImageOrder(customData.previewImageTwo, "customized image"),
+          };
 
-        const updatedProductData = {
-          ...customData,
-          previewCanvas: await uploadImageOrder(customData.previewCanvas, 'customized preview canvas'),
-          previewImage: customData?.previewImage && await uploadImageOrder(customData.previewImage, 'customized image'),
-          previewImageTwo: customData?.previewImageTwo && await uploadImageOrder(customData.previewImageTwo, 'customized image')
-        };
-
-        // console.log(updatedProductData)
-        return {
-          productId: item.productId,
-          name: item.name,
-          slug: item.slug,
-          quantity: item.quantity,
-          sku: item.sku,
-          product_image: updatedProductData.previewCanvas.url,
-          isCustomized: true,
-          custom_data: updatedProductData,
-
-          price: item.price,
-          discountType: item.discountType,
-          discountPrice: item.discountPrice
-        };
-      }
-    }));
+          return {
+            productId: item.productId,
+            name: item.name,
+            slug: item.slug,
+            quantity: item.quantity,
+            sku: item.sku,
+            product_image: updatedProductData.previewCanvas.url,
+            isCustomized: true,
+            custom_data: updatedProductData,
+            price: item.price,
+            discountType: item.discountType,
+            discountPrice: item.discountPrice,
+          };
+        }
+      })
+    );
 
     const timestamp = Date.now();
-
-    
 
     const orderData = {
       orderId: `ORD-${timestamp}`,
@@ -169,7 +132,10 @@ export async function POST(request: NextRequest) {
         shippingTotal: body.totalPrice.shippingTotal,
         coupon_discount: body.totalPrice.coupon_discount,
       },
-      payAmt: body.paymentMethod === 'online' ? body.totalPrice.discountPrice.toFixed(2) : (body.totalPrice.discountPrice * 0.20).toFixed(2),
+      payAmt:
+        body.paymentMethod === "online"
+          ? body.totalPrice.discountPrice.toFixed(2)
+          : (body.totalPrice.discountPrice * 0.2).toFixed(2),
       paymentType: body.paymentMethod,
       payment: {
         method: body.paymentMethod,
@@ -185,20 +151,18 @@ export async function POST(request: NextRequest) {
         state: addressData.state,
         postCode: addressData.postCode,
         mobileNumber: addressData.mobileNumber,
-        email: userData.email
+        email: userData.email,
       },
       coupon: {
-        code: body.coupon.code,
-        discountAmount: body.coupon.discountAmount,
-        discountType: body.coupon.discountType,
-        isApplied: body.coupon.isApplied,
+        code: body.coupon?.code || "",
+        discountAmount: body.coupon?.discountAmount || 0,
+        discountType: body.coupon?.discountType || "",
+        isApplied: body.coupon?.isApplied || false,
       },
-      totalQuantity: body.getTotalItems,
+      totalQuantity: body.getTotalItems || 0,
       status: "pending",
       userId: tokenData.id,
     };
-
-
 
     const order = new Order(orderData);
     await order.save();
@@ -208,15 +172,14 @@ export async function POST(request: NextRequest) {
       message: "Order saved successfully",
       order: {
         ...order._doc,
-        user: userData
+        user: userData,
       },
     });
   } catch (error) {
-    if (error instanceof Error) {
-      return NextResponse.json(
-        { error: error.message || "Internal Server Error" },
-        { status: 500 }
-      );
-    }
+    console.error("Error creating order:", error);
+    return NextResponse.json(
+      { success: false, message: error instanceof Error ? error.message : "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }

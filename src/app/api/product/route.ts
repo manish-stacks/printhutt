@@ -1,15 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connect } from '@/dbConfig/dbConfig';
+import  dbConnect  from '@/dbConfig/dbConfig';
 import { getDataFromToken } from '@/helpers/getDataFromToken';
 import { uploadImage } from '@/lib/cloudinary';
 import ProductModel from '@/models/productModel';
 import mongoose from 'mongoose';
 import Category from '@/models/categoryModel';
 import SubCategory from '@/models/subCategoryModel';
-connect();
+
 
 export async function GET(req: NextRequest) {
   try {
+    await dbConnect();
     const url = new URL(req.url);
     const page = parseInt(url.searchParams.get('page') || '1');
     const limit = parseInt(url.searchParams.get('limit') || '10');
@@ -44,6 +45,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
+    await dbConnect();
     const { role } = await getDataFromToken(req);
     if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
 

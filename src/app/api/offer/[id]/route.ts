@@ -1,112 +1,83 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connect } from '@/dbConfig/dbConfig'
+import dbConnect from '@/dbConfig/dbConfig';
 import { getDataFromToken } from '@/helpers/getDataFromToken';
 import Offer from '@/models/offerModel';
 import mongoose from 'mongoose';
 
-connect()
+// Utility function to validate MongoDB ObjectId
+const validateObjectId = (id: string) => {
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    throw new Error("Invalid Offer ID");
+  }
+};
+
+// Utility function to check if the user is an admin
+const checkAdminRole = async (request: NextRequest) => {
+  const { role } = await getDataFromToken(request);
+  if (role !== 'admin') {
+    throw new Error("Unauthorized");
+  }
+};
 
 export async function GET(request: NextRequest, context: { params: { id: string } }) {
-    try {
-       const { id } = await context.params;
+  try {
+    await dbConnect(); 
 
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            return NextResponse.json({ success: false, message: "Invalid Product ID" }, { status: 400 });
-        }
+    const { id } = context.params;
+    validateObjectId(id);
+    await checkAdminRole(request);
 
-        const { role } = await getDataFromToken(request)
-        if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
-
-        const post = await Offer.findById(id);
-        if (!post) {
-            return NextResponse.json(
-                { error: "Post not found" },
-                { status: 404 }
-            );
-        }
-        return NextResponse.json(post);
-    } catch {
-        return NextResponse.json(
-            { error: "Failed to fetch post" },
-            { status: 500 }
-        );
+    const offer = await Offer.findById(id);
+    if (!offer) {
+      return NextResponse.json({ success: false, message: "Offer not found" }, { status: 404 });
     }
+
+    return NextResponse.json({ success: true, data: offer }, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching offer:", error);
+    return NextResponse.json({ success: false, error: error.message || "Failed to fetch offer" }, { status: error.message === "Unauthorized" ? 401 : 500 });
+  }
 }
 
 export async function PUT(request: NextRequest, context: { params: { id: string } }) {
-    try {
-       const { id } = await context.params;
+  try {
+    await dbConnect(); 
 
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            return NextResponse.json({ success: false, message: "Invalid Product ID" }, { status: 400 });
-        }
-        const { role } = await getDataFromToken(request);
-       
-        if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' },{ status: 401 });
-        const { offerTitle, offerDescription, discountPercentage, validFrom, validTo } = await request.json();
+    const { id } = context.params;
+    validateObjectId(id);
+    await checkAdminRole(request);
 
+    const updateData = await request.json();
+    const updatedOffer = await Offer.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
 
-        const existing = await Offer.findById(id);
-
-        if (!existing) {
-            return NextResponse.json(
-                { error: 'Offer not found' },
-                { status: 404 }
-            );
-        }
-
-        existing.offerTitle = offerTitle || existing.offerTitle;
-        existing.offerDescription = offerDescription || existing.offerDescription;
-        existing.discountPercentage = discountPercentage || existing.discountPercentage;
-        existing.validFrom = validFrom || existing.validFrom;
-        existing.validTo = validTo || existing.validTo;
-
-        await existing.save();
-
-        return NextResponse.json(
-            {
-                success: true,
-                message: 'Offer updated successfully',
-                data: existing,
-            },
-            { status: 201 }
-        );
-    } catch {
-        return NextResponse.json(
-            { error: 'Failed to update' },
-            { status: 500 }
-        );
+    if (!updatedOffer) {
+      return NextResponse.json({ success: false, message: "Offer not found" }, { status: 404 });
     }
-}
 
+    return NextResponse.json({ success: true, message: "Offer updated successfully", data: updatedOffer }, { status: 200 });
+  } catch (error) {
+    console.error("Error updating offer:", error);
+    return NextResponse.json({ success: false, error: error.message || "Failed to update offer" }, { status: error.message === "Unauthorized" ? 401 : 500 });
+  }
+}
 
 export async function DELETE(request: NextRequest, context: { params: { id: string } }) {
-    try {
-       const { id } = await context.params;
+  try {
+    await dbConnect(); 
 
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            return NextResponse.json({ success: false, message: "Invalid Product ID" }, { status: 400 });
-        }
-        
-        const { role } = await getDataFromToken(request)
-        if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+    const { id } = context.params;
+    validateObjectId(id);
+    await checkAdminRole(request);
 
-        const deleteData = await Offer.findByIdAndDelete(id);
+    const deletedOffer = await Offer.findByIdAndDelete(id);
 
-        if (!deleteData) {
-            return NextResponse.json({ error: "Return not found" }, { status: 404 });
-        }
-
-        return NextResponse.json({
-            success: true,
-            message: "Return Deleted successfully!",
-        });
-
-    } catch {
-        return NextResponse.json(
-            { error: "Failed to delete post" },
-            { status: 500 }
-        );
+    if (!deletedOffer) {
+      return NextResponse.json({ success: false, message: "Offer not found" }, { status: 404 });
     }
-}
 
+    return NextResponse.json({ success: true, message: "Offer deleted successfully" }, { status: 200 });
+  } catch (error) {
+    console.error("Error deleting offer:", error);
+    return NextResponse.json({ success: false, error: error.message || "Failed to delete offer" }, { status: error.message === "Unauthorized" ? 401 : 500 });
+  }
+}

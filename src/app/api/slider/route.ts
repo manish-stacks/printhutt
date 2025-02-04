@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connect } from '@/dbConfig/dbConfig'
+import dbConnect from '@/dbConfig/dbConfig';
 import { getDataFromToken } from '@/helpers/getDataFromToken';
 import Slider from '@/models/sliderModel';
 import { uploadImage } from '@/lib/cloudinary';
 
-connect();
 
 export async function GET(req: NextRequest) {
   try {
+    await dbConnect();
+
     const url = new URL(req.url);
     const page = parseInt(url.searchParams.get('page') || '1');
     const limit = parseInt(url.searchParams.get('limit') || '10');
@@ -35,7 +36,6 @@ export async function GET(req: NextRequest) {
         page,
         limit
       }
-
     });
   } catch (error: unknown) {
     return NextResponse.json({ error: (error as Error).message }, { status: 500 });
@@ -44,12 +44,14 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const { role } = await getDataFromToken(req)
-    if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+    await dbConnect();
+
+    const { role } = await getDataFromToken(req);
+    if (role !== 'admin') {
+      return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+    }
 
     const formData = await req.formData();
-    
-  
     const slider = formData.get('slider');
 
     if (!slider || !(slider instanceof File)) {
@@ -61,29 +63,22 @@ export async function POST(req: NextRequest) {
 
     const sliderResponse = await uploadImage(slider, 'slider', 1900, 550);
 
-    const returnData = new Slider({
+    const newSlider = new Slider({
       title: formData.get('title')?.toString() || '',
       imageUrl: sliderResponse || '',
       link: formData.get('link')?.toString() || '',
       isActive: formData.get('isActive')?.toString() === 'true',
       level: formData.get('level') || '',
     });
-    await returnData.save();
+
+    await newSlider.save();
+
     return NextResponse.json({
       success: true,
       message: 'Slider created successfully',
-      data: returnData
-    }, {
-      status: 201
-    });
+      data: newSlider
+    }, { status: 201 });
   } catch (error: unknown) {
-    return NextResponse.json({
-      error: (error as Error).message
-    },
-      { status: 500 });
+    return NextResponse.json({ error: (error as Error).message }, { status: 500 });
   }
 }
-
-
-
-

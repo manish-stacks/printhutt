@@ -1,22 +1,28 @@
 import { NextResponse } from 'next/server';
-import { connect } from '@/dbConfig/dbConfig'
+import dbConnect from '@/dbConfig/dbConfig';
 import Category from '@/models/categoryModel';
 
-connect();
 
 export async function GET() {
     try {
-        const category = await Category.find().select('_id name')
-        // console.log(category)
+        await dbConnect();
+        // Fetch categories with only _id and name
+        const categories = await Category.find().select('_id name');
+
         return NextResponse.json(
             {
-                message: 'data fetch',
-                category: category
+                success: true,
+                message: 'Categories fetched successfully',
+                data: categories
             },
-            { status: 201 }
+            { status: 200 }
         );
 
     } catch (error: unknown) {
-        return NextResponse.json({ error: (error as Error).message }, { status: 500 });
+        console.error('Error fetching categories:', error);
+        return NextResponse.json({
+            success: false,
+            error: (error as Error).message || 'Internal server error'
+        }, { status: 500 });
     }
 }
