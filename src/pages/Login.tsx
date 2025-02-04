@@ -1,5 +1,5 @@
 'use client'
-import React, { FormEvent, useEffect, useState, ChangeEvent } from "react";
+import React, { FormEvent, useEffect, useState, ChangeEvent, KeyboardEvent } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
 import axios from "axios";
 import { toast } from 'react-toastify';
@@ -7,14 +7,11 @@ import { useRouter } from "next/navigation";
 import { useUserStore } from "@/store/useUserStore";
 
 const Login = () => {
-
   const router = useRouter();
-
   const [loading, setLoading] = useState<boolean>(false);
   const [isOtpSent, setIsOtpSent] = useState<boolean>(false);
   const [emailOrMobile, setEmailOrMobile] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
-
 
   // verify otp
   const [otp, setOtp] = useState<string[]>(new Array(6).fill(""));
@@ -49,17 +46,14 @@ const Login = () => {
       setTimer(30);
       setIsResendEnabled(false);
 
-      if(data){
-        toast.success(`Otp send ${emailOrMobile}`);
-      }else{
-        toast.error(`Otp not send ${emailOrMobile}`);
+      if(data) {
+        toast.success(`Otp sent to ${emailOrMobile}`);
+      } else {
+        toast.error(`Failed to send OTP to ${emailOrMobile}`);
       }
-      // console.log(data);
-      
       setIsOtpSent(true);
     } catch (error) {
       if (error instanceof Error) {
-
         toast.error(error.message);
         console.error("Failed to send OTP:", error);
       }
@@ -78,6 +72,16 @@ const Login = () => {
         const nextInput = document.getElementById(`otp-input-${index + 1}`);
         nextInput?.focus();
       }
+    }
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>, index: number) => {
+    if (e.key === 'Backspace' && !otp[index] && index > 0) {
+      const updatedOtp = [...otp];
+      updatedOtp[index - 1] = '';
+      setOtp(updatedOtp);
+      const prevInput = document.getElementById(`otp-input-${index - 1}`);
+      prevInput?.focus();
     }
   };
 
@@ -108,10 +112,8 @@ const Login = () => {
         toast.error('Unauthorized access');
         return router.push('/login');
       }
-
     } catch (err) {
       if (err instanceof Error) {
-
         setError(err.response?.data?.error || "Failed to verify/expired OTP.");
       }
     } finally {
@@ -140,168 +142,157 @@ const Login = () => {
         emailOrMobile,
       });
 
-      if(data){
-        toast.success(`Otp send ${emailOrMobile}`);
-      }else{
+      if(data) {
+        toast.success(`OTP sent to ${emailOrMobile}`);
+      } else {
         toast.error('Failed to send OTP');
       }
-      // console.log(data)
     } catch (error) {
-      if(error instanceof Error){
-            
+      if(error instanceof Error) {
         toast.error(error.message);
       }
     }
   }
+
   return (
     <>
-      {/* Breadcrumb */}
-      <Breadcrumb title={"Login"} />
+      <Breadcrumb title="Login" />
 
-      {!isOtpSent ? (
-        <div className="flex items-center justify-center max-[991px]:p-[10px]">
-          <div className="flex w-6/12  max-[991px]:w-full h-[500px] shadow-lg rounded-lg overflow-hidden border" data-aos="fade-up"
+      <div className="flex items-center justify-center p-4 min-h-[calc(100vh-200px)]">
+        <div className="w-full max-w-4xl mx-auto">
+          <div 
+            className="flex flex-col md:flex-row shadow-lg rounded-lg overflow-hidden border bg-white"
+            data-aos="fade-up"
             data-aos-duration={1000}
-            data-aos-delay={200}>
+            data-aos-delay={200}
+          >
             {/* Left Panel */}
-            <div className="bg-blue-500 text-white w-1/2 flex flex-col items-center justify-center max-[991px]:hidden">
-              <h1 className="text-3xl font-bold mb-4">Login</h1>
+            <div className="hidden md:flex bg-blue-500 text-white md:w-1/2 flex-col items-center justify-center p-8">
+              <h1 className="text-2xl md:text-3xl font-bold mb-4">Login</h1>
               <p className="text-center text-sm mb-6 px-4">
                 Get access to your Orders, Wishlist and Recommendations
               </p>
-              <div className="w-28 h-28 bg-white rounded-full flex items-center justify-center">
+              <div className="w-24 h-24 md:w-28 md:h-28 bg-white rounded-full flex items-center justify-center">
                 <img
-                  src="https://t3.ftcdn.net/jpg/03/39/70/90/360_F_339709048_ZITR4wrVsOXCKdjHncdtabSNWpIhiaR7.jpg" // Replace with your illustration
+                  src={!isOtpSent 
+                    ? "https://t3.ftcdn.net/jpg/03/39/70/90/360_F_339709048_ZITR4wrVsOXCKdjHncdtabSNWpIhiaR7.jpg"
+                    : "https://t4.ftcdn.net/jpg/03/39/70/91/360_F_339709166_kKKqiQFynWG7bEkl3LisH3saRrEB0HGa.jpg"
+                  }
                   alt="Illustration"
                   className="w-full h-full object-contain"
                 />
               </div>
             </div>
+
             {/* Right Panel */}
-            <div className="w-1/2 max-[991px]:w-full bg-white flex flex-col justify-center items-center p-6">
-              <form className="w-full" onSubmit={handleSubmitSendOtp}>
-                <label
-                  htmlFor="email"
-                  className="block text-lg font-medium mb-2 text-gray-700"
-                >
-                  Enter Email/Mobile number
-                </label>
-                <input
-                  type="text"
-                  value={emailOrMobile}
-                  onChange={handleInputChange}
-                  placeholder="Email/Mobile number"
-                  autoComplete="off"
-                  className={`w-full p-3 pl-0 text-md border-0 rounded-none border-b-2 border-gray-300 ${errorMessage ? "border-rose-700" : ""
+            <div className="w-full md:w-1/2 p-6 md:p-8">
+              {!isOtpSent ? (
+                <form className="w-full" onSubmit={handleSubmitSendOtp}>
+                  <label
+                    htmlFor="email"
+                    className="block text-lg font-medium mb-2 text-gray-700"
+                  >
+                    Enter Email/Mobile number
+                  </label>
+                  <input
+                    type="text"
+                    value={emailOrMobile}
+                    onChange={handleInputChange}
+                    placeholder="Email/Mobile number"
+                    autoComplete="off"
+                    className={`w-full p-3 pl-0 text-md border-0 rounded-none border-b-2 ${
+                      errorMessage ? "border-rose-700" : "border-gray-300"
                     } focus:outline-none focus:border-blue-500 mb-4`}
-                />
-                <div className="text-rose-800 mb-4">{errorMessage}</div>
+                  />
+                  {errorMessage && <div className="text-rose-800 mb-4">{errorMessage}</div>}
 
-                <p className="text-sm text-gray-500 mb-6">
-                  By continuing, you agree to PrintHutt&apos;s{" "}
-                  <a href="#" className="text-blue-600">
-                    Terms of Use
-                  </a>{" "}
-                  and{" "}
-                  <a href="#" className="text-blue-600">
-                    Privacy Policy
-                  </a>
-                  .
-                </p>
+                  <p className="text-sm text-gray-500 mb-6">
+                    By continuing, you agree to PrintHutt&apos;s{" "}
+                    <a href="#" className="text-blue-600">Terms of Use</a>{" "}
+                    and{" "}
+                    <a href="#" className="text-blue-600">Privacy Policy</a>.
+                  </p>
 
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className={`w-full py-3 rounded-md text-lg font-semibold ${loading
-                    ? "bg-rose-950 cursor-not-allowed"
-                    : "bg-rose-600 text-white hover:bg-orange-600"
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className={`w-full py-3 rounded-md text-lg font-semibold ${
+                      loading
+                        ? "bg-rose-950 cursor-not-allowed"
+                        : "bg-rose-600 text-white hover:bg-orange-600"
                     }`}
-                >
-                  {loading ? "Send Otp..." : "Request OTP"}
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="flex items-center justify-center">
-          <div className="flex w-6/12 h-[500px] shadow-lg rounded-lg overflow-hidden border">
-            {/* Left Panel */}
-            <div className="bg-blue-500 text-white w-1/2 flex flex-col items-center justify-center">
-              <h1 className="text-3xl font-bold mb-4">Login</h1>
-              <p className="text-center text-sm mb-6 px-4">
-                Get access to your Orders, Wishlist and Recommendations
-              </p>
-              <div className="w-28 h-28 bg-white rounded-full flex items-center justify-center">
-                {/* Illustration Placeholder */}
-                <img
-                  src="https://t4.ftcdn.net/jpg/03/39/70/91/360_F_339709166_kKKqiQFynWG7bEkl3LisH3saRrEB0HGa.jpg" // Replace with your illustration
-                  alt="Illustration"
-                  className="w-full h-full object-contain z-0"
-                />
-              </div>
-            </div>
+                  >
+                    {loading ? "Sending OTP..." : "Request OTP"}
+                  </button>
+                </form>
+              ) : (
+                <div className="w-full">
+                  <p className="text-center text-gray-800 text-sm mb-6">
+                    Please enter the OTP sent to <br />
+                    <span className="font-semibold">{emailOrMobile}</span>{" "}
+                    <button 
+                      onClick={() => window.location.reload()} 
+                      className="text-blue-600 font-medium"
+                    >
+                      Change
+                    </button>
+                  </p>
 
-            {/* Right Panel */}
-            <div className="w-1/2 bg-white flex flex-col justify-center items-center p-6">
-              <p className="text-center text-gray-800 text-sm mb-6">
-                Please enter the OTP sent to <br />
-                <span className="font-semibold">{emailOrMobile}</span>{" "}
-                <button onClick={() => window.location.reload()} className="text-blue-600 font-medium">
-                  Change
-                </button>
-              </p>
+                  <form onSubmit={handleSubmitVerifyOtp}>
+                    <div className="flex justify-center mb-6 space-x-2 md:space-x-3">
+                      {otp.map((digit, index) => (
+                        <input
+                          key={index}
+                          id={`otp-input-${index}`}
+                          type="text"
+                          maxLength={1}
+                          value={digit}
+                          onChange={(e) => handleChangeOtp(e.target.value, index)}
+                          onKeyDown={(e) => handleKeyDown(e, index)}
+                          className="w-8 md:w-10 h-10 md:h-12 text-center text-md md:text-2xl border-2 rounded-md border-gray-300 focus:outline-none focus:border-blue-500"
+                        />
+                      ))}
+                    </div>
+                    
+                    {error && <p className="text-red-500 text-center mb-3">{error}</p>}
+                    {success && <p className="text-green-500 text-center mb-3">{success}</p>}
+                    
+                    <button
+                      type="submit"
+                      disabled={loadingOtp}
+                      className={`w-full py-3 rounded-md text-lg font-semibold ${
+                        loadingOtp
+                          ? "bg-blue-950 cursor-not-allowed"
+                          : "bg-blue-500 text-white hover:bg-blue-600"
+                      }`}
+                    >
+                      {loadingOtp ? "Verifying..." : "Verify"}
+                    </button>
+                  </form>
 
-              {/* OTP Input Fields */}
-              <form onSubmit={handleSubmitVerifyOtp}>
-                <div className="flex justify-center mb-6 space-x-3">
-                  {otp.map((digit, index) => (
-                    <input
-                      key={index}
-                      id={`otp-input-${index}`}
-                      type="text"
-                      maxLength={1}
-                      value={digit}
-                      onChange={(e) => handleChangeOtp(e.target.value, index)}
-                      className="w-10 h-12 text-center text-2xl border-0 rounded-none border-b-2 border-gray-300 focus:outline-none focus:border-blue-500"
-                    />
-                  ))}
+                  <p className="text-sm text-gray-500 mt-6 text-center">
+                    Not received your code?{" "}
+                    <span className="text-black font-semibold">
+                      {timer > 0 ? `00:${timer < 10 ? `0${timer}` : timer}` : '00:00'}
+                    </span>
+                  </p>
+
+                  {isResendEnabled && (
+                    <div className="text-center">
+                      <button
+                        onClick={sendOTP}
+                        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                      >
+                        Resend OTP
+                      </button>
+                    </div>
+                  )}
                 </div>
-                {error && <p className="text-red-500 text-center mb-3">{error}</p>}
-                {success && <p className="text-green-500 text-center mb-3">{success}</p>}
-                {/* Verify Button */}
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className={`w-full py-3 rounded-md text-lg font-semibold ${loadingOtp
-                    ? "bg-blue-950 cursor-not-allowed"
-                    : "bg-blue-500 text-white hover:bg-blue-600"
-                    }`}
-                >
-                  {loadingOtp ? "Verifying..." : "Verify"}
-                </button>
-              </form>
-
-              {/* Resend Timer */}
-              <p className="text-sm text-gray-500 mt-6">
-                Not received your code?{" "}
-                <span className="text-black font-semibold">
-                  {timer > 0 ? `00:${timer < 10 ? `0${timer}` : timer}` : '00:00'}
-                </span>
-              </p>
-
-              {isResendEnabled && (
-                <button
-                  onClick={sendOTP}
-                  className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg"
-                >
-                  Resend OTP
-                </button>
               )}
             </div>
           </div>
         </div>
-      )}
+      </div>
     </>
   );
 };

@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useCartStore } from "@/store/useCartStore";
 import { useEffect, Suspense } from "react";
+import confetti from "canvas-confetti";
 
 export default function OrderConfirmation() {
     return (
@@ -22,6 +23,38 @@ function OrderConfirmationContent() {
 
     useEffect(() => {
         removeAllItems();
+        if (success && orderId) {
+            // confetti({
+            //     particleCount: 100,
+            //     spread: 70,
+            //     origin: { y: 0.6 },
+            // });
+
+            const end = Date.now() + (2 * 1000);
+            const colors = ['#ffffff', '#E4037C'];
+
+            (function frame() {
+                confetti({
+                    particleCount: 2,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: colors
+                });
+                confetti({
+                    particleCount: 2,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: colors
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+
+        }
     }, [orderId]);
 
     if (!success || !orderId) {

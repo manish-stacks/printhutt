@@ -76,8 +76,9 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const addressData = await Address.findById(body.address);
+    let addressData = await Address.findById(body.address);
     if (!addressData) {
+      addressData = await Address.findOne({ userId: tokenData.id });
       return NextResponse.json({ success: false, message: "Address not found" }, { status: 404 });
     }
 

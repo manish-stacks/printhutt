@@ -148,12 +148,12 @@ const ProductCardTwo = ({ product }: PopupProps) => {
                         </h4>
                         <div className="bb-price flex flex-wrap justify-between">
                             <div className="inner-price mx-[-3px]">
-                                <span className="new-price px-[3px] text-[16px] text-[#686e7d] font-bold">
+                                <span className="new-price px-[3px] text-[16px] max-[480px]:text-[12px] text-[#686e7d] font-bold">
                                     {product.discountType === 'percentage'
                                         ? formatCurrency(product.price - (product.price * product.discountPrice) / 100)
                                         : formatCurrency(product.price - product.discountPrice)}
                                 </span>
-                                <span className="old-price px-[3px] text-[14px] text-[#686e7d] line-through">
+                                <span className="old-price px-[3px] text-[14px] max-[480px]:text-[10px] text-[#686e7d] line-through">
                                     {product.discountPrice > 0 ? formatCurrency(product.price) : ''}
                                 </span>
                             </div>

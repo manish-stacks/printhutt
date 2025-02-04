@@ -28,7 +28,7 @@ const BannerOne = () => {
                                                 Personalised &amp; Acrylic Frame
                                             </h5>
                                             <p className="font-Poppins text-[16px] font-light leading-[28px] tracking-[0.03rem] text-[#686e7d] mb-[15px] max-[480px]:mb-[8px] max-[480px]:text-[14px]">
-                                                The flavour of something special
+                                                Premium Acrylic Photo Frames Printing
                                             </p>
                                             <span
                                                 className="bb-btn-1 transition-all duration-[0.3s] ease-in-out font-Poppins leading-[28px] tracking-[0.03rem] py-[5px] px-[15px] text-[14px] font-normal text-[#3d4750] bg-transparent rounded-[10px] border-[1px] border-solid border-[#3d4750] hover:bg-[#6c7fd8] hover:border-[#6c7fd8] hover:text-[#fff]"
@@ -61,7 +61,7 @@ const BannerOne = () => {
                                                 Personalised &amp; Table Frame
                                             </h5>
                                             <p className="font-Poppins text-[16px] font-light leading-[28px] tracking-[0.03rem] text-[#686e7d] mb-[15px] max-[480px]:mb-[8px] max-[480px]:text-[14px]">
-                                                A healthy meal for every one
+                                                Tabletop - Photo Albums, Frames & More
                                             </p>
                                             <span className="bb-btn-1 transition-all duration-[0.3s] ease-in-out font-Poppins leading-[28px] tracking-[0.03rem] py-[5px] px-[15px] text-[14px] font-normal text-[#3d4750] bg-transparent rounded-[10px] border-[1px] border-solid border-[#3d4750] hover:bg-[#6c7fd8] hover:border-[#6c7fd8] hover:text-[#fff]"
                                             >
