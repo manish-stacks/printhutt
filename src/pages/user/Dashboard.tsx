@@ -28,7 +28,7 @@ const Dashboard = () => {
             <UserSidebar activemenu={'dashboard'} />
             {/* Main Content */}
             <div className="flex-1 p-6 pt-0">
-              {/* Profile Header */}
+              
               <div className="bg-purple-600 text-white rounded-lg p-8 flex items-center justify-between mb-6 w-full max-w-full">
                 <div className="flex items-center space-x-4">
                   <img
@@ -42,8 +42,8 @@ const Dashboard = () => {
                   </div>
                 </div>
               </div>
-              {/* Dashboard Statistics */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 w-full max-w-full">
+             
+              {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 w-full max-w-full">
                 <div className="p-5 rounded-lg shadow-md bg-slate-100 ">
                   <div className="flex gap-4 md:px-3 md:py-4 ">
                     <div>
@@ -163,7 +163,7 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

@@ -15,6 +15,7 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
         }
 
         let tokendata;
+        
         try {
             tokendata = await getDataFromToken(request);
             if (!tokendata.id) {
