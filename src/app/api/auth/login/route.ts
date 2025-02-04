@@ -26,15 +26,17 @@ export async function POST(request: NextRequest) {
 
         let user = await UserModel.findOne({ [queryKey]: emailOrMobile });
 
-        if (user) {
+        if (!user) {
+            user = new UserModel({
+                [queryKey]: emailOrMobile,
+                otpVerification: otp,
+                otpVerificationExpiry: otpExpiry,
+            });
+            await user.save();
+        } else {
             user.otpVerification = otp;
             user.otpVerificationExpiry = otpExpiry;
             await user.save();
-        } else {
-            return NextResponse.json(
-                { message: 'User not found' }, 
-                { status: 404 }
-            );
         }
 
         // Send OTP via email or SMS
