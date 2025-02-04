@@ -28,7 +28,7 @@ const CategoryPopup = ({ onClose, category, products }: PopupProps) => {
     };
   }, []);
 
-console.log(category)
+  // console.log(category)
   return (
     <>
       {/* Category Popup */}
@@ -125,8 +125,8 @@ console.log(category)
                       products.map((product, index) => (
                         <div key={index} className="min-[992px]:w-[33.33%] min-[576px]:w-[50%] max-[480px]:w-[50%] w-full px-[12px] mb-[24px] ">
                           <div className="bb-category-cart p-[15px] overflow-hidden bg-[#f8f8fb] border-[1px] border-solid border-[#eee] rounded-[10px] flex max-[767px]:flex-col">
-                            <a
-
+                            <Link
+                              href={`/product-details/${product.slug}`}
                               className="pro-img mr-[12px] max-[767px]:mb-[15px] max-[767px]:mr-[0]"
                             >
                               <Image
@@ -136,11 +136,11 @@ console.log(category)
                                 height={80}
                                 className="w-[80px] rounded-[10px] border-[1px] border-solid border-[#eee] max-[767px]:w-full"
                               />
-                            </a>
+                            </Link>
                             <div className="side-contact flex flex-col">
                               <h4 className="bb-pro-title text-[15px]">
                                 <Link
-                                  href={`/product/${product.slug}`}
+                                  href={`/product-details/${product.slug}`}
                                   className="transition-all duration-[0.3s] ease-in-out flex font-Poppins text-[15px] leading-[28px] tracking-[0.03rem] font-medium text-[#3d4750]"
                                 >
                                   {product.title}

@@ -5,7 +5,7 @@ import React from 'react'
 const BannerTwo = () => {
     return (
         <>
-            <section className="section-banner-two my-[50px] max-[1199px]:my-[35px] bg-[url('https://printhutt.com/image/printhutt-slider.webp')] min-h-[600px] overflow-hidden bg-no-repeat bg-cover bg-center max-[991px]:max-h-[400px] max-[991px]:min-h-[auto] max-[480px]:hidden">
+            <section className="section-banner-two my-[50px] max-[1199px]:my-[35px] bg-[url('https://res.cloudinary.com/dkprths9f/image/upload/v1738668681/printhutt-slider_nlmzs4.jpg')] min-h-[600px] overflow-hidden bg-no-repeat bg-cover bg-center max-[991px]:max-h-[400px] max-[991px]:min-h-[auto] max-[480px]:hidden">
                 <div className="flex flex-wrap justify-between relative items-center mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">
                     <div className="flex flex-wrap w-full">
                         <div className="w-full px-[12px] banner-justify-box-contact  h-[600px] flex justify-end items-end max-[991px]:h-[400px]">
