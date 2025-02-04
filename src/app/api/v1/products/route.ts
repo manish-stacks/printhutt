@@ -1,86 +1,96 @@
 import { NextRequest, NextResponse } from 'next/server';
-import dbConnect from '@/dbConfig/dbConfig';
+import dbConnect from '@/dbConfig/dbConfig'
 import Category from '@/models/categoryModel';
 import SubCategory from '@/models/subCategoryModel';
 import Product from '@/models/productModel';
 
-await dbConnect();
 
 export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url);
+  await dbConnect();
+  const { searchParams } = new URL(request.url)
+  const page = parseInt(searchParams.get('page') || '1')
+  const search = searchParams.get('search') || ''
+  const categories = searchParams.get('categories')?.split(',').filter(Boolean) || []
+  const minPrice = parseFloat(searchParams.get('minPrice') || '0')
+  const maxPrice = parseFloat(searchParams.get('maxPrice') || '999999')
+  const rating = parseInt(searchParams.get('rating') || '0')
+  const tags = searchParams.get('tags')?.split(',').filter(Boolean) || []
+  const sort = searchParams.get('sort') || 'newest'
 
-    // Pagination parameters
-    const page = Math.max(parseInt(searchParams.get('page') || '1', 10), 1);
-    const perPage = 12;
-    const skip = (page - 1) * perPage;
+  const products = await Product.find().populate({ path: 'category', model: Category }).populate({ path: 'subcategory', model: SubCategory }).sort({ createdAt: -1 });
 
-    // Filters
-    const search = searchParams.get('search') || '';
-    const categories = searchParams.get('categories')?.split(',').filter(Boolean) || [];
-    const minPrice = parseFloat(searchParams.get('minPrice') || '0');
-    const maxPrice = parseFloat(searchParams.get('maxPrice') || '999999');
-    const rating = parseInt(searchParams.get('rating') || '0', 10);
-    const tags = searchParams.get('tags')?.split(',').filter(Boolean) || [];
-    const sort = searchParams.get('sort') || 'newest';
-
-    // Build MongoDB query
-    const query: any = {};
-
-    if (search) {
-      query.title = { $regex: search, $options: 'i' }; // Case-insensitive search
-    }
-
-    if (categories.length > 0) {
-      const categoryDocs = await Category.find({ name: { $in: categories } }).select('_id').lean();
-      query.category = { $in: categoryDocs.map((c) => c._id) };
-    }
-
-    query.price = { $gte: minPrice, $lte: maxPrice };
-
-    if (rating > 0) {
-      query.rating = { $gte: rating };
-    }
-
-    if (tags.length > 0) {
-      query.tags = { $in: tags }; // Matches any of the provided tags
-    }
-
-    // Sorting logic
-    const sortOptions: Record<string, any> = {
-      featured: { featured: -1 },
-      newest: { createdAt: -1 },
-      'price-asc': { price: 1 },
-      'price-desc': { price: -1 },
-    };
-
-    const sortQuery = sortOptions[sort] || { createdAt: -1 };
-
-    // Fetch data with MongoDB filters
-    const [products, total] = await Promise.all([
-      Product.find(query)
-        .populate('category', Category)
-        .populate('subcategory', SubCategory)
-        .sort(sortQuery)
-        .skip(skip)
-        .limit(perPage)
-        .lean(),
-      Product.countDocuments(query), // Get total product count for pagination
-    ]);
-
+  if (!products) {
     return NextResponse.json({
-      success: true,
-      products,
-      totalProducts: total,
-      pagination: {
-        page,
-        perPage,
-        total,
-        totalPages: Math.ceil(total / perPage),
-      },
-    });
-  } catch (error: unknown) {
-    console.error('Error fetching products:', error);
-    return NextResponse.json({ error: (error as Error).message || 'Internal Server Error' }, { status: 500 });
+      error: 'Failed to fetch products'
+    }, { status: 500 });
   }
+
+  let filteredProducts = [...products]
+
+  // Apply filters
+  if (search) {
+    filteredProducts = filteredProducts.filter(p =>
+      p.title.toLowerCase().includes(search.toLowerCase())
+    )
+  }
+
+  if (categories.length > 0) {
+    filteredProducts = filteredProducts.filter(p =>
+      categories.includes(p.category.name)
+    )
+  }
+
+  filteredProducts = filteredProducts.filter(p =>
+    p.price >= minPrice && p.price <= maxPrice
+  )
+
+  if (rating > 0) {
+    filteredProducts = filteredProducts.filter(p => p.rating >= rating)
+  }
+
+  if (tags.length > 0) {
+    filteredProducts = filteredProducts.filter(p =>
+      p.tags?.some(t => tags.includes(t))
+    )
+  }
+
+  // Apply sorting
+  switch (sort) {
+    case 'featured':
+      // Assuming 'featured' products are sorted by some 'featured' field
+      filteredProducts = filteredProducts.sort((a, b) => b.featured - a.featured);
+      break;
+    case 'newest':
+      filteredProducts = filteredProducts.sort((a, b) => b.createdAt - a.createdAt);
+      break;
+    case 'price-asc':
+      filteredProducts = filteredProducts.sort((a, b) => a.price - b.price);
+      break;
+    case 'price-desc':
+      filteredProducts = filteredProducts.sort((a, b) => b.price - a.price);
+      break;
+    default:
+      filteredProducts = filteredProducts.sort((a, b) => b.createdAt - a.createdAt);
+      break;
+  }
+
+  // Pagination
+  const perPage = 12
+  const total = filteredProducts.length
+  const totalPages = Math.ceil(total / perPage)
+  const offset = (page - 1) * perPage
+
+  const paginatedProducts = filteredProducts.slice(offset, offset + perPage)
+
+  return NextResponse.json({
+    products: paginatedProducts,
+    totalProducts: total, 
+    pagination: {
+      page,
+      perPage,
+      pages: Math.ceil(total / perPage),
+      total,
+      totalPages
+    }
+  })
 }

@@ -27,7 +27,8 @@ export type FilterState = {
     priceRange: [number, number]
     rating: number | null
     tags: string[]
-    sort: string
+    sort: string;
+    type: string;
 }
 
 

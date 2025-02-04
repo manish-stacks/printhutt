@@ -67,7 +67,7 @@ const ProductCardThree = ({ product }: PopupProps) => {
                                 width={800}
                                 height={800}
                             />
-                            <img
+                            <Image
                                 className="hover-img transition-all duration-[0.3s] ease-in-out absolute z-[2] top-[0] left-[0] opacity-[0] w-full"
                                 src={product?.images[0]?.url}
                                 alt={product.title}

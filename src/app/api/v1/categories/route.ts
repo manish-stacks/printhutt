@@ -2,29 +2,44 @@ import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/dbConfig/dbConfig';
 import Category from '@/models/categoryModel';
 import SubCategory from '@/models/subCategoryModel';
+import Product from '@/models/productModel';
 
 
 export async function GET(request: NextRequest) {
   await dbConnect();
   const { searchParams } = new URL(request.url);
   const limitParam = searchParams.get('limit');
-  const limit = limitParam === 'all' || !limitParam ? null : Math.max(parseInt(limitParam), 1);  // Ensuring limit is a valid positive number
+  const limit = limitParam === 'all' || !limitParam ? null : Math.max(parseInt(limitParam), 1);
 
   try {
-    // Fetch categories with sorting
-    const categoriesQuery = Category.find().sort({ createdAt: -1 }).lean();
+    let categoriesQuery = Category.find().sort({ createdAt: -1 }).lean();
     if (limit) {
-      categoriesQuery.limit(limit);
+      categoriesQuery = categoriesQuery.limit(limit);
     }
     const categories = await categoriesQuery;
 
-    // Fetch subcategories for each category
     const categoriesData = await Promise.all(
       categories.map(async (category) => {
         const subcategories = await SubCategory.find({ parentCategory: category._id }).lean();
+
+        const totalCategoryProducts = await Product.countDocuments({ category: category._id });
+
+        const subcategoriesWithProductCount = await Promise.all(
+          subcategories.map(async (subcategory) => {
+            const totalSubcategoryProducts = await Product.countDocuments({ subcategory: subcategory._id });
+            return {
+              ...subcategory,
+              totalProducts: totalSubcategoryProducts,
+            };
+          })
+        );
+
+        const totalProducts = totalCategoryProducts + subcategoriesWithProductCount.reduce((acc, sub) => acc + sub.totalProducts, 0);
+
         return {
           ...category,
-          subcategories,
+          subcategories: subcategoriesWithProductCount,
+          totalProducts,
         };
       })
     );

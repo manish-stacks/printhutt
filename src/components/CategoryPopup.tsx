@@ -28,7 +28,7 @@ const CategoryPopup = ({ onClose, category, products }: PopupProps) => {
     };
   }, []);
 
-
+console.log(category)
   return (
     <>
       {/* Category Popup */}
@@ -78,7 +78,7 @@ const CategoryPopup = ({ onClose, category, products }: PopupProps) => {
                                 </Link>
                               </h5>
                               <p className="font-Poppins text-[13px] text-[#686e7d] leading-[25px] font-light tracking-[0.03rem]">
-                                {cat.subcategories.length} items
+                                {cat.totalProducts} items
                               </p>
                             </div>
                           </div>

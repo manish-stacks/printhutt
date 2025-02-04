@@ -158,12 +158,12 @@ const CartSidebar = ({ onClose }) => {
                           />
                         </Link>
                         <div className="bb-cart-contact pl-[15px] relative grow-[1] shrink-[0] basis-[70%] overflow-hidden">
-                          <a
-                            href="product-left-sidebar.html"
+                          <Link
+                            href={`/product-details/${item.slug}`}
                             className="bb-cart-sub-title w-full mb-[8px] font-Poppins tracking-[0.03rem] text-[#3d4750] whitespace-nowrap overflow-hidden text-ellipsis block text-[14px] leading-[18px] font-medium"
                           >
                             {item.title}
-                          </a>
+                          </Link>
                           <span className="cart-price mb-[8px] text-[14px] leading-[18px] block font-Poppins text-[#686e7d] font-light tracking-[0.03rem]">
                             <span className="new-price px-[3px] text-[15px] leading-[18px] text-[#686e7d] font-bold">
                               {item?.price &&

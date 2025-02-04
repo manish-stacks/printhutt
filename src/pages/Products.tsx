@@ -25,7 +25,8 @@ function Products() {
     priceRange: [0, 10000],
     rating: null,
     tags: [],
-    sort: 'newest'
+    sort: 'newest',
+    type:'all'
   })
 
   const searchParams = useSearchParams();

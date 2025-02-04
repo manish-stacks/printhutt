@@ -1,3 +1,5 @@
+'use client'
+import Link from 'next/link'
 import React from 'react'
 
 const BannerTwo = () => {
@@ -14,12 +16,12 @@ const BannerTwo = () => {
                                 <h4 className="font-quicksand mb-[20px] text-[40px] font-bold text-[#3d4750] tracking-[0.03rem] leading-[1.2] max-[991px]:text-[22px]">
                                     Personalised &amp; LED Lamp
                                 </h4>
-                                <a
-
+                                <Link
+                                    href="/category/lamps"
                                     className="bb-btn-1 transition-all duration-[0.3s] ease-in-out font-Poppins leading-[28px] tracking-[0.03rem] py-[8px] px-[20px] max-[1199px]:py-[3px] max-[1199px]:px-[15px] text-[14px] font-normal text-[#3d4750] bg-transparent rounded-[10px] border-[1px] border-solid border-[#3d4750] hover:bg-[#6c7fd8] hover:border-[#6c7fd8] hover:text-[#fff]"
                                 >
                                     Shop Now
-                                </a>
+                                </Link>
                             </div>
                         </div>
                     </div>

@@ -142,7 +142,7 @@ const CategoryHome = () => {
                                     </a>
                                   </h5>
                                   <p className="font-Poppins text-[13px] text-[#686e7d] leading-[25px] font-light tracking-[0.03rem]">
-                                    {category.subcategories.length} items
+                                    {category.totalProducts} items
                                   </p>
                                 </div>
                               </div>
