@@ -42,9 +42,8 @@ export default function UserPage() {
         try {
             setIsLoading(true);
             const response = await getAllUsers(page, search);
-            const data = response.data;
-            setUsers(data.users);
-            setPagination(data.pagination);
+            setUsers(response.users);
+            setPagination(response.pagination);
         } catch (error) {
             console.error('Failed to fetch users:', error);
             toast.error('Failed to fetch users');

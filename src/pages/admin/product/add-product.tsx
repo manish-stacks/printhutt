@@ -67,7 +67,7 @@ const initialFormData: ProductFormData = {
   offers: [],
   isVarientStatus: false,
   varient: [],
-  customizeLink:''
+  customizeLink: ''
 };
 
 
@@ -110,8 +110,8 @@ export default function AddProduct() {
         setShippings(shippingData.shipping);
         setReturns(returnData.returnData);
 
-        setCategories(categoryData.category);
-        setOffers(offerData.returnData);
+        setCategories(categoryData.data);
+        setOffers(offerData.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -252,7 +252,7 @@ export default function AddProduct() {
 
 
 
-  const options = offers.map((offer) => ({
+  const options = offers && offers.map((offer) => ({
     value: offer._id,
     label: offer.offerTitle.toUpperCase(),
   }));
@@ -1010,10 +1010,10 @@ export default function AddProduct() {
               >
                 <option>Choose Category</option>
                 {
-                  categories.length === 0 ? (
+                  categories && categories.length === 0 ? (
                     <option>No data found</option>
                   ) :
-                    categories.map((category) => (
+                    categories && categories.map((category) => (
                       <option key={category._id} value={category._id}>{category.name.toUpperCase()}</option>
                     ))
                 }

@@ -105,7 +105,8 @@ const initialFormData: ProductFormData = {
   shippingFee: 0,
   offers: [],
   isVarientStatus: false,
-  varient: []
+  varient: [],
+  customizeLink: '',
 };
 interface UpdateProductResponse {
   success: boolean;
@@ -155,7 +156,7 @@ export default function EditProduct() {
           get_product_by_id(id)
         ])
 
-        console.log(productData)
+        console.log(categoryData)
 
         setFormData(productData)
 
@@ -169,8 +170,8 @@ export default function EditProduct() {
         setWarranties(warrantyData.warranty);
         setShippings(shippingData.shipping);
         setReturns(returnData.returnData);
-        setCategories(categoryData.category);
-        setOffers(offerData.returnData);
+        setCategories(categoryData.data);
+        setOffers(offerData.data);
 
 
         if (productData.category) {
@@ -325,7 +326,7 @@ export default function EditProduct() {
     }));
   };
 
-  const options = offers.map((offer) => ({
+  const options = offers && offers.map((offer) => ({
     value: offer._id,
     label: offer.offerTitle.toUpperCase(),
   }));
@@ -339,7 +340,7 @@ export default function EditProduct() {
     });
   };
 
-  const selectedOffers = options.filter(option => formData.offers.includes(option.value));
+  const selectedOffers = options && options.filter(option => formData.offers.includes(option.value));
 
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -425,6 +426,7 @@ export default function EditProduct() {
   if (loading) return <LoadingSpinner />
 
 
+  // console.log(formData  )
   return (
     <>
       <form onSubmit={handleSubmit} encType={'multipart/form-data'}>
@@ -1036,25 +1038,7 @@ export default function EditProduct() {
             ))}
             <div className="bg-white text-black p-6 rounded-lg space-x-3 shadow-md shadow-black-300">
               <label className="block font-medium text-gray-700 ml-3">Offers On</label>
-              {/* <select
-                id="offers"
-                name="offers"
-                value={formData.offers || []}
-                onChange={handleInputChange}
-                multiple
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              >
-                <option disabled>Choose offers</option>
-                {offers.length === 0 ? (
-                  <option>No data found</option>
-                ) : (
-                  offers.map((offer) => (
-                    <option key={offer._id} value={offer._id}>
-                      {offer.offerTitle.toUpperCase()}
-                    </option>
-                  ))
-                )}
-              </select> */}
+             
               <Select
                 options={options}
                 isMulti
@@ -1084,10 +1068,10 @@ export default function EditProduct() {
               >
                 <option>Choose Category</option>
                 {
-                  categories.length === 0 ? (
+                  categories && categories.length === 0 ? (
                     <option>No data found</option>
                   ) :
-                    categories.map((category) => (
+                  categories && categories.map((category) => (
                       <option key={category._id} value={category._id}>{category.name.toUpperCase()}</option>
                     ))
                 }

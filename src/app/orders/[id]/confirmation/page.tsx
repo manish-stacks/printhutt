@@ -23,7 +23,7 @@ export default function OrderConfirmationPage() {
     const fetchOrder = async () => {
       try {
         const orderData = await get_order_details(params.id);
-        setOrder(orderData);
+        setOrder(orderData.data);
       } catch (error) {
         console.error("Error fetching order details:", error);
         notFound()

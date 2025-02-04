@@ -61,7 +61,7 @@ const couponSchema = new Schema<CouponDocument>({
 });
 
 
-couponSchema.index({ code: 1});
+// couponSchema.index({ code: 1});
 
 
 // couponSchema.pre('save', function(next) {

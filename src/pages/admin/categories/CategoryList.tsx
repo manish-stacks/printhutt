@@ -31,9 +31,10 @@ export default function CategoryList() {
   async function fetchCategories() {
     try {
       setIsLoading(true);
-      const data = await getAllCatPagination(page, search)
-      setCategories(data?.categories);
-      setPagination(data?.pagination);
+      const response = await getAllCatPagination(page, search)
+
+      setCategories(response?.data);
+      setPagination(response?.pagination);
     } catch (error) {
       console.error('Failed to fetch categories:', error);
       toast.error('Failed to fetch categories')
@@ -186,14 +187,14 @@ export default function CategoryList() {
                   </tr>
                 </thead>
                 <tbody>
-                  {categories.length === 0 ? (
+                  {categories && categories.length === 0 ? (
                     <tr>
                       <td colSpan={5} className="py-3 px-4 text-center">No categories found.</td>
                     </tr>
                   ) : (categories.map((category) => (
                     <tr key={category._id} className="border-b hover:bg-gray-50">
                       <td className="py-3 px-4">
-                        {category.image?.url ? (
+                        {categories && category.image?.url ? (
                           <div className="relative w-12 h-12">
                             <Image
                               src={category.image.url}

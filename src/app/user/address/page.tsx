@@ -17,7 +17,7 @@ const Address = () => {
     const fetchAddress = async () => {
       try {
         const response: AddressFormData[] = await getAddress();
-        setAddresslist(response);
+        setAddresslist(response.addresses);
       } catch (error) {
         console.error(error);
       }
@@ -102,7 +102,7 @@ const Address = () => {
   }
 
 
-  const handleDelete = async(id: string) => {
+  const handleDelete = async (id: string) => {
     try {
       await deleteAddress(id);
       toast.success('Address deleted successfully');
@@ -114,7 +114,7 @@ const Address = () => {
       if (error instanceof Error) {
         toast.error(error.message);
       }
-      
+
     }
   }
 
@@ -178,13 +178,14 @@ const Address = () => {
                         <div className="flex flex-col space-y-4">
                           {addresslist.map((address) => (
                             <div
-                              onClick={() => changeAddress(address?._id)}
                               key={address?._id}
                               className={`py-4 max-w-full overflow-hidden border-s-4 ${address.isDefault ? 'border-lime-500' : ' border-slate-500'} `}>
 
                               <div className="flex items-start justify-between space-x-4 max-[480px]:flex-col max-[480px]:space-x-0 max-[480px]:space-y-3">
                                 {/* Address Details */}
-                                <div className="relative text-sm text-gray-700 pl-6 cursor-pointer w-full max-w-[calc(100%-100px)]">
+                                <div
+                                  onClick={() => changeAddress(address?._id)}
+                                  className="relative text-sm text-gray-700 pl-6 cursor-pointer w-full max-w-[calc(100%-100px)]">
                                   {address.isDefault && (
                                     <div>
                                       <span className='text-sm text-white bg-amber-500 px-2 rounded-lg'>Selected</span>
@@ -329,21 +330,17 @@ const Address = () => {
                             <label className="inline-block font-Poppins leading-[26px] tracking-[0.02rem] mb-[8px] text-[14px] font-medium text-[#3d4750]">
                               Region State *
                             </label>
-                            <div className="custom-select p-[10px] border-[1px] border-solid border-[#eee] leading-[26px] rounded-[10px]">
-                              <select
-                                name="state"
-                                value={formData.state || ''}
-                                onChange={handleChange}
-                                className="form-select"
-                              >
-                                <option value="">Select State</option>
-                                <option value="delhi">Delhi</option>
-                                <option value="maharashtra">Maharashtra</option>
-                              </select>
-                              {errors.state && (
-                                <p className="text-red-500 text-sm mt-1">{errors.state}</p>
-                              )}
-                            </div>
+                            <input
+                              type="text"
+                              name="state"
+                              placeholder="State"
+                              className="w-full p-[10px] text-[14px] font-normal text-[#686e7d] border-[1px] border-solid border-[#eee] leading-[26px] outline-[0] rounded-[10px]"
+                              value={formData.state || ''}
+                              onChange={handleChange}
+                            />
+                            {errors.state && (
+                              <p className="text-red-500 text-sm mt-1">{errors.state}</p>
+                            )}
                           </div>
                         </div>
 

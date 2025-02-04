@@ -46,8 +46,8 @@ export default function OrderDetailsPage() {
     const fetchOrder = async () => {
         try {
             const response = await get_order_by_id(id as string);
-            setOrder(response);
-            setOrderStatus(response.status);
+            setOrder(response.data);
+            setOrderStatus(response.data.status);
         } catch (error) {
             toast.error('Error fetching order:');
         }

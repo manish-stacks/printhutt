@@ -15,7 +15,6 @@ const Layout = ({ children }: LayoutProps) => {
   const pathname = usePathname();
   const isAdminRoute = pathname!.startsWith("/admin");
 
-
   useEffect(() => {
     Aos.init({
       duration: 1000, 

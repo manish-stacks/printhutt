@@ -40,7 +40,7 @@ export default function OfferPage() {
             setIsLoading(true);
             const response = await getOfferPolicies(page, search);
 
-            setOffers(response.returndata);
+            setOffers(response.data);
             setPagination(response.pagination);
         } catch (error) {
             console.error('Failed to fetch return methods:', error);
