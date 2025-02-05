@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
     let addressData = await Address.findById(body.address);
     if (!addressData) {
       addressData = await Address.findOne({ userId: tokenData.id });
-      return NextResponse.json({ success: false, message: "Address not found" }, { status: 404 });
+      //return NextResponse.json({ success: false, message: "Address not found" }, { status: 404 });
     }
 
     const itemData = await Promise.all(

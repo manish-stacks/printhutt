@@ -15,23 +15,23 @@ export const CheckoutAddressForm = ({ onChangeAddress }: TypeSelectorProps) => {
     const [addresslist, setAddresslist] = useState<AddressFormData[]>([]);
     // const [defaultId, setDefaultId] = useState<string | null>(null);
 
-    useEffect(() => {
-        const fetchAddress = async () => {
-            try {
-                const response: AddressFormData[] = await getAddress();
+    const fetchAddress = async () => {
+        try {
+            const response: AddressFormData[] = await getAddress();
 
-                if (response.addresses.length > 0) {
-                    setSelectedAddress(true);
-                    setAddresslist(response.addresses);
-                } else {
-                    setSelectedAddress(false);
-                    setAddresslist([]);
-                }
-
-            } catch (error) {
-                // console.error(error);
+            if (response.addresses.length > 0) {
+                setSelectedAddress(true);
+                setAddresslist(response.addresses);
+            } else {
+                setSelectedAddress(false);
+                setAddresslist([]);
             }
-        };
+
+        } catch (error) {
+            // console.error(error);
+        }
+    };
+    useEffect(() => {
         fetchAddress();
     }, [])
 
@@ -75,7 +75,7 @@ export const CheckoutAddressForm = ({ onChangeAddress }: TypeSelectorProps) => {
             const validatedData = addressSchema.parse(formData);
             await saveAddress(validatedData);
             toast.success('Address saved successfully');
-
+            fetchAddress();
             setSelectedAddress(true);
         } catch (error) {
             if (error instanceof ZodError) {
