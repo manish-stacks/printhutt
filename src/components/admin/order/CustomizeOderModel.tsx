@@ -2,8 +2,14 @@ import React from 'react';
 import Image from 'next/image';
 
 const CustomizeOderModel = ({ item }) => {
-    const download = (url) => {
+    const download = (url:string) => {
         // Implement download functionality here
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = url.split('/').pop(); // Set the filename based on the URL
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link); 
     };
 
     return (
