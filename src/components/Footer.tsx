@@ -110,16 +110,16 @@ const Footer = () => {
                           </a>
                         </li>
                         <li className="bb-footer-link leading-[1.5] flex items-center mb-[16px] max-[991px]:mb-[15px]">
-                          <a
-                            href="shop-list-full-col-2.html"
+                          <Link
+                            href="shop-list-full-col-2"
                             className="transition-all duration-[0.3s] ease-in-out font-Poppins text-[14px] leading-[20px] text-[#686e7d] hover:text-[#6c7fd8] mb-[0] inline-block break-all tracking-[0] font-normal"
                           >
                             Keychains
-                          </a>
+                          </Link>
                         </li>
                         <li className="bb-footer-link leading-[1.5] flex items-center">
                           <a
-                            href="shop-banner-right-sidebar-col-4.html"
+                            href="shop-banner-right-sidebar-col-4"
                             className="transition-all duration-[0.3s] ease-in-out font-Poppins text-[14px] leading-[20px] text-[#686e7d] hover:text-[#6c7fd8] mb-[0] inline-block break-all tracking-[0] font-normal"
                           >
                             Magnet

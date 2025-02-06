@@ -36,7 +36,7 @@ const BlogDetails = () => {
                       </span>
                       <h4 className="text-[15px] mb-[8px] leading-[1.2]">
                         <a
-                          href="blog-detail-left-sidebar.html"
+                          href="blog-detail-left-sidebar"
                           className="font-Poppins tracking-[0.03rem] text-[15px] font-medium leading-[18px] text-[#3d4750]"
                         >
                           Marketing Guide: 5 Steps to Success.
@@ -61,7 +61,7 @@ const BlogDetails = () => {
                       </span>
                       <h4 className="text-[15px] mb-[8px] leading-[1.2]">
                         <a
-                          href="blog-detail-left-sidebar.html"
+                          href="blog-detail-left-sidebar"
                           className="font-Poppins tracking-[0.03rem] text-[15px] font-medium leading-[18px] text-[#3d4750]"
                         >
                           Business ideas to grow your business.
@@ -86,7 +86,7 @@ const BlogDetails = () => {
                       </span>
                       <h4 className="text-[15px] mb-[8px] leading-[1.2]">
                         <a
-                          href="blog-detail-left-sidebar.html"
+                          href="blog-detail-left-sidebar"
                           className="font-Poppins tracking-[0.03rem] text-[15px] font-medium leading-[18px] text-[#3d4750]"
                         >
                           Best way to solve business deal issue.
@@ -111,7 +111,7 @@ const BlogDetails = () => {
                       </span>
                       <h4 className="text-[15px] mb-[8px] leading-[1.2]">
                         <a
-                          href="blog-detail-left-sidebar.html"
+                          href="blog-detail-left-sidebar"
                           className="font-Poppins tracking-[0.03rem] text-[15px] font-medium leading-[18px] text-[#3d4750]"
                         >
                           31 customer stats know in 2025.

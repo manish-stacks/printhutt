@@ -87,12 +87,12 @@ export default function Header() {
               <div className="w-full px-[12px]">
                 <div className="inner-top-header flex justify-between">
                   <div className="col-left-bar">
-                    <a
-                      href="shop-left-sidebar-col-3.html"
+                    <Link
+                      href={"/offer"}
                       className="transition-all duration-[0.3s] ease-in-out font-Poppins font-light text-[16px] text-[#fff] leading-[28px] tracking-[0.03rem]"
                     >
                       Flat 30% Off On Neon Light Shop.
-                    </a>
+                    </Link>
                   </div>
                   <div className="col-right-bar flex">
                     <div className="cols px-[12px]">

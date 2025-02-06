@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 interface BreadcrumbProps {
@@ -19,12 +20,12 @@ const Breadcrumb = ({title}:BreadcrumbProps) => {
                 <div className="min-[768px]:w-[50%] min-[576px]:w-full w-full px-[12px]">
                   <ul className="bb-breadcrumb-list mx-[-5px] flex justify-end max-[767px]:justify-center">
                     <li className="bb-breadcrumb-item text-[14px] font-normal px-[5px]">
-                      <a
-                        href="index.html"
+                      <Link
+                        href="/"
                         className="font-Poppins text-[14px] leading-[28px] tracking-[0.03rem] font-semibold text-[#686e7d]"
                       >
                         Home
-                      </a>
+                      </Link>
                     </li>
                     <li className="text-[14px] font-normal px-[5px]">
                       <i className="ri-arrow-right-double-fill text-[14px] font-semibold leading-[28px]" />
