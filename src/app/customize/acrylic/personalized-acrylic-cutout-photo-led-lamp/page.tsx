@@ -16,7 +16,7 @@ export default function App() {
   const [previewImage, setPreviewImage] = useState('');
   const [product, setProduct] = useState<Product>();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [selectedFont, setSelectedFont] = useState("orangina_demo");
+  const [selectedFont, setSelectedFont] = useState("ariblk");
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const addToCart = useCartStore(state => state.addToCart);
   const router = useRouter();

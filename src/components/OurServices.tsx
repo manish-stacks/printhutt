@@ -25,7 +25,7 @@ const OurServices = () => {
                     Free Shipping
                   </h4>
                   <p className="font-Poppins font-light text-[14px] leading-[20px] text-[#686e7d] tracking-[0.03rem]">
-                    Free shipping on all Us order or above $200
+                    Free shipping on all Us order or above 500
                   </p>
                 </div>
               </div>
@@ -70,10 +70,10 @@ const OurServices = () => {
                 </div>
                 <div className="services-contact">
                   <h4 className="font-quicksand mb-[8px] text-[18px] font-bold text-[#3d4750] leading-[1.2] tracking-[0.03rem]">
-                    30 Days Return
+                    Easy Customizations
                   </h4>
                   <p className="font-Poppins font-light text-[14px] leading-[20px] text-[#686e7d] tracking-[0.03rem]">
-                    Simply return it within 30 days for an exchange
+                    Efficient live preview technology to help you customize your neon sign.
                   </p>
                 </div>
               </div>

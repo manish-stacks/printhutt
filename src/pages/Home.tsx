@@ -10,8 +10,10 @@ import HeroSlider from "@/components/home/HeroSlider";
 // import PersonalisedGifts from "@/components/home/PersonalisedGifts";
 import DayoftheDeal from "@/components/home/DayoftheDeal";
 import BannerOne from "@/components/home/BannerOne";
-import BannerTwo from "@/components/home/BannerTwo";
+// import BannerTwo from "@/components/home/BannerTwo";
 import confetti from "canvas-confetti";
+import PersonalisedGifts from "@/components/home/PersonalisedGifts";
+import PersonalisedGiftsTwo from "@/components/home/PersonalisedGiftsTwo";
 
 const HomeComponent = () => {
 
@@ -56,15 +58,17 @@ const HomeComponent = () => {
       {/*  Category  */}
       <CategoryHome />
 
-      {/* <PersonalisedGifts /> */}
+      <PersonalisedGifts />
+
       {/* Day of the deal */}
       <DayoftheDeal />
 
-      {/* Banner-one */}
-      <BannerOne />
+
 
       {/* Banner-two  */}
-      <BannerTwo />
+      {/* <BannerTwo /> */}
+      <PersonalisedGiftsTwo />
+
 
       {/* New Product tab Area */}
       <NewProductArea />
@@ -75,7 +79,8 @@ const HomeComponent = () => {
       {/* Product */}
       {/* <HomeProduct /> */}
 
-
+      {/* Banner-one */}
+      <BannerOne />
       {/* Testimonials */}
       <Testimonials />
 

@@ -14,7 +14,7 @@ export default function App() {
     const [names, setNames] = useState({ name1: '' });
     const [product, setProduct] = useState<Product>();
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const [selectedFont, setSelectedFont] = useState("orangina_demo");
+    const [selectedFont, setSelectedFont] = useState("ariblk");
     const [isAddingToCart, setIsAddingToCart] = useState(false);
 
     const addToCart = useCartStore(state => state.addToCart);
@@ -41,7 +41,7 @@ export default function App() {
                 left,
                 top,
                 fill: '#fde68a',
-                fontSize: 45,
+                fontSize: 35,
                 fontFamily: selectedFont,
             });
             canvas.add(textObj);
@@ -49,7 +49,7 @@ export default function App() {
             return canvas;
         };
 
-        const canvas1 = canvasRef.current && initializeCanvas(canvasRef.current, names.name1 || 'First Name', 20, 40);
+        const canvas1 = canvasRef.current && initializeCanvas(canvasRef.current, names.name1 || 'First Name', 30, 40);
 
         return () => {
             canvas1?.dispose();
@@ -164,6 +164,7 @@ export default function App() {
                                             onChange={(e) => setNames({ ...names, name1: e.target.value })}
                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
                                             placeholder="Enter first name"
+                                            maxLength={10}
                                         />
                                     </div>
 

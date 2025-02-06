@@ -83,12 +83,9 @@ export const CustomizationButton = ({ selectedFont, handleFontChange }: Customiz
 
 
 const fontsTwo = [{
-    'font': "orangina_demo",
-    'name': "Orangina",
-}, {
     'font': "ariblk",
     'name': "Arial Black",
-},{
+}, {
     'font': "impact",
     'name': "Impact",
 }, {
@@ -100,7 +97,10 @@ const fontsTwo = [{
 }, {
     'font': "aurorac",
     'name': "Aurorac",
-}
+}, {
+    'font': "orangina_demo",
+    'name': "Orangina",
+},
 ]
 export const CustomizationButtonTwo = ({ selectedFont, handleFontChange }: CustomizationButtonProps) => {
     return (

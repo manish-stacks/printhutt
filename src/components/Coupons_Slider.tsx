@@ -56,6 +56,7 @@ const Coupons_Slider: React.FC<CouponsSliderProps> = ({ isOpen, onClose, handle_
     }
 
     const handleCouponSelect = (coupon: Coupon) => {
+        console.log(coupon)
         if (total_money?.discountPrice >= coupon.minimumPurchaseAmount) {
             setSelectedCoupon(coupon)
             handle_select(coupon)

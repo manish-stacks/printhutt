@@ -55,6 +55,21 @@ const Checkout = () => {
     setErrorMsg('');
   };
 
+  const setPaymentFunction = (value: string) => {
+    setPaymentMethod(value);
+    if (value === 'offline') {
+      setTotalPrice(prev => ({
+        ...prev,
+        coupon_discount: 0
+      }));
+      setErrorMsg('COD Not Applied for Coupons');
+      return;
+    }
+    else {
+      window.location.reload();
+    }
+    console.log(value)
+  }
   const applyCouponDiscount = (coupon) => {
     let discount = 0;
 
@@ -64,7 +79,7 @@ const Checkout = () => {
         if (discount > coupon.maxDiscountAmount) {
           discount = coupon.maxDiscountAmount;
         }
-      } else if (coupon.discountType === "flat") {
+      } else if (coupon.discountType === "fixed") {
         discount = coupon.discountValue;
       }
 
@@ -156,7 +171,7 @@ const Checkout = () => {
       address: selectAddress
     };
 
-    console.log(order)
+    // console.log(order)
     try {
       setIsSubmitting(true);
       const response: { order: { _id: string } } = await create_a_new_order(order);
@@ -168,7 +183,7 @@ const Checkout = () => {
         } else {
           toast.error("Payment initiation failed!");
         }
-      }else{
+      } else {
         toast.error(response.message);
       }
 
@@ -373,7 +388,8 @@ const Checkout = () => {
                 >
                   <PaymentMethod
                     value={paymentMethod}
-                    onChange={(value) => setPaymentMethod(value)}
+                    // onChange={(value) => setPaymentMethod(value)}
+                    onChange={(value) => setPaymentFunction(value)}
                     totalPrice={totalPrice.discountPrice}
                   />
                 </div>

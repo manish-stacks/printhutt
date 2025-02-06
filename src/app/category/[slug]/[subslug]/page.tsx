@@ -1,23 +1,21 @@
 "use client"
-import { categoryService } from '@/_services/common/categoryService';
+// import { categoryService } from '@/_services/common/categoryService';
 import { productService } from '@/_services/common/productService';
 import Breadcrumb from '@/components/Breadcrumb';
 import ProductCardThree from '@/components/products/ProductCardThree';
-import Link from 'next/link';
+// import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import Slider from 'react-slick';
-import { string } from 'zod';
+// import Slider from 'react-slick';
+// import { string } from 'zod';
 
 
 const Page = () => {
 
     const params = useParams();
-    const slug = params?.slug as string | undefined;
+    // const slug = params?.slug as string | undefined;
     const subslug = params?.subslug as string | undefined;
-
-
-    const [categoriesData, setCategoriesData] = useState([]);
+    // const [categoriesData, setCategoriesData] = useState([]);
     const [productData, setProductData] = useState([]);
 
     const [loading, setLoadinng] = useState(true);
@@ -27,12 +25,13 @@ const Page = () => {
 
     const fetchData = async () => {
         try {
-            const [categories, productData] = await Promise.all([
-                categoryService.getAll('all'),
-                productService.getProductsBySubCategory('all',subslug),
-            ]);
+            // const [categories, productData] = await Promise.all([
+            //     categoryService.getAll('all'),
+            //     productService.getProductsBySubCategory('all',subslug),
+            // ]);
 
-            setCategoriesData(categories?.categories);
+            // setCategoriesData(categories?.categories);
+            const productData = await productService.getProductsBySubCategory('all', subslug);
             setProductData(productData?.products);
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -50,46 +49,46 @@ const Page = () => {
     }, []);
 
 
-    console.log(categoriesData)
+    // console.log(categoriesData)
 
-    const settings = {
-        dots: false,
-        infinite: true,
-        autoplay: true,
-        speed: 500,
-        slidesToShow: 6,
-        slidesToScroll: 1,
-        responsive: [
-            {
-                breakpoint: 1400,
-                settings: {
-                    slidesToShow: 6,
-                    slidesToScroll: 1,
-                },
-            },
-            {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 6,
-                    slidesToScroll: 1,
-                },
-            },
-            {
-                breakpoint: 768,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 1,
-                },
-            },
-        ],
-    };
+    // const settings = {
+    //     dots: false,
+    //     infinite: true,
+    //     autoplay: true,
+    //     speed: 500,
+    //     slidesToShow: 6,
+    //     slidesToScroll: 1,
+    //     responsive: [
+    //         {
+    //             breakpoint: 1400,
+    //             settings: {
+    //                 slidesToShow: 6,
+    //                 slidesToScroll: 1,
+    //             },
+    //         },
+    //         {
+    //             breakpoint: 1024,
+    //             settings: {
+    //                 slidesToShow: 6,
+    //                 slidesToScroll: 1,
+    //             },
+    //         },
+    //         {
+    //             breakpoint: 768,
+    //             settings: {
+    //                 slidesToShow: 2,
+    //                 slidesToScroll: 1,
+    //             },
+    //         },
+    //     ],
+    // };
 
     return (
         <>
             <Breadcrumb title={subslug?.toLocaleUpperCase()} />
 
             {/* Category section */}
-            <section className="section-category pt-[50px] max-[1199px]:pt-[35px] mb-[24px]">
+            {/* <section className="section-category pt-[50px] max-[1199px]:pt-[35px] mb-[24px]">
                 <div className="flex flex-wrap justify-between relative items-center mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">
                     <div className="flex flex-wrap w-full">
                         <div className="w-full px-[12px]">
@@ -103,12 +102,12 @@ const Page = () => {
                                                     className="min-[1200px]:w-[16.66%] min-[768px]:w-[33.33%] min-[576px]:w-[50%] w-full px-[12px] mb-[24px]"
                                                 >
                                                     <div className="bb-category-box p-[30px] rounded-[20px] flex flex-col items-center text-center max-[1399px]:p-[20px] bg-[#fef1f1]">
-                                                        {/* Skeleton for Category Image */}
+                                                       
                                                         <div className="category-image mb-[12px]">
                                                             <div className="skeleton w-[50px] h-[50px] max-[1399px]:h-[65px] max-[1399px]:w-[65px] max-[1199px]:h-[50px] max-[1199px]:w-[50px] rounded-md bg-gray-200" />
                                                         </div>
 
-                                                        {/* Skeleton for Text */}
+                                                       
                                                         <div className="category-sub-contact w-full">
                                                             <div className="skeleton w-[70%] h-[16px] bg-gray-200 mx-auto mb-[8px]" />
                                                             <div className="skeleton w-[50%] h-[14px] bg-gray-200 mx-auto" />
@@ -155,7 +154,7 @@ const Page = () => {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section> */}
             {/* Shop section */}
             <section className="section-shop pb-[50px] max-[1199px]:pb-[35px]">
                 <div className="flex flex-wrap justify-between relative items-center mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">
@@ -235,7 +234,7 @@ const Page = () => {
                                             ))
                                         )
                                     }
-                                    
+
 
                                 </div>
                             </div>

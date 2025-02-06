@@ -7,6 +7,7 @@ import 'swiper/css/autoplay';
 import { Navigation, Autoplay } from 'swiper/modules';
 
 import { sliderService } from '@/_services/common/sliderService';
+import Link from 'next/link';
 
 const HeroSlider = () => {
     const [slidersData, setSlidersData] = useState([]);
@@ -48,16 +49,18 @@ const HeroSlider = () => {
                 >
                     {slidersData.map((slider) => (
                         <SwiperSlide key={slider._id}>
-                            <Image
-                                src={slider.imageUrl.url}
-                                alt={slider.title}
-                                className="w-full"
-                                width={1900}
-                                height={550}
-                                placeholder="blur"
-                                blurDataURL="https://via.placeholder.com/1900x545.png?text=1900*545"
-                                onError={fail}
-                            />
+                            <Link href={slider.link}>
+                                <Image
+                                    src={slider.imageUrl.url}
+                                    alt={slider.title}
+                                    className="w-full"
+                                    width={1900}
+                                    height={550}
+                                    placeholder="blur"
+                                    blurDataURL="https://via.placeholder.com/1900x545.png?text=1900*545"
+                                    onError={fail}
+                                />
+                            </Link>
                         </SwiperSlide>
                     ))}
                     {/* Custom navigation buttons */}

@@ -69,17 +69,21 @@ function Products() {
   }, [page, search, filters])
 
   const handlePageChange = (newPage: number) => {
+    setLoading(true)
     const params = new URLSearchParams(searchParams!);
     params.set('page', newPage.toString());
     router.push(`?${params.toString()}`);
+    setLoading(false)
   };
 
   const handleFilterChange = (newFilters: Partial<FilterState>) => {
+    setLoading(true)
     // console.log(newFilters)
     setFilters(prev => ({ ...prev, ...newFilters }));
     const params = new URLSearchParams(searchParams!);
     params.set('page', '1'); // Reset to first page on filter change
     router.push(`?${params.toString()}`);
+    setLoading(false)
   };
 
   const skeletonItems = Array(6).fill(null);

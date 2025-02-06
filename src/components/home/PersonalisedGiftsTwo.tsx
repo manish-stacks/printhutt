@@ -7,63 +7,64 @@ import React from 'react';
 
 const products = [
   {
-    name: 'Acrylic Night Lamp',
-    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737373042/products/thumbnails/ay3jgwsmmqyqomsck0yx.jpg',
-    url: '/product-details/couple-led-name-lamp-with-photo-wedding-gifts-for-couples'
+    name: 'LED Name Lamp',
+    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737652218/products/thumbnails/pa19lqntikn2o3m9rwg1.jpg',
+    url: '/product-details/customized-name-led-lamp'
   },
   {
-    name: 'Multi Color Heart Neon',
-    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737980307/products/thumbnails/f6cy0e1zk2epeoaet9cd.jpg',
-    url: '/product-details/personalized-couple-name-with-heart-led-neon-sign'
+    name: 'LED Photo Acrylic',
+    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1738065496/products/thumbnails/r1yxyjerptfidpxj1mff.jpg',
+    url: '/product-details/personalized-acrylic-cutout-photo-led-lamp'
   },
   {
-    name: 'Couple LED Lamp',
-    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737985193/products/thumbnails/h3lbzoharsjhnhruoyij.png',
-    url: '/product-details/couple-name-lamp-rectangle-shape'
+    name: 'Raisen Name Lamps',
+    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737701189/products/odxhhyobm1godscsqpul.jpg',
+    url: '/product-details/resin-led-lamp-with-name'
   },
   {
-    name: 'Couple LED Lamp',
-    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737985883/products/puoeblwgabofqoep5zjl.png',
-    url: '/product-details/couple-name-lamp-diamond-shape'
+    name: '3D Name Plate',
+    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737703831/products/gdszkumgmliqurujumck.png',
+    url: '/product-details/3d-name-lamp-plate'
   },
   {
-    name: 'Couple LED Name Lamp',
-    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737913742/products/thumbnails/u2p4raxkfdvilirshc8x.jpg',
-    url: '/product-details/personalized-heart-night-lamp'
+    name: 'Customize Kids LED Lamp',
+    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737905381/products/thumbnails/n0v6qlolpj5m1e7lh5no.jpg',
+    url: '/category/lamps/kids-lamp'
   },
   {
-    name: 'Couple LED Name Lamp',
-    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737915138/products/pw0jklkcrhwpsnucnfgx.png',
-    url: '/product-details/personalized-double-heart-night-lamp'
+    name: 'Table Photo Frame',
+    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737958555/products/thumbnails/n0f1r1snff3ycwdtlmhr.jpg',
+    url: '/product-details/engraved-table-photo-frame'
   },
   {
-    name: 'Couple LED Name Lamp',
-    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737965914/products/xyutjqist7sfdla7lols.jpg',
-    url: '/product-details/acrylic-couple-lamp-with-name'
+    name: '3D Name Plate With Photo',
+    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737974633/products/gbcrcki3sy5efbrdu6jo.jpg',
+    url: '/product-details/customized-acrylic-picture-frame-with-name'
   },
   {
-    name: 'LED Photo Frame',
-    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737974050/products/nioal6cjozy2oeb3plee.jpg',
-    url: '/product-details/customize-acrylic-full-photo-frame-a4-size'
+    name: 'Acrylic Cutout Fream',
+    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737971007/products/thumbnails/wa3ajoqy8npjtha8k0qz.png',
+    url: '/product-details/personalized-color-acrylic-cutout-photo-frame'
   }
 ];
 
-function PersonalisedGifts() {
+function PersonalisedGiftsTwo() {
   return (
     <section>
       <div className="min-h-screen">
         {/* Hero Section */}
-        <div className="relative py-20">
+        <div className="relative  py-24">
           <div className="absolute inset-0" />
           <div className="relative container mx-auto px-4">
             <div className="text-center">
 
               <h1 className="text-4xl md:text-5xl font-bold text-slate-600 mb-4 font-serif">
-                Personalised Couple Gifts
+                Personalised Gifts
               </h1>
               <p className="text-lg text-slate-600/90 max-w-2xl mx-auto">
                 Create lasting memories with our unique collection of personalized lighting gifts
               </p>
+              
             </div>
           </div>
         </div>
@@ -102,8 +103,7 @@ function PersonalisedGifts() {
         </div>
       </div>
     </section>
-
   );
 }
 
-export default PersonalisedGifts;
+export default PersonalisedGiftsTwo;
