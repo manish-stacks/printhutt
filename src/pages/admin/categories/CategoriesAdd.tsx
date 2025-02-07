@@ -28,6 +28,7 @@ const CategoriesAdd = () => {
     slug: '',
     description: '',
     metaKeywords: '',
+    metaTitle: '',
     metaDescription: '',
     level: '',
     imageUrl: '',
@@ -84,6 +85,7 @@ const CategoriesAdd = () => {
     if (!formData.slug) return toast.error('Please enter a slug');
     if (!formData.description) return toast.error('Please enter a description');
     if (!formData.metaKeywords) return toast.error('Please enter meta keywords');
+    if (!formData.metaTitle) return toast.error('Please enter meta title');
     if (!formData.metaDescription) return toast.error('Please enter meta description');
     if (!formData.level) return toast.error('Please enter level');
     // if (!formData.status) return toast.error('Please enter status');
@@ -97,6 +99,7 @@ const CategoriesAdd = () => {
     data.append('slug', formData.slug)
     data.append('description', formData.description)
     data.append('metaKeywords', formData.metaKeywords)
+    data.append('metaTitle', formData.metaTitle)
     data.append('metaDescription', formData.metaDescription)
     data.append('level', formData.level)
     data.append('imageUrl', formData.imageUrl)
@@ -312,6 +315,23 @@ const CategoriesAdd = () => {
             </div>
 
             <div className="bg-white text-black p-6 rounded-lg space-y-5 shadow-md shadow-black-300">
+              <div>
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Meta title
+                </label>
+                <input
+                  className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
+                  id="metaTitle"
+                  name="metaTitle"
+                  type="text"
+                  value={formData.metaTitle}
+                  onChange={handleChange}
+                  placeholder="Enter Meta title"
+                />
+              </div>
               <div>
                 <label
                   htmlFor="name"

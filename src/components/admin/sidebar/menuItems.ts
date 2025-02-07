@@ -1,4 +1,4 @@
-import { FaBook, FaBroom, FaHome, FaLayerGroup, FaQuestionCircle, FaRandom, FaRssSquare, FaTag, FaTasks, FaUsers } from "react-icons/fa";
+import { FaBook, FaBroom, FaCartPlus, FaHome, FaLayerGroup, FaQuestionCircle, FaRandom, FaRssSquare, FaTag, FaTasks, FaUsers } from "react-icons/fa";
 import { RiLuggageCartFill, RiReceiptFill } from "react-icons/ri";
 
 
@@ -99,6 +99,12 @@ export const mainMenuItems = [
     icon: FaBook,
     label: 'Manages Pages',
     path: '/admin/manage-page',
+  },
+  {
+    id: 'Cart',
+    icon: FaCartPlus,
+    label: 'User Cart',
+    path: '/admin/Cart',
   },
   {
     id: 'manage-site',

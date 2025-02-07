@@ -28,6 +28,7 @@ export interface CategoryFormData {
   slug: string;
   description: string;
   metaKeywords: string;
+  metaTitle:string;
   metaDescription: string;
   level: string;
   imageUrl: string | File;

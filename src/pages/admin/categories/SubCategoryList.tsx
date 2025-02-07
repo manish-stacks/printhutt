@@ -187,7 +187,7 @@ export default function SubCategoryList() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {categories.length === 0 ? (
+                                    {categories?.length === 0 ? (
                                         <tr>
                                             <td colSpan={5} className="py-3 px-4 text-center">No categories found.</td>
                                         </tr>
