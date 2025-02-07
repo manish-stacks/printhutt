@@ -2,93 +2,59 @@
 import React, { useEffect } from "react";
 import CategoryHome from "@/components/home/CategoryHome";
 import Testimonials from "@/components/Testimonials";
-// import BlogHome from "@/components/BlogHome";
-// import InstagramHome from "@/components/InstagramHome";
+
 import NewProductArea from "@/components/NewProductArea";
 import OurServices from "@/components/OurServices";
 import HeroSlider from "@/components/home/HeroSlider";
-// import PersonalisedGifts from "@/components/home/PersonalisedGifts";
 import DayoftheDeal from "@/components/home/DayoftheDeal";
 import BannerOne from "@/components/home/BannerOne";
-// import BannerTwo from "@/components/home/BannerTwo";
 import confetti from "canvas-confetti";
 import PersonalisedGifts from "@/components/home/PersonalisedGifts";
 import PersonalisedGiftsTwo from "@/components/home/PersonalisedGiftsTwo";
+import { v4 as uuidv4 } from "uuid";
 
 const HomeComponent = () => {
-
   useEffect(() => {
-    var duration = 15 * 1000;
-    var animationEnd = Date.now() + duration;
-    var skew = 1;
+    const storedSessionId = localStorage.getItem("session_id");
+    const sessionExpiresAt = localStorage.getItem("session_expires_at");
 
-    function randomInRange(min, max) {
-      return Math.random() * (max - min) + min;
+    const currentTime = Date.now();
+
+    if (!storedSessionId || !sessionExpiresAt || currentTime > sessionExpiresAt) {
+   
+      const newSessionId = uuidv4();
+      const expiresAt = currentTime + 3 * 60 * 60 * 1000; 
+
+      localStorage.setItem("session_id", newSessionId);
+      localStorage.setItem("session_expires_at", expiresAt);
+
+      console.log("New session created:", newSessionId);
+    } else {
+      console.log("Existing session found:", storedSessionId);
     }
+  }, []);
 
-    (function frame() {
-      var timeLeft = animationEnd - Date.now();
-      var ticks = Math.max(200, 500 * (timeLeft / duration));
-      skew = Math.max(0.8, skew - 0.001);
 
-      confetti({
-        particleCount: 1,
-        startVelocity: 0,
-        ticks: ticks,
-        origin: {
-          x: Math.random(),
-          // since particles fall down, skew start toward the top
-          y: (Math.random() * skew) - 0.2
-        },
-        colors: ['#ffffff'],
-        shapes: ['circle'],
-        gravity: randomInRange(0.4, 0.6),
-        scalar: randomInRange(0.4, 1),
-        drift: randomInRange(-0.4, 0.4)
-      });
-
-      if (timeLeft > 0) {
-        requestAnimationFrame(frame);
-      }
-    }());
-  }, [])
   return (
     <>
       <HeroSlider />
-      {/*  Category  */}
+
       <CategoryHome />
 
       <PersonalisedGifts />
 
-      {/* Day of the deal */}
       <DayoftheDeal />
 
-
-
-      {/* Banner-two  */}
-      {/* <BannerTwo /> */}
       <PersonalisedGiftsTwo />
 
-
-      {/* New Product tab Area */}
       <NewProductArea />
 
-      {/*  Services  */}
       <OurServices />
 
-      {/* Product */}
-      {/* <HomeProduct /> */}
-
-      {/* Banner-one */}
       <BannerOne />
-      {/* Testimonials */}
+ 
       <Testimonials />
 
-      {/* <BlogHome /> */}
-      {/* Blog */}
-
-      {/* Instagram */}
-      {/* <InstagramHome /> */}
 
     </>
   );

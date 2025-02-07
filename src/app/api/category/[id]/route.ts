@@ -57,15 +57,20 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
         }
 
         let imageUrl = existingCategory.image;
-        if (file && file instanceof File) {
+        
+        console.log("imageUrl: " + imageUrl);
+        if (file && typeof file !== 'string') {  
             imageUrl = await uploadImage(file, 'categories', 60, 60);
-            await deleteImage(existingCategory.image.public_id);
+            if (existingCategory.image?.public_id) {
+                await deleteImage(existingCategory.image.public_id);
+            }
         }
 
         existingCategory.name = formData.get('name') || existingCategory.name;
         existingCategory.slug = formData.get('slug') || existingCategory.slug;
         existingCategory.description = formData.get('description') || existingCategory.description;
         existingCategory.metaKeywords = formData.get('metaKeywords') || existingCategory.metaKeywords;
+        existingCategory.metaTitle = formData.get('metaTitle') || existingCategory.metaTitle;
         existingCategory.metaDescription = formData.get('metaDescription') || existingCategory.metaDescription;
         existingCategory.level = formData.get('level') || existingCategory.level;
         existingCategory.status = formData.get('status') || existingCategory.status;

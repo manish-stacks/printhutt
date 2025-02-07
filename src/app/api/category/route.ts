@@ -47,12 +47,14 @@ export async function POST(req: NextRequest) {
       slug,
       description: formData.get("description")?.toString() || "",
       metaKeywords: formData.get("metaKeywords")?.toString() || "",
+      metaTitle: formData.get("metaTitle")?.toString() || "",
       metaDescription: formData.get("metaDescription")?.toString() || "",
       level: formData.get("level")?.toString() || "beginner",
       status: formData.get("status")?.toString() || "active",
       image: uploadResponse,
     });
-
+    console.log("category",category)
+    console.log("category", formData.get("metaTitle"))
     await category.save();
 
     return NextResponse.json(

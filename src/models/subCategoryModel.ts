@@ -11,6 +11,7 @@ interface ISubCategory extends Document {
   slug: string;
   description?: string;
   metaKeywords?: string;
+  metaTitle?: string;
   metaDescription?: string;
   image?: IImage;
   parentCategory?: mongoose.Types.ObjectId;
@@ -26,6 +27,7 @@ const subCategorySchema = new Schema<ISubCategory>(
     slug: { type: String, required: true },
     description: { type: String },
     metaKeywords: { type: String },
+    metaTitle: { type: String },
     metaDescription: { type: String },
     image: {
       url: { type: String },
@@ -46,7 +48,8 @@ const subCategorySchema = new Schema<ISubCategory>(
   { timestamps: true }
 );
 
-const SubCategory: Model<ISubCategory> = mongoose.models.SubCategory || mongoose.model<ISubCategory>("SubCategory", subCategorySchema);
+const SubCategory: Model<ISubCategory> =
+  mongoose.models.SubCategory ||
+  mongoose.model<ISubCategory>("SubCategory", subCategorySchema);
 
 export default SubCategory;
-

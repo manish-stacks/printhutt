@@ -29,6 +29,7 @@ export async function POST(req: NextRequest) {
       slug: formData.get('slug')?.toString(),
       description: formData.get('description')?.toString(),
       metaKeywords: formData.get('metaKeywords')?.toString(),
+      metaTitle: formData.get('metaTitle')?.toString(),
       metaDescription: formData.get('metaDescription')?.toString(),
       parentCategory: formData.get('parentCategory')?.toString() || null,
       level: formData.get('level')?.toString(),
