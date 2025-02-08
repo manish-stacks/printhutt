@@ -28,7 +28,10 @@ export function UserMenu() {
         try {
             await axios.get("/api/auth/logout");
             toast("logout successfully");
-            return router.push("/login");
+
+            window.localStorage.removeItem('user-store');
+            window.location.reload();
+            //return router.push("/login");
       
         } catch {
             toast.error("Whoops Server error");

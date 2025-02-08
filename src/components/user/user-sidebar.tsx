@@ -17,7 +17,9 @@ const UserSidebar = ({ activemenu }: Props) => {
     const logOut = async () => {
         await logoutStore();
         toast("logout successfully");
-        return router.push("/login");
+        // return router.push("/login");
+        window.localStorage.removeItem('user-store');
+        window.location.reload();
     };
 
     return (
