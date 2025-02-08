@@ -104,7 +104,7 @@ export const mainMenuItems = [
     id: 'Cart',
     icon: FaCartPlus,
     label: 'User Cart',
-    path: '/admin/Cart',
+    path: '/admin/se_cart',
   },
   {
     id: 'manage-site',

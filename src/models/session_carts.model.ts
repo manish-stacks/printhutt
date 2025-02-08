@@ -14,7 +14,6 @@ const sessionCartsSchema: Schema<ISessionCarts> = new Schema(
 );
 
 
-const SessionCart: Model<ISessionCarts> =
-  mongoose.models.SessionCart || mongoose.model<ISessionCarts>("SessionCart", sessionCartsSchema);
+const SessionCart: Model<ISessionCarts> = mongoose.models.SessionCart || mongoose.model<ISessionCarts>("SessionCart", sessionCartsSchema);
 
 export default SessionCart;
