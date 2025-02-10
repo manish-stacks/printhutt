@@ -51,6 +51,26 @@ export default function RootLayout({
             fbq('track', 'PageView');
           `}
         </Script>
+
+
+        {/* Google Analytics Script */}
+        <Script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=G-J6WJBSM32C`}
+          strategy="afterInteractive"
+        />
+
+        {/* Initialize Google Analytics */}
+        <Script id="google-analytics">
+          {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-J6WJBSM32C');
+        `}
+        </Script>
+
+
       </head>
 
       <body>
