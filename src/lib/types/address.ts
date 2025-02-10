@@ -27,6 +27,7 @@ export const addressSchema = z.object({
   state: z.string().min(1, "State is required"),
   alternatePhone: z.string().optional(),
   addressType: z.enum(['home', 'work']),
+  // newAddress?: boolean
 });
 
 export type AddressFormData = z.infer<typeof addressSchema>;

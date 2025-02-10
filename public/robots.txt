@@ -1,0 +1,7 @@
+# Allow all crawlers access to the entire site
+User-agent: *
+
+# Block a specific page or directory
+Disallow: /admin
+
+Sitemap: https://www.printhutt.com/sitemap.xml

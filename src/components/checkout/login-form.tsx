@@ -1,8 +1,8 @@
+import React, { FormEvent, useEffect, useState, KeyboardEvent } from 'react';
 import { useUserStore } from '@/store/useUserStore';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import React, { FormEvent, useEffect, useState } from 'react'
-import { RiNotification3Fill, RiStackFill, RiTruckLine } from 'react-icons/ri'
+import { RiNotification3Fill, RiStackFill, RiTruckLine } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 
 export const CheckoutloginForm = () => {
@@ -40,18 +40,32 @@ export const CheckoutloginForm = () => {
             setTimer(30);
             setIsResendEnabled(false);
             if (data) {
-                toast.success(`Otp send ${emailOrMobile}`);
+                toast.success(`OTP sent to ${emailOrMobile}`);
             } else {
-                toast.error(`Otp not send ${emailOrMobile}`);
+                toast.error(`Failed to send OTP to ${emailOrMobile}`);
             }
-            // console.log(data);
-
             setIsOtpSent(true);
         } catch (error: unknown) {
             toast.error((error as Error).message);
-            // console.error("Failed to send OTP:", error);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleOtpKeyDown = (e: KeyboardEvent<HTMLInputElement>, index: number) => {
+        if (e.key === 'Backspace') {
+            e.preventDefault();
+            if (index > 0 && !otp[index]) {
+                const updatedOtp = [...otp];
+                updatedOtp[index - 1] = '';
+                setOtp(updatedOtp);
+                const prevInput = document.getElementById(`otp-input-${index - 1}`);
+                prevInput?.focus();
+            } else {
+                const updatedOtp = [...otp];
+                updatedOtp[index] = '';
+                setOtp(updatedOtp);
+            }
         }
     };
 
@@ -68,13 +82,12 @@ export const CheckoutloginForm = () => {
         }
     };
 
-
     const handleSubmitVerifyOtp = async (e: FormEvent) => {
         e.preventDefault();
 
         const otpValue = otp.join("");
         if (otpValue.length !== 6) {
-            setError("Please enter a 6-digit OTP.");
+            setErrorMessage("Please enter a 6-digit OTP.");
             return;
         }
 
@@ -87,15 +100,13 @@ export const CheckoutloginForm = () => {
 
             fetchUserDetails();
             if (data.role === 'user') {
-                //router.push('/user/dashboard');
                 toast.success(data.message);
             } else {
                 toast.error('Unauthorized access');
                 return router.push('/login');
             }
-
         } catch (err: unknown) {
-            setError((err as Error).response?.data?.error || "Failed to verify/expired OTP.");
+            setErrorMessage((err as any).response?.data?.error || "Failed to verify/expired OTP.");
         } finally {
             setLoadingOtp(false);
         }
@@ -114,7 +125,6 @@ export const CheckoutloginForm = () => {
         return () => clearInterval(interval);
     }, [timer]);
 
-
     const sendOTP = async () => {
         try {
             setTimer(60);
@@ -123,172 +133,191 @@ export const CheckoutloginForm = () => {
                 emailOrMobile,
             });
             if (data) {
-                toast.success(`Otp send ${emailOrMobile}`);
+                toast.success(`OTP sent to ${emailOrMobile}`);
             } else {
                 toast.error('Failed to send OTP');
             }
-
         } catch (error: unknown) {
             toast.error((error as Error).message);
         }
-    }
-
+    };
 
     return (
-        <>
-
-            <div className="bg-[#E10176] p-4">
-                <div className="flex justify-between">
+        <div className="min-h-screen bg-gray-50 px-4 py-8 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto">
+                {/* Progress Header */}
+                <div className="bg-[#E10176] p-4 rounded-t-lg shadow-sm">
                     <div className="flex items-center">
-                        <span className="w-8 h-8 rounded-full bg-white text-[#E10176] flex items-center justify-center text-sm">1</span>
-                        <span className="ml-2 font-medium text-white">LOGIN OR SIGNUP</span>
+                        <span className="w-8 h-8 rounded-full bg-white text-[#E10176] flex items-center justify-center text-sm font-medium">1</span>
+                        <span className="ml-3 font-medium text-white text-lg max-[480px]:text-sm">LOGIN OR SIGNUP</span>
                     </div>
                 </div>
-            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white px-3 py-5">
-                {/* Login Form */}
-                {!isOtpSent ? (
-                    <div className="p-6">
-                        <form onSubmit={handleSubmitSendOtp}>
-                            <div className="mb-6 ">
-                                <input
-                                    type="text"
-                                    value={emailOrMobile}
-                                    onChange={handleInputChange}
-                                    placeholder="Email/Mobile number"
-                                    autoComplete="off"
-                                    className={`w-full p-3 pl-0 text-md border-0 rounded-none border-b-2 border-gray-300 ${errorMessage ? "border-rose-700" : ""
-                                        } focus:outline-none focus:border-blue-500 mb-4`}
-                                />
-                            </div>
-
-                            <div className="text-xs text-gray-500 mb-6">
-                                <div className="flex items-start">
-                                    <span>
-                                        By continuing, you agree to PrintHutt{' '}
-                                        <a href="#" className="text-[#2874f0]">Terms of Use</a> and{' '}
-                                        <a href="#" className="text-[#2874f0]">Privacy Policy</a>.
-                                    </span>
-                                </div>
-                            </div>
-                            <button
-                                disabled={loading}
-                                className={`w-full py-3 rounded-md text-lg font-semibold ${loading
-                                    ? "bg-rose-950 cursor-not-allowed"
-                                    : "bg-blue-600 text-white hover:bg-[#E10176]/90"
-                                    }`}
-                            >
-                                {/* CONTINUE */}
-                                {loading ? "Send Otp..." : "Request OTP"}
-                            </button>
-                        </form>
-                    </div>
-                ) : (
-                    <div className=" p-6">
-                        <form onSubmit={handleSubmitVerifyOtp}>
-                            <div className="mb-6">
-                                <div className="mb-6">
-                                    <div className="flex  mb-6 space-x-3">
-
-                                        {otp.map((digit, index) => (
-                                            <input
-                                                key={index}
-                                                id={`otp-input-${index}`}
-                                                type="text"
-                                                maxLength={1}
-                                                value={digit}
-                                                onChange={(e) => handleChangeOtp(e.target.value, index)}
-                                                className="w-10 h-10 text-center text-2xl border-0 rounded-none border-b-2 border-gray-300 focus:outline-none focus:border-blue-500"
-                                            />
-                                        ))}
+                {/* Main Content */}
+                <div className="bg-white shadow-md rounded-b-lg">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-4 sm:p-6 lg:p-8">
+                        {/* Login Form Section */}
+                        <div className="space-y-6">
+                            {!isOtpSent ? (
+                                <form onSubmit={handleSubmitSendOtp} className="space-y-6">
+                                    <div>
+                                        <input
+                                            type="text"
+                                            value={emailOrMobile}
+                                            onChange={handleInputChange}
+                                            placeholder="Email/Mobile number"
+                                            autoComplete="off"
+                                            className={`w-full p-3 text-lg border-0 border-b-2 rounded-none ${
+                                                errorMessage ? "border-rose-700" : "border-gray-300"
+                                            } focus:outline-none focus:border-blue-500 transition-colors`}
+                                        />
                                     </div>
-                                    <div className='flex justify-between items-center'>
-                                        <div className='text-xs text-gray-500 cursor-pointer'>
-                                            {
-                                                isResendEnabled ? (
-                                                    <span
+
+                                    <div className="text-xs text-gray-500">
+                                        <p>
+                                            By continuing, you agree to PrintHutt{' '}
+                                            <a href="#" className="text-[#2874f0] hover:underline">Terms of Use</a> and{' '}
+                                            <a href="#" className="text-[#2874f0] hover:underline">Privacy Policy</a>.
+                                        </p>
+                                    </div>
+
+                                    <button
+                                        disabled={loading}
+                                        className={`w-full py-4 rounded-md text-lg font-semibold transition-colors ${
+                                            loading
+                                                ? "bg-rose-950 cursor-not-allowed"
+                                                : "bg-blue-600 text-white hover:bg-[#E10176]"
+                                        }`}
+                                    >
+                                        {loading ? "Sending OTP..." : "Request OTP"}
+                                    </button>
+                                </form>
+                            ) : (
+                                <form onSubmit={handleSubmitVerifyOtp} className="space-y-6">
+                                    <div className="space-y-4">
+                                        <div className="flex justify-center space-x-3 sm:space-x-4 max-[480px]:space-x-1">
+                                            {otp.map((digit, index) => (
+                                                <input
+                                                    key={index}
+                                                    id={`otp-input-${index}`}
+                                                    type="text"
+                                                    maxLength={1}
+                                                    value={digit}
+                                                    onChange={(e) => handleChangeOtp(e.target.value, index)}
+                                                    onKeyDown={(e) => handleOtpKeyDown(e, index)}
+                                                    className="w-10 h-12 max-[480px]:w-8 max-[480px]:h-9 text-center text-xl max-[480px]:text-sm rounded-none border-0 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 transition-colors"
+                                                />
+                                            ))}
+                                        </div>
+
+                                        <div className="flex justify-between items-center text-sm">
+                                            <div>
+                                                {isResendEnabled ? (
+                                                    <button
+                                                        type="button"
                                                         onClick={sendOTP}
-                                                        className='text-blue-600'
+                                                        className="text-blue-600 hover:text-blue-800"
                                                     >
-                                                        Resend
-                                                    </span>
+                                                        Resend OTP
+                                                    </button>
                                                 ) : (
-                                                    <span>{timer > 0 ? `00:${timer < 10 ? `0${timer}` : timer}` : '00:00'}</span>
-                                                )
-                                            }
+                                                    <span className="text-gray-500">
+                                                        {timer > 0 ? `00:${timer < 10 ? `0${timer}` : timer}` : '00:00'}
+                                                    </span>
+                                                )}
+                                            </div>
+                                            <button
+                                                type="button"
+                                                onClick={() => window.location.reload()}
+                                                className="text-blue-600 hover:text-blue-800"
+                                            >
+                                                Change Number
+                                            </button>
                                         </div>
-                                        <div className='text-xs text-gray-500 cursor-pointer'>
-                                            <span className='text-blue-600' onClick={() => window.location.reload()}>Change</span>
+                                    </div>
+
+                                    {errorMessage && (
+                                        <div className="text-rose-600 text-sm p-3 bg-rose-50 rounded-md">
+                                            {errorMessage}
                                         </div>
+                                    )}
+
+                                    <div className="text-xs text-gray-500">
+                                        <p>
+                                            By continuing, you agree to PrintHutt{' '}
+                                            <a href="#" className="text-[#2874f0] hover:underline">Terms of Use</a> and{' '}
+                                            <a href="#" className="text-[#2874f0] hover:underline">Privacy Policy</a>.
+                                        </p>
+                                    </div>
+
+                                    <button
+                                        type="submit"
+                                        disabled={loadingOtp}
+                                        className={`w-full py-4 rounded-md text-lg font-semibold transition-colors ${
+                                            loadingOtp
+                                                ? "bg-blue-950 cursor-not-allowed"
+                                                : "bg-blue-600 text-white hover:bg-blue-700"
+                                        }`}
+                                    >
+                                        {loadingOtp ? "Verifying..." : "Verify OTP"}
+                                    </button>
+                                </form>
+                            )}
+                        </div>
+
+                        {/* Advantages Section */}
+                        <div className="border-t lg:border-t-0 lg:border-l border-gray-200 pt-6 lg:pt-0 lg:pl-6 max-[480px]:hidden">
+                            <h2 className="text-lg font-medium text-gray-900 mb-6">Advantages of our secure login</h2>
+                            <div className="space-y-6">
+                                <div className="flex items-start">
+                                    <div className="flex-shrink-0">
+                                        <div className="p-2 bg-blue-50 rounded-lg">
+                                            <RiTruckLine className="w-6 h-6 text-blue-600" />
+                                        </div>
+                                    </div>
+                                    <div className="ml-4">
+                                        <p className="text-sm text-gray-600">Easily Track Orders, Hassle free Returns</p>
                                     </div>
                                 </div>
 
-                            </div>
-
-                            <div className="text-xs text-gray-500 mb-6">
                                 <div className="flex items-start">
-                                    <span>
-                                        By continuing, you agree to PrintHutt{' '}
-                                        <a href="#" className="text-[#2874f0]">Terms of Use</a> and{' '}
-                                        <a href="#" className="text-[#2874f0]">Privacy Policy</a>.
-                                    </span>
+                                    <div className="flex-shrink-0">
+                                        <div className="p-2 bg-blue-50 rounded-lg">
+                                            <RiNotification3Fill className="w-6 h-6 text-blue-600" />
+                                        </div>
+                                    </div>
+                                    <div className="ml-4">
+                                        <p className="text-sm text-gray-600">Get Relevant Alerts and Recommendations</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-start">
+                                    <div className="flex-shrink-0">
+                                        <div className="p-2 bg-blue-50 rounded-lg">
+                                            <RiStackFill className="w-6 h-6 text-blue-600" />
+                                        </div>
+                                    </div>
+                                    <div className="ml-4">
+                                        <p className="text-sm text-gray-600">Wishlist, Reviews, Ratings and more</p>
+                                    </div>
                                 </div>
                             </div>
-                            <button
-                                type="submit"
-                                disabled={loading}
-                                className={`w-full py-3 rounded-md text-lg font-semibold ${loadingOtp
-                                    ? "bg-blue-950 cursor-not-allowed"
-                                    : "bg-blue-500 text-white hover:bg-blue-600"
-                                    }`}
-                            >
-                                {loadingOtp ? "Verifying..." : "Verify"}
-                            </button>
-                        </form>
+                        </div>
                     </div>
-                )}
-                {/* Advantages Section */}
-                <div className="p-6">
-                    <h2 className="text-base text-gray-500 mb-6">Advantages of our secure login</h2>
-                    <div className="space-y-4">
-                        <div className="flex items-start">
-                            <div className="text-blue-700 mr-3 text-lg">
-                                <RiTruckLine />
-                            </div>
-                            <div>
-                                <p className="text-sm text-gray-500">Easily Track Orders, Hassle free Returns</p>
-                            </div>
-                        </div>
-                        <div className="flex items-start">
-                            <div className="text-blue-700 mr-3 text-lg">
-                                <RiNotification3Fill />
-                            </div>
-                            <div>
-                                <p className="text-sm text-gray-500">Get Relevant Alerts and Recommendation</p>
-                            </div>
-                        </div>
-                        <div className="flex items-start">
-                            <div className="text-blue-700 mr-3 text-lg">
-                                <RiStackFill />
-                            </div>
-                            <div>
-                                <p className="text-sm text-gray-500">Wishlist, Reviews, Ratingsand more.</p>
-                            </div>
+                </div>
+
+                {/* Delivery Address Section */}
+                <div className="mt-8 bg-white rounded-lg shadow-md">
+                    <div className="p-4 sm:p-6">
+                        <div className="flex items-center">
+                            <span className="w-8 h-8 rounded-full bg-[#2874f0] text-white flex items-center justify-center text-sm font-medium">2</span>
+                            <span className="ml-3 font-medium text-[#2874f0] uppercase text-lg max-[480px]:text-sm">Delivery Address</span>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    );
+};
 
-            <div className="bg-white my-4 p-4 rounded shadow-sm">
-                <div className="flex justify-between">
-                    <div className="flex items-center">
-                        <span className="w-8 h-8 rounded-full bg-[#2874f0] text-white flex items-center justify-center text-sm">2</span>
-                        <span className="ml-2 font-medium text-[#2874f0] uppercase">Delivery Address</span>
-                    </div>
-                </div>
-            </div>
-
-        </>
-    )
-}
+export default CheckoutloginForm;

@@ -35,6 +35,7 @@ export interface CategoryFormData {
   status: boolean;
   image?: ImageType;
   parentCategory?: string | null; // Specify a more specific type instead of 'any'
+  productCount?: number;
 }
 
 

@@ -18,7 +18,7 @@ export function StatsCard({ title, value, trend, Icon, color }: StatsCardProps) 
           <p className="mt-2 text-3xl font-semibold text-gray-900">{value}</p>
         </div>
         <div className={`rounded-full ${color} p-3`}>
-          <Icon className="h-6 w-6 text-white" />
+          <i className={`${Icon} h-6 w-6 text-white`} ></i>
         </div>
       </div>
       <div className="mt-4">

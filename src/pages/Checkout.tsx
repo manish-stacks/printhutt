@@ -12,6 +12,7 @@ import { useCartStore } from "@/store/useCartStore";
 import { useUserStore } from "@/store/useUserStore";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -29,6 +30,8 @@ const Checkout = () => {
   const [errorMsg, setErrorMsg] = useState<string>('');
   const [originalPrice, setOriginalPrice] = useState(0);
 
+  
+  const router = useRouter();
   useEffect(() => {
     const price = getTotalPrice();
     setTotalPrice(price);
@@ -137,6 +140,8 @@ const Checkout = () => {
   };
 
   const placeOrder = async () => {
+
+    if(!isLoggedIn) return router.push('/login');
     const getPrice = await getTotalPrice();
 
 
@@ -192,7 +197,7 @@ const Checkout = () => {
       return;
     } catch (error) {
       console.error(error);
-      toast.error('Something Went Wrong');
+      toast.error(error.message || 'Something Went Wrong');
     } finally {
       setIsSubmitting(false);
     }

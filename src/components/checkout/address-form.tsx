@@ -123,7 +123,7 @@ export const CheckoutAddressForm = ({ onChangeAddress }: TypeSelectorProps) => {
                 <div className="flex justify-between">
                     <div className="flex items-center">
                         <span className="w-8 h-8 rounded-full bg-white text-[#E10176] flex items-center justify-center text-sm">2</span>
-                        <span className="ml-2 font-medium text-white uppercase">Delivery Address</span>
+                        <span className="ml-2 font-medium text-white uppercase max-[480px]:text-sm">Delivery Address</span>
                     </div>
                 </div>
             </div>

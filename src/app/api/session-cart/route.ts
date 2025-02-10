@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   try {
     await dbConnect();
-    const sessionCart = await SessionCart.find({}).populate("productId");
+    const sessionCart = await SessionCart.find().sort({ createdAt: -1 }).populate("productId");
 
     if (sessionCart.length === 0) {
       return new NextResponse(null, { status: 204 }); 

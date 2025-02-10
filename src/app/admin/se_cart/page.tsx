@@ -10,9 +10,7 @@ const Cart = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; 
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  
 
   const fetchData = async () => {
     try {
@@ -28,7 +26,10 @@ const Cart = () => {
     }
   };
 
-
+  useEffect(() => {
+    fetchData();
+  }, []);
+  
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = carts?.slice(indexOfFirstItem, indexOfLastItem);
