@@ -143,7 +143,7 @@ export const CheckoutloginForm = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 px-4 py-8 sm:px-6 lg:px-8">
+        <div className=" bg-gray-50 px-4 py-8 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
                 {/* Progress Header */}
                 <div className="bg-[#E10176] p-4 rounded-t-lg shadow-sm">
