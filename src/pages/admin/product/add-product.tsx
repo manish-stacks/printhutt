@@ -61,7 +61,8 @@ const initialFormData: ProductFormData = {
   isCustomize: false,
   images: [],
   thumbnail: '',
-  keywords: '',
+  meta_title: '',
+  meta_keywords: '',
   meta_description: '',
   shippingFee: 0,
   offers: [],
@@ -317,8 +318,8 @@ export default function AddProduct() {
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-      toast.error('Failed to create product. Please try again.');
-      setErrors(['Failed to create product. Please try again.']);
+      toast.error(error.message ||'Failed to create product. Please try again.');
+      setErrors([error.message ||'Failed to create product. Please try again.']);
     } finally {
       setIsSubmitting(false);
     }
@@ -1041,13 +1042,24 @@ export default function AddProduct() {
 
             <div className="bg-white text-black p-6 rounded-lg space-y-5 shadow-md shadow-black-300">
               <div>
-                <label className="block text-sm font-medium text-gray-700">Meta keywords</label>
+                <label className="block text-sm font-medium text-gray-700">Meta Title</label>
                 <input className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
-                  id='keywords'
+                  id='meta_title'
                   placeholder="Meta Keywords"
                   type="text"
-                  name='keywords'
-                  value={formData.keywords || ''}
+                  name='meta_title'
+                  value={formData.meta_title || ''}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Meta keywords</label>
+                <input className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
+                  id='meta_keywords'
+                  placeholder="Meta Keywords"
+                  type="text"
+                  name='meta_keywords'
+                  value={formData.meta_keywords || ''}
                   onChange={handleInputChange}
                 />
               </div>

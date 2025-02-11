@@ -35,8 +35,8 @@ const Cart = () => {
   const currentItems = carts?.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
-    <div className="mt-5 p-4">
-      <h2 className="text-2xl font-semibold mb-4">Cart</h2>
+    <div className="mt-10 p-4">
+      <h2 className="text-2xl font-semibold mb-4">Cart ({carts.length})</h2>
 
       {loading && <p className="text-blue-500">Loading carts...</p>}
       {error && <p className="text-red-500">{error}</p>}

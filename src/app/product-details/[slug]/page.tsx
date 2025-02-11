@@ -48,8 +48,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
 
     return {
-      title: product.title || 'Product Details',
-      description: product.meta?.meta_description || '',
+      title: product?.meta?.meta_title || 'Product Details',
+      description: product?.meta?.meta_description || '',
+      keywords: product?.meta?.meta_keywords || '',
       openGraph: {
         images: product.thumbnail?.url ? [product.thumbnail.url] : [],
       },

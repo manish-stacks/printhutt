@@ -109,7 +109,8 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
             isCustomize: formData.get('isCustomize') || product.isCustomize,
             customizeLink: formData.get('customizeLink') || product.customizeLink,
             meta: {
-                keywords: formData.get('keywords')?.toString() || product.meta.keywords,
+                meta_title: formData.get('meta_title')?.toString() || product.meta.meta_title,
+                meta_keywords: formData.get('meta_keywords')?.toString() || product.meta.meta_keywords,
                 meta_description: formData.get('meta_description')?.toString() || product.meta.meta_description,
             },
             shippingFee: parseFloat(formData.get('shippingFee')?.toString() || product.shippingFee.toString()),

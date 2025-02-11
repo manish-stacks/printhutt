@@ -19,7 +19,8 @@ export interface IMedia {
 
 // Interface for the Meta subdocument
 export interface IMeta {
-  keywords?: string;
+  meta_title?: string;
+  meta_keywords?: string;
   meta_description?: string;
 }
 
@@ -240,7 +241,8 @@ export type Product = {
   slug: string;
   isVarientStatus: boolean;
   meta?: {
-    keywords: string;
+    meta_title: string;
+    meta_keywords: string;
     meta_description: string;
   };
   reviews?: number;

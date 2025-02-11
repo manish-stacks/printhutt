@@ -4,19 +4,32 @@ import Breadcrumb from "@/components/Breadcrumb";
 import UserSidebar from "@/components/user/user-sidebar";
 import { useUserStore } from "@/store/useUserStore";
 import { useRouter } from "next/navigation";
+import axios from "axios";
+import { RiMacFill, RiNewsFill, RiShoppingCartFill, RiWalletFill } from "react-icons/ri";
 
 const Dashboard = () => {
   const userData = useUserStore((state) => state.userDetails);
   const router = useRouter();
-
+  const [data, setData] = React.useState([]);
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await axios.get('/api/v1/user');
+        console.log(res.data)
+        setData(res.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
   useEffect(() => {
     if (!userData?.email) {
-      router.push('/user/profile');
+      return router.push('/user/profile');
     }
   }, [userData, router]);
 
   if (!userData?.email) {
-    return null; // or a loading spinner
+    return null;
   }
 
   return (
@@ -28,37 +41,33 @@ const Dashboard = () => {
             <UserSidebar activemenu={'dashboard'} />
             {/* Main Content */}
             <div className="flex-1 p-6 pt-0">
-              
+
               <div className="bg-purple-600 text-white rounded-lg p-8 flex items-center justify-between mb-6 w-full max-w-full">
                 <div className="flex items-center space-x-4">
-                  <img
+                  {/* <img
                     className="w-16 h-16 rounded-full"
                     src="https://html.themewin.com/edurcok-preview-tailwind/edurock/assets/images/dashbord/dashbord__2.jpg"
                     alt="Profile"
-                  />
+                  /> */}
                   <div>
-                    <h2 className="text-lg font-semibold">Hello</h2>
-                    <h3>Admin</h3>
+                    <h2 className="text-lg font-semibold">Welcome back</h2>
+                    <h3>User</h3>
                   </div>
                 </div>
               </div>
-             
-              {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 w-full max-w-full">
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 w-full max-w-full">
                 <div className="p-5 rounded-lg shadow-md bg-slate-100 ">
                   <div className="flex gap-4 md:px-3 md:py-4 ">
-                    <div>
-                      <img
-                        src="https://html.themewin.com/edurcok-preview-tailwind/edurock/assets/images/counter/counter__1.png"
-                        alt=""
-                      />
+                    <div className="p-3 bg-slate-300 rounded-full">
+                      <RiShoppingCartFill className="text-3xl text-[#FB285E]" />
                     </div>
                     <div>
                       <p className="text-3xl leading-[1.1] text-slate-600 font-bold font-hind dark:text-blackColor-dark">
-                        <span data-countup-number={27}>27</span>
-                        <span>+</span>
+                        <span>{data?.totalOrders || 0}</span>
                       </p>
                       <p className="text-lg font-medium leading-[18px] dark:text-blackColor-dark">
-                        Enrolled Courses
+                        Total Orders
                       </p>
                     </div>
                   </div>
@@ -66,19 +75,15 @@ const Dashboard = () => {
 
                 <div className="p-5 rounded-lg shadow-md bg-slate-100">
                   <div className="flex gap-4 md:px-3 md:py-4">
-                    <div>
-                      <img
-                        src="https://html.themewin.com/edurcok-preview-tailwind/edurock/assets/images/counter/counter__2.png"
-                        alt="g"
-                      />
+                    <div className="p-3 bg-slate-300 rounded-full">
+                      <RiWalletFill className="text-3xl text-[#FB285E]" />
                     </div>
                     <div>
                       <p className="text-3xl leading-[1.1] text-slate-600 font-bold font-hind dark:text-blackColor-dark">
-                        <span data-countup-number={27}>8</span>
-                        <span>+</span>
+                        <span>{data?.totalAmount || 0}</span>
                       </p>
                       <p className="text-lg font-medium leading-[18px] dark:text-blackColor-dark">
-                        Active Courses
+                        Total Amount
                       </p>
                     </div>
                   </div>
@@ -86,19 +91,15 @@ const Dashboard = () => {
 
                 <div className="p-5 rounded-lg shadow-md bg-slate-100">
                   <div className="flex gap-4 md:px-3 md:py-4">
-                    <div>
-                      <img
-                        src="https://html.themewin.com/edurcok-preview-tailwind/edurock/assets/images/counter/counter__3.png"
-                        alt="g"
-                      />
+                    <div className="p-3 bg-slate-300 rounded-full">
+                      <RiMacFill className="text-3xl text-[#FB285E]" />
                     </div>
                     <div>
                       <p className="text-3xl leading-[1.1] text-slate-600 font-bold font-hind dark:text-blackColor-dark">
-                        <span data-countup-number={27}>5</span>
-                        <span>k</span>
+                        <span>{data?.totalAddress || 0}</span>
                       </p>
                       <p className="text-lg font-medium leading-[18px] dark:text-blackColor-dark">
-                        Complete Courses
+                        Total Address
                       </p>
                     </div>
                   </div>
@@ -106,19 +107,15 @@ const Dashboard = () => {
 
                 <div className="p-5 rounded-lg shadow-md bg-slate-100">
                   <div className="flex gap-4 md:px-3 md:py-4">
-                    <div>
-                      <img
-                        src="https://html.themewin.com/edurcok-preview-tailwind/edurock/assets/images/counter/counter__4.png"
-                        alt="g"
-                      />
+                    <div className="p-3 bg-slate-300 rounded-full">
+                      <RiNewsFill className="text-3xl text-[#FB285E]" />
                     </div>
                     <div>
                       <p className="text-3xl leading-[1.1] text-slate-600 font-bold font-hind dark:text-blackColor-dark">
-                        <span data-countup-number={27}>8</span>
-                        <span>+</span>
+                        <span>{data?.totalReview || 0}</span>
                       </p>
                       <p className="text-lg font-medium leading-[18px] dark:text-blackColor-dark">
-                        Total Courses
+                        Total Review
                       </p>
                     </div>
                   </div>
@@ -126,19 +123,15 @@ const Dashboard = () => {
 
                 <div className="p-5 rounded-lg shadow-md bg-slate-100">
                   <div className="flex gap-4 md:px-3 md:py-4">
-                    <div>
-                      <img
-                        src="https://html.themewin.com/edurcok-preview-tailwind/edurock/assets/images/counter/counter__3.png"
-                        alt="g"
-                      />
+                    <div className="p-3 bg-slate-300 rounded-full">
+                      <RiNewsFill className="text-3xl text-[#FB285E]" />
                     </div>
                     <div>
                       <p className="text-3xl leading-[1.1] text-slate-600 font-bold font-hind dark:text-blackColor-dark">
-                        <span data-countup-number={27}>10</span>
-                        <span>k</span>
+                        <span>{data?.totalWishlist|| 0}</span>
                       </p>
                       <p className="text-lg font-medium leading-[18px] dark:text-blackColor-dark">
-                        Active Courses
+                        Total Wishlist
                       </p>
                     </div>
                   </div>
@@ -154,8 +147,7 @@ const Dashboard = () => {
                     </div>
                     <div>
                       <p className="text-3xl leading-[1.1] text-slate-600 font-bold font-hind dark:text-blackColor-dark">
-                        <span data-countup-number={27}>30,000</span>
-                        <span>k</span>
+                        <span>0</span>
                       </p>
                       <p className="text-lg font-medium leading-[18px] dark:text-blackColor-dark">
                         Total Earning
@@ -163,7 +155,7 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
-              </div> */}
+              </div>
             </div>
           </div>
         </div>

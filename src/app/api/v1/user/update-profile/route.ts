@@ -3,10 +3,10 @@ import  dbConnect  from '@/dbConfig/dbConfig'
 import { getDataFromToken } from '@/helpers/getDataFromToken';
 import User from '@/models/userModel';
 
-await dbConnect();
 
 export async function POST(req: NextRequest) {
   try {
+    await dbConnect();
     const { id } = await getDataFromToken(req)
     if (!id) return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
 

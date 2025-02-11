@@ -11,7 +11,7 @@ interface Props {
 }
 const UserSidebar = ({ activemenu }: Props) => {
 
-    const router = useRouter();
+    // const router = useRouter();
     const logoutStore = useUserStore((state) => state.logout);
 
     const logOut = async () => {

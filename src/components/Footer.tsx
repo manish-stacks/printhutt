@@ -21,9 +21,9 @@ import useQuickStore from "@/store/useQuickStore";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-
   const isQuickViewOpen = useQuickStore(state => state.isOpen);
   const product = useQuickStore(state => state.product);
+
   // console.log(product)
 
   const handleQuickViewClose = () => {
@@ -79,35 +79,36 @@ const Footer = () => {
                     <div className="bb-footer-links bb-footer-dropdown hidden max-[991px]:mb-[35px]">
                       <ul className="align-items-center">
                         <li className="bb-footer-link leading-[1.5] flex items-center mb-[16px] max-[991px]:mb-[15px]">
-                          <a
-
+                          <Link
+                            href={"/category/neon"}
                             className="transition-all duration-[0.3s] ease-in-out font-Poppins text-[14px] leading-[20px] text-[#686e7d] hover:text-[#6c7fd8] mb-[0] inline-block break-all tracking-[0] font-normal"
                           >
                             Neon Light
-                          </a>
+                          </Link>
                         </li>
                         <li className="bb-footer-link leading-[1.5] flex items-center mb-[16px] max-[991px]:mb-[15px]">
-                          <a
-
+                          <Link
+                            href={"/category/lamps"}
                             className="transition-all duration-[0.3s] ease-in-out font-Poppins text-[14px] leading-[20px] text-[#686e7d] hover:text-[#6c7fd8] mb-[0] inline-block break-all tracking-[0] font-normal"
                           >
                             Lamps
-                          </a>
+                          </Link>
                         </li>
                         <li className="bb-footer-link leading-[1.5] flex items-center mb-[16px] max-[991px]:mb-[15px]">
-                          <a
+                          <Link
+                            href={"/category/frames"}
                             className="transition-all duration-[0.3s] ease-in-out font-Poppins text-[14px] leading-[20px] text-[#686e7d] hover:text-[#6c7fd8] mb-[0] inline-block break-all tracking-[0] font-normal"
                           >
                             Frames
-                          </a>
+                          </Link>
                         </li>
                         <li className="bb-footer-link leading-[1.5] flex items-center mb-[16px] max-[991px]:mb-[15px]">
-                          <a
-
+                          <Link
+                            href="/category/acrylic"
                             className="transition-all duration-[0.3s] ease-in-out font-Poppins text-[14px] leading-[20px] text-[#686e7d] hover:text-[#6c7fd8] mb-[0] inline-block break-all tracking-[0] font-normal"
                           >
                             Acrylic
-                          </a>
+                          </Link>
                         </li>
                         <li className="bb-footer-link leading-[1.5] flex items-center mb-[16px] max-[991px]:mb-[15px]">
                           <Link
@@ -118,12 +119,12 @@ const Footer = () => {
                           </Link>
                         </li>
                         <li className="bb-footer-link leading-[1.5] flex items-center">
-                          <a
-                            href="shop-banner-right-sidebar-col-4"
+                          <Link
+                            href="/category/magnet"
                             className="transition-all duration-[0.3s] ease-in-out font-Poppins text-[14px] leading-[20px] text-[#686e7d] hover:text-[#6c7fd8] mb-[0] inline-block break-all tracking-[0] font-normal"
                           >
                             Magnet
-                          </a>
+                          </Link>
                         </li>
                       </ul>
                     </div>
@@ -156,25 +157,28 @@ const Footer = () => {
                           </Link>
                         </li>
                         <li className="bb-footer-link leading-[1.5] flex items-center mb-[16px] max-[991px]:mb-[15px]">
-                          <a
+                          <Link
+                            href={"/privacy-policy"}
                             className="transition-all duration-[0.3s] ease-in-out font-Poppins text-[14px] leading-[20px] text-[#686e7d] hover:text-[#6c7fd8] mb-[0] inline-block break-all tracking-[0] font-normal"
                           >
                             Privacy Policy
-                          </a>
+                          </Link>
                         </li>
                         <li className="bb-footer-link leading-[1.5] flex items-center mb-[16px] max-[991px]:mb-[15px]">
-                          <a
+                          <Link
+                            href="/terms-and-conditions"
                             className="transition-all duration-[0.3s] ease-in-out font-Poppins text-[14px] leading-[20px] text-[#686e7d] hover:text-[#6c7fd8] mb-[0] inline-block break-all tracking-[0] font-normal"
                           >
                             Terms &amp; conditions
-                          </a>
+                          </Link>
                         </li>
                         <li className="bb-footer-link leading-[1.5] flex items-center mb-[16px] max-[991px]:mb-[15px]">
-                          <a
+                          <Link
+                            href="/refund-policy"
                             className="transition-all duration-[0.3s] ease-in-out font-Poppins text-[14px] leading-[20px] text-[#686e7d] hover:text-[#6c7fd8] mb-[0] inline-block break-all tracking-[0] font-normal"
                           >
-                            Secure payment
-                          </a>
+                            Refund Policy
+                          </Link>
                         </li>
                         <li className="bb-footer-link leading-[1.5] flex items-center">
                           <Link
@@ -215,18 +219,20 @@ const Footer = () => {
                           </Link>
                         </li>
                         <li className="bb-footer-link leading-[1.5] flex items-center mb-[16px] max-[991px]:mb-[15px]">
-                          <a
+                          <Link
+                            href="/return-policy"
                             className="transition-all duration-[0.3s] ease-in-out font-Poppins text-[14px] leading-[20px] text-[#686e7d] hover:text-[#6c7fd8] mb-[0] inline-block break-all tracking-[0] font-normal"
                           >
                             Return Policy
-                          </a>
+                          </Link>
                         </li>
                         <li className="bb-footer-link leading-[1.5] flex items-center mb-[16px] max-[991px]:mb-[15px]">
-                          <a
+                          <Link
+                            href="/wishlist"
                             className="transition-all duration-[0.3s] ease-in-out font-Poppins text-[14px] leading-[20px] text-[#686e7d] hover:text-[#6c7fd8] mb-[0] inline-block break-all tracking-[0] font-normal"
                           >
                             Wishlist
-                          </a>
+                          </Link>
                         </li>
                         <li className="bb-footer-link leading-[1.5] flex items-center mb-[16px] max-[991px]:mb-[15px]">
                           <a
@@ -388,7 +394,6 @@ const Footer = () => {
       </footer>
 
 
-
       <div className="fixed z-50 w-full h-16 max-w-lg -translate-x-1/2 bg-white border border-gray-200 rounded-full bottom-4 left-1/2 dark:bg-gray-700 dark:border-gray-600 block lg:hidden md:hidden">
         <div className="grid h-full max-w-lg grid-cols-5 mx-auto">
           <Link
@@ -432,10 +437,6 @@ const Footer = () => {
       </div>
 
       
-
-
-
-
       {isQuickViewOpen && (
         <QuickView
           product={product}

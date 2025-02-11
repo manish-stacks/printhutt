@@ -25,6 +25,7 @@ export const menuItems = {
   ],
   orders: [
     { id: 'all-orders', label: 'All Orders', path: '/admin/orders' },
+    { id: 'confirmed-orders', label: 'Confirmed Orders', path: '/admin/orders?status=confirmed' },
     { id: 'pending-orders', label: 'Pending Orders', path: '/admin/orders?status=pending' },
     { id: 'progress-orders', label: 'Progress Orders', path: '/admin/orders?status=progress' },
     { id: 'delivered-orders', label: 'Delivered Orders', path: '/admin/orders?status=delivered' },

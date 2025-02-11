@@ -96,11 +96,9 @@ const productSchema = new Schema<IProduct>(
       ref: "ReturnPolicy",
     },
     meta: {
-      keywords: String,
-      meta_description: {
-        type: String,
-        maxlength: [160, "Meta description cannot be more than 160 characters"],
-      },
+      meta_title: String,
+      meta_keywords: String,
+      meta_description: String
     },
     thumbnail: {
       url: String,

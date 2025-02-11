@@ -57,8 +57,9 @@ interface ProductFormData {
   new: boolean;
   isCustomize: boolean;
   images: ImageType[];
-  thumbnail: File | string; // Changed from 'any' to 'IMedia'
-  keywords: string;
+  thumbnail: File | string; 
+  meta_title: string;
+  meta_keywords: string;
   meta_description: string;
   shippingFee: string | number;
   offers: string[];
@@ -100,7 +101,8 @@ const initialFormData: ProductFormData = {
   isCustomize: false,
   images: [],
   thumbnail: '',
-  keywords: '',
+  meta_title: '',
+  meta_keywords: '',
   meta_description: '',
   shippingFee: 0,
   offers: [],
@@ -163,7 +165,8 @@ export default function EditProduct() {
         setFormData(prevData => ({
           ...prevData,
           meta_description: productData.meta.meta_description,
-          keywords: productData.meta.keywords,
+          meta_keywords: productData.meta.meta_keywords,
+          meta_title: productData.meta.meta_title
         }));
 
         setImage(productData.thumbnail.url);
@@ -1100,13 +1103,24 @@ export default function EditProduct() {
 
             <div className="bg-white text-black p-6 rounded-lg space-y-5 shadow-md shadow-black-300">
               <div>
-                <label className="block text-sm font-medium text-gray-700">Meta keywords</label>
+                <label className="block text-sm font-medium text-gray-700">Meta Title</label>
                 <input className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
-                  id='keywords'
+                  id='meta_title'
                   placeholder="Meta Keywords"
                   type="text"
-                  name='keywords'
-                  value={formData.keywords || ''}
+                  name='meta_title'
+                  value={formData.meta_title || ''}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Meta keywords</label>
+                <input className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
+                  id='meta_keywords'
+                  placeholder="Meta Keywords"
+                  type="text"
+                  name='meta_keywords'
+                  value={formData.meta_keywords || ''}
                   onChange={handleInputChange}
                 />
               </div>

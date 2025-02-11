@@ -92,7 +92,8 @@ export async function POST(req: NextRequest) {
       isCustomize: formData.get('isCustomize') === 'true',
       customizeLink: formData.get('customizeLink')?.toString() || '',
       meta: {
-        keywords: formData.get('keywords')?.toString() || '',
+        meta_title: formData.get('meta_title')?.toString() || '',
+        meta_keywords: formData.get('meta_keywords')?.toString() || '',
         meta_description: formData.get('meta_description')?.toString() || '',
       },
       shippingFee: parseFloat(formData.get('shippingFee')?.toString() || '0'),

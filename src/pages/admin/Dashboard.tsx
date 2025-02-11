@@ -71,9 +71,14 @@ const Dashboard = () => {
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {stats.map((stat) => (
-            <StatsCard key={stat.title} {...stat} />
-          ))}
+          {stats.length > 0 ? (
+            stats.map((stat) => (
+              <StatsCard key={stat.title} {...stat} />
+            ))
+          ) : (
+            
+            <div className="skeleton-loader">Loading...</div>
+          )}
         </div>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-2">
