@@ -1,35 +1,34 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
 import UserSidebar from "@/components/user/user-sidebar";
 import { useUserStore } from "@/store/useUserStore";
-import { useRouter } from "next/navigation";
 import axios from "axios";
 import { RiMacFill, RiNewsFill, RiShoppingCartFill, RiWalletFill } from "react-icons/ri";
+import Link from "next/link";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const Dashboard = () => {
   const userData = useUserStore((state) => state.userDetails);
-  const router = useRouter();
-  const [data, setData] = React.useState([]);
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
+
   useEffect(() => {
     (async () => {
       try {
         const res = await axios.get('/api/v1/user');
-        console.log(res.data)
+        console.log(res.data);
         setData(res.data.data);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     })();
   }, []);
-  useEffect(() => {
-    if (!userData?.email) {
-      return router.push('/user/profile');
-    }
-  }, [userData, router]);
 
-  if (!userData?.email) {
-    return null;
+  if (loading) {
+    return <LoadingSpinner />;
   }
 
   return (
@@ -41,20 +40,28 @@ const Dashboard = () => {
             <UserSidebar activemenu={'dashboard'} />
             {/* Main Content */}
             <div className="flex-1 p-6 pt-0">
-
               <div className="bg-purple-600 text-white rounded-lg p-8 flex items-center justify-between mb-6 w-full max-w-full">
                 <div className="flex items-center space-x-4">
-                  {/* <img
-                    className="w-16 h-16 rounded-full"
-                    src="https://html.themewin.com/edurcok-preview-tailwind/edurock/assets/images/dashbord/dashbord__2.jpg"
-                    alt="Profile"
-                  /> */}
                   <div>
                     <h2 className="text-lg font-semibold">Welcome back</h2>
                     <h3>User</h3>
                   </div>
                 </div>
               </div>
+
+              {!userData?.email && (
+                <div className="bg-red-100 rounded-lg p-5 flex items-center justify-between mb-6  mx-auto border border-red-300 shadow-lg">
+                  <div className="flex items-center space-x-3">
+                    <p className="text-red-600 font-semibold">Please update your profile to complete your setup.</p>
+                  </div>
+                  <Link
+                    href="/user/profile"
+                    className="text-white bg-red-500 hover:bg-red-600 px-4 py-2 rounded-md transition duration-200 ease-in-out"
+                  >
+                    Update Profile
+                  </Link>
+                </div>
+              )}
 
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 w-full max-w-full">
                 <div className="p-5 rounded-lg shadow-md bg-slate-100 ">
@@ -128,7 +135,7 @@ const Dashboard = () => {
                     </div>
                     <div>
                       <p className="text-3xl leading-[1.1] text-slate-600 font-bold font-hind dark:text-blackColor-dark">
-                        <span>{data?.totalWishlist|| 0}</span>
+                        <span>{data?.totalWishlist || 0}</span>
                       </p>
                       <p className="text-lg font-medium leading-[18px] dark:text-blackColor-dark">
                         Total Wishlist

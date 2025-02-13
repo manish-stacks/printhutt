@@ -32,14 +32,14 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>(
     },
     email: {
       type: String,
-      
+      unique: true, 
     },
     password: {
       type: String,
     },
     number: {
       type: Number,
-     
+      unique: true,
     },
     isVerified: {
       type: Boolean,

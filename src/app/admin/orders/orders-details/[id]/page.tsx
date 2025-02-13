@@ -60,6 +60,7 @@ export default function OrderDetailsPage() {
             setOrder(response.data);
             setOrderStatus(response.data.status);
         } catch (error) {
+            console.log(error.message)
             toast.error('Error fetching order:');
         }
     };

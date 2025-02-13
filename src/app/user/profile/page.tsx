@@ -1,26 +1,47 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
 import UserSidebar from "@/components/user/user-sidebar";
 import { toast } from "react-toastify";
 import { useUserStore } from "@/store/useUserStore";
 import { userService } from "@/_services/common/userService";
+import axios from "axios";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const Address = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const fetchUserDetails = useUserStore((state) => state.fetchUserDetails);
-  const userData = useUserStore((state) => state.userDetails);
+  const [loading, setLoading] = useState(true);
 
   const [formData, setFormData] = useState({
-    number: userData?.number || '',
-    email: userData?.email || ''
+    number: '',
+    email: '',
+    userId: '',
   });
 
-  const handleSubmit = async (e) => {
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const { data } = await axios.post('/api/auth/me');
+        setFormData({
+          email: data.user.email,
+          number: data.user.number,
+          userId: data.user._id,
+        });
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      formData.userId = userData?._id;
       const response = await userService.updateProfile(formData);
       console.log(response);
       fetchUserDetails();
@@ -32,9 +53,13 @@ const Address = () => {
     }
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <>
@@ -43,16 +68,13 @@ const Address = () => {
         <div className="flex flex-wrap justify-between items-center mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">
           <div className="flex flex-wrap w-full mb-[-24px]">
             <UserSidebar activemenu={'profile'} />
-            {/* Main Content */}
             <div className="flex-1 p-6 pt-0">
-              {/* Profile Header */}
               <div className="bg-purple-600 text-white rounded-lg p-8 flex items-center justify-between mb-6 w-full max-w-full">
                 <h2 className="text-lg font-semibold">Profile</h2>
               </div>
-              {!userData?.email && (
+              {!formData?.email && (
                 <p className="text-red-500 bg-red-200 py-2 px-5 rounded-sm">Please Update Your Profile</p>
               )}
-              {/* Dashboard Statistics */}
               <div className="bg-white px-5 py-5">
                 <div className="input-box-form mt-[20px]">
                   <form method="post" onSubmit={handleSubmit}>

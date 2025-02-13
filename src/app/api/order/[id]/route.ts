@@ -3,13 +3,12 @@ import dbConnect from '@/dbConfig/dbConfig';
 import { getDataFromToken } from '@/helpers/getDataFromToken';
 import mongoose from 'mongoose';
 import Order from '@/models/orderModel';
+import Product from '@/models/productModel';
 
 export async function GET(request: NextRequest, context: { params: { id: string } }) {
     try {
         await dbConnect(); 
-
         const { id } = await context.params;
-
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return NextResponse.json({ success: false, message: "Invalid Order ID" }, { status: 400 });
         }
@@ -21,7 +20,7 @@ export async function GET(request: NextRequest, context: { params: { id: string 
         }
 
         const order = await Order.findById(id)
-            .populate('items.productId') 
+            .populate({ path: 'items.productId', model: Product })
             .lean();
 
         if (!order) {

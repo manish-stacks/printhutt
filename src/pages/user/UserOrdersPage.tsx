@@ -10,6 +10,7 @@ import { IOrder } from "@/lib/types/order";
 import { get_all_orders_of_user } from "@/_services/common/order";
 import { FaDownload, FaEye, FaSearch } from "react-icons/fa";
 import Link from "next/link";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const UserOrdersPage = () => {
   const [orders, setOrders] = useState<IOrder[]>([]);
@@ -55,6 +56,10 @@ const UserOrdersPage = () => {
     router.push(`?${params.toString()}`);
   };
 
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <>

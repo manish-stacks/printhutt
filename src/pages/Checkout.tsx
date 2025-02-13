@@ -7,6 +7,7 @@ import { CheckoutloginForm } from "@/components/checkout/login-form";
 import PaymentMethod from "@/components/checkout/payment-method";
 import Coupons_Slider from "@/components/Coupons_Slider";
 import CouponSuccessModal from "@/components/CouponSuccessModal";
+import MailModal from "@/components/MailModal";
 import { formatCurrency } from "@/helpers/helpers";
 import { useCartStore } from "@/store/useCartStore";
 import { useUserStore } from "@/store/useUserStore";
@@ -30,7 +31,8 @@ const Checkout = () => {
   const [errorMsg, setErrorMsg] = useState<string>('');
   const [originalPrice, setOriginalPrice] = useState(0);
 
-  
+  const [showMailModal, setShowMailModal] = useState(false);
+
   const router = useRouter();
   useEffect(() => {
     const price = getTotalPrice();
@@ -141,9 +143,8 @@ const Checkout = () => {
 
   const placeOrder = async () => {
 
-    if(!isLoggedIn) return router.push('/login');
+    if (!isLoggedIn) return router.push('/login');
     const getPrice = await getTotalPrice();
-
 
 
     const order = {
@@ -173,28 +174,23 @@ const Checkout = () => {
         isApplied: selectedCoupon?.isActive || false,
       },
       paymentMethod: paymentMethod,
-      address: selectAddress
+      address: selectAddress,
+      payAmt: totalPrice.discountPrice
     };
 
     // console.log(order)
     try {
       setIsSubmitting(true);
       const response: { order: { _id: string } } = await create_a_new_order(order);
+      console.log(response)
       if (response.success) {
-        const paymentResponse = await initiate_Payment(response.order);
-        if (paymentResponse) {
-          const redirectUrl = paymentResponse?.instrumentResponse?.redirectInfo?.url;
-          window.location.href = redirectUrl;
-        } else {
-          toast.error("Payment initiation failed!");
-        }
+        await paymentintInitiation(response.order);
       } else {
-        toast.error(response.message);
+        if (response.message == "Email address is required.") {
+          setShowMailModal(true);
+        }
       }
 
-      // console.log("response", response);
-      // console.log("response", response);
-      return;
     } catch (error) {
       console.error(error);
       toast.error(error.message || 'Something Went Wrong');
@@ -202,6 +198,23 @@ const Checkout = () => {
       setIsSubmitting(false);
     }
   };
+
+
+  const paymentintInitiation = async (order) => {
+    try {
+      const paymentResponse = await initiate_Payment(order);
+      if (paymentResponse) {
+        const redirectUrl = paymentResponse?.instrumentResponse?.redirectInfo?.url;
+        return window.location.href = redirectUrl;
+      } else {
+        toast.error("Payment initiation failed!");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(error.message || 'Something Went Wrong');
+    }
+  }
+
 
   return (
     <>
@@ -405,7 +418,7 @@ const Checkout = () => {
                   data-aos-delay={400}
                   onClick={placeOrder}
                 >
-                  {isSubmitting ? 'Submitting...' : `Place Order - ${formatCurrency(totalPrice.discountPrice)}`}
+                  {isSubmitting ? 'Submitting...' : `Place Order - ${paymentMethod == 'offline' ? formatCurrency(totalPrice?.discountPrice * 0.2) : formatCurrency(totalPrice?.discountPrice)}`}
                 </button>
 
                 <div
@@ -437,6 +450,12 @@ const Checkout = () => {
         {applied && (
           <CouponSuccessModal isOpen={applied} onClose={() => setApplied(false)} coupon={coupon_mark} discountAmount={totalPrice?.coupon_discount} />
         )}
+
+        {
+          showMailModal && (
+            <MailModal isOpen={showMailModal} onClose={() => setShowMailModal(false)} />
+          )
+        }
       </section>
     </>
   );

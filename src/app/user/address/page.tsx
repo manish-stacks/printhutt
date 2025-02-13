@@ -6,12 +6,14 @@ import { type AddressFormData, addressSchema } from "@/lib/types/address";
 import { deleteAddress, editAddress, getAddress, saveAddress } from "@/_services/common/address";
 import { toast } from "react-toastify";
 import { ZodError } from "zod";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 
 const Address = () => {
   const [selectedAddress, setSelectedAddress] = useState<boolean>(true);
   const [addresslist, setAddresslist] = useState<AddressFormData[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchAddress = async () => {
@@ -20,6 +22,8 @@ const Address = () => {
         setAddresslist(response.addresses);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchAddress();
@@ -118,7 +122,9 @@ const Address = () => {
     }
   }
 
-
+  if (loading) {
+    return <LoadingSpinner />;
+  }
   return (
     <>
       <Breadcrumb title={"Address"} />

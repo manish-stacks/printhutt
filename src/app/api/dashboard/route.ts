@@ -15,27 +15,26 @@ export async function GET(req: NextRequest) {
       {
         $match: {
           createdAt: {
-            $gte: new Date(new Date().setHours(0, 0, 0, 0) - 30 * 24 * 60 * 60 * 1000),
+            $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
           },
-          status: { $in: ["confirmed", "shipped", "delivered"] } 
+          status: { $in: ["confirmed", "shipped", "delivered"] },
         },
       },
       {
         $group: {
           _id: {
-            date: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }, 
-            dayOfWeek: { $dayOfWeek: "$createdAt" } 
+            date: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+            dayOfWeek: { $dayOfWeek: "$createdAt" },
           },
-          totalRevenue: { $sum: "$totalAmount.totalPrice" }, 
-          orderCount: { $sum: 1 }
+          totalRevenue: { $sum: "$payAmt" },
+          orderCount: { $sum: 1 },
         },
       },
       {
-        $sort: { "_id.date": 1 } 
-      }
+        $sort: { "_id.date": 1 },
+      },
     ]);
     
-   
     const daysMap = {
       1: "Sunday",
       2: "Monday",
@@ -43,27 +42,26 @@ export async function GET(req: NextRequest) {
       4: "Wednesday",
       5: "Thursday",
       6: "Friday",
-      7: "Saturday"
+      7: "Saturday",
     };
     
-   
     const weeklyRevenue = {
       labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-      values: [0, 0, 0, 0, 0, 0, 0] 
+      values: [0, 0, 0, 0, 0, 0, 0],
     };
-    
     
     last30DaysRevenue.forEach(({ _id, totalRevenue }) => {
       const dayName = daysMap[_id.dayOfWeek]; 
       const index = weeklyRevenue.labels.indexOf(dayName); 
       if (index !== -1) {
-        weeklyRevenue.values[index] += totalRevenue; 
+        weeklyRevenue.values[index] += totalRevenue;
       }
     });
     
-    
     const orderCount = last30DaysRevenue.reduce((total, order) => total + order.orderCount, 0);
     const totalRevenue = last30DaysRevenue.reduce((total, order) => total + order.totalRevenue, 0);
+    
+
 
     const totalUser = await User.find().countDocuments();
     const totalProduct = await Product.find({ isCustomize: false }).countDocuments();

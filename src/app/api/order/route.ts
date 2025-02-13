@@ -70,8 +70,8 @@ export async function POST(request: NextRequest) {
     const userData = await User.findById(tokenData.id);
     if (!userData?.email) {
       return NextResponse.json(
-        { success: false, message: "Email address is required to send order confirmation." },
-        { status: 401 }
+        { success: false, message: "Email address is required." },
+        { status: 200 }
       );
     }
 
@@ -135,8 +135,8 @@ export async function POST(request: NextRequest) {
       },
       payAmt:
         body.paymentMethod === "online"
-          ? body.totalPrice.discountPrice.toFixed(2)
-          : (body.totalPrice.discountPrice * 0.2).toFixed(2),
+          ? body.payAmt.toFixed(2)
+          : (body.payAmt * 0.2).toFixed(2),
       paymentType: body.paymentMethod,
       payment: {
         method: body.paymentMethod,
@@ -164,7 +164,6 @@ export async function POST(request: NextRequest) {
       status: "pending",
       userId: tokenData.id,
     };
-
     const order = new Order(orderData);
     await order.save();
 
