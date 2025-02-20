@@ -53,7 +53,7 @@ function PersonalisedGifts() {
     <section>
       <div className="min-h-screen">
         {/* Hero Section */}
-        <div className="relative py-20">
+        <div className="relative mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px] py-20">
           <div className="absolute inset-0" />
           <div className="relative container mx-auto px-4">
             <div className="text-center">
@@ -69,7 +69,7 @@ function PersonalisedGifts() {
         </div>
 
         {/* Product Grid */}
-        <div className="container mx-auto px-4 py-16">
+        <div className="container mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px] px-4 py-16">
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {products.map((product, index) => (
               <Link

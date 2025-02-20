@@ -1,6 +1,7 @@
 
 import { RiArrowDropLeftLine, RiArrowDropRightLine, RiSkipLeftLine, RiSkipRightLine } from 'react-icons/ri';
 import type { PaginationData } from '@/lib/types';
+import React from 'react';
 
 interface PaginationProps {
     pagination: PaginationData;
@@ -8,61 +9,100 @@ interface PaginationProps {
 }
 
 export function Pagination({ pagination, onPageChange }: PaginationProps) {
+    const getVisiblePages = () => {
+        const currentPage = pagination.page;
+        const totalPages = pagination.pages;
+
+        if (window.innerWidth < 640) { // Mobile screens
+            if (currentPage <= 2) return [1, 2];
+            if (currentPage >= totalPages - 1) return [totalPages - 1, totalPages];
+            return [currentPage - 1, currentPage];
+        } else { // Desktop screens
+            let pages = [];
+            if (totalPages <= 5) {
+                for (let i = 1; i <= totalPages; i++) pages.push(i);
+            } else {
+                if (currentPage <= 3) {
+                    pages = [1, 2, 3, 4, '...', totalPages];
+                } else if (currentPage >= totalPages - 2) {
+                    pages = [1, '...', totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+                } else {
+                    pages = [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
+                }
+            }
+            return pages;
+        }
+    };
     return (
-        <div className="flex justify-between items-center mt-6">
-            <div className="text-gray-600">
-                <span>{`Total: ${pagination.total}`}</span>
-                <span className="ml-4">{`Page: ${pagination.page} of ${pagination.pages}`} item(s)</span>
-            </div>
-
-            <div className="flex items-center gap-4">
-                <button
-                    disabled={pagination.page <= 1}
-                    onClick={() => onPageChange(1)}
-                    className="px-4 py-2 text-white bg-[#3d4750] hover:bg-[#3d4750] rounded-full disabled:opacity-50"
-                >
-                    <RiSkipLeftLine />
-                </button>
-                <button
-                    disabled={pagination.page <= 1}
-                    onClick={() => onPageChange(pagination.page - 1)}
-                    className="px-4 py-2 text-white bg-[#3d4750] rounded-full hover:bg-[#3d4750] disabled:opacity-50"
-                >
-                    <RiArrowDropLeftLine />
-                </button>
-
-                {pagination.pages > 1 && (
-                    <div className="flex gap-2">
-                        {Array.from({ length: pagination.pages }, (_, index) => (
-                            <button
-                                key={index}
-                                onClick={() => onPageChange(index + 1)}
-                                className={`px-1 py-1 w-8 h-8 rounded-full text-sm ${pagination.page === index + 1
-                                        ? 'bg-[#3d4750] text-white'
-                                        : ' text-[#777]  bg-[#f8f8fb] border border-gray-300 hover:bg-blue-50'
-                                    }`}
-                            >
-                                {index + 1}
-                            </button>
-                        ))}
-                    </div>
-                )}
-
-                <button
-                    disabled={pagination.page >= pagination.pages}
-                    onClick={() => onPageChange(pagination.page + 1)}
-                    className="px-4 py-2 text-white bg-[#3d4750] rounded-full hover:bg-[#3d4750] disabled:opacity-50"
-                >
-                    <RiArrowDropRightLine />
-                </button>
-                <button
-                    disabled={pagination.page >= pagination.pages}
-                    onClick={() => onPageChange(pagination.pages)}
-                    className="px-4 py-2 text-white bg-[#3d4750] rounded-full hover:bg-[#3d4750] disabled:opacity-50"
-                >
-                    <RiSkipRightLine />
-                </button>
-            </div>
+        <div className="flex flex-col gap-4 sm:flex-row sm:justify-between items-center mt-6 px-4">
+        <div className="text-sm text-gray-600 hidden sm:block">
+          <span>Total: {pagination.total}</span>
+          <span className="ml-4">Page {pagination.page} of {pagination.pages}</span>
         </div>
+  
+        <div className="flex items-center gap-2">
+          {/* First Page */}
+          <button
+            onClick={() => onPageChange(1)}
+            disabled={pagination.page <= 1}
+            className="hidden sm:flex items-center justify-center w-9 h-9 rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            ⟪
+          </button>
+  
+          {/* Previous Page */}
+          <button
+            onClick={() => onPageChange(pagination.page - 1)}
+            disabled={pagination.page <= 1}
+            className="flex items-center justify-center w-9 h-9 rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            ←
+          </button>
+  
+          {/* Page Numbers */}
+          <div className="flex gap-1">
+            {getVisiblePages().map((pageNum, index) => (
+              <React.Fragment key={index}>
+                {pageNum === '...' ? (
+                  <span className="flex items-center justify-center w-9 h-9 text-gray-500">...</span>
+                ) : (
+                  <button
+                    onClick={() => onPageChange(pageNum)}
+                    className={`w-9 h-9 rounded-full text-sm font-medium transition-colors
+                      ${pagination.page === pageNum
+                        ? 'bg-[#3d4750] text-white'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                  >
+                    {pageNum}
+                  </button>
+                )}
+              </React.Fragment>
+            ))}
+          </div>
+  
+          {/* Next Page */}
+          <button
+            onClick={() => onPageChange(pagination.page + 1)}
+            disabled={pagination.page >= pagination.pages}
+            className="flex items-center justify-center w-9 h-9 rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            →
+          </button>
+  
+          {/* Last Page */}
+          <button
+            onClick={() => onPageChange(pagination.pages)}
+            disabled={pagination.page >= pagination.pages}
+            className="hidden sm:flex items-center justify-center w-9 h-9 rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            ⟫
+          </button>
+        </div>
+  
+        <div className="text-sm text-gray-600 sm:hidden">
+          Page {pagination.page} of {pagination.pages}
+        </div>
+      </div>
     );
-}
+  }

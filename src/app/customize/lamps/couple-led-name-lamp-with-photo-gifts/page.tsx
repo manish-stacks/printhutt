@@ -144,12 +144,12 @@ export default function App() {
 
     return (
         <div
-            className="min-h-screen bg-cover bg-center bg-no-repeat"
+            className="min-h-screen overflow-hidden bg-cover bg-center bg-no-repeat"
             style={{
                 backgroundImage: 'url("https://res.cloudinary.com/dkprths9f/image/upload/v1737650777/photo-1506744038136-46273834b3fb_hq8v7q.avif")',
             }}
         >
-            <div className="min-h-screen bg-black/40 backdrop-blur-sm py-8">
+            <div className="min-h-screen bg-black/40 py-8">
                 <div className="container mx-auto px-4">
                     <h1 className="text-4xl font-script text-white text-center mb-8">
                         Create Your Memory Light
@@ -160,7 +160,7 @@ export default function App() {
 
                         <div className="relative">
                             {/* <div className="absolute inset-0 bg-gradient-to-b from-amber-100/20 to-amber-500/20 rounded-lg blur-xl"></div> */}
-                            <div id="preview-section" className=" relative md:sticky top-0 bg-black/80 rounded-lg p-8 backdrop-blur-sm border border-white/10">
+                            <div id="preview-section" className=" relative md:sticky top-0 bg-black/80 rounded-lg p-8 border border-white/10">
                                 <div className="aspect-[16/9] rounded-lg overflow-hidden flex items-center justify-center">
                                     <div className="relative w-full h-full flex items-center justify-center">
                                         <div className="absolute inset-0 flex items-center">
@@ -174,16 +174,16 @@ export default function App() {
                                                     />
                                                 </div>
                                             ) : (
-                                                <div className="w-1/3 h-full mr-4 border-2 border-dashed border-amber-500/50 rounded-lg flex items-center justify-center bg-black/40">
+                                                <div className="w-1/3 h-full border-2 border-dashed border-amber-500/50 rounded-lg flex items-center justify-center bg-black/40">
                                                     <BiUpload className="w-12 h-12 text-amber-500/70" />
                                                 </div>
                                             )}
-                                            <div className="flex-1 text-center">
-                                                <div className="text-4xl font-script text-amber-200 mb-2 text-shadow">
+                                            <div className="flex-1 w-2/3 text-center items-center justify-center h-full">
+                                                <div className="text-4xl font-script h-[40%] text-amber-200 mb-2 text-shadow">
                                                     {/* {names.name1 || 'First Name'} */}
                                                     <canvas ref={canvasRef} className="w-full h-full"></canvas>
                                                 </div>
-                                                <div className="h-12 flex items-center justify-center">
+                                                <div className="flex items-center h-[20%] justify-center">
                                                     <Image
                                                         src="https://res.cloudinary.com/dkprths9f/image/upload/v1737534586/heart-2_kvhmjm.png"
                                                         alt="heart"
@@ -191,7 +191,7 @@ export default function App() {
                                                         height={48}
                                                         className="w-12 h-12 text-amber-500/70" />
                                                 </div>
-                                                <div className="text-4xl font-script text-amber-200 text-shadow">
+                                                <div className="text-4xl font-script h-[40%] text-amber-200 text-shadow">
                                                     {/* {names.name2 || 'Second Name'} */}
                                                     <canvas ref={canvasRefTwo} className="w-full h-full"></canvas>
                                                 </div>
@@ -205,7 +205,7 @@ export default function App() {
 
 
                         {/* Customization Section */}
-                        <div className="bg-white/95 backdrop-blur-sm rounded-lg p-8 shadow-xl">
+                        <div className="bg-white/95 rounded-lg p-8 shadow-xl">
                             <div className="space-y-6">
                                 <div>
                                     <h3 className="text-xl font-semibold text-gray-800 mb-4">Upload Your Photo</h3>

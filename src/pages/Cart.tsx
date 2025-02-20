@@ -51,7 +51,7 @@ const Cart = () => {
 
             <div className="min-[992px]:w-[66.66%] w-full px-[12px] mb-[24px]">
               <div
-                className="bb-cart-table border-[1px] border-solid border-[#eee] rounded-[20px] overflow-hidden max-[1399px]:overflow-y-auto"
+                className="bb-cart-table border-[1px] border-solid border-[#eee] rounded-[20px] overflow-auto max-[1399px]:overflow-y-auto"
                 data-aos="fade-up"
                 data-aos-duration={1000}
                 data-aos-delay={400}

@@ -21,9 +21,9 @@ const DayoftheDeal = () => {
         <>
         {/* min-[1400px]:max-w-[1320px] */}
             <section className="section-deal overflow-hidden py-[50px] max-[1199px]:py-[35px]">
-                <div className="flex flex-wrap justify-between relative items-center mx-auto min-[1400px]:max-w-[1520px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">
+                <div className="flex flex-wrap justify-between relative items-center mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">
                     <div className="flex flex-wrap w-full">
-                        <div className="w-full px-[12px]">
+                        <div className="w-full px-[12px] mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">
                             <div
                                 className="section-title bb-deal mb-[20px] pb-[20px] z-[1] relative flex justify-between max-[991px]:pb-[0] max-[991px]:flex-col max-[991px]:justify-center max-[991px]:text-center"
                                 data-aos="fade-up"
@@ -41,7 +41,7 @@ const DayoftheDeal = () => {
                                 <div id="dealend" className="dealend-timer" />
                             </div>
                         </div>
-                        <div className="w-full px-[12px]">
+                        <div className="w-full mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px] px-[12px]">
                             <div className="bb-deal-slider m-[-12px]">
                                 <div className="bb-deal-block owl-carousel"></div>
                                 <Suspense fallback={<div>Loading...</div>}>
