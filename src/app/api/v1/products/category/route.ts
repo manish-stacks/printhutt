@@ -13,7 +13,7 @@ export async function GET(request: Request) {
 
     
     const limit = limitParam === 'all' || !limitParam
-      ? 10 
+      ? 48
       : Math.max(parseInt(limitParam, 10) || 10, 1); 
 
     if (!categorySlug) {
@@ -22,7 +22,7 @@ export async function GET(request: Request) {
 
     
     const category = await Category.findOne({ slug: categorySlug }).select('_id').lean();
-
+console.log(category)
     if (!category) {
       return NextResponse.json({ error: 'Category not found' }, { status: 404 });
     }

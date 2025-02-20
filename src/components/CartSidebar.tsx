@@ -56,7 +56,7 @@ const CartSidebar = ({ onClose }) => {
     <>
       {/* Cart sidebar */}
       <div className="bb-side-cart-overlay  w-full h-screen fixed top-[0] left-[0] bg-[#00000080] z-[17]" />
-      <div className="bb-side-cart w-[770px] h-[calc(100%-30px)] my-[15px] ml-[15px] pt-[15px] px-[8px] text-[14px] font-normal fixed z-[17] top-[0] right-[0] left-[auto] block transition-all duration-[0.5s] ease delay-[0s] translate-x-[100%] bg-[#fff] overflow-auto opacity-[0] rounded-tl-[20px] rounded-bl-[20px] max-[991px]:w-[740px] max-[767px]:w-[350px] max-[575px]:w-[300px] bb-open-cart">
+      <div className="bb-side-cart w-[770px] h-[calc(100%-30px)] my-[15px] ml-[15px] pt-[15px] px-[8px] text-[14px] font-normal fixed z-[99] top-[0] right-[0] left-[auto] block transition-all duration-[0.5s] ease delay-[0s] translate-x-[100%] bg-[#fff] overflow-auto opacity-[0] rounded-tl-[20px] rounded-bl-[20px] max-[991px]:w-[740px] max-[767px]:w-[350px] max-[575px]:w-[300px] bb-open-cart">
         <div className="flex flex-wrap h-full" ref={popupRef}>
           <div className="min-[768px]:w-[41.66%] w-full px-[12px] max-[767px]:hidden">
             <div className="bb-top-contact">

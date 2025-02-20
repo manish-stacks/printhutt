@@ -48,7 +48,7 @@ export default function Header() {
   const fetchData = async () => {
     try {
       const [categories, products] = await Promise.all([
-        categoryService.getAll(6),
+        categoryService.getAll(7),
         productService.getTopProducts(6),
       ]);
 
@@ -91,7 +91,7 @@ export default function Header() {
                       href={"/offer"}
                       className="transition-all duration-[0.3s] ease-in-out font-Poppins font-light text-[16px] text-[#fff] leading-[28px] tracking-[0.03rem]"
                     >
-                      Flat 30% Off On Neon Light Shop.
+                      Jai Balaji ✋ Blessings of Balaji always be with you! 
                     </Link>
                   </div>
                   <div className="col-right-bar flex">
@@ -522,7 +522,7 @@ export default function Header() {
 
       {isOpen && (
         <Suspense fallback={null}>
-          <CategoryPopup onClose={toggleClose} category={categoriesData} products={productData} />
+          <CategoryPopup onClose={toggleClose} category={categoriesData.slice(0, 6)} products={productData} />
         </Suspense>
       )}
       {isCartOpen && <CartSidebar onClose={toggleCartSidebarClose} />}

@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@sentry/nextjs": "^8.54.0",
     "@types/aos": "^3.0.7",
     "@types/react-slick": "^0.23.13",
     "animate.css": "^4.1.1",

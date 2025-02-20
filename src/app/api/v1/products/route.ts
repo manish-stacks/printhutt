@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
   const tags = searchParams.get('tags')?.split(',').filter(Boolean) || []
   const sort = searchParams.get('sort') || 'newest'
 
-  const products = await Product.find().populate({ path: 'category', model: Category }).populate({ path: 'subcategory', model: SubCategory }).sort({ createdAt: -1 });
+  const products = await Product.find({ status: true }).populate({ path: 'category', model: Category }).populate({ path: 'subcategory', model: SubCategory }).sort({ createdAt: -1 });
 
   if (!products) {
     return NextResponse.json({
@@ -84,7 +84,7 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.json({
     products: paginatedProducts,
-    totalProducts: total, 
+    totalProducts: total,
     pagination: {
       page,
       perPage,

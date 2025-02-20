@@ -53,7 +53,7 @@ function PersonalisedGifts() {
     <section>
       <div className="min-h-screen">
         {/* Hero Section */}
-        <div className="relative mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px] py-20">
+        <div className="relative mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px] py-10">
           <div className="absolute inset-0" />
           <div className="relative container mx-auto px-4">
             <div className="text-center">

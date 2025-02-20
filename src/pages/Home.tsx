@@ -43,9 +43,10 @@ const HomeComponent = () => {
 
       <PersonalisedGifts />
 
+      <PersonalisedGiftsTwo />
+      
       <DayoftheDeal />
 
-      <PersonalisedGiftsTwo />
 
       <NewProductArea />
 

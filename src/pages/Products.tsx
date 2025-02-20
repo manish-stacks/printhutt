@@ -37,6 +37,7 @@ function Products() {
 
   const fetchProducts = async () => {
     try {
+      setLoading(true)
       const queryParams = new URLSearchParams({
         page,
         search,
@@ -69,21 +70,16 @@ function Products() {
   }, [page, search, filters])
 
   const handlePageChange = (newPage: number) => {
-    setLoading(true)
     const params = new URLSearchParams(searchParams!);
     params.set('page', newPage.toString());
-    router.push(`?${params.toString()}`);
-    setLoading(false)
+    return router.push(`?${params.toString()}`);
   };
 
   const handleFilterChange = (newFilters: Partial<FilterState>) => {
-    setLoading(true)
-    // console.log(newFilters)
     setFilters(prev => ({ ...prev, ...newFilters }));
     const params = new URLSearchParams(searchParams!);
-    params.set('page', '1'); // Reset to first page on filter change
-    router.push(`?${params.toString()}`);
-    setLoading(false)
+    params.set('page', '1'); 
+    return router.push(`?${params.toString()}`);
   };
 
   const skeletonItems = Array(6).fill(null);
