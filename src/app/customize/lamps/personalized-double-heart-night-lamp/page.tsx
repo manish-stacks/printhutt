@@ -160,12 +160,12 @@ export default function page() {
 
   return (
     <div
-      className="min-h-screen bg-cover bg-center bg-no-repeat"
+      className="min-h-screen overflow-hidden bg-cover bg-center bg-no-repeat"
       style={{
         backgroundImage: 'url("https://res.cloudinary.com/dkprths9f/image/upload/v1737650777/photo-1506744038136-46273834b3fb_hq8v7q.avif")',
       }}
     >
-      <div className="min-h-screen bg-black/40 backdrop-blur-sm py-8">
+      <div className="min-h-screen bg-black/40 py-8">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl font-script text-white text-center mb-8">
             Create Your Memory Light
@@ -173,7 +173,7 @@ export default function page() {
 
           <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
             <div className="relative rounded-lg">
-              <div id="preview-section" className="relative rounded-lg p-2 backdrop-blur-sm border border-white/10">
+              <div id="preview-section" className="relative rounded-lg p-2 border border-white/10">
                 <div className="img-box relative">
                   <img
                     src="https://res.cloudinary.com/dkprths9f/image/upload/v1737914834/693708685_love-heart-1_vytboe.png"
@@ -181,18 +181,18 @@ export default function page() {
                     className="w-full h-full object-cover rounded-lg"
                     crossOrigin="anonymous"
                   />
-                  <div className="text-box absolute top-[30%] left-[20%]">
+                  <div className="text-box absolute top-[30%] left-[20%] w-[30%] h-[25%]">
                     <canvas ref={canvasRef} width="250" height="120" className="w-full h-full"></canvas>
                   </div>
 
-                  <div className="text-box absolute top-[50%] left-[48%]">
+                  <div className="text-box absolute top-[50%] left-[56%] w-[25%] h-[17%] ">
                     <canvas ref={canvasRefTwo} width="220" height="100" className="w-full h-full"></canvas>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white/95 backdrop-blur-sm rounded-lg p-8 shadow-xl">
+            <div className="bg-white/95 rounded-lg p-8 shadow-xl">
               <div className="space-y-6">
                 <div className="space-y-4">
                   <h3 className="text-xl font-semibold text-gray-800">Enter Name</h3>

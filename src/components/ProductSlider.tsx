@@ -18,6 +18,7 @@ const ProductSlider = ({ products }: PopupProps) => {
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 1,
+    arrows: false,
     responsive: [
       {
         breakpoint: 1400,

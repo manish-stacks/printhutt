@@ -66,3 +66,21 @@
 
 
 
+/* custom css  */
+
+.canvas-container{
+  height: 100% !important;
+  width: 100% !important;
+}
+
+.lower-canvas{
+  height: 100% !important;
+  width: 100% !important;
+}
+
+.upper-canvas{
+  height: 100% !important;
+  width: 100% !important;
+}
+
+/* .lamp-rectangle-shape */

@@ -38,7 +38,7 @@ const NewProductArea = () => {
       {/* New Product tab Area */}
       <section className="section-product-tabs overflow-hidden py-[50px] max-[1199px]:py-[35px]">
         <div className="flex flex-wrap justify-between relative items-center mx-auto min-[1400px]:max-w-[1520px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">
-          <div className="flex flex-wrap w-full">
+          <div className="flex flex-wrap w-full mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">
             <div className="w-full px-[12px]">
               <div
                 className="section-title mb-[20px] pb-[20px] z-[5] relative flex justify-between max-[991px]:pb-[0] max-[991px]:flex-col max-[991px]:justify-center max-[991px]:text-center"
@@ -89,7 +89,7 @@ const NewProductArea = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-wrap w-full mb-[-24px]">
+          <div className="flex flex-wrap w-full mb-[-24px] mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">
             <div className="w-full">
               <div className="tab-content">
                 <div className="tab-product-pane" id="all">

@@ -184,12 +184,12 @@ export default function page() {
 
   return (
     <div
-      className="min-h-screen bg-cover bg-center bg-no-repeat"
+      className="min-h-screen bg-cover bg-center bg-no-repeat overflow-hidden"
       style={{
         backgroundImage: 'url("https://res.cloudinary.com/dkprths9f/image/upload/v1737650777/photo-1506744038136-46273834b3fb_hq8v7q.avif")',
       }}
     >
-      <div className="min-h-screen bg-black/40 backdrop-blur-sm py-8">
+      <div className="min-h-screen bg-black/40 py-8 lamp-rectangle-shape">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl font-script text-white text-center mb-8">
             Create Your Memory Light
@@ -197,7 +197,7 @@ export default function page() {
 
           <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
             <div className="relative rounded-lg">
-              <div id="preview-section" className="relative rounded-lg p-2 backdrop-blur-sm border border-white/10">
+              <div id="preview-section" className="relative rounded-lg p-2 border border-white/10">
                 <div className="img-box relative">
                   <img
                     src="https://res.cloudinary.com/dkprths9f/image/upload/v1737985238/love-forever_sutsha_c_fill_w_600_h_600_lcjqut.png"
@@ -207,7 +207,7 @@ export default function page() {
                   />
                   <div className='absolute top-[14%] left-[15%] w-full h-full '>
                     {previewImage ? (
-                      <div className="w-[180px] h-[180px] relative rotate-[352deg]">
+                      <div className="w-[33%] h-[33%] relative rotate-[352deg]">
                         <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent rounded-sm "></div>
                         <img
                           src={previewImage}
@@ -216,7 +216,7 @@ export default function page() {
                         />
                       </div>
                     ) : (
-                      <div className="w-[180px] h-[180px]  border-2 border-dashed border-amber-500/50 rounded-sm rotate-[352deg] flex items-center justify-center bg-black/40">
+                      <div className="w-[33%] h-[33%]  border-2 border-dashed border-amber-500/50 rounded-sm rotate-[352deg] flex items-center justify-center bg-black/40">
                         <BiUpload className="w-12 h-12 text-amber-500/70" />
                       </div>
                     )}
@@ -225,7 +225,7 @@ export default function page() {
 
                   <div className='absolute top-[31%] left-[51%] w-full h-full '>
                     {previewImageTwo ? (
-                      <div className="w-[180px] h-[180px] relative rotate-[8deg]">
+                      <div className="w-[33%] h-[33%] relative rotate-[8deg]">
                         <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent rounded-sm "></div>
                         <img
                           src={previewImageTwo}
@@ -234,20 +234,20 @@ export default function page() {
                         />
                       </div>
                     ) : (
-                      <div className="w-[180px] h-[180px]  border-2 border-dashed border-amber-500/50 rounded-sm rotate-[8deg] flex items-center justify-center bg-black/40">
+                      <div className="w-[33%] h-[33%]  border-2 border-dashed border-amber-500/50 rounded-sm rotate-[8deg] flex items-center justify-center bg-black/40">
                         <BiUpload className="w-12 h-12 text-amber-500/70" />
                       </div>
                     )}
 
                   </div>
-                  <div className="text-box absolute top-[72%] left-[48%] transform -translate-x-1/2 -translate-y-1/2 text-center">
+                  <div className="text-box absolute top-[78%] left-[50%] w-[54%] h-[13%] transform -translate-x-1/2 -translate-y-1/2 text-center">
                     <canvas ref={canvasRef} width="340" height="100" className="w-full h-full"></canvas>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white/95 backdrop-blur-sm rounded-lg p-8 shadow-xl">
+            <div className="bg-white/95 rounded-lg p-8 shadow-xl">
               <div className="space-y-6">
 
                 <div>
