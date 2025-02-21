@@ -58,8 +58,8 @@ function PersonalisedGifts() {
           <div className="relative container mx-auto px-4">
             <div className="text-center">
 
-              <h1 className="text-4xl md:text-5xl font-bold text-slate-600 mb-4 font-serif">
-                Personalised Couple Gifts
+              <h1 className="text-4xl md:text-5xl font-bold text-slate-600 mb-4 font-serif ">
+                Personalised <span className='text-pink-600'>Couple</span> Gifts
               </h1>
               <p className="text-lg text-slate-600/90 max-w-2xl mx-auto">
                 Create lasting memories with our unique collection of personalized lighting gifts
@@ -77,7 +77,7 @@ function PersonalisedGifts() {
                 href={product.url}
                 className="group block"
               >
-                <div className="relative overflow-hidden rounded-2xl border-2 border-amber-200 bg-white shadow-md transition-all duration-300 hover:shadow-xl hover:border-amber-400">
+                <div className="relative overflow-hidden rounded-2xl border-2 border-rose-400 bg-white shadow-md transition-all duration-300 hover:shadow-xl hover:border-amber-900">
                   <div className="aspect-square overflow-hidden">
                     <Image
                       width={300}
@@ -91,8 +91,8 @@ function PersonalisedGifts() {
                     <h3 className="text-sm md:text-base font-semibold text-gray-800 group-hover:text-amber-700">
                       {product.name}
                     </h3>
-                    <button className="mt-2 px-4 py-2 text-sm bg-amber-100 text-amber-800 rounded-full hover:bg-amber-200 transition-colors duration-200">
-                      View Details
+                    <button className="mt-2 px-4 py-2 text-sm bg-rose-100 text-rose-800 rounded-full hover:bg-rose-200 transition-colors duration-200">
+                      Customize & Buy
                     </button>
                   </div>
                 </div>

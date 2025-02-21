@@ -4,6 +4,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { categoryService } from "@/_services/common/categoryService";
+import Link from "next/link";
 
 const CategoryHome = () => {
   const settings = {
@@ -13,7 +14,7 @@ const CategoryHome = () => {
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 1,
-    // arrows: true,
+    arrows: true,
     responsive: [
       {
         breakpoint: 1400,
@@ -121,7 +122,7 @@ const CategoryHome = () => {
 
                           : (
                             categoriesData.map((category, index) => (
-                              <div className="pr-2 pl-2" key={category._id}>
+                              <div className="pr-2 pl-2" key={category?._id}>
                                 <div
                                   className={`bb-category-box p-[30px] rounded-[20px] flex flex-col items-center text-center max-[1399px]:p-[20px] category-items-${index + 1} ${(index % 2 === 0 ? 'bg-[#f4f1fe]' : 'bg-[#fef1f1]')}`}
                                   data-aos-duration={1000}
@@ -129,22 +130,22 @@ const CategoryHome = () => {
                                 >
                                   <div className="category-image mb-[12px] flex items-center justify-center">
                                     <img
-                                      src={category.image.url}
-                                      alt={category.name}
+                                      src={category?.image.url}
+                                      alt={category?.name}
                                       className="w-[50px] h-[50px] max-[1399px]:h-[65px] max-[1399px]:w-[65px] max-[1199px]:h-[50px] max-[1199px]:w-[50px] rounded-full"
                                     />
                                   </div>
                                   <div className="category-sub-contact">
                                     <h5 className="mb-[2px] text-[16px] font-quicksand text-[#3d4750] font-semibold tracking-[0.03rem] leading-[1.2]">
-                                      <a
-                                        href={`/category/${category.slug}`}
+                                      <Link
+                                        href={`/category/${category?.slug}`}
                                         className="font-Poppins text-[16px] font-medium leading-[1.2] tracking-[0.03rem] text-[#3d4750] capitalize"
                                       >
-                                        {category.name}
-                                      </a>
+                                        {category?.name}
+                                      </Link>
                                     </h5>
                                     <p className="font-Poppins text-[13px] text-[#686e7d] leading-[25px] font-light tracking-[0.03rem]">
-                                      {category.totalProducts} items
+                                      {category?.totalProducts} items
                                     </p>
                                   </div>
                                 </div>

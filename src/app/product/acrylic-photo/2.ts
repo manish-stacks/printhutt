@@ -3,11 +3,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ThicknessOption, CheckoutData } from '@/lib/types';
 import { BUTTON_VALUES_AND_PRICES, DEFAULT_IMAGE_URL } from './constants';
 import { Canvas, FabricImage } from 'fabric';
-import { formatCurrency } from '@/helpers/helpers';
 
 
 function App() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<Canvas | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedSize, setSelectedSize] = useState(BUTTON_VALUES_AND_PRICES[0].size);
   const [selectedThickness, setSelectedThickness] = useState(BUTTON_VALUES_AND_PRICES[0].thickness[0]);
@@ -16,11 +15,11 @@ function App() {
   const [orientation, setOrientation] = useState<'portrait' | 'landscape'>('portrait');
 
   useEffect(() => {
-    canvasRef.current && initCanvas(canvasRef.current);
+    initCanvas();
   }, []);
 
-  const initCanvas = (canvasElement: HTMLCanvasElement) => {
-    new Canvas(canvasElement, {
+  const initCanvas = () => {
+    canvasRef.current = new Canvas('canvas', {
       width: 700,
       height: 450,
       backgroundColor: 'white'
@@ -125,34 +124,6 @@ function App() {
     }
   };
 
-
-
-  const [width, height] = selectedSize.split('x').map(Number);
-
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    const files = e.dataTransfer.files;
-    if (files.length > 0) {
-      const file = files[0];
-      if (file.type.startsWith('image/')) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const result = e.target?.result as string;
-          setImageUrl(result);
-        };
-        reader.readAsDataURL(file);
-      }
-    }
-  };
-
   const handleCheckout = () => {
     if (imageUrl === DEFAULT_IMAGE_URL) {
       alert('Please upload an image');
@@ -171,6 +142,8 @@ function App() {
     console.log('Checkout data:', checkoutData);
   };
 
+  const [width, height] = selectedSize.split('x').map(Number);
+
   return (
     <main className="container mx-auto px-4 py-8">
       <div className="text-center mb-8">
@@ -182,7 +155,7 @@ function App() {
       <div className="flex justify-center mb-8">
         <div id="canvasContainer" className="relative">
           <div className={`sahdow-box ${orientation === 'landscape' ? 'landscape' : ''}`}>
-            <canvas ref={canvasRef} width={700} height={450} className="w-full h-full"> </canvas>
+            <canvas id="canvas" className="norad" />
           </div>
 
           <div id="width" className="absolute bg-black text-white text-center text-sm px-2 w-28">
@@ -206,29 +179,26 @@ function App() {
       </div>
 
       <div className="max-w-md mx-auto mb-8">
-        <p className="text-center text-green-600 text-sm mb-2">
-          Upload Image for Acrylic Photo Frame (High-Resolution Recommended)
-        </p>
-        <div
-          className="bg-white p-6 rounded-lg shadow-md border-2 border-dashed border-gray-300 hover:border-gray-400 transition-colors"
-          onDragOver={handleDragOver}
-          onDrop={handleDrop}
-        >
-          <div className="text-center mb-4">
-            <p className="text-gray-600">Drag and drop an image here or</p>
-          </div>
+        <div className="bg-white p-6 rounded-lg shadow-md">
           <input
             type="file"
             ref={fileInputRef}
             onChange={handleFileChange}
-            accept="image/png,image/jpeg,image/jpg"
-            className="w-full cursor-pointer"
+            accept="image/*"
+            className="w-full mb-2"
           />
-          <p className="text-xs text-gray-500 mt-2">
-            Supported formats: PNG, JPEG, JPG (Max size: 10MB)
+          <p className="text-center text-green-600 text-sm">
+            Upload Image for Acrylic Photo Frame (High-Resolution Recommended) png|jpeg|jpg
           </p>
         </div>
       </div>
+
+      <div className="text-center mb-8">
+        <h3 className="text-xl font-semibold">
+          Price: ₹{selectedThickness.price}
+        </h3>
+      </div>
+
       <div className="text-center mb-4">
         <div className="flex justify-center gap-2">
           <button
@@ -290,7 +260,7 @@ function App() {
           onClick={handleCheckout}
           className="buyNowBtn bg-green-500 text-white font-semibold py-3 px-8 rounded-lg hover:bg-green-600 transition-colors"
         >
-          Buy Now -{formatCurrency(selectedThickness.price)}
+          Buy Now
         </button>
       </div>
     </main>

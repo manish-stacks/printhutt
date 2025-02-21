@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
           })
         );
 
-        const totalProducts = totalCategoryProducts + subcategoriesWithProductCount.reduce((acc, sub) => acc + sub.totalProducts, 0);
+        const totalProducts = totalCategoryProducts // + subcategoriesWithProductCount.reduce((acc, sub) => acc + sub.totalProducts, 0);
 
         return {
           ...category,

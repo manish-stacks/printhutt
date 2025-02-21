@@ -62,6 +62,16 @@ const ProductCardTwo = ({ product }: PopupProps) => {
                                 )}
                             </span>
                         </span>
+                        {product.discountPrice > 0 && (
+                            <span className={`discount transition-all duration-[0.3s] ease-in-out absolute z-[5] top-[10px] right-[10px] bg-rose-500 text-[#fff] font-medium text-[12px] px-2 rounded-full`}>
+                                Off {
+                                    product.discountType === 'percentage'
+                                        ? `${product?.discountPrice}%`
+                                        : `${product?.discountPrice.toFixed(2)}₹`
+                                }
+                            </span>
+                        )}
+
                         <Link href={`/product-details/${product.slug}`}>
                             <div className="inner-img relative block overflow-hidden pointer-events-none rounded-t-[20px]">
                                 <Image
@@ -157,7 +167,6 @@ const ProductCardTwo = ({ product }: PopupProps) => {
                                     {product.discountPrice > 0 ? formatCurrency(product.price) : ''}
                                 </span>
                             </div>
-
                         </div>
                     </div>
                 </div>

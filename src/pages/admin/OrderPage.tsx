@@ -2,13 +2,14 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { FaDownload, FaEdit,  FaSearch } from 'react-icons/fa';
+import { FaDownload, FaEdit, FaSearch } from 'react-icons/fa';
 import { RiLoader2Line } from 'react-icons/ri';
 import Link from 'next/link';
 import { Pagination } from '@/components/admin/Pagination';
 import { IOrder } from '@/lib/types/order';
 import { get_all_orders_of_user } from '@/_services/common/order';
 import { toast } from 'react-toastify';
+import { formatCurrency } from '@/helpers/helpers';
 
 export default function OrderPage() {
     const searchParams = useSearchParams();
@@ -24,7 +25,7 @@ export default function OrderPage() {
         try {
             setIsLoading(true);
             const data = await get_all_orders_of_user(page, search, status);
-            
+
             setOrders(data.orders);
             setPagination(data.pagination);
         } catch (error) {
@@ -55,6 +56,25 @@ export default function OrderPage() {
         params.set('page', newPage.toString());
         router.push(`?${params.toString()}`);
     };
+
+
+
+    const OrderStatus = ({ order }) => {
+        if (!order) return null;
+
+        switch (order.status) {
+            case "pending":
+                return <span className="bg-yellow-200 text-yellow-800 px-2 rounded-full">{order.status}</span>;
+            case "completed":
+                return <span className="bg-green-200 text-green-800 px-2 rounded-full">{order.status}</span>;
+            case "cancelled":
+                return <span className="bg-red-200 text-red-800 px-2 rounded-full">{order.status}</span>;
+            default:
+                return <span className="bg-blue-200 text-blue-800 px-2 rounded-full">{order.status}</span>;
+        }
+    };
+
+
 
     return (
         <>
@@ -93,8 +113,9 @@ export default function OrderPage() {
                                     <tr className="bg-gray-100 border-b">
                                         <th className="py-3 px-4">Order ID</th>
                                         <th className="py-3 px-4">Placed On</th>
-                                        <th className="py-3 px-4">Amount</th>
+                                        <th className="py-3 px-4">Pay Amount</th>
                                         <th className="py-3 px-4">Items</th>
+                                        <th className="py-3 px-4">Mode</th>
                                         <th className="py-3 px-4">Status</th>
                                         <th className="py-3 px-4">Actions</th>
                                     </tr>
@@ -109,16 +130,38 @@ export default function OrderPage() {
                                     ) : (
                                         orders.map((order, index) => (
                                             <tr key={index} className="border-b hover:bg-gray-50">
-                                                <td className="py-3 px-4">{order.orderId}</td>
-                                                <td className="py-3 px-4">
-                                                    {new Date(order.createdAt).toLocaleDateString()}
+                                                <td className="py-3 px-4 text-amber-600">
+                                                    <Link
+                                                        href={`/admin/orders/orders-details/${order._id}`}>{order.orderId}
+                                                    </Link>
                                                 </td>
-                                                <td className="py-3 px-4">{order.totalAmount.discountPrice.toFixed(2)}</td>
+                                                <td className="py-3 px-4">
+                                                    {new Date(order.createdAt).toLocaleDateString( 'en-US', {
+                                                        year: 'numeric',
+                                                        month: 'long',
+                                                        day: 'numeric',
+                                                    })}
+                                                </td>
+                                                <td className="py-3 px-4">{formatCurrency(order.payAmt)}</td>
                                                 <td className="py-3 px-4">{order.totalQuantity}</td>
-                                                <td className="py-3 px-4">{order.status}</td>
+                                                <td className="py-3 px-4">
+                                                    {
+                                                        order?.paymentType && order?.paymentType == 'online' ? (
+                                                            <span className="bg-green-200 text-green-800 px-2 rounded-full">Online</span>
+                                                        ) : (
+                                                            <span className="bg-slate-200 text-slate-800 px-2 rounded-full">COD</span>
+                                                        )
+                                                    }
+
+                                                </td>
+                                                <td className="py-3 px-4">
+                                                    {
+                                                        OrderStatus({ order })
+                                                    }
+                                                </td>
                                                 <td className="py-3 px-4 flex space-x-2">
                                                     <Link
-                                                        
+
                                                         href={`/admin/orders/orders-details/${order._id}`}
                                                         className="text-green-800 bg-green-300 p-2 rounded-full"
                                                     >

@@ -115,3 +115,26 @@ export interface OrderDetails {
         trackingId:string;
     }
 }
+
+
+
+export interface ThicknessOption {
+    value: string;
+    price: number;
+    default?: boolean;
+}
+
+export interface SizeOption {
+    size: string;
+    thickness: ThicknessOption[];
+    default?: boolean;
+}
+
+export interface CheckoutData {
+    imageUrl: string;
+    radiusValue: string;
+    shapeName: string;
+    frameSize: string;
+    sizeThickness: string;
+    totalPrice: number;
+}

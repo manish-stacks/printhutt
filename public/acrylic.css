@@ -1,0 +1,296 @@
+
+/* Responsive */
+/* Canvas Container Styles */
+#canvasContainer {
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    background: linear-gradient(rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.02)), url(https://omgs.in/wp-content/uploads/2021/02/wall-c.jpg);
+    padding: 40px 20px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: 375px;
+    position: relative;
+    max-height: 100%;
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Width and Height Labels */
+  #width {
+    position: absolute;
+    left: calc(50% - 57.5px);
+    top: 3%;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+  }
+  
+  #height {
+    position: absolute;
+    top: 300px;
+    left: 0%;
+    width: 130px;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+  }
+  
+  /* Shadow Box Styles */
+  .sahdow-box {
+    width: 100%;
+    max-width: 800px;
+    position: relative;
+    z-index: 0;
+    height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    border-radius: 8px;
+    padding: 20px;
+  }
+  
+  .sahdow-box.landscape {
+    height: 750px;
+  }
+  
+  .sahdow-box canvas {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 700px;
+    transition: all 0.3s ease;
+  }
+  
+  .sahdow-box.landscape canvas {
+    transform: rotate(90deg);
+    margin-top: -75px;
+  }
+  
+  /* Canvas Border Radius Classes */
+  /* .norad {
+    border-radius: 0;
+    transition: all 0.3s ease;
+  }
+   */
+  .rad1 {
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, 
+                rgba(0, 0, 0, 0.12) 0px -12px 30px,
+                rgba(0, 0, 0, 0.12) 0px 4px 6px, 
+                rgba(0, 0, 0, 0.17) 0px 12px 13px,
+                rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    border-radius: 0%;
+  }
+  
+  .rad2 {
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+                rgba(0, 0, 0, 0.12) 0px -12px 30px,
+                rgba(0, 0, 0, 0.12) 0px 4px 6px,
+                rgba(0, 0, 0, 0.17) 0px 12px 13px,
+                rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    border-radius: 20px;
+  }
+  
+  .rad3 {
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+                rgba(0, 0, 0, 0.12) 0px -12px 30px,
+                rgba(0, 0, 0, 0.12) 0px 4px 6px,
+                rgba(0, 0, 0, 0.17) 0px 12px 13px,
+                rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    border-radius: 100px;
+  }
+  
+  /* Radius Button Styles */
+  .radius,
+  .radius1,
+  .radius2 {
+    width: 50px;
+    height: 35px;
+    background: #E5007D;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+  }
+  
+  .radius {
+    border-radius: 0%;
+  }
+  
+  .radius1 {
+    border-radius: 10px;
+  }
+  
+  .radius2 {
+    border-radius: 15px;
+  }
+  
+  .selected {
+    border: 2px solid white;
+    transform: scale(1.1);
+  }
+  
+  /* Button Styles */
+  .btn {
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .btn::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: -100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: 0.5s;
+  }
+  
+  .btn:hover::after {
+    left: 100%;
+  }
+  
+  .btn-outline-primary {
+    border: 1px solid #3B82F6;
+    color: #3B82F6;
+  }
+  
+  .btn-outline-primary:hover {
+    background-color: #3B82F6;
+    color: white;
+    transform: translateY(-2px);
+  }
+  
+  .bg-success {
+    background-color: #10B981;
+    color: white;
+  }
+  
+  .buyNowBtn {
+    transition: all 0.3s ease;
+    font-size: 16px;
+    line-height: 1.6;
+    padding: 12px 55px;
+    border: 0;
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 1px;
+    display: inline-block;
+    width: 400px;
+    background: linear-gradient(45deg, #10B981, #059669);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .buyNowBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  }
+  
+  .buyNowBtn::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: -100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: 0.5s;
+  }
+  
+  .buyNowBtn:hover::after {
+    left: 100%;
+  }
+  
+  .upload-container {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .upload-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px -1px rgba(0, 0, 0, 0.1);
+  }
+  
+  .file-input-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100px;
+    border: 2px dashed #E5E7EB;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .file-input-wrapper:hover {
+    border-color: #10B981;
+    background-color: rgba(16, 185, 129, 0.05);
+  }
+  
+  .file-input-wrapper input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+  
+  .file-input-wrapper .upload-icon {
+    font-size: 24px;
+    color: #10B981;
+    margin-bottom: 8px;
+  }
+  
+  .size-thickness-container {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    margin-top: 2rem;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 750px) {
+    .canvas-container {
+      width: 100% !important;
+    }
+  
+    .lower-canvas,
+    .upper-canvas {
+      width: 100% !important;
+      height: auto !important;
+    }
+  
+    .sahdow-box {
+      height: 400px !important;
+    }
+  
+    #height {
+      left: -14% !important;
+    }
+  
+    .buyNowBtn {
+      width: 100% !important;
+    }
+  
+    .size-thickness-container {
+      padding: 1rem;
+    }
+  }

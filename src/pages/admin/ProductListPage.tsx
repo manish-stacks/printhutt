@@ -11,6 +11,7 @@ import Image from 'next/image';
 import { Pagination } from '@/components/admin/Pagination';
 import Swal from 'sweetalert2';
 import type { PaginationData } from '@/lib/types';
+import { formatCurrency } from '@/helpers/helpers';
 interface Product {
     _id: string;
     title: string;
@@ -42,6 +43,7 @@ const ProductListPage: React.FC = () => {
 
     const fetchProducts = async () => {
         try {
+            setLoading(true);
             const response = await get_all_products(page, search)
             setProducts(response.products);
             setPagination(response.pagination);
@@ -224,8 +226,11 @@ const ProductListPage: React.FC = () => {
                                                 )}
                                             </td>
                                             <td className="py-3 px-4">{product?.title}</td>
-                                            <td className="py-3 px-4">{product?.price ? `₹${product?.price.toFixed(2)}` : 'Price not available'}</td>
-
+                                            <td className="py-3 px-4">
+                                                {product?.discountType === 'percentage'
+                                                    ? formatCurrency(product?.price - (product?.price * product?.discountPrice) / 100)
+                                                    : formatCurrency(product?.price - product?.discountPrice)}
+                                            </td>
                                             <td className="py-3 px-4">
                                                 {product?.category.name}
                                                 {product?.subcategory && (
@@ -237,7 +242,7 @@ const ProductListPage: React.FC = () => {
                                             </td>
                                             <td className="py-3 px-4">{product?.stock}</td>
                                             <td className="py-3 px-4" style={{ color: product?.isCustomize ? 'green' : 'blue' }}>
-                                                {product?.isCustomize ? 'Customize' : <span>Pre</span>}
+                                                {product?.isCustomize ? (<span className="text-green-100 bg-green-800 px-3 rounded-full">Cus</span>) : (<span className="text-amber-100 bg-amber-500 px-3 rounded-full">Pre</span>)}
                                             </td>
                                             <td>
                                                 <label className="flex items-center cursor-pointer">
@@ -248,13 +253,13 @@ const ProductListPage: React.FC = () => {
                                                         className="sr-only peer"
                                                     />
                                                     <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600" />
-                                                    <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                                    {/* <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
                                                         {product?.status ? "Active" : "Inactive"}
-                                                    </span>
+                                                    </span> */}
                                                 </label>
                                             </td>
                                             <td>
-                                                <div className='flex space-x-2'>
+                                                <div className='flex space-x-2 px-2'>
                                                     <Link
                                                         href={`/product-details/${product?.slug}`}
                                                         target="_blank"

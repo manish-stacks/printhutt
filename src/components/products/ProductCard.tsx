@@ -37,10 +37,10 @@ const ProductCard = ({ product }: PopupProps) => {
     }
 
 
-    const handleAddToWishlist = async(product: Product) => {
-        if (!isLoggedIn)  return router.push('/login');
+    const handleAddToWishlist = async (product: Product) => {
+        if (!isLoggedIn) return router.push('/login');
         const response = await wishlistService.addWishlist(product._id);
-  
+
         toast(response.message);
     }
     return (
@@ -54,6 +54,15 @@ const ProductCard = ({ product }: PopupProps) => {
                             </span>
                         )}
                     </span>
+                    {product.discountPrice > 0 && (
+                        <span className={`discount transition-all duration-[0.3s] ease-in-out absolute z-[5] top-[10px] right-[10px] bg-rose-500 text-[#fff] font-medium text-[12px] px-2 rounded-full`}>
+                            Off {
+                                product.discountType === 'percentage'
+                                    ? `${product?.discountPrice}%`
+                                    : `${product?.discountPrice.toFixed(2)}₹`
+                            }
+                        </span>
+                    )}
                     <Link href={`/product-details/${product.slug}`}>
                         <div className="inner-img relative block overflow-hidden pointer-events-none rounded-t-[20px]">
                             <Image
@@ -75,7 +84,7 @@ const ProductCard = ({ product }: PopupProps) => {
                     <ul className="bb-pro-actions transition-all duration-[0.3s] ease-in-out my-[0] mx-[auto] absolute z-[9] left-[0] right-[0] bottom-[0] flex flex-row items-center justify-center opacity-[0]">
                         <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                             <button
-                                onClick={ () => handleAddToWishlist(product)}
+                                onClick={() => handleAddToWishlist(product)}
                                 title="Wishlist"
                                 className="w-[35px] h-[35px] flex items-center justify-center"
                             >
@@ -84,7 +93,7 @@ const ProductCard = ({ product }: PopupProps) => {
                         </li>
                         <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                             <button
-                                onClick={ quickViewModel}
+                                onClick={quickViewModel}
                                 title="Quick View"
                                 className="bb-modal-toggle w-[35px] h-[35px] flex items-center justify-center"
                             >
@@ -176,7 +185,6 @@ const ProductCard = ({ product }: PopupProps) => {
                             <span className="old-price px-[3px] text-[14px] max-[480px]:text-[10px] text-[#686e7d] line-through">
                                 {product.discountPrice > 0 ? formatCurrency(product.price) : ''}
                             </span>
-
                         </div>
 
                     </div>

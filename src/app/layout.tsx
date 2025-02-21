@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import MainLayout from "@/layout/Main";
 import "./globals.css";
 import '/public/style.css';
+import '/public/acrylic.css';
 import 'animate.css';
 import "aos/dist/aos.css";
 import 'remixicon/fonts/remixicon.css'
