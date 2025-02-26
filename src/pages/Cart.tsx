@@ -175,7 +175,7 @@ const Cart = () => {
                             Sub-Total
                           </span>
                           <span className="text-right font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] text-[#686e7d] font-semibold">
-                            <span className="text-[15px] line-through">{totalPrice.totalPrice.toFixed(2)}</span> ₹{totalPrice.discountPrice.toFixed(2)}
+                            <span className="text-[15px] line-through"></span> {formatCurrency(totalPrice.discountPrice)}
 
                           </span>
                         </li>
@@ -193,7 +193,7 @@ const Cart = () => {
                           </span>
                           <span className="text-right font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] text-[#686e7d] font-semibold">
                             <a className="bb-coupon drop-coupon font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] font-medium text-[#ff0000] cursor-pointer">
-                              0
+                            {formatCurrency(totalPrice.totalPrice-totalPrice.discountPrice)}
                             </a>
                           </span>
                         </li>
@@ -204,10 +204,10 @@ const Cart = () => {
                       <ul className="mb-[0]">
                         <li className="mb-[6px] flex justify-between">
                           <span className="text-left font-Poppins text-[16px] leading-[28px] tracking-[0.03rem] font-semibold text-[#686e7d]">
-                            Total Amount
+                            Total 
                           </span>
                           <span className="text-right font-Poppins text-[16px] leading-[28px] tracking-[0.03rem] font-semibold text-[#686e7d]">
-                            <span className="text-[15px] line-through">{(totalPrice.totalPrice + totalPrice.shippingTotal).toFixed(2)}</span> ₹{(totalPrice.discountPrice + totalPrice.shippingTotal).toFixed(2)}
+                            <span className="text-[12px] line-through">{formatCurrency(totalPrice.totalPrice + totalPrice.shippingTotal)}</span> {formatCurrency(totalPrice.discountPrice + totalPrice.shippingTotal)}
 
                           </span>
                         </li>

@@ -131,10 +131,12 @@ export interface SizeOption {
 }
 
 export interface CheckoutData {
+    previewCanvas: string;
+    previewImage: string;
     imageUrl: string;
     radiusValue: string;
     shapeName: string;
-    frameSize: string;
+    variant: string;
     sizeThickness: string;
-    totalPrice: number;
+    price: number;
 }
