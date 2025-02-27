@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { categoryService } from "@/_services/common/categoryService";
 import Link from "next/link";
+import Image from "next/image";
 
 const CategoryHome = () => {
   const settings = {
@@ -62,6 +63,19 @@ const CategoryHome = () => {
 
   // console.log(categoriesData)
 
+  const neonImage = [
+    "https://res.cloudinary.com/dkprths9f/image/upload/v1736598650/lamp-product-banner_locrte.jpg",
+    "https://res.cloudinary.com/dkprths9f/image/upload/v1740650751/pre-product-banner_ndont2.jpg",
+  ];
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % neonImage.length);
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [neonImage.length]);
+
   return (
     <>{
       categoriesData && categoriesData.length > 0 && (
@@ -70,8 +84,10 @@ const CategoryHome = () => {
             <div className="flex flex-wrap w-full mb-[-24px]">
               <div className="min-[992px]:w-[41.66%] w-full px-[12px] mb-[24px]">
                 <div className="bb-category-img relative max-[991px]:hidden">
-                  <img
-                    src="https://res.cloudinary.com/dkprths9f/image/upload/v1736598650/lamp-product-banner_locrte.jpg"
+                  <Image
+                    width={525}
+                    height={525}
+                    src={neonImage[currentImageIndex]}
                     alt="category"
                     className="w-full rounded-[30px]"
                   />

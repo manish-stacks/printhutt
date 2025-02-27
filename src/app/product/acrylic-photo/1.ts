@@ -2,9 +2,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ThicknessOption, CheckoutData } from '@/lib/types';
 import { BUTTON_VALUES_AND_PRICES, DEFAULT_IMAGE_URL } from './constants';
-import { Canvas, FabricImage } from 'fabric';
+import { fabric } from 'fabric'; // Correct import
 import { formatCurrency } from '@/helpers/helpers';
-
 
 function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -38,34 +37,30 @@ function App() {
     if (!fabricCanvasRef.current) return;
 
     try {
-      const img = await FabricImage.fromURL(url, { crossOrigin: 'Anonymous' });
-      const canvas = fabricCanvasRef.current;
-      const canvasWidth = canvas.width || 700;
-      const canvasHeight = canvas.height || 450;
+      fabric.Image.fromURL(url, (img) => { // Correct usage
+        const canvas = fabricCanvasRef.current;
+        const canvasWidth = canvas.width || 700;
+        const canvasHeight = canvas.height || 450;
 
-      const scaleX = canvasWidth / img.width!;
-      const scaleY = canvasHeight / img.height!;
-      const scale = Math.min(scaleX, scaleY);
+        const scaleX = canvasWidth / img.width!;
+        const scaleY = canvasHeight / img.height!;
+        const scale = Math.min(scaleX, scaleY);
 
-      img.set({
-        scaleX: scale,
-        scaleY: scale,
-        left: (canvasWidth - img.width! * scale) / 2,
-        top: (canvasHeight - img.height! * scale) / 2,
-      });
+        img.set({
+          scaleX: scale,
+          scaleY: scale,
+          left: (canvasWidth - img.width! * scale) / 2,
+          top: (canvasHeight - img.height! * scale) / 2,
+        });
 
-
-      canvas.clear();
-      canvas.add(img);
-      canvas.renderAll();
+        canvas.clear();
+        canvas.add(img);
+        canvas.renderAll();
+      }, { crossOrigin: 'Anonymous' });
     } catch (error) {
       console.error("Error loading image:", error);
     }
   };
-
-
-
-
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -127,29 +122,6 @@ function App() {
       }
     }
   };
-  
-  /*const handleOrientationChange = (newOrientation: 'portrait' | 'landscape') => {
-    setOrientation(newOrientation);
-    const shadowBox = document.querySelector('.sahdow-box');
-    if (shadowBox) {
-      shadowBox.classList.toggle('landscape', newOrientation === 'landscape');
-    }
-
-    // Update width and height display
-    const [width, height] = selectedSize.split('x').map(Number);
-    const widthElement = document.getElementById('width_val');
-    const heightElement = document.getElementById('height_val');
-
-    if (widthElement && heightElement) {
-      if (newOrientation === 'landscape') {
-        widthElement.textContent = height.toString();
-        heightElement.textContent = width.toString();
-      } else {
-        widthElement.textContent = width.toString();
-        heightElement.textContent = height.toString();
-      }
-    }
-  }; */
 
   const handleThicknessChange = (thickness: ThicknessOption) => {
     setSelectedThickness(thickness);
@@ -176,10 +148,7 @@ function App() {
     }
   };
 
-
-
   const [width, height] = selectedSize.split('x').map(Number);
-
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -227,8 +196,6 @@ function App() {
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold">Acrylic Photo Frame</h1>
       </div>
-
-
 
       <div className="flex justify-center mb-8">
         <div id="canvasContainer" className="relative">

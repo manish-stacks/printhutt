@@ -193,7 +193,7 @@ const Cart = () => {
                           </span>
                           <span className="text-right font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] text-[#686e7d] font-semibold">
                             <a className="bb-coupon drop-coupon font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] font-medium text-[#ff0000] cursor-pointer">
-                            {formatCurrency(totalPrice.totalPrice-totalPrice.discountPrice)}
+                            -{formatCurrency(totalPrice.totalPrice-totalPrice.discountPrice)}
                             </a>
                           </span>
                         </li>
@@ -207,7 +207,7 @@ const Cart = () => {
                             Total 
                           </span>
                           <span className="text-right font-Poppins text-[16px] leading-[28px] tracking-[0.03rem] font-semibold text-[#686e7d]">
-                            <span className="text-[12px] line-through">{formatCurrency(totalPrice.totalPrice + totalPrice.shippingTotal)}</span> {formatCurrency(totalPrice.discountPrice + totalPrice.shippingTotal)}
+                            <span className="text-[12px] line-through text-rose-400">{formatCurrency(totalPrice.totalPrice + totalPrice.shippingTotal)}</span> <span className="text-green-600">{formatCurrency(totalPrice.discountPrice + totalPrice.shippingTotal)}</span>
 
                           </span>
                         </li>

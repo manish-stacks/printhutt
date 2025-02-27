@@ -7,6 +7,7 @@ import { StatsCard } from '@/components/admin/dashboard/StatsCard';
 import axios from 'axios';
 import { Line } from 'react-chartjs-2';
 import 'chart.js/auto';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 interface Stat {
   title: string;
@@ -35,10 +36,12 @@ const Dashboard = () => {
   const [revenueData, setRevenueData] = useState<RevenueData>({ labels: [], datasets: [] });
   //const [recentActivity, setRecentActivity] = useState<Activity[]>([]);
   const [sesstionData, setSessionData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       try {
+        setLoading(true);
         const res = await axios.get('/api/dashboard');
         const data = res.data;
         setStats(data.stats);
@@ -57,10 +60,16 @@ const Dashboard = () => {
         setSessionData(data.sessionData);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     })();
   }, []);
 
+
+  if (loading) {
+    return <LoadingSpinner />
+  }
   return (
     <>
       {/* <main className="pt-16 lg:pl-64"> */}
@@ -76,7 +85,7 @@ const Dashboard = () => {
               <StatsCard key={stat.title} {...stat} />
             ))
           ) : (
-            
+
             <div className="skeleton-loader">Loading...</div>
           )}
         </div>

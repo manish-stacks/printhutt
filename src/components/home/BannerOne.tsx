@@ -13,7 +13,7 @@ const BannerOne = () => {
                             data-aos-duration={1000}
                             data-aos-delay={400}
                         >
-                            <Link href={"/category/acrylic"} >
+                            <Link href={"/product-details/customized-wall-photo-frame-acrylic--acrylic-photo-frame"} >
                                 <div className="banner-box p-[30px] rounded-[20px] relative overflow-hidden bg-box-color-one bg-[#fbf2e5]">
                                     <div className="inner-banner-box relative z-[1] flex justify-between max-[480px]:flex-col">
                                         <div className="side-image px-[12px] flex items-center max-[480px]:p-[0] max-[480px]:mb-[12px] max-[480px]:justify-center">
@@ -46,7 +46,7 @@ const BannerOne = () => {
                             data-aos-duration={1000}
                             data-aos-delay={400}
                         >
-                            <Link href={"/category/frames"} >
+                            <Link href={"/product-details/engraved-table-photo-frame"} >
                                 <div className="banner-box p-[30px] rounded-[20px] relative overflow-hidden bg-box-color-two bg-[#ffe8ee]">
                                     <div className="inner-banner-box relative z-[1] flex justify-between max-[480px]:flex-col">
                                         <div className="side-image px-[12px] flex items-center max-[480px]:p-[0] max-[480px]:mb-[12px] max-[480px]:justify-center">

@@ -25,8 +25,8 @@ export async function GET(req: NextRequest) {
       Testimonials.find(query)
         .sort({ createdAt: -1 })
         .skip(skip)
-        .limit(limit)
-        .populate('user', 'name'), // Assuming you want to populate user data
+        .limit(limit),
+        // .populate({ path: 'userId', model: UserModel })
       Testimonials.countDocuments(query)
     ]);
 

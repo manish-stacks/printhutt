@@ -170,7 +170,7 @@ export default function Testimonials() {
     };
 
 
-    console.log(testimonials)
+    // console.log(testimonials)
 
     return (
         <>

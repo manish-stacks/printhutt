@@ -2,49 +2,56 @@
 import React, { useEffect, useState } from "react";
 import { getAllSessionCarts } from "@/_services/admin/se-cart";
 import Image from "next/image";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const Cart = () => {
   const [carts, setCarts] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; 
+  const itemsPerPage = 10;
 
-  
 
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      setError("");
-      const response = await getAllSessionCarts();
-      setCarts(response.data || []);
-    } catch (error) {
-      setCarts([])
-      setError("Failed to fetch carts");
-    } finally {
-      setLoading(false);
-    }
-  };
+
+
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        setError("");
+        const response = await getAllSessionCarts();
+        setCarts(response.data || []);
+      } catch (error) {
+        setCarts([])
+        setError("Failed to fetch carts");
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchData();
   }, []);
-  
+
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = carts?.slice(indexOfFirstItem, indexOfLastItem);
+
+  if (loading) {
+    return <LoadingSpinner />
+  }
 
   return (
     <div className="mt-10 p-4">
       <h2 className="text-2xl font-semibold mb-4">Cart ({carts.length})</h2>
 
-      {loading && <p className="text-blue-500">Loading carts...</p>}
+      {/* {loading && <p className="text-blue-500">Loading carts...</p>} */}
       {error && <p className="text-red-500">{error}</p>}
-      {!loading && !error && carts.length === 0 && (
+      {!error && carts.length === 0 && (
         <p className="text-gray-500">No items in the cart.</p>
       )}
 
-      {!loading && !error && carts.length > 0 && (
+      {!error && carts.length > 0 && (
         <div className="border rounded-md p-4 shadow-md bg-white overflow-x-auto">
           <table className="w-full border-collapse border border-gray-200">
             <thead>
@@ -75,7 +82,7 @@ const Cart = () => {
             </tbody>
           </table>
 
-       
+
           <div className="flex justify-between items-center mt-4">
             <button
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}

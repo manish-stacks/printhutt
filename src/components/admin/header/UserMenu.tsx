@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { Line } from 'fabric';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState, useRef, useEffect } from 'react';
 import { FaUser } from 'react-icons/fa';
@@ -58,13 +60,13 @@ export function UserMenu() {
                         {/* <p className="text-sm text-gray-500">john@example.com</p> */}
                     </div>
 
-                    <a
-                        href="#"
+                    <Link
+                        href="/admin/profile-settings"
                         className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
                     >
                         <RiSettings2Fill size={16} />
                         <span>Profile Settings</span>
-                    </a>
+                    </Link>
 
                     <button
                         onClick={logOut}

@@ -21,7 +21,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     }
 
     const formData = await request.formData();
-    const userImage = formData.get('userImage');
+    const userImage = formData.get('image');
 
     // Handle image update
     if (userImage instanceof File) {
@@ -40,7 +40,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     testimonial.isActive = formData.get('isActive') === 'true' ? true : testimonial.isActive;
 
     await testimonial.save();
-
+    // console.log(testimonial)
     return NextResponse.json({ success: true, message: 'Testimonial updated successfully' }, { status: 200 });
 
   } catch (error: unknown) {

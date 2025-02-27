@@ -11,7 +11,6 @@ import { useCartStore } from '@/store/useCartStore';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 
-
 function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -27,6 +26,8 @@ function App() {
   const removeFromCart = useCartStore(state => state.removeFromCart);
   const existingCartState = useCartStore();
   const router = useRouter();
+  const [design, setDesign] = useState('frame');
+  const [isShape, setIsShape] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -227,20 +228,35 @@ function App() {
     }
   };
 
-  const handleDownload = async () => {
-    const finalCanvas = await handleCanvasAction();
-    if (!finalCanvas) {
-      return;
+  // const handleDownload = async () => {
+  //   const finalCanvas = await handleCanvasAction();
+  //   if (!finalCanvas) {
+  //     return;
+  //   }
+  //   const link = document.createElement('a');
+  //   link.download = `custom-memory-light-${Date.now()}.png`;
+  //   link.href = finalCanvas;
+  //   document.body.appendChild(link);
+  //   link.click();
+  //   document.body.removeChild(link);
+
+  // };
+
+
+  const handleDesignChange = (design: string) => {
+    setDesign(design);
+    if (design === 'frame') {
+      setIsShape(true);
+    } else {
+      setIsShape(false);
+      setRadiusValue('normal-canvas');
+      const canvasElement = canvasRef.current;
+      if (!canvasElement) return;
+      canvasElement.className = '';
+      canvasElement.classList.add('normal-canvas');
     }
-    const link = document.createElement('a');
-    link.download = `custom-memory-light-${Date.now()}.png`;
-    link.href = finalCanvas;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-  };
-
+    console.log("Design Changed");
+  }
   const handleAddToCart = async () => {
 
     if (imageUrl === DEFAULT_IMAGE_URL) {
@@ -260,12 +276,13 @@ function App() {
           variant: selectedSize,
           sizeThickness: selectedThickness.value,
           price: selectedThickness.price,
+          frameDesign: design,
         };
 
         const updatedProduct = {
           ...product,
           thumbnail: { ...product.thumbnail, url: previewCanvas },
-          price: selectedThickness.price*2,
+          price: selectedThickness.price * 2,
           custom_data,
         };
 
@@ -275,11 +292,10 @@ function App() {
         const existingItem = existingCartState.items.find(
           (item) => item._id === product._id
         );
-        // console.log(existingItem);return;
-        if(existingItem){
+        if (existingItem) {
           removeFromCart(product._id);
         }
-        
+
         addToCart(updatedProduct, 1);
         router.push('/cart');
         console.log("Product added to cart:", updatedProduct);
@@ -337,95 +353,94 @@ function App() {
                         </div>
 
                         <div className="flex flex-col gap-2">
+                          {isShape && (
+                            <div id="cpanel-shape" className="cpanel-share">
+                              <div id="availableShape">
+                                <svg
+                                  onClick={() => handleRadiusChange('normal-canvas')}
+                                  viewBox="0 0 600 400"
+                                  width={600}
+                                  height={400}
+                                  r="horizontal"
+                                  className={`normal ${radiusValue === 'normal-canvas' ? 'activeshape' : ''} `}
+                                >
+                                  <path
+                                    d="M 0,0 L 600,0 L 600,400 L 0,400 Z"
+                                    fill="#DD037C"
+                                  />
+                                </svg>
+                                <svg
+                                  onClick={() => handleRadiusChange('roundEdge-canvas')}
+                                  viewBox="70 100 660 460"
+                                  width={660}
+                                  height={460}
+                                  r="horizontal"
 
-                          <div id="cpanel-shape" className="cpanel-share">
-                            <div id="availableShape">
-                              <svg
-                                onClick={() => handleRadiusChange('normal-canvas')}
-                                viewBox="0 0 600 400"
-                                width={600}
-                                height={400}
-                                r="horizontal"
-                                className={`normal ${radiusValue === 'normal-canvas' ? 'activeshape' : ''} `}
-                              >
-                                <path
-                                  d="M 0,0 L 600,0 L 600,400 L 0,400 Z"
-                                  fill="#DD037C"
-                                />
-                              </svg>
-                              <svg
-                                onClick={() => handleRadiusChange('roundEdge-canvas')}
-                                viewBox="70 100 660 460"
-                                width={660}
-                                height={460}
-                                r="horizontal"
+                                  className={`RoundEdge ${radiusValue === 'roundEdge-canvas' ? 'activeshape' : ''} `}
+                                >
+                                  <path
+                                    d="M 100 100 h 600 a 30 30 0 0 1 30 30 v 400 a 30 30 0 0 1 -30 30 h -600 a 30 30 0 0 1 -30 -30 v -400 a 30 30 0 0 1 30 -30 z"
+                                    fill="#DD037C"
+                                  />
+                                </svg>
 
-                                className={`RoundEdge ${radiusValue === 'roundEdge-canvas' ? 'activeshape' : ''} `}
-                              >
-                                <path
-                                  d="M 100 100 h 600 a 30 30 0 0 1 30 30 v 400 a 30 30 0 0 1 -30 30 h -600 a 30 30 0 0 1 -30 -30 v -400 a 30 30 0 0 1 30 -30 z"
-                                  fill="#DD037C"
-                                />
-                              </svg>
-
-                              <svg
-                                onClick={() => handleRadiusChange('leaf-canvas')}
-                                viewBox="-0.021657049655914307 -12000 12000.021484375 12000.001953125"
-                                width="12000.021484375"
-                                height="12000.001953125"
-                                r="square"
-                                className={`Leaf ${radiusValue === 'leaf-canvas' ? 'activeshape' : ''} `}
-                              >
-                                <path
-                                  d="M 11995.6 -4370 c -26.8 440 -98 813.2 -231.6 1214 c -130.4 392 -307.2 752.8 -537.6 1097.2 c -179.6 269.2 -344.8 470 -580 705.2 c -128.4 128 -191.2 186 -308.4 283.6 c -412.8 344.4 -887.6 617.6 -1387.6 797.6 c -371.2 134 -761.2 220.4 -1156.4 256.4 c -184.4 16.4 -35.6 16 -4016.8 16 l -3777.2 -0 l 0 -3777.2 c 0 -4122.4 -1.6 -3839.2 22.4 -4070.8 c 49.2 -482.8 174.4 -954 372 -1400 c 36.4 -82 140.4 -290.4 183.6 -368 c 400.8 -716.8 974.8 -1309.6 1676 -1730 c 424.8 -254.8 881.6 -437.2 1366 -545.2 c 223.6 -50 393.6 -75.2 688 -101.6 c 41.6 -3.6 932.4 -5.2 3873.2 -6 l 3818.8 -1.2 l -0.4 3788.8 c -0.4 2084 -2 3812.4 -4 3841.2 z"
-                                  fill="#DD037C"
-                                />
-                              </svg>
-                              <svg
-                                onClick={() => handleRadiusChange('egghorizontal-canvas')}
-                                viewBox="-490 71.9000015258789 490 346.20001220703125"
-                                width={490}
-                                height="346.20001220703125"
-                                r="horizontal"
-                                className={`Egghorizontal ${radiusValue === 'egghorizontal-canvas' ? 'activeshape' : ''} `}
-                              >
-                                <path
-                                  d="M -302.6 418.1 C -437.9 418.1 -490 340.7 -490 245 S -437.9 71.9 -302.6 71.9 S 0 149.3 0 245 S -167.2 418.1 -302.6 418.1 z"
-                                  fill="#DD037C"
-                                />
-                              </svg>
-                              <svg
-                                onClick={() => handleRadiusChange('extraRoundhorizontal-canvas')}
-                                viewBox="-2754.613037109375 11.048904418945312 2745.621826171875 1800.828125"
-                                width="2745.621826171875"
-                                height="1800.828125"
-                                r="horizontal"
-                                className={`ExtraRoundhorizontal ${radiusValue === 'extraRoundhorizontal-canvas' ? 'activeshape' : ''} `}
-                              >
-                                <path
-                                  d="M -2750 615 c 8 -133 31 -211 91 -311 c 49 -81 162 -183 251 -227 c 141 -68 135 -68 1063 -65 c 828 3 830 3 895 25 c 218 75 380 256 424 475 c 22 108 23 700 1 803 c -48 228 -234 423 -460 480 c -89 23 -1698 22 -1794 0 c -216 -51 -399 -231 -455 -448 c -17 -65 -27 -545 -16 -732 z"
-                                  fill="#DD037C"
-                                />
-                              </svg>
+                                <svg
+                                  onClick={() => handleRadiusChange('leaf-canvas')}
+                                  viewBox="-0.021657049655914307 -12000 12000.021484375 12000.001953125"
+                                  width="12000.021484375"
+                                  height="12000.001953125"
+                                  r="square"
+                                  className={`Leaf ${radiusValue === 'leaf-canvas' ? 'activeshape' : ''} `}
+                                >
+                                  <path
+                                    d="M 11995.6 -4370 c -26.8 440 -98 813.2 -231.6 1214 c -130.4 392 -307.2 752.8 -537.6 1097.2 c -179.6 269.2 -344.8 470 -580 705.2 c -128.4 128 -191.2 186 -308.4 283.6 c -412.8 344.4 -887.6 617.6 -1387.6 797.6 c -371.2 134 -761.2 220.4 -1156.4 256.4 c -184.4 16.4 -35.6 16 -4016.8 16 l -3777.2 -0 l 0 -3777.2 c 0 -4122.4 -1.6 -3839.2 22.4 -4070.8 c 49.2 -482.8 174.4 -954 372 -1400 c 36.4 -82 140.4 -290.4 183.6 -368 c 400.8 -716.8 974.8 -1309.6 1676 -1730 c 424.8 -254.8 881.6 -437.2 1366 -545.2 c 223.6 -50 393.6 -75.2 688 -101.6 c 41.6 -3.6 932.4 -5.2 3873.2 -6 l 3818.8 -1.2 l -0.4 3788.8 c -0.4 2084 -2 3812.4 -4 3841.2 z"
+                                    fill="#DD037C"
+                                  />
+                                </svg>
+                                <svg
+                                  onClick={() => handleRadiusChange('egghorizontal-canvas')}
+                                  viewBox="-490 71.9000015258789 490 346.20001220703125"
+                                  width={490}
+                                  height="346.20001220703125"
+                                  r="horizontal"
+                                  className={`Egghorizontal ${radiusValue === 'egghorizontal-canvas' ? 'activeshape' : ''} `}
+                                >
+                                  <path
+                                    d="M -302.6 418.1 C -437.9 418.1 -490 340.7 -490 245 S -437.9 71.9 -302.6 71.9 S 0 149.3 0 245 S -167.2 418.1 -302.6 418.1 z"
+                                    fill="#DD037C"
+                                  />
+                                </svg>
+                                <svg
+                                  onClick={() => handleRadiusChange('extraRoundhorizontal-canvas')}
+                                  viewBox="-2754.613037109375 11.048904418945312 2745.621826171875 1800.828125"
+                                  width="2745.621826171875"
+                                  height="1800.828125"
+                                  r="horizontal"
+                                  className={`ExtraRoundhorizontal ${radiusValue === 'extraRoundhorizontal-canvas' ? 'activeshape' : ''} `}
+                                >
+                                  <path
+                                    d="M -2750 615 c 8 -133 31 -211 91 -311 c 49 -81 162 -183 251 -227 c 141 -68 135 -68 1063 -65 c 828 3 830 3 895 25 c 218 75 380 256 424 475 c 22 108 23 700 1 803 c -48 228 -234 423 -460 480 c -89 23 -1698 22 -1794 0 c -216 -51 -399 -231 -455 -448 c -17 -65 -27 -545 -16 -732 z"
+                                    fill="#DD037C"
+                                  />
+                                </svg>
+                              </div>
                             </div>
-                          </div>
-
+                          )}
                         </div>
+                        <a className="sizeguide" target='_blank' href="https://res.cloudinary.com/dkprths9f/image/upload/v1740653736/size-chart-new_optimized_tns7y8.webp">Size guide?</a>
                       </div>
                     </div>
 
                     <div className="max-w-md mx-auto mb-8">
                       <p className="text-center text-green-600 text-sm mb-2">
-                        Upload Image for Acrylic Photo Frame (High-Resolution Recommended)
+                        Kindly upload your image in high resolution for a high-quality printing, and our designer will respectfully rectify the design to your satisfaction.
                       </p>
                       <div
                         className="bg-white p-6 rounded-lg shadow-md border-2 border-dashed border-gray-300 hover:border-gray-400 transition-colors"
                         onDragOver={handleDragOver}
                         onDrop={handleDrop}
                       >
-                        {/* <div className="text-center mb-4">
-                          <p className="text-gray-600">Drag and drop an image here or</p>
-                        </div> */}
+
                         <input
                           type="file"
                           ref={fileInputRef}
@@ -438,64 +453,85 @@ function App() {
                         </p>
                       </div>
                     </div>
-                    <div className="text-center mb-4">
-                      <div className="flex justify-center gap-2">
-                        <button
-                          onClick={() => handleOrientationChange('portrait')}
-                          className={`btn ${orientation === 'portrait' ? 'bg-success' : 'btn-outline-primary'}`}
-                        >
-                          Portrait
-                        </button>
-                        <button
-                          onClick={() => handleOrientationChange('landscape')}
-                          className={`btn ${orientation === 'landscape' ? 'bg-success' : 'btn-outline-primary'}`}
-                        >
-                          Landscape
-                        </button>
-                      </div>
-                    </div>
-                    <div className="text-center mb-8">
-                      <div>
-                        <p className="mb-2">Sizes in (inches)</p>
-                        <div className="flex flex-wrap justify-center gap-2">
-                          {BUTTON_VALUES_AND_PRICES.map((option) => (
+
+                    <div>
+                      <div className="text-center mb-1 flex justify-center gap-2">
+                        <p className="mb-2">Select Design</p>
+                        <div className="text-center mb-1">
+                          <button
+                            onClick={() => handleDesignChange('frame')}
+                            className={`generatedRadios ${design === 'frame' ? 'selected' : 'btn-outline-primary'}`}
+                          >
+                            Frame
+                          </button>
+                          <button
+                            onClick={() => handleDesignChange('cutout')}
+                            className={`generatedRadios ${design === 'cutout' ? 'selected' : 'btn-outline-primary'}`}
+                          >
+                            Cutout
+                          </button>
+                        </div>
+                        <div className="text-center mb-1">
+                          <div className="flex justify-center gap-2">
                             <button
-                              key={option.size}
-                              onClick={() => handleSizeChange(option.size)}
-                              className={`btn ${selectedSize === option.size
-                                ? 'bg-success text-white'
-                                : 'btn-outline-primary'
-                                }`}
+                              onClick={() => handleOrientationChange('portrait')}
+                              className={`generatedRadios ${orientation === 'portrait' ? 'selected' : 'btn-outline-primary'}`}
                             >
-                              {option.size}
+                              Portrait
                             </button>
-                          ))}
+                            <button
+                              onClick={() => handleOrientationChange('landscape')}
+                              className={`generatedRadios ${orientation === 'landscape' ? 'selected' : 'btn-outline-primary'}`}
+                            >
+                              Landscape
+                            </button>
+                          </div>
                         </div>
                       </div>
 
-                      <div className="mt-4">
-                        <p className="mb-2">Frame Thickness in (mm)</p>
-                        <div className="flex flex-wrap justify-center gap-2">
-                          {BUTTON_VALUES_AND_PRICES
-                            .find((option) => option.size === selectedSize)
-                            ?.thickness.map((thickness) => (
+
+                      <div className="text-center mb-6">
+                        <div className='flex justify-center gap-2'>
+                          <p className='mt-1'>Sizes in (inches)</p>
+                          <div className="flex flex-wrap justify-center gap-2">
+                            {BUTTON_VALUES_AND_PRICES.map((option) => (
                               <button
-                                key={thickness.value}
-                                onClick={() => handleThicknessChange(thickness)}
-                                className={`btn ${selectedThickness.value === thickness.value
-                                  ? 'bg-success text-white'
+                                key={option.size}
+                                onClick={() => handleSizeChange(option.size)}
+                                className={`generatedRadios ${selectedSize === option.size
+                                  ? 'selected text-white'
                                   : 'btn-outline-primary'
                                   }`}
                               >
-                                {thickness.value}
+                                {option.size}
                               </button>
                             ))}
+                          </div>
+                        </div>
+
+                        <div className="mt-1 flex justify-center gap-2">
+                          <p className='mt-1'>Thickness in (mm)</p>
+                          <div className="flex flex-wrap justify-center gap-2">
+                            {BUTTON_VALUES_AND_PRICES
+                              .find((option) => option.size === selectedSize)
+                              ?.thickness.map((thickness) => (
+                                <button
+                                  key={thickness.value}
+                                  onClick={() => handleThicknessChange(thickness)}
+                                  className={`generatedRadios ${selectedThickness.value === thickness.value
+                                    ? 'selected text-white'
+                                    : 'btn-outline-primary'
+                                    }`}
+                                >
+                                  {thickness.value}
+                                </button>
+                              ))}
+                          </div>
                         </div>
                       </div>
                     </div>
 
                     <div className="text-center">
-
                       <button
                         onClick={handleAddToCart}
                         disabled={isAddingToCart}
@@ -506,7 +542,7 @@ function App() {
                       >
                         {isAddingToCart ? 'Adding to Cart...' : `Buy Now -${formatCurrency(selectedThickness.price)}`}
                       </button>
-                          {/* <button onClick={handleDownload}>download</button> */}
+                      {/* <button onClick={handleDownload}>download</button> */}
                     </div>
                   </div>
 

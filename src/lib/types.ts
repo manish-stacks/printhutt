@@ -139,4 +139,5 @@ export interface CheckoutData {
     variant: string;
     sizeThickness: string;
     price: number;
+    frameDesign: string;
 }

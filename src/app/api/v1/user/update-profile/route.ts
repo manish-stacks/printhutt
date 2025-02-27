@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/dbConfig/dbConfig'
 import { getDataFromToken } from '@/helpers/getDataFromToken';
 import User from '@/models/userModel';
+import bcryptjs from 'bcryptjs';
 
 
 export async function POST(req: NextRequest) {
@@ -9,11 +10,18 @@ export async function POST(req: NextRequest) {
     await dbConnect();
     const { id } = await getDataFromToken(req)
     if (!id) return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
-    const { number, email, userId } = await req.json();
+    const { number, email, password } = await req.json();
+   
     const user = await User.findById(id);
     if (!user) { return NextResponse.json({ success: false, message: 'User not found' }, { status: 404 }); }
     if (number) user.number = number;
     if (email) user.email = email;
+    if (password) {
+      const salt = await bcryptjs.genSalt(10);
+      const hashedPassword = await bcryptjs.hash(password, salt);
+      user.password = hashedPassword;
+    }
+
     await user.save();
 
     const userResponse = user.toObject();

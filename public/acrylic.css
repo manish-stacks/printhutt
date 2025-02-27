@@ -4,10 +4,10 @@
   display: flex;
   justify-content: center;
   margin: auto;
-  background: linear-gradient(rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.02)), url(https://omgs.in/wp-content/uploads/2021/02/wall-c.jpg);
+  background: linear-gradient(rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.02)), url('https://res.cloudinary.com/dkprths9f/image/upload/v1740636711/white-brick-wall-texture-seamless_177006-173_wwjy5o.avif');
   padding: 40px 20px;
-  background-size: cover;
-  background-repeat: no-repeat;
+  background-size: contain;
+  background-repeat: repeat;
   background-position: center;
   min-height: 375px;
   position: relative;
@@ -39,6 +39,8 @@
   border-radius: 4px;
   font-size: 0.875rem;
 }
+
+
 
 
 
@@ -329,4 +331,36 @@
   cursor: pointer;
   z-index: 9;
   filter: drop-shadow(0 0 1px #000);
+}
+
+
+
+
+.sizeguide {
+  text-align: right;
+  width: 100%;
+  display: block;
+  position: absolute;
+  left: 10px;
+  font-size: 16px;
+  color: #000;
+  font-weight: bolder;
+  bottom: 2px;
+  left: 1px;
+  max-width: 100px;
+}
+
+.generatedRadios {
+  display: inline-block;
+  padding: 0 10px;
+  margin: 2px 2px 10px 2px;
+  min-width: 60px;
+  text-align: center;
+  font-size: 14px;
+  border-radius: 5px;
+}
+.generatedRadios.selected {
+  font-weight: bold;
+  background: #2196f3;
+  color: #fff;
 }
