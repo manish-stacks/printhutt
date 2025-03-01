@@ -25,12 +25,41 @@ const Cart = () => {
     toast.info('Updated quantity');
   };
 
+  
+
 
   useEffect(() => {
     setTotalPrice(getTotalPrice());
   }, [items, getTotalPrice]);
 
-
+  useEffect(() => {
+    if (typeof window !== "undefined" && (window as any).dataLayer) {
+      (window as any).dataLayer.push({ ecommerce: null }); // Clear previous ecommerce data
+      (window as any).dataLayer.push({
+        event: "add_to_cart",
+        ecommerce: {
+          currency: "INR",
+          value: (totalPrice.discountPrice + totalPrice.shippingTotal).toFixed(2),
+          items: items.map((item, index) => ({
+            item_id: item.sku,
+            item_name: item.title,
+            item_brand: item?.brand,
+            // coupon: selectedCoupon?.code || "",
+            discount: item.discountPrice,
+            index: index,
+            price: Number(
+              (
+                item.discountType === "percentage"
+                  ? item.price - (item.price * item.discountPrice) / 100
+                  : item.price - item.discountPrice
+              ) * item.quantity
+            ).toFixed(2),
+            quantity: item.quantity
+          })),
+        },
+      });
+    }
+  }, [items, totalPrice]);
 
   const gotoCheckout = () => {
     return router.push('/checkout');
@@ -83,7 +112,7 @@ const Cart = () => {
                       items.map(item => (
                         <tr className="border-b-[1px] border-solid border-[#eee]" key={item._id}>
                           <td className="p-[12px]">
-                            <Link  href={`/product-details/${item.slug}`}>
+                            <Link href={`/product-details/${item.slug}`}>
                               <div className="Product-cart flex items-center">
                                 <Image
                                   className="w-[70px] border-[1px] border-solid border-[#eee] rounded-[10px]"
@@ -193,7 +222,7 @@ const Cart = () => {
                           </span>
                           <span className="text-right font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] text-[#686e7d] font-semibold">
                             <a className="bb-coupon drop-coupon font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] font-medium text-[#ff0000] cursor-pointer">
-                            -{formatCurrency(totalPrice.totalPrice-totalPrice.discountPrice)}
+                              -{formatCurrency(totalPrice.totalPrice - totalPrice.discountPrice)}
                             </a>
                           </span>
                         </li>
@@ -204,7 +233,7 @@ const Cart = () => {
                       <ul className="mb-[0]">
                         <li className="mb-[6px] flex justify-between">
                           <span className="text-left font-Poppins text-[16px] leading-[28px] tracking-[0.03rem] font-semibold text-[#686e7d]">
-                            Total 
+                            Total
                           </span>
                           <span className="text-right font-Poppins text-[16px] leading-[28px] tracking-[0.03rem] font-semibold text-[#686e7d]">
                             <span className="text-[12px] line-through text-rose-400">{formatCurrency(totalPrice.totalPrice + totalPrice.shippingTotal)}</span> <span className="text-green-600">{formatCurrency(totalPrice.discountPrice + totalPrice.shippingTotal)}</span>

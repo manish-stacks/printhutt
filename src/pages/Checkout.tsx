@@ -30,15 +30,44 @@ const Checkout = () => {
   const [applied, setApplied] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string>('');
   const [originalPrice, setOriginalPrice] = useState(0);
-
   const [showMailModal, setShowMailModal] = useState(false);
-
   const router = useRouter();
+
   useEffect(() => {
     const price = getTotalPrice();
     setTotalPrice(price);
     setOriginalPrice(price.discountPrice);
   }, [items, getTotalPrice]);
+
+  console.log(items)
+  useEffect(() => {
+    if (typeof window !== "undefined" && (window as any).dataLayer) {
+      (window as any).dataLayer.push({ ecommerce: null }); // Clear previous ecommerce data
+      (window as any).dataLayer.push({
+        event: "begin_checkout",
+        ecommerce: {
+          currency: "INR",
+          value: (totalPrice.discountPrice + totalPrice.shippingTotal).toFixed(2),
+          items: items.map((item, index) => ({
+            item_id: item.sku,
+            item_name: item.title,
+            item_brand: item?.brand,
+            // coupon: selectedCoupon?.code || "",
+            discount: item.discountPrice,
+            index: index,
+            price: Number(
+              (
+                item.discountType === "percentage"
+                  ? item.price - (item.price * item.discountPrice) / 100
+                  : item.price - item.discountPrice
+              ) * item.quantity
+            ).toFixed(2),
+            quantity: item.quantity
+          })),
+        },
+      });
+    }
+  }, [items, totalPrice, selectedCoupon]);
 
   const handle_select = (coupon) => {
     if (selectedCoupon?.code === coupon.code) {
