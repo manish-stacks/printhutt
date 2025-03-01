@@ -48,9 +48,75 @@ const products = [
   }
 ];
 
+
+const productsTwo = [
+  {
+    name: ' Acrylic Cutout Photo',
+    image: 'https://res.cloudinary.com/dkprths9f/video/upload/v1740832469/WhatsApp_Video_2025-03-01_at_6.03.50_PM_l0wwwy.mp4',
+    url: '/product-details/personalized-acrylic-cutout-photo-led-lamp'
+  },
+  {
+    name: 'Couple LED Name Lamp',
+    image: 'https://res.cloudinary.com/dkprths9f/video/upload/v1740832332/WhatsApp_Video_2025-03-01_at_11.51.09_AM_kc8lja.mp4',
+    url: '/product-details/acrylic-couple-lamp-with-name'
+  },
+  {
+    name: 'LED Name Lamp',
+    image: 'https://res.cloudinary.com/dkprths9f/video/upload/v1740832331/WhatsApp_Video_2025-03-01_at_11.41.08_AM_aeu7jl.mp4',
+    url: '/product-details/customized-name-led-lamp'
+  },
+  {
+    name: 'LED Photo Frame',
+    image: 'https://res.cloudinary.com/dkprths9f/video/upload/v1740832915/WhatsApp_Video_2025-03-01_at_11.58.10_AM_iyvpqf.mp4',
+    url: '/product-details/customize-acrylic-full-photo-frame-a4-size'
+  }
+
+];
+
 function PersonalisedGifts() {
   return (
     <section>
+
+      <div>
+        <div className="container mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px] px-4 py-16">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {productsTwo.map((product, index) => (
+              <Link
+                key={index}
+                href={product.url}
+                className="group block"
+              >
+                <div className="relative overflow-hidden rounded-2xl border-2 border-rose-400 bg-white shadow-md transition-all duration-300 hover:shadow-xl hover:border-amber-900">
+                  <div className="aspect-square overflow-hidden">
+
+                    <video
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105 border-2 rounded-t-2xl"
+                      width="470" height="470"
+                      preload="none"
+                    >
+                      <source src={product.image} type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+
+                  </div>
+                  <div className="p-4 text-center">
+                    <h3 className="text-sm md:text-base font-semibold text-gray-800 group-hover:text-amber-700">
+                      {product.name}
+                    </h3>
+                    <button className="mt-2 px-4 py-2 text-sm bg-rose-100 text-rose-800 rounded-full hover:bg-rose-200 transition-colors duration-200">
+                      Customize & Buy
+                    </button>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
       <div className="min-h-screen">
         {/* Hero Section */}
         <div className="relative mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px] py-10">
