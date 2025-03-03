@@ -1,30 +1,54 @@
 import mongoose from 'mongoose';
+const imageSchema = new Schema<ImageData>(
+  {
+    url: { type: String },
+    public_id: { type: String },
+    fileType: { type: String },
+  },
+  { _id: false }
+);
 
 const blogSchema = new mongoose.Schema({
-  title: {
+  name: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
   },
-  content: {
+  slug: {
     type: String,
-    required: true
+    required: true,
+    unique: true,
+    trim: true,
+    index: true,
   },
-  author: {
+  description: {
     type: String,
-    required: true
+    trim: true,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now
+  metaTitle: {
+    type: String,
+    trim: true,
   },
-  updatedAt: {
-    type: Date,
-    default: Date.now
-  }
-});
+  metaKeywords: {
+    type: String,
+    trim: true,
+  },
+  metaDescription: {
+    type: String,
+    trim: true,
+  },
+  image: imageSchema,
+  level: {
+    type: Number,
+    default: 0,
+  },
+  status: {
+    type: Boolean,
+    default: false,
+  },
+}, { timestamps: true });
 
 
 
-const Blog =  mongoose.models.Blog || mongoose.model('Blog', blogSchema);
+const Blog = mongoose.models.Blog || mongoose.model('Blog', blogSchema);
 export default Blog;

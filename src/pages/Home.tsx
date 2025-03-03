@@ -45,15 +45,7 @@ const HomeComponent = () => {
 
       <section className="section-banner-one overflow-hidden py-[50px] max-[1199px]:py-[35px] bg-[rgb(14,16,47,1)]">
         <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 px-6 lg:px-16 py-10 max-w-7xl mx-auto">
-
-
-          {/* Left Side - Image */}
           <div className="w-full lg:w-1/2">
-            {/* <img
-              src="https://res.cloudinary.com/dkprths9f/image/upload/v1736597008/Acrylic-Frame_scbtw9.webp"
-              alt="Acrylic Photo"
-              className="w-[470px] h-auto rounded-lg shadow-lg"
-            /> */}
             <video
               autoPlay
               loop
@@ -63,7 +55,7 @@ const HomeComponent = () => {
               width="470" height="470"
               preload="none"
             >
-              <source src="https://res.cloudinary.com/dkprths9f/video/upload/v1740832338/WhatsApp_Video_2025-02-27_at_6.31.50_PM_-_Trim_vmtp18.mp4" type="video/mp4" />
+              <source src="https://res.cloudinary.com/dkprths9f/video/upload/v1740998841/WhatsApp_Video_2025-03-01_at_9.11.26_PM_online-video-cutter.com_1_yq8a8p.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           </div>

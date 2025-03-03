@@ -33,7 +33,7 @@ export const menuItems = {
   ],
   blog: [
     { id: 'blog-categories', label: 'Categories', path: '/admin/blog-categories' },
-    { id: 'blogs', label: 'Pending Orders', path: '/admin/blogs' },
+    { id: 'blogs', label: 'Blogs', path: '/admin/blogs' },
   ],
   faqs: [
     { id: 'faq-categories', label: 'Categories', path: '/admin/faqs' }
