@@ -1,7 +1,8 @@
 'use client'
-import { blogService } from '@/_services/admin/blog';
+import { blogCategoryService, blogService } from '@/_services/admin/blog';
 // import { blogService } from '@/_services/common/blogService';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import QuillEditor from '@/components/QuillEditor';
 import { generateSlug } from '@/helpers/helpers';
 import type { BlogPost } from '@/lib/types/blog';
 import Link from 'next/link';
@@ -18,23 +19,41 @@ const maxSize = (value: File) => {
 const BlogEdit = () => {
     const params = useParams();
     const id = params?.id as string | undefined;
-  
+
     const [previewUrl, setPreviewUrl] = useState<string>();
     const [isUploading, setIsUploading] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [categories, setCategories] = useState([]);
+
+    const router = useRouter();
     const [formData, setFormData] = useState<BlogPost>({
+        category: '',
         title: '',
         slug: '',
-        content: '',
+        short_description: '',
+        description: '',
         metaKeywords: '',
         metaTitle: '',
         metaDescription: '',
+        author: '',
         imageUrl: '',
         status: true,
     });
-    const router = useRouter();
 
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const data = await blogCategoryService.getAll('1', '');
+                setCategories(data.blogCategories);
+            } catch (error) {
+                console.error("Error fetching categories:", error);
+                toast.error("Error fetching categories");
+            }
+        };
+
+        fetchCategories();
+    }, []);
     useEffect(() => {
         const fetchBlog = async () => {
             try {
@@ -42,13 +61,16 @@ const BlogEdit = () => {
                 const data = await blogService.getBlog(id);
                 if (data) {
                     setFormData({
-                        title: data.title || "",
-                        slug: data.slug || "",
-                        content: data.content || "",
-                        metaKeywords: data.metaKeywords || "",
-                        metaTitle: data.metaTitle || "",
-                        metaDescription: data.metaDescription || "",
+                        category:data?.category,
+                        title: data?.title || "",
+                        slug: data?.slug || "",
+                        description: data?.description || "",
+                        short_description: data?.short_description || "",
+                        metaKeywords: data?.metaKeywords || "",
+                        metaTitle: data?.metaTitle || "",
+                        metaDescription: data?.metaDescription || "",
                         imageUrl: data?.image?.url || "",
+                        author: data?.author || "Admin",
                         status: data?.status || false,
                     });
                 } else {
@@ -107,7 +129,8 @@ const BlogEdit = () => {
 
         if (!formData.title) return toast.error('Please enter a title');
         if (!formData.slug) return toast.error('Please enter a slug');
-        if (!formData.content) return toast.error('Please enter content');
+        if (!formData.description) return toast.error('Please enter description');
+        if (!formData.short_description) return toast.error('Please enter short description')
         if (!formData.metaKeywords) return toast.error('Please enter meta keywords');
         if (!formData.metaTitle) return toast.error('Please enter meta title');
         if (!formData.metaDescription) return toast.error('Please enter meta description');
@@ -117,18 +140,21 @@ const BlogEdit = () => {
         const data = new FormData();
         data.append('title', formData.title);
         data.append('slug', formData.slug);
-        data.append('content', formData.content);
+        data.append('description', formData.description);
+        data.append('short_description', formData.short_description);
         data.append('metaKeywords', formData.metaKeywords);
         data.append('metaTitle', formData.metaTitle);
         data.append('metaDescription', formData.metaDescription);
         data.append('imageUrl', formData.imageUrl);
         data.append('status', formData.status.toString());
+        data.append('author', formData.author)
 
         try {
             const res = await blogService.update(id, data);
             toast.success(res?.message);
             router.push('/admin/blogs');
             setIsSubmitting(false);
+            return
         } catch (error) {
             if (error instanceof Error) {
                 toast.error(error?.message);
@@ -140,6 +166,13 @@ const BlogEdit = () => {
 
     const handleStatusToggle = () => {
         setFormData((prevData) => ({ ...prevData, status: !prevData.status }));
+    };
+
+    const handleEditorChange = (value: string) => {
+        setFormData((prev) => ({
+            ...prev,
+            description: value,
+        }));
     };
 
     if (!id) {
@@ -171,6 +204,32 @@ const BlogEdit = () => {
 
                     <div className="w-full md:w-8/12 lg:w-8/12 px-4 space-y-6">
                         <div className="bg-white text-black p-6 rounded-lg space-y-5 shadow-md shadow-black-300">
+                            <div>
+                                <label
+                                    htmlFor="name"
+                                    className="block text-sm font-medium text-gray-700"
+                                >
+                                    Category
+                                </label>
+                                <select
+                                    className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
+                                    id="name"
+                                    name="category"
+                                    value={formData.category}
+                                    onChange={handleChange}
+                                >
+                                    <option value="">Select Category</option>
+
+                                    {categories.length === 0 ? (
+                                        <option>Loading...</option>
+                                    ) : (
+                                        categories.map((category) => (
+                                            <option key={category._id} value={category._id}>{category.name}</option>
+                                        ))
+                                    )}
+
+                                </select>
+                            </div>
                             <div>
                                 <label
                                     htmlFor="title"
@@ -238,7 +297,7 @@ const BlogEdit = () => {
                                                 )}
                                             </div>
                                         )}
-                                        <p>Image Size Should Be 60 x 60.</p>
+                                        <p>Image Size Should Be 800 x 500.</p>
                                     </div>
                                 </div>
                             </div>
@@ -256,20 +315,32 @@ const BlogEdit = () => {
                         <div className="bg-white text-black p-6 rounded-lg space-y-5 shadow-md shadow-black-300">
                             <div>
                                 <label
-                                    htmlFor="content"
+                                    htmlFor="short_description"
                                     className="block text-sm font-medium text-gray-700"
                                 >
-                                    Content
+                                    Short description
                                 </label>
                                 <textarea
                                     className="flex w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
-                                    id="content"
-                                    name="content"
+                                    id="short_description"
+                                    name="short_description"
                                     rows={5}
-                                    value={formData.content}
+                                    value={formData.short_description}
                                     onChange={handleChange}
-                                    placeholder="Enter blog content"
+                                    placeholder="Enter blog short_description"
                                 />
+                            </div>
+                        </div>
+                        <div className="bg-white text-black p-6 rounded-lg space-y-5 shadow-md shadow-black-300">
+                            <div>
+                                <label
+                                    htmlFor="description"
+                                    className="block text-sm font-medium text-gray-700"
+                                >
+                                    Description
+                                </label>
+                                <QuillEditor value={formData.description} onChange={handleEditorChange} />
+
                             </div>
                         </div>
                     </div>
@@ -305,6 +376,24 @@ const BlogEdit = () => {
                         </div>
 
                         <div className="bg-white text-black p-6 rounded-lg space-y-5 shadow-md shadow-black-300">
+                            <div>
+                                <label
+                                    htmlFor="author"
+                                    className="block text-sm font-medium text-gray-700"
+                                >
+                                    Author *
+                                </label>
+                                <input
+                                    className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
+                                    id="author"
+                                    name="author"
+                                    type="text"
+                                    value={formData.author}
+                                    onChange={handleChange}
+                                    placeholder="Enter Author"
+                                />
+                            </div>
+
                             <div>
                                 <label
                                     htmlFor="metaTitle"
@@ -359,7 +448,7 @@ const BlogEdit = () => {
                         </div>
                     </div>
                 </div>
-            </form>
+            </form >
         </>
     );
 };

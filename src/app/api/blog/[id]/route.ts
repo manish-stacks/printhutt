@@ -1,77 +1,155 @@
-import { getDataFromToken } from "@/helpers/getDataFromToken";
-import { deleteImage, uploadImage } from "@/lib/cloudinary";
-import Testimonials from "@/models/testimonialsModel";
-import mongoose from "mongoose";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/dbConfig/dbConfig';
+import Blog from '@/models/blogModel';
+import mongoose from 'mongoose';
+import { getDataFromToken } from '@/helpers/getDataFromToken';
+import { deleteImage, uploadImage } from '@/lib/cloudinary';
 
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
-  try {
-    await dbConnect();
-    const { id } = await params;
-    const { role } = await getDataFromToken(request);
+export async function GET(request: NextRequest, context: { params: { id: string } }) {
+    try {
+        await dbConnect();
 
-    if (role !== 'admin') {
-      return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
-    }
+        const { id } = await context.params;
 
-    const testimonial = await Testimonials.findById(id);
-    if (!testimonial) {
-      return NextResponse.json({ success: false, message: 'Testimonial not found' }, { status: 404 });
-    }
-
-    const formData = await request.formData();
-    const userImage = formData.get('image');
-
-    // Handle image update
-    if (userImage instanceof File) {
-      const imageResponse = await uploadImage(userImage, 'testimonial', 280, 280);
-      if (imageResponse) {
-        if (testimonial.image?.public_id) {
-          await deleteImage(testimonial.image.public_id); // delete old image
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return NextResponse.json({ success: false, message: "Invalid Blog ID" }, { status: 400 });
         }
-        testimonial.image = imageResponse;
-      }
+
+        const { role } = await getDataFromToken(request);
+        if (role !== 'admin') {
+            return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+        }
+
+        const blog = await Blog.findById(id);
+        if (!blog) {
+            return NextResponse.json({ success: false, message: 'Blog not found' }, { status: 404 });
+        }
+
+        return NextResponse.json(blog);
+    } catch (error) {
+        console.error('Error in GET blog:', error);
+        return NextResponse.json({ success: false, message: 'Failed to fetch blog' }, { status: 500 });
     }
-
-    // Update the testimonial fields
-    testimonial.name = formData.get('name')?.toString() || testimonial.name;
-    testimonial.feedback = formData.get('feedback')?.toString() || testimonial.feedback;
-    testimonial.isActive = formData.get('isActive') === 'true' ? true : testimonial.isActive;
-
-    await testimonial.save();
-    // console.log(testimonial)
-    return NextResponse.json({ success: true, message: 'Testimonial updated successfully' }, { status: 200 });
-
-  } catch (error: unknown) {
-    return NextResponse.json({ error: error instanceof Error ? error.message : 'An unexpected error occurred' }, { status: 500 });
-  }
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
-  try {
-    await dbConnect();
-    const { id } = await params;
+export async function PUT(request: NextRequest, context: { params: { id: string } }) {
+    try {
+        await dbConnect();
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return NextResponse.json({ success: false, message: "Invalid Product ID" }, { status: 400 });
+        const { id } = await context.params;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return NextResponse.json({ success: false, message: "Invalid Blog ID" }, { status: 400 });
+        }
+
+        const { role } = await getDataFromToken(request);
+        if (role !== 'admin') {
+            return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+        }
+
+        const formData = await request.formData();
+        const file = formData.get('imageUrl');
+        const existingBlog = await Blog.findById(id);
+
+        if (!existingBlog) {
+            return NextResponse.json({ success: false, message: 'Blog not found' }, { status: 404 });
+        }
+
+        let imageUrl = existingBlog.image;
+        
+        console.log("imageUrl: " + imageUrl);
+        if (file && typeof file !== 'string') {  
+            imageUrl = await uploadImage(file, 'blogs', 800, 500);
+            if (existingBlog.image?.public_id) {
+                await deleteImage(existingBlog.image.public_id);
+            }
+        }
+
+        existingBlog.title = formData.get('title') || existingBlog.title;
+        existingBlog.slug = formData.get('slug') || existingBlog.slug;
+        existingBlog.description = formData.get('description') || existingBlog.description;
+        existingBlog.short_description = formData.get('short_description') || existingBlog.short_description;
+        existingBlog.metaKeywords = formData.get('metaKeywords') || existingBlog.metaKeywords;
+        existingBlog.metaTitle = formData.get('metaTitle') || existingBlog.metaTitle;
+        existingBlog.metaDescription = formData.get('metaDescription') || existingBlog.metaDescription;
+        existingBlog.author = formData.get('author') || existingBlog.author;
+        existingBlog.status = formData.get('status') || existingBlog.status;
+        existingBlog.image = imageUrl;
+
+        await existingBlog.save();
+
+        return NextResponse.json({
+            success: true,
+            message: 'Blog updated successfully',
+            data: existingBlog,
+        }, { status: 200 });
+    } catch (error) {
+        console.error('Error in PUT blog:', error);
+        return NextResponse.json({ success: false, message: 'Failed to update blog' }, { status: 500 });
     }
+}
 
-    const { role } = await getDataFromToken(request);
-    if (role !== 'admin') return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+export async function DELETE(request: NextRequest, context: { params: { id: string } }) {
+    try {
+        await dbConnect();
 
-    const testimonial = await Testimonials.findById(id);
-    if (!testimonial) return NextResponse.json({ success: false, message: "Testimonial not found" }, { status: 404 });
+        const { id } = await context.params;
 
-    if (testimonial.image?.public_id) {
-      await deleteImage(testimonial.image.public_id); // delete the testimonial image from Cloudinary
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return NextResponse.json({ success: false, message: "Invalid Blog ID" }, { status: 400 });
+        }
+
+        const { role } = await getDataFromToken(request);
+        if (role !== 'admin') {
+            return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+        }
+
+        const blogToDelete = await Blog.findByIdAndDelete(id);
+        if (!blogToDelete) {
+            return NextResponse.json({ success: false, message: 'Blog not found' }, { status: 404 });
+        }
+
+        await deleteImage(blogToDelete.image.public_id);
+        return NextResponse.json({ success: true, message: 'Blog deleted successfully' }, { status: 200 });
+    } catch (error) {
+        console.error('Error in DELETE blog:', error);
+        return NextResponse.json({ success: false, message: 'Failed to delete blog' }, { status: 500 });
     }
+}
 
-    await testimonial.deleteOne(); // delete the testimonial record
+export async function PATCH(request: NextRequest, context: { params: { id: string } }) {
+    try {
+        await dbConnect();
 
-    return NextResponse.json({ success: true, message: 'Testimonial deleted successfully' }, { status: 200 });
+        const { id } = await context.params;
 
-  } catch (error: unknown) {
-    return NextResponse.json({ error: error instanceof Error ? error.message : 'An unexpected error occurred' }, { status: 500 });
-  }
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return NextResponse.json({ success: false, message: "Invalid Blog ID" }, { status: 400 });
+        }
+
+        const { role } = await getDataFromToken(request);
+        if (role !== 'admin') {
+            return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+        }
+
+        const { status } = await request.json();
+        const updatedBlog = await Blog.findByIdAndUpdate(
+            id,
+            { status },
+            { new: true }
+        );
+
+        if (!updatedBlog) {
+            return NextResponse.json({ success: false, message: 'Blog not found' }, { status: 404 });
+        }
+
+        return NextResponse.json({
+            success: true,
+            message: 'Blog status updated successfully',
+            data: updatedBlog,
+        }, { status: 200 });
+    } catch (error) {
+        console.error('Error in PATCH blog:', error);
+        return NextResponse.json({ success: false, message: 'Something went wrong' }, { status: 500 });
+    }
 }

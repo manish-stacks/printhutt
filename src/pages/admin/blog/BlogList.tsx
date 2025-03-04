@@ -6,11 +6,12 @@ import Image from 'next/image';
 import { FaSearch } from 'react-icons/fa';
 import { RiArrowDropLeftLine, RiArrowDropRightLine, RiDeleteBin2Line, RiEdit2Fill, RiLoader2Line, RiSkipLeftLine, RiSkipRightLine } from 'react-icons/ri';
 import Swal from 'sweetalert2';
-import { delete_blog, getAllBlogPagination, update_blog_status } from '@/_services/admin/blog';
 import { toast } from 'react-toastify';
 import type { PaginationData } from '@/lib/types';
 import Link from 'next/link';
 import { BlogFormData } from '@/lib/types/blog';
+import { blogService } from '@/_services/admin/blog';
+
 
 export default function BlogList() {
   const [blogs, setBlogs] = useState<BlogFormData[]>([]);
@@ -29,7 +30,7 @@ export default function BlogList() {
   async function fetchBlogs() {
     try {
       setIsLoading(true);
-      const response = await getAllBlogPagination(page, search);
+      const response = await blogService.getAll(page, search);
 
       setBlogs(response?.data);
       setPagination(response?.pagination);
@@ -70,7 +71,7 @@ export default function BlogList() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await delete_blog(id);
+          await blogService.delete(id);
           setBlogs(prevBlogs => prevBlogs.filter(blog => blog._id !== id));
           Swal.fire({
             title: "Deleted!",
@@ -114,7 +115,7 @@ export default function BlogList() {
   const updateBlogStatus = async (blogId: string, newStatus: boolean) => {
     try {
       setIsLoading(true);
-      await update_blog_status(blogId, newStatus);
+      await blogService.update_status(blogId, newStatus);
       toast.success('Status updated successfully');
     } catch (error) {
       console.error('Error updating blog status:', error);
@@ -168,7 +169,7 @@ export default function BlogList() {
                   <tr className="bg-gray-100 border-b">
                     <th className="py-3 px-4 font-semibold">Image</th>
                     <th className="py-3 px-4 font-semibold">Title</th>
-                    <th className="py-3 px-4 font-semibold">Slug</th>
+                    <th className="py-3 px-4 font-semibold">Category</th>
                     <th className="py-3 px-4 font-semibold">Status</th>
                     <th className="py-3 px-4 font-semibold">Action</th>
                   </tr>
@@ -184,19 +185,19 @@ export default function BlogList() {
                         {blogs && blog.image?.url ? (
                           <div className="relative w-12 h-12">
                             <Image
-                              src={blog.image.url}
-                              alt={blog.title}
+                              src={blog?.image.url}
+                              alt={blog?.title}
                               height={40}
                               width={40}
-                              className="object-cover rounded-full"
+                              className="object-cover rounded-sm"
                             />
                           </div>
                         ) : (
                           <div className="w-12 h-12 bg-gray-200 rounded-full" />
                         )}
                       </td>
-                      <td className="py-3 px-4">{blog.title}</td>
-                      <td className="py-3 px-4">{blog.slug}</td>
+                      <td className="py-3 px-4">{blog?.title}</td>
+                      <td className="py-3 px-4">{blog?.category?.name}</td>
                       <td>
                         <label className="flex items-center cursor-pointer">
                           <input

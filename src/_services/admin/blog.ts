@@ -17,6 +17,6 @@ export const blogService = {
   getBlog: (id: string) => axiosInstance.get(`/blog/${id}`),
   update: (id: string, formData: BlogCategory) => axiosInstance.put(`/blog/${id}`, formData),
   delete: (id: string) => axiosInstance.delete(`/blog/${id}`),
-  update_status: (categoryId: string, newStatus: boolean) => axiosInstance.patch(`/category/${categoryId}`, { status: newStatus, })
+  update_status: (blogId: string, newStatus: boolean) => axiosInstance.patch(`/blog/${blogId}`, { status: newStatus, })
 };
 

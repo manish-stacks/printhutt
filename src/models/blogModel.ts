@@ -1,4 +1,5 @@
-import mongoose from 'mongoose';
+import { ImageData } from '@/lib/types/category';
+import mongoose, { Schema } from 'mongoose';
 const imageSchema = new Schema<ImageData>(
   {
     url: { type: String },
@@ -9,7 +10,7 @@ const imageSchema = new Schema<ImageData>(
 );
 
 const blogSchema = new mongoose.Schema({
-  name: {
+  title: {
     type: String,
     required: true,
     trim: true,
@@ -21,7 +22,18 @@ const blogSchema = new mongoose.Schema({
     trim: true,
     index: true,
   },
+  category: {
+    type: Schema.Types.ObjectId,
+    ref: 'BlogCategory',
+    required: true,
+  },
+  short_description: {
+    type: String
+  },
   description: {
+    type: String
+  },
+  author: {
     type: String,
     trim: true,
   },
@@ -38,10 +50,6 @@ const blogSchema = new mongoose.Schema({
     trim: true,
   },
   image: imageSchema,
-  level: {
-    type: Number,
-    default: 0,
-  },
   status: {
     type: Boolean,
     default: false,
