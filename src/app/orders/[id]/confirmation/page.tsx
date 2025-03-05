@@ -3,7 +3,7 @@
 import { notFound, useParams } from "next/navigation";
 import Link from "next/link";
 import { BiCheckCircle } from "react-icons/bi";
-import { formatCurrency } from "@/helpers/helpers";
+// import { formatCurrency } from "@/helpers/helpers";
 import { useEffect, useState } from "react";
 import { get_order_details } from "@/_services/common/order";
 import { IOrder } from "@/lib/types/order";

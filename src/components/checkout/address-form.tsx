@@ -28,7 +28,7 @@ export const CheckoutAddressForm = ({ onChangeAddress }: TypeSelectorProps) => {
             }
 
         } catch (error) {
-            // console.error(error);
+            console.error(error);
         }
     };
     useEffect(() => {

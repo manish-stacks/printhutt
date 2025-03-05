@@ -1,7 +1,6 @@
 import axios from 'axios';
-import { Line } from 'fabric';
+// import { Line } from 'fabric';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import React, { useState, useRef, useEffect } from 'react';
 import { FaUser } from 'react-icons/fa';
 import { RiLogoutBoxFill, RiSettings2Fill } from 'react-icons/ri';
@@ -11,7 +10,7 @@ import { toast } from 'react-toastify';
 export function UserMenu() {
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
-    const router = useRouter();
+    // const router = useRouter();
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {

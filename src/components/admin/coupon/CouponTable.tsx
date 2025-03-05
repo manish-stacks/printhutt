@@ -23,9 +23,9 @@ export function CouponTable({
     );
   }
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString();
-  };
+  // const formatDate = (dateString: string) => {
+  //   return new Date(dateString).toLocaleString();
+  // };
 
   const getDiscountDisplay = (coupon: Coupon) => {
     switch (coupon.discountType) {

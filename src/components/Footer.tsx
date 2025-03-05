@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 import {
   FaCartPlus,
   FaFacebookF,
@@ -436,7 +436,7 @@ const Footer = () => {
         </div>
       </div>
 
-      
+
       {isQuickViewOpen && (
         <QuickView
           product={product}

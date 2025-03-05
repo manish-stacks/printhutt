@@ -9,7 +9,7 @@ import html2canvas from 'html2canvas';
 import { useRouter } from 'next/navigation';
 import { CustomizationButtonTwo } from '@/components/CustomizationButton';
 
-export default function page() {
+export default function Page() {
   const [names, setNames] = useState({ name1: '', name2: '' });
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const canvasRefTwo = useRef<HTMLCanvasElement>(null);

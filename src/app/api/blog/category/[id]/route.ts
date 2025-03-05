@@ -1,5 +1,5 @@
 import { getDataFromToken } from "@/helpers/getDataFromToken";
-import { deleteImage, uploadImage } from "@/lib/cloudinary";
+import { deleteImage } from "@/lib/cloudinary";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 import dbConnect from '@/dbConfig/dbConfig';

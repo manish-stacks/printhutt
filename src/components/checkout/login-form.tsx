@@ -106,7 +106,7 @@ export const CheckoutloginForm = () => {
                 return router.push('/login');
             }
         } catch (err: unknown) {
-            setErrorMessage((err as any).response?.data?.error || "Failed to verify/expired OTP.");
+            setErrorMessage(err.response?.data?.error || "Failed to verify/expired OTP.");
         } finally {
             setLoadingOtp(false);
         }

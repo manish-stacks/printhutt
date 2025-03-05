@@ -28,9 +28,9 @@ interface CouponsSliderProps {
 const Coupons_Slider: React.FC<CouponsSliderProps> = ({ isOpen, onClose, handle_select, total_money, selectCoupon }) => {
     const [coupons, setCoupons] = useState<Coupon[]>([])
     const [page, setPage] = useState<number>(1)
-    const [search, setSearch] = useState<string>("")
+    // const [search, setSearch] = useState<string>("")
     const [loading, setLoading] = useState<boolean>(false)
-    const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null)
+    // const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null)
     const sliderRef = useRef<HTMLDivElement | null>(null)
 
     useEffect(() => {
@@ -42,7 +42,7 @@ const Coupons_Slider: React.FC<CouponsSliderProps> = ({ isOpen, onClose, handle_
     const fetchCoupons = async () => {
         try {
             setLoading(true)
-            const response = await getAllCouponsPagination(page, search)
+            const response = await getAllCouponsPagination(page, '')
             if (response && response.coupons) {
                 setCoupons(response.coupons || [])
             } else {
@@ -50,7 +50,7 @@ const Coupons_Slider: React.FC<CouponsSliderProps> = ({ isOpen, onClose, handle_
             }
             setLoading(false)
         } catch (error) {
-            // console.error(error)
+            console.error(error)
             setLoading(false)
         }
     }
@@ -58,7 +58,7 @@ const Coupons_Slider: React.FC<CouponsSliderProps> = ({ isOpen, onClose, handle_
     const handleCouponSelect = (coupon: Coupon) => {
         console.log(coupon)
         if (total_money?.discountPrice >= coupon.minimumPurchaseAmount) {
-            setSelectedCoupon(coupon)
+            // setSelectedCoupon(coupon)
             handle_select(coupon)
             setTimeout(() => {
                 onClose()

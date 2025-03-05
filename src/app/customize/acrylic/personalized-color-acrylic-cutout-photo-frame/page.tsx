@@ -1,12 +1,8 @@
 "use client"
-import Image from 'next/image';
 import React, { useState, useRef, useEffect } from 'react';
 import { BiRefresh, BiUpload } from 'react-icons/bi';
 import { BsUpload } from 'react-icons/bs';
-import { Canvas, IText } from 'fabric';
-import { CustomizationButton } from '@/components/CustomizationButton';
 import { useCartStore } from '@/store/useCartStore';
-import html2canvas from 'html2canvas';
 import { get_product_by_id } from '@/_services/admin/product';
 import { Product } from '@/lib/types/product';
 import { useRouter } from 'next/navigation';
@@ -16,7 +12,7 @@ export default function App() {
   const [previewImage, setPreviewImage] = useState('');
   const [product, setProduct] = useState<Product>();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [selectedFont, setSelectedFont] = useState("Barbara-Calligraphy");
+  // const [selectedFont, setSelectedFont] = useState("Barbara-Calligraphy");
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const addToCart = useCartStore(state => state.addToCart);
   const router = useRouter();
@@ -61,7 +57,7 @@ export default function App() {
         const custom_data = {
           previewImage,
           previewCanvas:previewImage,
-          selectedFont,
+          // selectedFont,
         };
 
         const updatedProduct = {

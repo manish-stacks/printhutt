@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import  dbConnect  from '@/dbConfig/dbConfig'
+import dbConnect from '@/dbConfig/dbConfig'
 import { getDataFromToken } from '@/helpers/getDataFromToken';
 import Wishlist from '@/models/wishlistModel';
 
@@ -49,14 +49,14 @@ export async function GET(req: NextRequest) {
   try {
     const { id } = await getDataFromToken(req);
     if (!id) {
-      return NextResponse.json({ success: false, message: 'Not logged in',data:[] }, { status: 200 });
+      return NextResponse.json({ success: false, message: 'Not logged in', data: [] }, { status: 200 });
     }
 
     const wishlist = await Wishlist.findOne({ userId: id }).populate('items.productId');
     return NextResponse.json({ success: true, message: 'Data fetched successfully', data: wishlist }, { status: 200 });
 
   } catch (error: unknown) {
-    return NextResponse.json({ success: false, message: 'Not logged in',data:[] }, { status: 200 });
+    return NextResponse.json({ success: false, message: (error as Error).message || 'Not logged in', data: [] }, { status: 200 });
     //return NextResponse.json({ error: (error as Error).message }, { status: 500 });
   }
 }

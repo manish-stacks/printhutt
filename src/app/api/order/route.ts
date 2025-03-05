@@ -5,7 +5,7 @@ import { getDataFromToken } from "@/helpers/getDataFromToken";
 import Order from "@/models/orderModel";
 import User from "@/models/userModel";
 import { uploadImageOrder } from "@/lib/cloudinary";
-import { sendOrderConfirmationEmail } from "@/lib/mail/mailer";
+// import { sendOrderConfirmationEmail } from "@/lib/mail/mailer";
 
 export async function GET(request: NextRequest) {
   try {

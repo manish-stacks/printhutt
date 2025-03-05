@@ -11,7 +11,7 @@ import { CustomizationButtonTwo } from '@/components/CustomizationButton';
 import { BiRefresh, BiUpload } from 'react-icons/bi';
 import { BsUpload } from 'react-icons/bs';
 
-export default function page() {
+export default function Page() {
   const [names, setNames] = useState({ name1: '' });
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [selectedFont, setSelectedFont] = useState("orangina_demo");

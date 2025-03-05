@@ -47,6 +47,7 @@ const Address = () => {
       fetchUserDetails();
       toast.success("Profile updated successfully");
     } catch (error) {
+      console.log(error.message);
       toast.error("Failed to update address");
     } finally {
       setIsSubmitting(false);

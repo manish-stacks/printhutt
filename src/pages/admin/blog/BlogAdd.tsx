@@ -1,20 +1,21 @@
 'use client'
 import { blogCategoryService, blogService } from '@/_services/admin/blog';
-import QuillEditor from '@/components/QuillEditor';
+// import QuillEditor from '@/components/QuillEditor';
 import { generateSlug } from '@/helpers/helpers';
 import type { BlogPost, BlogCategory } from '@/lib/types/blog';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { FaImage } from 'react-icons/fa';
 import { RiLoader2Line } from 'react-icons/ri';
 import { toast } from 'react-toastify';
-
+const QuillEditor = dynamic(() => import('@/components/QuillEditor'), { ssr: false });
 const maxSize = (value: File) => {
   const fileSize = value.size / 1024 / 1024;
   return fileSize < 1 ? false : true
 }
 
-const blogAddPage = () => {
+const BlogAddPage = () => {
 
   const [previewUrl, setPreviewUrl] = useState<string>();
   const [isUploading, setIsUploading] = useState(false);
@@ -430,4 +431,4 @@ const blogAddPage = () => {
   )
 }
 
-export default blogAddPage
+export default BlogAddPage

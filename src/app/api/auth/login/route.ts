@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
         const otpExpiry = Date.now() + 3600000; // 1 hour expiry
 
-        const isEmailInput = isEmail(emailOrMobile);
+        const isEmailInput = isEmail(emailOrMobile); // Check if input is email
         const queryKey = isEmailInput ? 'email' : 'number';
 
         let user = await UserModel.findOne({ [queryKey]: emailOrMobile });

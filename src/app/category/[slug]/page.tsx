@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
                 images: category.image?.url ? [category.image.url] : [],
             },
         };
-    } catch (error) {
+    } catch  {
         return {
             title: 'Category',
             description: 'Category information',

@@ -1,8 +1,5 @@
 "use client"
-import Image from 'next/image';
 import React, { useState, useRef, useEffect } from 'react';
-import { BiRefresh, BiUpload } from 'react-icons/bi';
-import { BsUpload } from 'react-icons/bs';
 import { Canvas, IText } from 'fabric';
 import { CustomizationButton } from '@/components/CustomizationButton';
 import { useCartStore } from '@/store/useCartStore';

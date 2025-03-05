@@ -1,12 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/dbConfig/dbConfig';
 import { formatCurrency } from '@/helpers/helpers';
-import User from '@/models/userModel';
 import Order from '@/models/orderModel';
-import Product from '@/models/productModel';
-import Coupon from '@/models/couponModel';
-import Blog from '@/models/blogModel';
-import SessionCart from '@/models/session_carts.model';
 import { getDataFromToken } from '@/helpers/getDataFromToken';
 import Wishlist from '@/models/wishlistModel';
 import { Address } from '@/models/addressModel';

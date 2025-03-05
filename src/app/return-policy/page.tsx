@@ -8,7 +8,7 @@ const page = () => {
                     <div className="p-6 bg-gray-100 min-h-screen">
                         <h1 className="text-3xl font-bold mb-4">Return Policy</h1>
                         <p className="mb-4">
-                            All our products are custom-made and manufactured on order. We do not offer or accept any returns for Custom Order Products. If the Goods arrive to the Buyer in a damaged state, the Buyer must notify the delivery agent and us within 24 hours in writing inclusive of photography or a video evidence of the damage to the Goods and associated packaging to verify. Failure to comply with this request and timeframe will void the Seller's obligations.
+                            All our products are custom-made and manufactured on order. We do not offer or accept any returns for Custom Order Products. If the Goods arrive to the Buyer in a damaged state, the Buyer must notify the delivery agent and us within 24 hours in writing inclusive of photography or a video evidence of the damage to the Goods and associated packaging to verify. Failure to comply with this request and timeframe will void the Seller&apos;s obligations.
                         </p>
                     </div>
                 </div>

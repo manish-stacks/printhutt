@@ -14,7 +14,7 @@ export default function BlogCategory() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [editingId, setEditingId] = useState<string | null>(null);
-    const [blogCategories, setBlogCategories] = useState<any[]>([]);
+    const [blogCategories, setBlogCategories] = useState([]);
     const [pagination, setPagination] = useState<number>();
     const [isLoading, setIsLoading] = useState(true);
 

@@ -8,7 +8,7 @@ import OurServices from "@/components/OurServices";
 import HeroSlider from "@/components/home/HeroSlider";
 import DayoftheDeal from "@/components/home/DayoftheDeal";
 import BannerOne from "@/components/home/BannerOne";
-import confetti from "canvas-confetti";
+// import confetti from "canvas-confetti";
 import PersonalisedGifts from "@/components/home/PersonalisedGifts";
 import PersonalisedGiftsTwo from "@/components/home/PersonalisedGiftsTwo";
 import { v4 as uuidv4 } from "uuid";

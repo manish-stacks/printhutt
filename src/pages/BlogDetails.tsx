@@ -1,7 +1,6 @@
 import Breadcrumb from "@/components/Breadcrumb";
 import { BlogPost } from "@/lib/types/blog";
 import React from "react";
-import DOMPurify from 'dompurify';
 
 interface ProductProps {
   blogData: BlogPost | null;
@@ -19,7 +18,6 @@ const BlogDetails = ({ blogData, relatedBlog }: ProductProps) => {
     });
   }
 
-  // const sanitizedHTML = DOMPurify.sanitize(blogData?.description);
 
   return (
     <>
@@ -47,7 +45,7 @@ const BlogDetails = ({ blogData, relatedBlog }: ProductProps) => {
                       {
                         relatedBlog.map((blog, index) => (
 
-                          <div className="blog-sidebar-card mb-[24px] p-[15px] bg-[#f8f8fb] border-[1px] border-solid border-[#eee] rounded-[20px] flex max-[991px]:flex-row max-[360px]:flex-col">
+                          <div key={index} className="blog-sidebar-card mb-[24px] p-[15px] bg-[#f8f8fb] border-[1px] border-solid border-[#eee] rounded-[20px] flex max-[991px]:flex-row max-[360px]:flex-col">
                             <div className="inner-image mr-[15px] max-[991px]:mr-[20px] max-[991px]:mb-[0] max-[360px]:mr-[0] max-[360px]:mb-[15px]">
                               <img
                                 src={blog?.image?.url}

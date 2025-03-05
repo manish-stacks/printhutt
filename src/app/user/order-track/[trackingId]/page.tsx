@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 const OrderTrack = () => {
   const params = useParams();
   const trackingId = params?.trackingId as string | undefined;
-  const [shipping, setShipping] = useState<any>(null);
+  const [shipping, setShipping] = useState(null);
 
   const getShipping = async () => {
     try {
@@ -44,7 +44,7 @@ const OrderTrack = () => {
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {shipping.shipment_track?.map(
-                    (track: any, index: number) => (
+                    (track, index) => (
                       <div
                         key={index}
                         className="border p-4 rounded-lg bg-gray-50 shadow-sm"
@@ -90,7 +90,7 @@ const OrderTrack = () => {
                 </h3>
                 <ul className="space-y-4">
                   {shipping.shipment_track_activities?.map(
-                    (activity: any, index: number) => (
+                    (activity, index) => (
                       <li
                         key={index}
                         className="p-4 border rounded-lg bg-gray-50 shadow-sm"

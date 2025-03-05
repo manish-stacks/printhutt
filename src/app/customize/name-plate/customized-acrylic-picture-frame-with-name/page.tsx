@@ -1,5 +1,4 @@
 "use client"
-import Image from 'next/image';
 import React, { useState, useRef, useEffect } from 'react';
 import { BiRefresh, BiUpload } from 'react-icons/bi';
 import { BsUpload } from 'react-icons/bs';
@@ -11,15 +10,16 @@ import { get_product_by_id } from '@/_services/admin/product';
 import { Product } from '@/lib/types/product';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
-export default function App() {
+export default function Page() {
     const [names, setNames] = useState({ name1: '' });
     const [loading, setLoading] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
     const [product, setProduct] = useState<Product>();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const [previewCanvas, setPreviewCanvas] = useState<string>('');
+    // const [previewCanvas, setPreviewCanvas] = useState<string>('');
     const [selectedFont, setSelectedFont] = useState("Barbara-Calligraphy");
     const [isAddingToCart, setIsAddingToCart] = useState(false);
     const addToCart = useCartStore(state => state.addToCart);
@@ -154,6 +154,10 @@ export default function App() {
         }
     };
 
+
+    if (loading) {
+        return <LoadingSpinner />
+    }
     return (
         <div
             className="min-h-screen bg-cover bg-center bg-no-repeat"

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const page = () => {
+const Page = () => {
     return (
         <section className="section-about py-[50px] max-[1199px]:py-[35px]">
             <div className="flex flex-wrap justify-between items-center mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">
@@ -12,7 +12,7 @@ const page = () => {
                                 All our products are custom made and manufactured on the order of customer. We do not offer any refunds or accept any returns for Custom Order Products.
                             </li>
                             <li>
-                                If the Goods arrive to the Buyer in a damaged state, the Buyer must notify the delivery agent and us within 24 hours in writing inclusive of photography or a video evidence of the damage to the Goods and associated packaging to verify. Failure to comply with this request and timeframe will void the Seller's obligations.
+                                If the Goods arrive to the Buyer in a damaged state, the Buyer must notify the delivery agent and us within 24 hours in writing inclusive of photography or a video evidence of the damage to the Goods and associated packaging to verify. Failure to comply with this request and timeframe will void the Seller&apos;s obligations.
                             </li>
                             <li>
                                 Due to the hand-rendered nature of the Goods, they can be subject to variations and slight discolorations. Some colour variations can also occur due to the computer screen and printer calibration. The Buyer acknowledges that these variations and discolorations are not a fault of the Products and accepts the potential of such occurrence.
@@ -31,4 +31,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page

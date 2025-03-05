@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     await dbConnect();
     const sessionCart = await SessionCart.find().sort({ createdAt: -1 }).populate({path: 'productId', model: Product}).lean();

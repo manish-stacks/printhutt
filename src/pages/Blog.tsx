@@ -44,16 +44,16 @@ const Blog = () => {
     params.set('page', newPage.toString());
     return router.push(`?${params.toString()}`);
   };
-  function handleSearch(value: string) {
-    const params = new URLSearchParams(searchParams!);
-    if (value) {
-      params.set('search', value);
-    } else {
-      params.delete('search');
-    }
-    params.set('page', '1');
-    router.push(`?${params.toString()}`);
-  }
+  // function handleSearch(value: string) {
+  //   const params = new URLSearchParams(searchParams!);
+  //   if (value) {
+  //     params.set('search', value);
+  //   } else {
+  //     params.delete('search');
+  //   }
+  //   params.set('page', '1');
+  //   router.push(`?${params.toString()}`);
+  // }
 
   // console.log(blogs)
   return (

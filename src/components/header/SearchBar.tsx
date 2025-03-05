@@ -50,17 +50,17 @@ const SearchBar = () => {
         
     };
 
-    const customStyles = {
-        control: (base) => ({
-            ...base,
-            border: 'none',
-            boxShadow: 'none',
-        }),
-        option: (base) => ({
-            ...base,
-            color: 'black',
-        }),
-    };
+    // const customStyles = {
+    //     control: (base) => ({
+    //         ...base,
+    //         border: 'none',
+    //         boxShadow: 'none',
+    //     }),
+    //     option: (base) => ({
+    //         ...base,
+    //         color: 'black',
+    //     }),
+    // };
 
     return (
         <form className="bb-btn-group-form flex relative max-[991px]:ml-[20px] max-[767px]:m-[0]" action="#">

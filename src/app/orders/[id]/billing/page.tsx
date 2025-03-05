@@ -112,7 +112,7 @@ export default function OrderDetailsPage() {
                         </tr>
                     </thead>
                     <tbody>
-                        {order.items.map((item: any, index: number) => (
+                        {order.items.map((item, index) => (
                             <tr key={index} className="hover:bg-gray-50">
                                 <td className="border p-2">{index + 1}</td>
                                 <td className="border p-2">{item.name}</td>

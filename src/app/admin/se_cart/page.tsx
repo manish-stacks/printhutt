@@ -24,7 +24,7 @@ const Cart = () => {
         setCarts(response.data || []);
       } catch (error) {
         setCarts([])
-        setError("Failed to fetch carts");
+        setError(error.message || "Failed to fetch carts");
       } finally {
         setLoading(false);
       }

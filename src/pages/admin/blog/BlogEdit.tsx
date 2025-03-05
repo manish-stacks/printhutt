@@ -2,14 +2,16 @@
 import { blogCategoryService, blogService } from '@/_services/admin/blog';
 // import { blogService } from '@/_services/common/blogService';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import QuillEditor from '@/components/QuillEditor';
+// import QuillEditor from '@/components/QuillEditor';
 import { generateSlug } from '@/helpers/helpers';
 import type { BlogPost } from '@/lib/types/blog';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import { RiLoader2Line } from 'react-icons/ri';
 import { toast } from 'react-toastify';
+const QuillEditor = dynamic(() => import('@/components/QuillEditor'), { ssr: false });
 
 const maxSize = (value: File) => {
     const fileSize = value.size / 1024 / 1024;

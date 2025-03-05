@@ -25,11 +25,11 @@ interface RevenueData {
   }[];
 }
 
-interface Activity {
-  id: number;
-  description: string;
-  timestamp: string;
-}
+// interface Activity {
+//   id: number;
+//   description: string;
+//   timestamp: string;
+// }
 
 const Dashboard = () => {
   const [stats, setStats] = useState<Stat[]>([]);

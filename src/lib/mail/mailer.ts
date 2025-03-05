@@ -48,7 +48,6 @@ export const sendVerifyEmail = async ({ email, emailType, userId }: mallerType) 
     return mailResponce;
   } catch (error) {
     if (error instanceof Error) {
-
       throw new Error((error as Error).message)
     }
   }
@@ -116,7 +115,7 @@ export const sendOtpBySms = async (mobile: string, otp: string) => {
   const url = `https://2factor.in/API/V1/${apiKey}/SMS/${receiver}/${otp}/${template}`;
   // console.log('url', url)
   try {
-    const response = await axios.post(url);
+     await axios.post(url);
     // console.log('OTP sent successfully:', response.data);
   } catch (error) {
     if (error instanceof Error) {

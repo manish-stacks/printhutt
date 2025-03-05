@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import dbConnect from '@/dbConfig/dbConfig';
 import { formatCurrency } from '@/helpers/helpers';
 import User from '@/models/userModel';
@@ -8,7 +8,7 @@ import Coupon from '@/models/couponModel';
 import Blog from '@/models/blogModel';
 import SessionCart from '@/models/session_carts.model';
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     await dbConnect();
     const last30DaysRevenue = await Order.aggregate([

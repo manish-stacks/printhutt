@@ -1,13 +1,9 @@
 "use client"
 
 import ProductCardThree from '@/components/products/ProductCardThree';
-import { categoryService } from '@/_services/common/categoryService';
 import { productService } from '@/_services/common/productService';
-import { Navigation, Pagination, Autoplay } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import Breadcrumb from '@/components/Breadcrumb';
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';

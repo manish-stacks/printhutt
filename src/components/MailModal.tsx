@@ -19,6 +19,7 @@ const MailModal = ({ isOpen, onClose }: ModalProps) => {
             const response = await userService.updateProfile({email});
             console.log(response);
         } catch (error) {
+            console.log(error)
             toast.error("Failed to update email");
         } 
         setEmail('')

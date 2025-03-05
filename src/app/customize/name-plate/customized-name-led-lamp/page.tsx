@@ -1,8 +1,5 @@
 "use client"
-import Image from 'next/image';
 import React, { useState, useRef, useEffect } from 'react';
-import { BiRefresh, BiUpload } from 'react-icons/bi';
-import { BsUpload } from 'react-icons/bs';
 import { Canvas, IText } from 'fabric';
 import { CustomizationButton } from '@/components/CustomizationButton';
 import { useCartStore } from '@/store/useCartStore';
@@ -12,7 +9,7 @@ import { Product } from '@/lib/types/product';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 
-export default function App() {
+export default function Page() {
     const [names, setNames] = useState({ name1: '' });
     const [product, setProduct] = useState<Product>();
     const canvasRef = useRef<HTMLCanvasElement>(null);

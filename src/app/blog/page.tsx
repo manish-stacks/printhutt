@@ -1,4 +1,5 @@
 import Blog from "@/pages/Blog";
+import { Suspense } from "react";
 
 
 export const metadata = {
@@ -7,7 +8,12 @@ export const metadata = {
 };
 
 const BlogPage = () => {
-  return <Blog />
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <Blog />
+    </Suspense>
+  )
+
 };
 
 export default BlogPage;

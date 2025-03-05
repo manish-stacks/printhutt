@@ -1,6 +1,6 @@
 import WishListcart from "@/components/products/WishListcart";
 import { Product } from "@/lib/types/product";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 interface PopupProps {
   products: {

@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { wishlistService } from '@/_services/common/wishlist';
 
 interface WishlistState {
-    wishlist: any[];
+    wishlist: [];
     loading: boolean;
     error: string | null;
     fetchWishlist: () => Promise<void>;

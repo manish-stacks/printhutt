@@ -1,10 +1,6 @@
-import Compare from "@/pages/Compare"
+// import Compare from "@/pages/Compare"
 import { notFound } from "next/navigation"
 
-// export const metadata = {
-//   title: 'compare',
-//   description: 'compare',
-// }
 
 const ComparePage = () => {
 

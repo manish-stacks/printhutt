@@ -8,8 +8,9 @@ import { useCartStore } from '@/store/useCartStore';
 import html2canvas from 'html2canvas';
 import { useRouter } from 'next/navigation';
 import { CustomizationButtonTwo } from '@/components/CustomizationButton';
+import Image from 'next/image';
 
-export default function page() {
+export default function Page() {
   const [names, setNames] = useState({ name1: '' });
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [selectedFont, setSelectedFont] = useState("orangina_demo");
@@ -171,11 +172,14 @@ export default function page() {
             <div className="relative rounded-lg">
               <div id="preview-section" className="relative rounded-lg p-2 backdrop-blur-sm border border-white/10">
                 <div className="img-box relative">
-                  <img
+                  <Image
+                    width={800}
+                    height={800}
                     src="https://res.cloudinary.com/dkprths9f/image/upload/v1737903949/6.1_y3veyw.jpg"
                     alt="Preview"
                     className="w-full h-full object-cover rounded-lg"
                     crossOrigin="anonymous"
+                    layout="fill"
                   />
                   <div className="text-box absolute top-[72%] left-[48%] transform -translate-x-1/2 -translate-y-1/2 text-center">
                     <canvas ref={canvasRef} width="260" height="100" className="w-full h-full"></canvas>

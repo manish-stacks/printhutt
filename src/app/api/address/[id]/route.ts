@@ -22,7 +22,7 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
                 return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
             }
         } catch (error) {
-            return NextResponse.json({ success: false, message: "Invalid Token" }, { status: 401 });
+            return NextResponse.json({ success: false, message: error.message || "Invalid Token" }, { status: 401 });
         }
 
         const existing = await Address.findById(id);
@@ -49,7 +49,7 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
     } catch (error) {
         console.error("Error in PUT /address:", error);
         return NextResponse.json(
-            { success: false, message: "Error updating shipping information" },
+            { success: false, message: error.message || "Error updating shipping information" },
             { status: 500 }
         );
     }
@@ -72,7 +72,7 @@ export async function DELETE(request: NextRequest, context: { params: { id: stri
                 return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
             }
         } catch (error) {
-            return NextResponse.json({ success: false, message: "Invalid Token" }, { status: 401 });
+            return NextResponse.json({ success: false, message: error.message || "Invalid Token" }, { status: 401 });
         }
 
         const deleteData = await Address.findByIdAndDelete(id);

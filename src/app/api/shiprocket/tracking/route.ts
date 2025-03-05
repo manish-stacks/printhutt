@@ -7,7 +7,7 @@ export async function POST(request: Request) {
         const { trackingId } = await request.json();
 
         const token = await shiprocketAuth();
-        var config = {
+        const config = {
             method: 'get',
             maxBodyLength: Infinity,
             url: `https://apiv2.shiprocket.in/v1/external/courier/track/shipment/${trackingId}`,
@@ -18,7 +18,7 @@ export async function POST(request: Request) {
         };
 
         const response = await axios(config);
-        console.log(response.data);
+        // console.log(response.data);
         return NextResponse.json(
             { message: 'Data fetched successfully', data: response.data },
             { status: 200 }
