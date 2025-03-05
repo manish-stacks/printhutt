@@ -3,6 +3,7 @@ import Blog from "@/models/blogModel";
 import { getDataFromToken } from "@/helpers/getDataFromToken";
 import dbConnect from "@/dbConfig/dbConfig";
 import { uploadImage } from "@/lib/cloudinary";
+import BlogCategory from "@/models/blogCategoryModel";
 
 export async function POST(req: NextRequest) {
   try {
@@ -90,7 +91,7 @@ export async function GET(req: NextRequest) {
 
     // Fetch blogs with pagination and total count in a single query
     const [blogs, total] = await Promise.all([
-      Blog.find(query).populate('category').sort({ createdAt: -1 }).skip(skip).limit(limit),
+      Blog.find(query).populate({ path: "category", model: BlogCategory }).sort({ createdAt: -1 }).skip(skip).limit(limit),
       Blog.countDocuments(query),
     ]);
 

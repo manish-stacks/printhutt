@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/dbConfig/dbConfig";
 import SessionCart from "@/models/session_carts.model";
+import Product from "@/models/productModel";
 
 export async function POST(request: NextRequest) {
   try {
@@ -36,7 +37,7 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   try {
     await dbConnect();
-    const sessionCart = await SessionCart.find().sort({ createdAt: -1 }).populate("productId");
+    const sessionCart = await SessionCart.find().sort({ createdAt: -1 }).populate({path: 'productId', model: Product}).lean();
 
     if (sessionCart.length === 0) {
       return new NextResponse(null, { status: 204 }); 

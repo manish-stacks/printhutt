@@ -2,7 +2,7 @@
 import { blogCategoryService, blogService } from '@/_services/admin/blog';
 import QuillEditor from '@/components/QuillEditor';
 import { generateSlug } from '@/helpers/helpers';
-import type { BlogPost } from '@/lib/types/blog';
+import type { BlogPost, BlogCategory } from '@/lib/types/blog';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { FaImage } from 'react-icons/fa';
@@ -14,12 +14,12 @@ const maxSize = (value: File) => {
   return fileSize < 1 ? false : true
 }
 
-const BlogAdd = () => {
+const blogAddPage = () => {
 
   const [previewUrl, setPreviewUrl] = useState<string>();
   const [isUploading, setIsUploading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<BlogCategory[]>([]);
   const router = useRouter();
   const [formData, setFormData] = useState<BlogPost>({
     category: '',
@@ -190,8 +190,8 @@ const BlogAdd = () => {
                   {categories?.length === 0 ? (
                     <option>Loading...</option>
                   ) : (
-                    categories.map((category) => (
-                      <option key={category._id} value={category._id}>{category.name}</option>
+                    categories.map((category: BlogCategory) => (
+                      <option key={category?._id} value={category?._id}>{category?.name}</option>
                     ))
                   )}
 
@@ -430,4 +430,4 @@ const BlogAdd = () => {
   )
 }
 
-export default BlogAdd
+export default blogAddPage

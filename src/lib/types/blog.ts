@@ -18,6 +18,13 @@ export interface BlogPost {
   updatedAt: Date;
 }
 
+export interface BlogCategory {
+  _id: string;
+  name: string;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
 export interface BlogFormData {
   _id?: string | undefined;
   category: string;

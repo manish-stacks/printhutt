@@ -15,10 +15,10 @@ export async function GET(request: NextRequest, context: { params: { slug: strin
         if (!blogPost) return NextResponse.json({ error: "Blog Post not found" }, { status: 404 });
 
         const relatedBlogs = await BlogPost.find({
-            category: blogPost.category,
+            //category: blogPost.category,
             _id: { $ne: blogPost._id },
         })
-            .populate('category')
+            //.populate('category')
             .sort({ createdAt: -1 })
             .limit(4);
 

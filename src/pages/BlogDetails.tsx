@@ -52,7 +52,7 @@ const BlogDetails = ({ blogData, relatedBlog }: ProductProps) => {
                               <img
                                 src={blog?.image?.url}
                                 alt="blog"
-                                className="max-w-[80px] rounded-[20px] max-[360px]:max-w-full"
+                                className="max-w-[80px] rounded-[5px] max-[360px]:max-w-full"
                               />
                             </div>
                             <div className="blog-sidebar-contact">
