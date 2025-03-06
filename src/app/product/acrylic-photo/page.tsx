@@ -11,7 +11,7 @@ import { useCartStore } from '@/store/useCartStore';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 
-function App() {
+export default function AcrylicPhoto() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const fabricCanvasRef = useRef<Canvas | null>(null);
@@ -556,5 +556,3 @@ function App() {
     </>
   );
 }
-
-export default App;
