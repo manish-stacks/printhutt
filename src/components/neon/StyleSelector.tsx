@@ -31,7 +31,7 @@ export const StyleSelector: React.FC<StyleSelectorProps> = ({
             <div className="absolute inset-0 flex flex-col justify-between p-2 text-black text-sm">
               <span className="text-left">Cut Around</span>
               <span className="text-right font-bold">
-                {style.price === 0 ? "FREE" : `+$${style.price}`}
+                {style.price === 0 ? "FREE" : `+₹${style.price}`}
               </span>
             </div>
           </button>

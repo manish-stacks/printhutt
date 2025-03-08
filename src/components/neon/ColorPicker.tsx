@@ -1,5 +1,5 @@
-import React from 'react';
-import { colors } from '@/app/product/neon/_data/colors';
+import React, { useEffect, useState } from 'react';
+import { colors, multiColors } from '@/app/product/neon/_data/colors';
 import { NeonColor } from '@/lib/types/neon';
 
 interface ColorPickerProps {
@@ -7,7 +7,20 @@ interface ColorPickerProps {
   onColorChange: (color: NeonColor) => void;
 }
 
+
 export const ColorPicker: React.FC<ColorPickerProps> = ({ selectedColor, onColorChange }) => {
+
+
+  const [currentColorIndex, setCurrentColorIndex] = useState(0);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentColorIndex((prevIndex) => (prevIndex + 1) % multiColors.length);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [multiColors.length]);
+
+
   return (
     <div className="space-y-4">
       <h3 className="text-xl font-semibold">3. CHOOSE COLOR</h3>
@@ -28,13 +41,10 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ selectedColor, onColor
       <div className="flex items-center space-x-4">
         {/* Circular Color Indicator */}
         <button
-          className={`w-10 h-10 rounded-full bg-rose-600 border-2 transition-all duration-200 border-blue-500 scale-110}`}
+          className={`w-10 h-10 rounded-full ${multiColors[currentColorIndex].class} border-2 transition-all duration-200 border-blue-500 scale-110}`}
           title={'bg-rose-600'}
         />
 
-        {/* <div className="w-8 h-8 rounded-full border-2 border-blue-500 flex items-center justify-center">
-          <div className="w-6 h-6 rounded-full bg-rose-600" ></div>
-        </div> */}
 
         {/* Text Information */}
         <div className="flex-1">

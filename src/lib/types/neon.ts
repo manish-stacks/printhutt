@@ -16,12 +16,16 @@ export type PreviewImage = {
 };
 
 export type SizePreset = {
+  startWidth: number;
+  startHeight: number;
   name: string;
   width: number;
   height: number;
   price: number;
   note?: string;
   isPopular?: boolean;
+  perLetter: number;
+  lineBreak: number;
 };
 
 export type BackboardOption = {

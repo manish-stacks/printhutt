@@ -21,3 +21,12 @@ export const colors: NeonColor[] = [
   { name: 'Green', value: '#00FF00', class: 'bg-green-400' },
   { name: 'Deep Green', value: '#006400', class: 'bg-[#006400]' },
 ];
+
+export const multiColors: NeonColor[] = [
+  { name: 'Light Red', value: '#FF4D4D', class: 'bg-[#FF4D4D]' },
+  { name: 'Red', value: '#FF0000', class: 'bg-red-600' },
+  { name: 'Pink', value: '#FF69B4', class: 'bg-pink-400' },
+  { name: 'Cotton Candy', value: '#FFB6C1', class: 'bg-[#FFB6C1]' },
+  { name: 'Deep Pink', value: '#FF1493', class: 'bg-[#FF1493]' },
+  { name: 'Tropical Blue', value: '#00CED1', class: 'bg-[#00CED1]' },
+];

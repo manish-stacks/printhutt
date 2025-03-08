@@ -179,7 +179,7 @@ export default function Page() {
                     alt="Preview"
                     className="w-full h-full object-cover rounded-lg"
                     crossOrigin="anonymous"
-                    layout="fill"
+                    
                   />
                   <div className="text-box absolute top-[72%] left-[48%] transform -translate-x-1/2 -translate-y-1/2 text-center">
                     <canvas ref={canvasRef} width="260" height="100" className="w-full h-full"></canvas>

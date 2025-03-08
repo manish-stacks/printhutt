@@ -12,7 +12,7 @@ export const PreviewGallery: React.FC<PreviewGalleryProps> = ({
   onPreviewChange,
 }) => {
   return (
-    <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/50 p-2 rounded-lg max-w-full overflow-x-auto">
+    <div className="absolute bottom-[2.25rem] left-[35%] transform -translate-x-[35%] bg-black/50 p-2 rounded-lg max-w-full overflow-x-auto">
       <div className="flex space-x-2 min-w-max px-2">
         {previewImages.map((image) => (
           <button
