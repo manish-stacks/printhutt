@@ -5,7 +5,7 @@ interface CustomizationButtonProps {
     handleFontChange: (font: string) => void;
 }
 
-const fonts = [{
+export const fontsName = [{
     'font': "Barbara-Calligraphy",
     'name': "Barbara",
 }, {
@@ -66,7 +66,7 @@ export const CustomizationButton = ({ selectedFont, handleFontChange }: Customiz
     return (
         <>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-5">
-                {fonts.map((font, index) => (
+                {fontsName.map((font, index) => (
                     <button
                         key={index}
                         className={`py-2 px-3 rounded-lg border ${selectedFont === font.font ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-lg hover:from-amber-600 hover:to-amber-700 transition-colors' : 'bg-gray-300 text-gray-700'} font-medium `}

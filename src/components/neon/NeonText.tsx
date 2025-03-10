@@ -27,31 +27,26 @@ export const NeonText: React.FC<NeonTextProps> = ({ text, color, font, width, he
     return `${r}, ${g}, ${b}`;
   }
 
-  function adjustColor(colorCode: string, amount: number): string {
+  function adjustColor(colorCode: string, factor: number): string {
     let [r, g, b] = colorCode.match(/\d+/g)!.map(Number);
-    r = Math.min(255, Math.max(0, r + amount));
-    g = Math.min(255, Math.max(0, g + amount));
-    b = Math.min(255, Math.max(0, b + amount));
+    r = Math.max(0, Math.floor(r * factor));
+    g = Math.max(0, Math.floor(g * factor));
+    b = Math.max(0, Math.floor(b * factor));
     return `rgb(${r}, ${g}, ${b})`;
   }
 
+  // Example usage
   const baseRgb = `rgb(${hexToRgb(color)})`;
-  const glowColor = adjustColor(baseRgb, 40); // Slightly brightened
+  const darkColor = adjustColor(baseRgb, 0.7);
+
 
   const neonStyle: React.CSSProperties = {
-    textShadow: `
-      ${glowColor} 0px 0px 6px, 
-      ${color} 0px 0px 12px, 
-      ${color} 0px 0px 16px, 
-      rgba(255,255,255,0.6) 0px 0px 20px
-    `,
-    color: color,
-    // width: `${width*50}px`,
-    // height: `${height*20}px`,
+    textShadow: `${darkColor} 0px 0px 3px, rgba(0, 0, 0,0.3) 1px 1px 1px, ${color} 0px 0px 6px, ${color} 0px 0px 10px, ${color} 0px 0px 13px, ${color} 0px 0px 16px, ${color} 0px 0px 20px, ${color} 0px 0px 24px, ${color} 0px 0px 28px, ${color} 0px 0px 32px, ${color} 0px 0px 40px`,
+    color: '#fff',
     fontSize: `${fontSize}px`,
     fontFamily: font,
     fontWeight: 'bold',
-    whiteSpace: 'pre-line', // Supports multi-line input
+    whiteSpace: 'pre-line',
     textAlign: 'center',
     display: 'flex',
     alignItems: 'center',
@@ -60,32 +55,39 @@ export const NeonText: React.FC<NeonTextProps> = ({ text, color, font, width, he
   };
   const nodeRef = useRef(null);
   return (
-    // <div className="relative w-[80%] h-[300px] bg-black mt-8 rounded-lg flex items-center justify-center overflow-hidden">
-      <Draggable
-        nodeRef={nodeRef}
-        bounds="parent"
-        defaultPosition={{ x: 0, y: 0 }}>
-        <div className="relative group cursor-move" ref={nodeRef}>
-          {/* Neon Text */}
-          <div className="transition-all duration-300" style={neonStyle}>
-            {text || 'Your Text'}
-          </div>
+    <Draggable
+      nodeRef={nodeRef}
+      bounds="parent"
+      defaultPosition={{ x: 0, y: 0 }}>
+      <div className="relative group cursor-move" ref={nodeRef}>
 
-          {/* Size Indicators */}
-          <div className="absolute top-1/2 -left-8 w-8 border-t border-gray-400 opacity-100 group-hover:opacity-100 transition-opacity" />
-          <div className="absolute top-1/2 -right-8 w-8 border-t border-gray-400 opacity-100 group-hover:opacity-100 transition-opacity" />
-          <div className="absolute -top-8 left-1/2 h-8 border-l border-gray-400 opacity-100 group-hover:opacity-100 transition-opacity" />
-          <div className="absolute -bottom-8 left-1/2 h-8 border-l border-gray-400 opacity-100 group-hover:opacity-100 transition-opacity" />
-
-          {/* Size Labels */}
-          <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-black/75 text-white px-2 py-1 rounded text-sm opacity-100 group-hover:opacity-100 transition-opacity">
-            {width}"
-          </div>
-          <div className="absolute bottom-[38%] -left-20 transform -translate-y-1/2 bg-black/75 text-white px-2 py-1 rounded text-sm opacity-100 group-hover:opacity-100 transition-opacity">
-            {height}"
-          </div>
+        <div className="transition-all duration-300" style={neonStyle}>
+          {text || 'Your Text'}
         </div>
-      </Draggable>
-    // </div >
+
+
+        <div className="absolute top-1/2 -left-8 w-8 border-t border-gray-400 opacity-100 group-hover:opacity-100 transition-opacity" />
+        <div className="absolute top-1/2 -right-8 w-8 border-t border-gray-400 opacity-100 group-hover:opacity-100 transition-opacity" />
+        <div className="absolute -top-8 left-1/2 h-8 border-l border-gray-400 opacity-100 group-hover:opacity-100 transition-opacity" />
+        <div className="absolute -bottom-8 left-1/2 h-8 border-l border-gray-400 opacity-100 group-hover:opacity-100 transition-opacity" />
+
+
+        <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-black/75 text-white px-2 py-1 rounded text-sm opacity-100 group-hover:opacity-100 transition-opacity">
+          {width}"
+        </div>
+        <div className="absolute bottom-[38%] -left-20 transform -translate-y-1/2 bg-black/75 text-white px-2 py-1 rounded text-sm opacity-100 group-hover:opacity-100 transition-opacity">
+          {height}"
+        </div>
+      </div>
+      {/* <div className="relative flex flex-col items-center justify-center h-32 w-10 ">
+        <div className="w-[2px] h-12 bg-gray-900 border-2"></div>
+        <span className="text-lg font-semibold text-gray-700">7"</span>
+        <div className="w-[2px] h-12 bg-gray-900 border-2"></div>
+      </div> */}
+
+
+
+    </Draggable>
+
   );
 };

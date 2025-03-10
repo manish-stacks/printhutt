@@ -367,35 +367,3 @@
 
 
 
-
-
-
-
-/* Custom slider styles */
-input[type="range"] {
-  @apply appearance-none bg-gray-200 h-2 rounded-lg;
-}
-
-input[type="range"]::-webkit-slider-thumb {
-  @apply appearance-none w-6 h-6 bg-blue-600 rounded-full cursor-pointer;
-  @apply hover:bg-blue-700 transition-colors;
-}
-
-input[type="range"]::-moz-range-thumb {
-  @apply appearance-none w-6 h-6 bg-blue-600 rounded-full cursor-pointer border-0;
-  @apply hover:bg-blue-700 transition-colors;
-}
-
-@media (max-width: 768px) {
-  .mobile-layout {
-    @apply flex-col;
-  }
-  
-  .preview-section {
-    @apply h-[40vh] w-full;
-  }
-  
-  .controls-section {
-    @apply w-full mt-4;
-  }
-}

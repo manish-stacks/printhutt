@@ -170,26 +170,33 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                                       (product.price * product.discountPrice) / 100
                                     )
                                     : formatCurrency(product.price - product.discountPrice)
-                                  : "N/A"
+                                  : product.price.toFixed(2)
                               }{" "}
+                              {
+                                product?.discountPrice > 0 && (
+                                  <span className="text-[#3d4750] text-[20px]">
+                                    -{product?.discountType && product?.discountPrice !== undefined
+                                      ? product.discountType === 'percentage'
+                                        ? `${product?.discountPrice}%`
+                                        : `${product?.discountPrice.toFixed(2)}₹`
+                                      : "N/A"}
+                                  </span>
+                                )
+                              }
 
-                              <span className="text-[#3d4750] text-[20px]">
-                                -{product?.discountType && product?.discountPrice !== undefined
-                                  ? product.discountType === 'percentage'
-                                    ? `${product?.discountPrice}%`
-                                    : `${product?.discountPrice.toFixed(2)}₹`
-                                  : "N/A"}
-                              </span>
                             </h5>
                           </div>
-                          <div className="mrp">
-                            <p className="font-Poppins text-[16px] font-light text-[#686e7d] leading-[28px] tracking-[0.03rem]">
-                              M.R.P. :{" "}
-                              <span className="text-[15px] line-through">
-                                {product?.discountPrice > 0 ? `${product.price.toFixed(2)}` : ''}
-                              </span>
-                            </p>
-                          </div>
+                          {
+                            product?.discountPrice > 0 && (
+                              <div className="mrp">
+                                <p className="font-Poppins text-[16px] font-light text-[#686e7d] leading-[28px] tracking-[0.03rem]">
+                                  M.R.P. :{" "}
+                                  <span className="text-[15px] line-through">
+                                    {product?.discountPrice > 0 ? `${product.price.toFixed(2)}` : ''}
+                                  </span>
+                                </p>
+                              </div>
+                            )}
                         </div>
                         <div className="bb-single-price py-[15px]">
                           <div className="sku mb-[8px]">
@@ -209,6 +216,7 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                           </div>
                         </div>
                       </div>
+                      
                       <div className="bb-single-list mb-[30px]">
                         <ul className="my-[-8px] pl-[18px]">
                           <li className="my-[8px] font-Poppins text-[14px] font-light leading-[28px] tracking-[0.03rem] text-[#777] list-disc">
@@ -343,7 +351,7 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
 
                         </ul>
                       </div>
-                       {/* end md,lg screen only view */}
+                      {/* end md,lg screen only view */}
                     </div>
                   </div>
                 </div>
