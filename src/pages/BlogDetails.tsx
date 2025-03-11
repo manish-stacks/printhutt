@@ -30,7 +30,7 @@ const BlogDetails = ({ blogData, relatedBlog }: ProductProps) => {
               <div className="bb-blog-sidebar mb-[-24px]">
 
                 {
-                  relatedBlog.length > 0 && (
+                  relatedBlog && relatedBlog.length > 0 && (
                     <div
                       className="blog-inner-contact p-[30px] border-[1px] border-solid border-[#eee] mb-[24px] rounded-[20px] max-[575px]:p-[15px]"
                       data-aos="fade-up"
