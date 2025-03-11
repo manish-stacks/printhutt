@@ -13,7 +13,7 @@ const products = [
   },
   {
     name: 'LED Photo Acrylic',
-    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1738065496/products/thumbnails/r1yxyjerptfidpxj1mff.jpg',
+    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1741695871/r1yxyjerptfidpxj1mff_elmlnn.webp',
     url: '/product-details/personalized-acrylic-cutout-photo-led-lamp'
   },
   {
@@ -48,7 +48,7 @@ const products = [
   }
 ];
 
-function PersonalisedGiftsTwo() {
+function PersonalizedGiftsTwo() {
   return (
     <section>
       <div className="min-h-screen">
@@ -59,7 +59,7 @@ function PersonalisedGiftsTwo() {
             <div className="text-center">
 
               <h1 className="text-4xl md:text-5xl font-bold text-slate-600 mb-4 font-serif">
-                Personalised <span className='text-teal-600'>Gifts</span> 
+                Personalised <span className='text-teal-600'>Gifts</span>
               </h1>
               <p className="text-lg text-slate-600/90 max-w-2xl mx-auto">
                 Create lasting memories with our unique collection of personalized lighting gifts
@@ -83,9 +83,10 @@ function PersonalisedGiftsTwo() {
                     <Image
                       width={300}
                       height={300}
-                      src={product.image}
+                      src={`${product.image}?q=10&blur=30`}
                       alt={product.name}
                       className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                      loading="lazy"
                     />
                   </div>
                   <div className="p-4 text-center">
@@ -106,4 +107,4 @@ function PersonalisedGiftsTwo() {
   );
 }
 
-export default PersonalisedGiftsTwo;
+export default PersonalizedGiftsTwo;

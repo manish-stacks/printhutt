@@ -77,8 +77,8 @@ const CategoryHome = () => {
   }, [neonImage.length]);
 
   return (
-    <>{
-      categoriesData && categoriesData.length > 0 && (
+    <>
+      
         <section className="section-category overflow-hidden py-[50px] max-[1199px]:py-[35px]">
           <div className="flex flex-wrap justify-between relative items-center mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">
             <div className="flex flex-wrap w-full mb-[-24px]">
@@ -102,9 +102,9 @@ const CategoryHome = () => {
                 <div className="bb-category-contact max-[991px]:mt-[-24px]">
                   <div
                     className="mb-[30px] max-[991px]:hidden"
-                    data-aos="fade-up"
-                    data-aos-duration={1000}
-                    data-aos-delay={600}
+                    // data-aos="fade-up"
+                    // data-aos-duration={1000}
+                    // data-aos-delay={600}
                   >
                     <h2 className="font-quicksand text-[124px] text-fuchsia-900 drop-shadow-[0_1px_1px_rgba(0,0,0,0.25)] font-bold leading-[1.2] tracking-[0.03rem] max-[1399px]:text-[95px] max-[1199px]:text-[70px] max-[767px]:text-[42px] ">
                       Personalised Gifts
@@ -176,7 +176,7 @@ const CategoryHome = () => {
             </div>
           </div>
         </section>
-      )}
+      
     </>
   );
 };

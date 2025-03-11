@@ -151,18 +151,27 @@ const ProductCardThree = ({ product }: PopupProps) => {
                             {product.title}
                         </Link>
                     </h4>
-                    <div className="bb-price flex flex-wrap justify-between">
-                        <div className="inner-price mx-[-3px]">
-                            <span className="new-price px-[3px] text-[16px] max-[480px]:text-[12px] text-[#686e7d] font-bold">
-                                {product.discountType === 'percentage'
-                                    ? formatCurrency(product.price - (product.price * product.discountPrice) / 100)
-                                    : formatCurrency(product.price - product.discountPrice)}
-                            </span>
-                            <span className="old-price px-[3px] text-[14px] max-[480px]:text-[10px] text-[#686e7d] line-through">
-                                {product.discountPrice > 0 ? formatCurrency(product.price) : ''}
-                            </span>
+                    {product?.showPrice ? (
+                        <div className="bb-price flex flex-wrap justify-between">
+                            <div className="inner-price mx-[-3px]">
+                                <span className="new-price px-[3px] text-[16px] max-[480px]:text-[12px] text-green-800 font-bold">
+                                    {product.discountType === 'percentage'
+                                        ? formatCurrency(product.price - (product.price * product.discountPrice) / 100)
+                                        : formatCurrency(product.price - product.discountPrice)}
+                                </span>
+                                <span className="old-price px-[3px] text-[14px] max-[480px]:text-[10px] text-rose-600 line-through">
+                                    {product.discountPrice > 0 ? formatCurrency(product.price) : ''}
+                                </span>
+                            </div>
                         </div>
-                    </div>
+                    ) : (
+                        <Link
+                            href={product?.customizeLink}
+                            className="font-Poppins leading-[28px]  text-[#6c7fd8] hover:text-[#3d4750]"
+                        >
+                            Customize & Buy
+                        </Link>
+                    )}
                 </div>
             </div>
         </>

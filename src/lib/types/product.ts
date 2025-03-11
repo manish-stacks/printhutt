@@ -61,6 +61,7 @@ export interface IProduct extends Document {
   hot: boolean;
   sale: boolean;
   new: boolean;
+  showPrice: boolean;
   offers: mongoose.Types.ObjectId[];
   shippingFee?: number;
   isCustomize: boolean;

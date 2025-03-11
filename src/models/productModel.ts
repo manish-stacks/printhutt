@@ -143,6 +143,10 @@ const productSchema = new Schema<IProduct>(
       type: Boolean,
       default: false,
     },
+    showPrice: {
+      type: Boolean,
+      default: true
+    },
     offers: [
       {
         type: Schema.Types.ObjectId,

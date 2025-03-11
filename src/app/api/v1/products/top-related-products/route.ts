@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/dbConfig/dbConfig'
 import Product from '@/models/productModel';
+import Category from '@/models/categoryModel';
 
 await dbConnect();
 
@@ -10,7 +11,7 @@ export async function GET(request: Request) {
     const limitParam = searchParams.get('limit');
     const limit = limitParam === 'all' || !limitParam ? null : parseInt(limitParam);
 
-    const query = Product.find({ trending: true, status: true }).sort({ createdAt: -1 });
+    const query = Product.find({ trending: true, status: true }).populate({ path: 'category', model: Category }).sort({ createdAt: -1 });
     if (limit !== null) {
       query.limit(limit);
     }

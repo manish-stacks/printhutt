@@ -2,24 +2,30 @@ import React, { Suspense, useEffect, useState } from 'react'
 import ProductSlider from '../ProductSlider'
 import { productService } from '@/_services/common/productService';
 
-const DayoftheDeal = () => {
+const DayoftheWeek = () => {
 
     const [productData, setProductData] = useState([]);
+    const [loading, setLoading] = useState(true);
+
     const fetchData = async () => {
         try {
+            setLoading(true)
             const products = await productService.getTopProducts(6)
             setProductData(products?.products);
         } catch (error) {
             console.error("Error fetching data:", error);
+        } finally {
+            setLoading(false)
         }
     };
     useEffect(() => {
         fetchData();
     }, []);
 
+
     return (
         <>
-        {/* min-[1400px]:max-w-[1320px] */}
+            {/* min-[1400px]:max-w-[1320px] */}
             <section className="section-deal overflow-hidden py-[50px] max-[1199px]:py-[35px]">
                 <div className="flex flex-wrap justify-between relative items-center mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">
                     <div className="flex flex-wrap w-full">
@@ -44,9 +50,52 @@ const DayoftheDeal = () => {
                         <div className="w-full mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px] px-[12px]">
                             <div className="bb-deal-slider m-[-12px]">
                                 <div className="bb-deal-block owl-carousel"></div>
-                                <Suspense fallback={<div>Loading...</div>}>
-                                    <ProductSlider products={productData} />
-                                </Suspense>
+
+                                {loading ? (
+                                    <div className="flex flex-wrap w-full">
+                                        {Array.from({ length: 4 }, (_, index) => (
+                                            <div
+                                                key={index}
+                                                className="min-[1200px]:w-[25%] min-[768px]:w-[33.33%] w-[50%] max-[480px]:w-full px-[12px] mb-[24px]"
+                                                data-aos="fade-up"
+                                                data-aos-duration={1000}
+                                                data-aos-delay={200}
+                                            >
+                                                <div className="bb-pro-box bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[20px]">
+                                                    {/* Skeleton for Image */}
+                                                    <div className="bb-pro-img overflow-hidden relative border-b-[1px] border-solid border-[#eee] z-[4]">
+                                                        <div className="skeleton w-full h-[300px] bg-gray-200 rounded-t-[20px]" />
+                                                    </div>
+
+                                                    {/* Skeleton for Product Content */}
+                                                    <div className="bb-pro-contact p-[20px]">
+                                                        {/* Skeleton for Subtitle */}
+                                                        <div className="bb-pro-subtitle mb-[8px] flex flex-wrap justify-between">
+                                                            <div className="skeleton w-[50%] h-[16px] bg-gray-200" />
+                                                            <div className="skeleton w-[30%] h-[16px] bg-gray-200" />
+                                                        </div>
+
+                                                        {/* Skeleton for Title */}
+                                                        <div className="bb-pro-title mb-[8px]">
+                                                            <div className="skeleton w-[80%] h-[18px] bg-gray-200" />
+                                                        </div>
+
+                                                        {/* Skeleton for Price */}
+                                                        <div className="bb-price flex flex-wrap justify-between">
+                                                            <div className="skeleton w-[40%] h-[18px] bg-gray-200" />
+                                                            <div className="skeleton w-[20%] h-[18px] bg-gray-200" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <Suspense fallback={<div>Loading...</div>}>
+                                        <ProductSlider products={productData} />
+                                    </Suspense>
+                                )
+                                }
                             </div>
                         </div>
                     </div>
@@ -56,4 +105,4 @@ const DayoftheDeal = () => {
     )
 }
 
-export default DayoftheDeal
+export default DayoftheWeek

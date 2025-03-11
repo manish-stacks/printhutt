@@ -18,7 +18,7 @@ const products = [
   },
   {
     name: 'Couple LED Lamp',
-    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737985193/products/thumbnails/h3lbzoharsjhnhruoyij.png',
+    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1741695836/h3lbzoharsjhnhruoyij_twmise.webp',
     url: '/product-details/couple-name-lamp-rectangle-shape'
   },
   {
@@ -73,7 +73,7 @@ const productsTwo = [
 
 ];
 
-function PersonalisedGifts() {
+function PersonalizedGifts() {
   return (
     <section>
 
@@ -148,9 +148,10 @@ function PersonalisedGifts() {
                     <Image
                       width={300}
                       height={300}
-                      src={product.image}
+                      src={`${product.image}?q=10&blur=30`}
                       alt={product.name}
                       className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                      loading="lazy"
                     />
                   </div>
                   <div className="p-4 text-center">
@@ -172,4 +173,4 @@ function PersonalisedGifts() {
   );
 }
 
-export default PersonalisedGifts;
+export default PersonalizedGifts;

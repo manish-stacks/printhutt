@@ -155,68 +155,59 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                       {/* end mobile only view */}
 
 
+                      {product?.showPrice && (
+                        <div className="bb-single-price-wrap flex justify-between py-[10px]">
+                          <div className="bb-single-price py-[15px]">
+                            <div className="price mb-[8px]">
+                              <h5 className="font-quicksand leading-[1.2] tracking-[0.03rem] text-[20px] font-extrabold text-[#3d4750]">
+                                {product?.price &&
+                                  formatCurrency(
+                                    product.discountType === "percentage"
+                                      ? product.price - (product.price * product.discountPrice) / 100
+                                      : product.price - (product.discountPrice || 0)
+                                  )}
 
-                      <div className="bb-single-price-wrap flex justify-between py-[10px]">
-                        <div className="bb-single-price py-[15px]">
-                          <div className="price mb-[8px]">
-                            <h5 className="font-quicksand leading-[1.2] tracking-[0.03rem] text-[20px] font-extrabold text-[#3d4750]">
-                              {
-                                product?.price &&
-                                  product?.discountType &&
-                                  product?.discountPrice
-                                  ? product.discountType === 'percentage'
-                                    ? formatCurrency(
-                                      product.price -
-                                      (product.price * product.discountPrice) / 100
-                                    )
-                                    : formatCurrency(product.price - product.discountPrice)
-                                  : product.price.toFixed(2)
-                              }{" "}
-                              {
-                                product?.discountPrice > 0 && (
+                                {product?.discountPrice > 0 && (
                                   <span className="text-[#3d4750] text-[20px]">
-                                    -{product?.discountType && product?.discountPrice !== undefined
-                                      ? product.discountType === 'percentage'
-                                        ? `${product?.discountPrice}%`
-                                        : `${product?.discountPrice.toFixed(2)}₹`
-                                      : "N/A"}
+                                    -{product.discountType === "percentage"
+                                      ? `${product.discountPrice}%`
+                                      : `${product.discountPrice.toFixed(2)}₹`}
                                   </span>
-                                )
-                              }
+                                )}
 
-                            </h5>
-                          </div>
-                          {
-                            product?.discountPrice > 0 && (
+
+                              </h5>
+                            </div>
+                            {product?.discountPrice > 0 && (
                               <div className="mrp">
                                 <p className="font-Poppins text-[16px] font-light text-[#686e7d] leading-[28px] tracking-[0.03rem]">
-                                  M.R.P. :{" "}
-                                  <span className="text-[15px] line-through">
-                                    {product?.discountPrice > 0 ? `${product.price.toFixed(2)}` : ''}
-                                  </span>
+                                  M.R.P. : <span className="text-[15px] line-through">{product.price.toFixed(2)}</span>
                                 </p>
                               </div>
                             )}
-                        </div>
-                        <div className="bb-single-price py-[15px]">
-                          <div className="sku mb-[8px]">
-                            <h5 className="font-quicksand text-[18px] font-extrabold leading-[1.2] tracking-[0.03rem] text-[#3d4750]">
-                              SKU#: {product?.sku}
-                            </h5>
-                          </div>
-                          <div className="stock">
-                            <span className="text-[18px] text-[#6c7fd8]">
 
-                              {
-                                product?.stock > 0
-                                  ? `In stock`
-                                  : 'Out of stock'
-                              }
-                            </span>
+                          </div>
+                          <div className="bb-single-price py-[15px]">
+                            <div className="sku mb-[8px]">
+                              <h5 className="font-quicksand text-[18px] font-extrabold leading-[1.2] tracking-[0.03rem] text-[#3d4750]">
+                                SKU#: {product?.sku}
+                              </h5>
+                            </div>
+                            <div className="stock">
+                              <span className="text-[18px] text-[#6c7fd8]">
+
+                                {
+                                  product?.stock > 0
+                                    ? `In stock`
+                                    : 'Out of stock'
+                                }
+                              </span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      
+                      )}
+
+
                       <div className="bb-single-list mb-[30px]">
                         <ul className="my-[-8px] pl-[18px]">
                           <li className="my-[8px] font-Poppins text-[14px] font-light leading-[28px] tracking-[0.03rem] text-[#777] list-disc">

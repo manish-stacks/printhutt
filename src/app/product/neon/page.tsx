@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { NeonText } from '@/components/neon/NeonText';
 import { ColorPicker } from '@/components/neon/ColorPicker';
 import { FontPicker } from '@/components/neon/FontPicker';
@@ -12,6 +12,11 @@ import { styleOptions } from './_data/styles';
 import { previewImages } from './_data/preview-images';
 import { formatCurrency } from '@/helpers/helpers';
 import { toast } from 'react-toastify';
+import { Product } from '@/lib/types/product';
+import { get_product_by_id } from '@/_services/admin/product';
+import { CheckoutData } from '@/lib/types';
+import { useCartStore } from '@/store/useCartStore';
+import html2canvas from 'html2canvas';
 
 export default function NeonPage() {
   const [text, setText] = useState('');
@@ -29,9 +34,25 @@ export default function NeonPage() {
   const [preset, setPreset] = useState(sizePresets);
   const [multiColor, setMultiColor] = useState(false);
   const currentPreview = previewImages.find(img => img.id === selectedPreview);
+  const [product, setProduct] = useState<Product>();
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
+  // const canvasRef = useRef<HTMLCanvasElement>(null);
+  const addToCart = useCartStore(state => state.addToCart);
+  const removeFromCart = useCartStore(state => state.removeFromCart);
 
- 
-  
+  useEffect(() => {
+    (async () => {
+      try {
+        const fetchedProduct = await get_product_by_id("67bef94296ffd7574b647c40");
+        setProduct(fetchedProduct);
+      } catch {
+        console.error("Error fetching product.");
+      }
+    })();
+  }, []);
+
+
+
   const getTextLength = (newText: string) => {
     const textline = newText.split('\n');
     // const calculatedLength = textline.reduce((total, line) => total + line.length, 0);
@@ -39,7 +60,7 @@ export default function NeonPage() {
     setTextLength(calculatedLength);
   };
 
-  
+
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newText = e.target.value;
@@ -94,25 +115,106 @@ export default function NeonPage() {
   }, [textLength, lineHeight, selectedSize, selectedStyle]);
 
 
-  const handleNext = () => {
-    if(!text) {
+  const handleCanvasAction = async () => {
+    try {
+      const previewElement = document.getElementById('preview-section');
+
+      if (!previewElement) {
+        console.error('Preview section not found');
+        return;
+      }
+
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      const canvas = await html2canvas(previewElement, {
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: null,
+        scale: 2,
+        logging: false,
+        onclone: (clonedDoc) => {
+          const clonedCanvas = clonedDoc.querySelector('canvas');
+          const originalCanvas = canvasRef.current;
+          if (clonedCanvas && originalCanvas) {
+            const context = clonedCanvas.getContext('2d');
+            if (context) {
+              context.drawImage(originalCanvas, 0, 0);
+            }
+          }
+        }
+      });
+
+      const finalCanvas = document.createElement('canvas');
+      finalCanvas.width = canvas.width;
+      finalCanvas.height = canvas.height;
+      const ctx = finalCanvas.getContext('2d');
+
+      if (ctx) {
+        ctx.drawImage(canvas, 0, 0);
+        return finalCanvas.toDataURL('image/png');
+      }
+    } catch (error) {
+      console.error('Error during download:', error);
+    }
+  };
+
+
+
+  const handleAddToCart = async () => {
+
+    if (!text) {
       toast.error('Please enter some text');
       return
     }
-    const customData = {
-      text,
-      color: multiColor ? 'multi' : selectedColor.value,
-      font: selectedFont,
-      size: selectedSize.name,
-      style: selectedStyle.name,
-      lineHeight,
-      fontSize,
-      width,
-      height,
-      total,
+    return;
+
+    try {
+      setIsAddingToCart(true);
+      const previewCanvas = await handleCanvasAction();
+      if (previewCanvas && product) {
+
+        const custom_data: CheckoutData = {
+          previewCanvas,
+          text,
+          color: multiColor ? 'multi' : selectedColor.value,
+          font: selectedFont,
+          size: selectedSize.name,
+          style: selectedStyle.name,
+          lineHeight,
+          fontSize,
+          width,
+          height,
+          total,
+        };
+
+        const updatedProduct = {
+          ...product,
+          thumbnail: { ...product.thumbnail, url: previewCanvas },
+          price: selectedThickness.price * 2,
+          custom_data,
+        };
+
+
+
+        //check already cart item
+        const existingItem = existingCartState.items.find(
+          (item) => item._id === product._id
+        );
+        if (existingItem) {
+          removeFromCart(product._id);
+        }
+
+        addToCart(updatedProduct, 1);
+        router.push('/cart');
+        console.log("Product added to cart:", updatedProduct);
+        return;
+      }
+    } catch (error) {
+      console.error("Error while adding to cart:", error);
+    } finally {
+      setIsAddingToCart(false);
     }
 
-    console.log('customData', customData)
   };
 
   return (
@@ -124,6 +226,7 @@ export default function NeonPage() {
             style={{ backgroundImage: `url(${currentPreview?.url})`, backgroundSize: 'cover' }}
           >
             <div
+              id="preview-section"
               className="relative w-[80%] h-[80%]  rounded-lg flex items-center justify-center overflow-hidden"
             >
               <NeonText
@@ -178,9 +281,14 @@ export default function NeonPage() {
 
             <StyleSelector selectedStyle={selectedStyle} onStyleChange={setSelectedStyle} />
             <button
-              onClick={handleNext}
-              className="w-full bg-blue-600 text-white py-4 rounded-lg hover:bg-blue-700 transition-colors text-lg font-semibold">
-              NEXT
+              onClick={handleAddToCart}
+              disabled={isAddingToCart}
+              className={`w-[100%] font-semibold py-3 px-8 rounded-lg shadow-lg ${isAddingToCart
+                ? 'bg-gray-400 cursor-not-allowed'
+                : ' bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 transition-colors'
+                }`}
+            >
+              {isAddingToCart ? 'Adding to Cart...' : `Buy Now -${formatCurrency(total)}`}
             </button>
           </div>
         </div>
