@@ -47,14 +47,14 @@ export async function POST(request: Request) {
             giftwrap_charges: 0,
             transaction_charges: 0,
             total_discount: 0,
-            sub_total: order.totalAmount,
+            sub_total: order.paymentType == 'online' ? order.payAmt : order.totalAmount.discountPrice - order.payAmt,
             length: shipmentDetails.length,
             breadth: shipmentDetails.width,
             height: shipmentDetails.height,
             weight: shipmentDetails.weight,
         });
 
-
+        // console.log(order);
 
 
         const config = {

@@ -9,31 +9,6 @@ interface Props {
   };
 }
 
-export async function getStaticPaths() {
-  return {
-    paths: [],
-    fallback: "blocking",
-  };
-}
-
-export async function getStaticProps({ params }: Props) {
-  const { slug } = await params;
-
-  try {
-    const product = await get_product_by_slug(slug);
-
-    if (!product) {
-      return { notFound: true };
-    }
-
-    return {
-      props: { product },
-      revalidate: 10,
-    };
-  } catch {
-    return { notFound: true };
-  }
-}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {

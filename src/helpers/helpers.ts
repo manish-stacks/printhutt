@@ -32,10 +32,21 @@ export function formatDate(date: string | Date): string {
 }
 
 
+let cachedToken = null;
+
 export async function shiprocketAuth() {
-    const authResponse = await axios.post(`https://apiv2.shiprocket.in/v1/external/auth/login`, {
-        email: process.env.SHIPROCKET_EMAIL,
-        password: process.env.SHIPROCKET_PASSWORD,
-    });
-    return authResponse.data.token;
+    if (cachedToken) {
+        return cachedToken;
+    }
+    try {
+        const authResponse = await axios.post(`https://apiv2.shiprocket.in/v1/external/auth/login`, {
+            email: process.env.SHIPROCKET_EMAIL,
+            password: process.env.SHIPROCKET_PASSWORD,
+        });
+        cachedToken = authResponse.data.token;
+        return cachedToken;
+    } catch (error) {
+        console.error('Error authenticating with Shiprocket:', error);
+        throw error;  
+    }
 }
