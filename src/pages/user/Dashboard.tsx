@@ -147,10 +147,7 @@ const Dashboard = () => {
                 <div className="p-5 rounded-lg shadow-md bg-slate-100">
                   <div className="flex gap-4 md:px-3 md:py-4">
                     <div>
-                      <img
-                        src="https://html.themewin.com/edurcok-preview-tailwind/edurock/assets/images/counter/counter__4.png"
-                        alt="g"
-                      />
+                      <RiNewsFill className="text-3xl text-[#FB285E]" />
                     </div>
                     <div>
                       <p className="text-3xl leading-[1.1] text-slate-600 font-bold font-hind dark:text-blackColor-dark">

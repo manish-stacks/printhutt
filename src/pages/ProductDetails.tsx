@@ -159,7 +159,7 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                         <div className="bb-single-price-wrap flex justify-between py-[10px]">
                           <div className="bb-single-price py-[15px]">
                             <div className="price mb-[8px]">
-                              <h5 className="font-quicksand leading-[1.2] tracking-[0.03rem] text-[20px] font-extrabold text-[#3d4750]">
+                              <h5 className="font-quicksand leading-[1.2] tracking-[0.03rem] text-[20px] font-extrabold text-green-800">
                                 {product?.price &&
                                   formatCurrency(
                                     product.discountType === "percentage"
@@ -169,7 +169,7 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
 
                                 {product?.discountPrice > 0 && (
                                   <span className="text-[#3d4750] text-[20px]">
-                                    -{product.discountType === "percentage"
+                                    - {product.discountType === "percentage"
                                       ? `${product.discountPrice}%`
                                       : `${product.discountPrice.toFixed(2)}₹`}
                                   </span>
@@ -180,7 +180,7 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                             </div>
                             {product?.discountPrice > 0 && (
                               <div className="mrp">
-                                <p className="font-Poppins text-[16px] font-light text-[#686e7d] leading-[28px] tracking-[0.03rem]">
+                                <p className="font-Poppins text-[16px] font-light leading-[28px] tracking-[0.03rem] text-rose-600">
                                   M.R.P. : <span className="text-[15px] line-through">{product.price.toFixed(2)}</span>
                                 </p>
                               </div>
@@ -247,12 +247,17 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                             </span>{" "}
                             {product?.shippingFee || 'Free Shipping'}
                           </li>
-                          <li className="my-[8px] font-Poppins text-[14px] font-light leading-[28px] tracking-[0.03rem] text-[#777] list-disc">
-                            <span className="font-Poppins text-[#777] text-[14px]">
-                              Weight :
-                            </span>{" "}
-                            {product?.weight}g
-                          </li>
+                          {
+                            product?.weight > 0 && (
+                              <li className="my-[8px] font-Poppins text-[14px] font-light leading-[28px] tracking-[0.03rem] text-[#777] list-disc">
+                                <span className="font-Poppins text-[#777] text-[14px]">
+                                  Weight :
+                                </span>{" "}
+                                {product?.weight}g
+                              </li>
+                            )
+                          }
+
                         </ul>
                       </div>
                       {

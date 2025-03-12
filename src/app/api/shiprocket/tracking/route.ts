@@ -1,4 +1,5 @@
 import { shiprocketAuth } from "@/helpers/helpers";
+import Order from "@/models/orderModel";
 import axios from "axios";
 import { NextResponse } from "next/server";
 
@@ -18,9 +19,13 @@ export async function POST(request: Request) {
         };
 
         const response = await axios(config);
+        const shipment = response.data[trackingId]
+        const order = await Order.findOne({ "shipment.trackingId": trackingId });
+        // console.log('shipment',shipment)
+
         // console.log(response.data);
         return NextResponse.json(
-            { message: 'Data fetched successfully', data: response.data },
+            { message: 'Data fetched successfully', shipment, order  },
             { status: 200 }
         );
     } catch (error) {

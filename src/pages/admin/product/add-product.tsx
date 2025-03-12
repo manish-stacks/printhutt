@@ -539,6 +539,18 @@ export default function AddProduct() {
                         placeholder='Discount price' />
                     </div>
                   </div>
+                  <div className="w-4/12 mt-4">
+                    <label className="block font-medium text-gray-700">Total Price</label>
+                    <div className="mt-2">
+                      <input
+                        className="block w-full h-10 rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                        type="number"
+                        name="discountPrice"
+                        id="discountPrice"
+                     
+                        placeholder='Discount price' />
+                    </div>
+                  </div>
                 </div>
 
                 <div className="w-12/12 mt-4">
