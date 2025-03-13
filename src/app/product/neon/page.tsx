@@ -17,6 +17,8 @@ import { get_product_by_id } from '@/_services/admin/product';
 import { CheckoutData } from '@/lib/types';
 import { useCartStore } from '@/store/useCartStore';
 import html2canvas from 'html2canvas';
+import { useRouter } from 'next/navigation';
+
 
 export default function NeonPage() {
   const [text, setText] = useState('');
@@ -36,14 +38,15 @@ export default function NeonPage() {
   const currentPreview = previewImages.find(img => img.id === selectedPreview);
   const [product, setProduct] = useState<Product>();
   const [isAddingToCart, setIsAddingToCart] = useState(false);
-  // const canvasRef = useRef<HTMLCanvasElement>(null);
+  const router = useRouter();
   const addToCart = useCartStore(state => state.addToCart);
   const removeFromCart = useCartStore(state => state.removeFromCart);
+ const existingCartState = useCartStore();
 
   useEffect(() => {
     (async () => {
       try {
-        const fetchedProduct = await get_product_by_id("67bef94296ffd7574b647c40");
+        const fetchedProduct = await get_product_by_id("67cee1becd0dd15f69fc92bb");
         setProduct(fetchedProduct);
       } catch {
         console.error("Error fetching product.");
@@ -118,6 +121,8 @@ export default function NeonPage() {
   const handleCanvasAction = async () => {
     try {
       const previewElement = document.getElementById('preview-section');
+      // if(!previewElement) return
+      // previewElement.style.backgroundColor = '#FFF';
 
       if (!previewElement) {
         console.error('Preview section not found');
@@ -132,16 +137,6 @@ export default function NeonPage() {
         backgroundColor: null,
         scale: 2,
         logging: false,
-        onclone: (clonedDoc) => {
-          const clonedCanvas = clonedDoc.querySelector('canvas');
-          const originalCanvas = canvasRef.current;
-          if (clonedCanvas && originalCanvas) {
-            const context = clonedCanvas.getContext('2d');
-            if (context) {
-              context.drawImage(originalCanvas, 0, 0);
-            }
-          }
-        }
       });
 
       const finalCanvas = document.createElement('canvas');
@@ -151,7 +146,12 @@ export default function NeonPage() {
 
       if (ctx) {
         ctx.drawImage(canvas, 0, 0);
-        return finalCanvas.toDataURL('image/png');
+        const dataURL = finalCanvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.href = dataURL;
+        link.download = 'preview.png';
+        link.click();
+        return dataURL;
       }
     } catch (error) {
       console.error('Error during download:', error);
@@ -166,7 +166,7 @@ export default function NeonPage() {
       toast.error('Please enter some text');
       return
     }
-    return;
+   
 
     try {
       setIsAddingToCart(true);
@@ -190,12 +190,15 @@ export default function NeonPage() {
         const updatedProduct = {
           ...product,
           thumbnail: { ...product.thumbnail, url: previewCanvas },
-          price: selectedThickness.price * 2,
+          price: total,
           custom_data,
         };
 
 
 
+        // console.log('updatedProduct', updatedProduct);
+        // console.log('product', product);
+        // return
         //check already cart item
         const existingItem = existingCartState.items.find(
           (item) => item._id === product._id

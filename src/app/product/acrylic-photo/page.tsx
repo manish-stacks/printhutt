@@ -454,82 +454,98 @@ export default function AcrylicPhoto() {
                       </div>
                     </div>
 
-                    <div>
-                      <div className="text-center mb-1 flex justify-center gap-2">
-                        <p className="mb-2">Select Design</p>
-                        <div className="text-center mb-1">
+                    <div className="p-4">
+                      {/* Design Selection */}
+                      <div className="text-center mb-4">
+                        <p className="mb-2 text-lg font-medium">Select Design</p>
+                        <div className="flex justify-center gap-2">
                           <button
                             onClick={() => handleDesignChange('frame')}
-                            className={`generatedRadios ${design === 'frame' ? 'selected' : 'btn-outline-primary'}`}
+                            className={`px-4 py-2 rounded-lg text-sm sm:text-base font-semibold transition 
+                    duration-300 ease-in-out 
+                    ${design === 'frame' ? 'bg-blue-500 text-white shadow-md' : 'bg-white text-blue-500 border border-blue-500'}
+                    hover:bg-blue-600 hover:text-white active:scale-95`}
                           >
                             Frame
                           </button>
                           <button
                             onClick={() => handleDesignChange('cutout')}
-                            className={`generatedRadios ${design === 'cutout' ? 'selected' : 'btn-outline-primary'}`}
+                            className={`px-4 py-2 rounded-lg text-sm sm:text-base font-semibold transition 
+                    duration-300 ease-in-out 
+                    ${design === 'cutout' ? 'bg-blue-500 text-white shadow-md' : 'bg-white text-blue-500 border border-blue-500'}
+                    hover:bg-blue-600 hover:text-white active:scale-95`}
                           >
                             Cutout
                           </button>
                         </div>
-                        <div className="text-center mb-1">
-                          <div className="flex justify-center gap-2">
-                            <button
-                              onClick={() => handleOrientationChange('portrait')}
-                              className={`generatedRadios ${orientation === 'portrait' ? 'selected' : 'btn-outline-primary'}`}
-                            >
-                              Portrait
-                            </button>
-                            <button
-                              onClick={() => handleOrientationChange('landscape')}
-                              className={`generatedRadios ${orientation === 'landscape' ? 'selected' : 'btn-outline-primary'}`}
-                            >
-                              Landscape
-                            </button>
-                          </div>
+                      </div>
+
+                      {/* Orientation Selection */}
+                      <div className="text-center mb-4">
+                        <p className="mb-2 text-lg font-medium">Select Orientation</p>
+                        <div className="flex justify-center gap-2">
+                          <button
+                            onClick={() => handleOrientationChange('portrait')}
+                            className={`px-4 py-2 rounded-lg text-sm sm:text-base font-semibold transition 
+                    duration-300 ease-in-out 
+                    ${orientation === 'portrait' ? 'bg-green-500 text-white shadow-md' : 'bg-white text-green-500 border border-green-500'}
+                    hover:bg-green-600 hover:text-white active:scale-95`}
+                          >
+                            Portrait
+                          </button>
+                          <button
+                            onClick={() => handleOrientationChange('landscape')}
+                            className={`px-4 py-2 rounded-lg text-sm sm:text-base font-semibold transition 
+                    duration-300 ease-in-out 
+                    ${orientation === 'landscape' ? 'bg-green-500 text-white shadow-md' : 'bg-white text-green-500 border border-green-500'}
+                    hover:bg-green-600 hover:text-white active:scale-95`}
+                          >
+                            Landscape
+                          </button>
                         </div>
                       </div>
 
-
+                      {/* Size Selection */}
                       <div className="text-center mb-6">
-                        <div className='flex justify-center gap-2'>
-                          <p className='mt-1'>Sizes in (inches)</p>
-                          <div className="flex flex-wrap justify-center gap-2">
-                            {BUTTON_VALUES_AND_PRICES.map((option) => (
+                        <p className="text-lg font-medium">Sizes (inches)</p>
+                        <div className="flex flex-wrap justify-center gap-2">
+                          {BUTTON_VALUES_AND_PRICES.map((option) => (
+                            <button
+                              key={option.size}
+                              onClick={() => handleSizeChange(option.size)}
+                              className={`px-4 py-2 rounded-lg text-sm sm:text-base font-semibold transition 
+                      duration-300 ease-in-out 
+                      ${selectedSize === option.size ? 'bg-purple-500 text-white shadow-md' : 'bg-white text-purple-500 border border-purple-500'}
+                      hover:bg-purple-600 hover:text-white active:scale-95`}
+                            >
+                              {option.size}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Thickness Selection */}
+                      <div className="text-center">
+                        <p className="text-lg font-medium">Thickness (mm)</p>
+                        <div className="flex flex-wrap justify-center gap-2">
+                          {BUTTON_VALUES_AND_PRICES
+                            .find((option) => option.size === selectedSize)
+                            ?.thickness.map((thickness) => (
                               <button
-                                key={option.size}
-                                onClick={() => handleSizeChange(option.size)}
-                                className={`generatedRadios ${selectedSize === option.size
-                                  ? 'selected text-white'
-                                  : 'btn-outline-primary'
-                                  }`}
+                                key={thickness.value}
+                                onClick={() => handleThicknessChange(thickness)}
+                                className={`px-4 py-2 rounded-lg text-sm sm:text-base font-semibold transition 
+                        duration-300 ease-in-out 
+                        ${selectedThickness.value === thickness.value ? 'bg-red-500 text-white shadow-md' : 'bg-white text-red-500 border border-red-500'}
+                        hover:bg-red-600 hover:text-white active:scale-95`}
                               >
-                                {option.size}
+                                {thickness.value}
                               </button>
                             ))}
-                          </div>
-                        </div>
-
-                        <div className="mt-1 flex justify-center gap-2">
-                          <p className='mt-1'>Thickness in (mm)</p>
-                          <div className="flex flex-wrap justify-center gap-2">
-                            {BUTTON_VALUES_AND_PRICES
-                              .find((option) => option.size === selectedSize)
-                              ?.thickness.map((thickness) => (
-                                <button
-                                  key={thickness.value}
-                                  onClick={() => handleThicknessChange(thickness)}
-                                  className={`generatedRadios ${selectedThickness.value === thickness.value
-                                    ? 'selected text-white'
-                                    : 'btn-outline-primary'
-                                    }`}
-                                >
-                                  {thickness.value}
-                                </button>
-                              ))}
-                          </div>
                         </div>
                       </div>
                     </div>
+
 
                     <div className="text-center">
                       <button

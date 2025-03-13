@@ -102,42 +102,44 @@ const Category = ({ slug }: PropsInterface) => {
                                                 </div>
                                             ))}
                                         </div>
-                                    ) : (
-                                        categories.length >= 2 &&
-                                        categories.map((category, index) => (
-                                            <Swiper {...settings} className="category-slider">
-                                                <SwiperSlide key={category._id}>
-                                                    <div className="pr-2 pl-2">
-                                                        <div
-                                                            className={`bb-category-box p-[30px] rounded-[20px] flex flex-col items-center text-center max-[1399px]:p-[20px] category-items-${index + 1} ${(index % 2 === 0 ? 'bg-[#f4f1fe]' : 'bg-[#fef1f1]')}`}
-                                                            data-aos-duration={1000}
-                                                            data-aos-delay={(index + 1) * 200}
-                                                        >
-                                                            <div className="category-image mb-[12px] flex items-center justify-center">
-                                                                <img
-                                                                    src={category?.image?.url}
-                                                                    alt={category?.name}
-                                                                    className="w-[50px] h-[50px] max-[1399px]:h-[65px] max-[1399px]:w-[65px] max-[1199px]:h-[50px] max-[1199px]:w-[50px] rounded-full"
-                                                                />
-                                                            </div>
-                                                            <div className="category-sub-contact">
-                                                                <h5 className="mb-[2px] text-[16px] font-quicksand text-[#3d4750] font-semibold tracking-[0.03rem] leading-[1.2]">
-                                                                    <Link
-                                                                        href={`/category/${slug}/${category?.slug}`}
-                                                                        className="font-Poppins text-[16px] font-medium leading-[1.2] tracking-[0.03rem] text-[#3d4750] capitalize"
-                                                                    >
-                                                                        {category?.name}
-                                                                    </Link>
-                                                                </h5>
-                                                                <p className="font-Poppins text-[13px] text-[#686e7d] leading-[25px] font-light tracking-[0.03rem]">
-                                                                    {category?.productCount} items
-                                                                </p>
+                                    ) : 
+                                        categories.length >= 2 && (
+                                        <Swiper {...settings} className="category-slider">
+                                        {
+                                            categories.map((category, index) => (
+                                                    <SwiperSlide key={index}>
+                                                        <div className="pr-2 pl-2">
+                                                            <div
+                                                                className={`bb-category-box p-[30px] rounded-[20px] flex flex-col items-center text-center max-[1399px]:p-[20px] category-items-${index + 1} ${(index % 2 === 0 ? 'bg-[#f4f1fe]' : 'bg-[#fef1f1]')}`}
+                                                                data-aos-duration={1000}
+                                                                data-aos-delay={(index + 1) * 200}
+                                                            >
+                                                                <div className="category-image mb-[12px] flex items-center justify-center">
+                                                                    <img
+                                                                        src={category?.image?.url}
+                                                                        alt={category?.name}
+                                                                        className="w-[50px] h-[50px] max-[1399px]:h-[65px] max-[1399px]:w-[65px] max-[1199px]:h-[50px] max-[1199px]:w-[50px] rounded-full"
+                                                                    />
+                                                                </div>
+                                                                <div className="category-sub-contact">
+                                                                    <h5 className="mb-[2px] text-[16px] font-quicksand text-[#3d4750] font-semibold tracking-[0.03rem] leading-[1.2]">
+                                                                        <Link
+                                                                            href={`/category/${slug}/${category?.slug}`}
+                                                                            className="font-Poppins text-[16px] font-medium leading-[1.2] tracking-[0.03rem] text-[#3d4750] capitalize"
+                                                                        >
+                                                                            {category?.name}
+                                                                        </Link>
+                                                                    </h5>
+                                                                    <p className="font-Poppins text-[13px] text-[#686e7d] leading-[25px] font-light tracking-[0.03rem]">
+                                                                        {category?.productCount} items
+                                                                    </p>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </SwiperSlide>
-                                            </Swiper>
-                                        ))
+                                                    </SwiperSlide>
+                                            ))
+                                        }
+                                         </Swiper>
                                     )}
 
                             </div>

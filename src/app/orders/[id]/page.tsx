@@ -127,12 +127,7 @@ export default function OrderDetailsPage() {
                                                         </p>
                                                     </div>
                                                     <p className="font-medium">
-                                                        {/* <span className='text-[15px] line-through'>{item.price.toFixed(2)}</span>{" "} */}
-                                                        {/* {
-                                                            formatCurrency((item.discountType === 'percentage' ? (
-                                                                item.price - (item.price * item.discountPrice) / 100
-                                                            ) : item.price - item.discountPrice) * item.quantity)
-                                                        } */}
+                                                       
                                                         {formatCurrency(item.price)}
                                                     </p>
                                                 </div>

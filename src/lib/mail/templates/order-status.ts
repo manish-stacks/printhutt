@@ -1,3 +1,4 @@
+import { formatCurrency } from "@/helpers/helpers";
 import { OrderDetails } from "@/lib/types";
 
 export function generateOrderStatusEmail(order: OrderDetails): string {
@@ -42,7 +43,7 @@ export function generateOrderStatusEmail(order: OrderDetails): string {
 							</tr>
 						`).join('')}
 					</table>
-					<p><strong>Total: ₹${order.totalAmount.discountPrice.toFixed(2)}</strong></p>
+					<p><strong>Total: ₹${formatCurrency(order.totalAmount.discountPrice)}</strong></p>
 				</div>
 				<div class="footer">
 					<p>Thank you for shopping with us!</p>
@@ -97,7 +98,7 @@ export function getShippedEmailTemplate(order: OrderDetails): string {
 							</tr>
 						`).join('')}
 					</table>
-					<p><strong>Total: ₹${order.totalAmount.discountPrice.toFixed(2)}</strong></p>
+					<p><strong>Total: ₹${formatCurrency(order.totalAmount.discountPrice)}</strong></p>
 				</div>
 				<div class="footer">
 					<p>Thank you for shopping with us!</p>

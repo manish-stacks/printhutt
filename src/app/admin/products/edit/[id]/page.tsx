@@ -57,7 +57,7 @@ interface ProductFormData {
   new: boolean;
   isCustomize: boolean;
   images: ImageType[];
-  thumbnail: File | string; 
+  thumbnail: File | string;
   meta_title: string;
   meta_keywords: string;
   meta_description: string;
@@ -66,6 +66,7 @@ interface ProductFormData {
   isVarientStatus: boolean;
   varient: ProductVariant[];
   customizeLink: string;
+  totalPrice: number;
 }
 
 
@@ -109,6 +110,7 @@ const initialFormData: ProductFormData = {
   isVarientStatus: false,
   varient: [],
   customizeLink: '',
+  totalPrice: 0
 };
 interface UpdateProductResponse {
   success: boolean;
@@ -137,6 +139,14 @@ export default function EditProduct() {
 
 
 
+  const calculateTotalPrice = (price: number, discountType: string, discountPrice: number) => {
+    if (discountType === 'percentage') {
+      return price - (price * discountPrice / 100);
+    } else if (discountType === 'fixed') {
+      return price - discountPrice;
+    }
+    return price;
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -166,7 +176,12 @@ export default function EditProduct() {
           ...prevData,
           meta_description: productData.meta.meta_description,
           meta_keywords: productData.meta.meta_keywords,
-          meta_title: productData.meta.meta_title
+          meta_title: productData.meta.meta_title,
+          totalPrice: calculateTotalPrice(
+            Number(productData.price),
+            productData.discountType,
+            Number(productData.discountPrice)
+          )
         }));
 
         setImage(productData.thumbnail.url);
@@ -215,7 +230,13 @@ export default function EditProduct() {
         updatedData.shippingFee = shippingfilter?.shippingFee ? shippingfilter?.shippingFee : 0;
       }
 
-
+      if (name === 'price' || name === 'discountType' || name === 'discountPrice') {
+        updatedData.totalPrice = calculateTotalPrice(
+          Number(updatedData.price),
+          updatedData.discountType,
+          Number(updatedData.discountPrice)
+        );
+      }
       return updatedData;
     });
 
@@ -615,6 +636,20 @@ export default function EditProduct() {
                         value={formData.discountPrice || ''}
                         onChange={handleInputChange}
                         placeholder='Discount price' />
+                    </div>
+                  </div>
+                  <div className="w-4/12 mt-4">
+                    <label className="block font-medium text-gray-700">Total Price</label>
+                    <div className="mt-2">
+                      <input
+                        className="block w-full h-10 rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                        type="number"
+                        name="totalPrice"
+                        id="totalPrice"
+                        value={formData.totalPrice || ''}
+                        readOnly
+                        placeholder='Total price'
+                      />
                     </div>
                   </div>
                 </div>
@@ -1041,7 +1076,7 @@ export default function EditProduct() {
             ))}
             <div className="bg-white text-black p-6 rounded-lg space-x-3 shadow-md shadow-black-300">
               <label className="block font-medium text-gray-700 ml-3">Offers On</label>
-             
+
               <Select
                 options={options}
                 isMulti
@@ -1074,7 +1109,7 @@ export default function EditProduct() {
                   categories && categories.length === 0 ? (
                     <option>No data found</option>
                   ) :
-                  categories && categories.map((category) => (
+                    categories && categories.map((category) => (
                       <option key={category._id} value={category._id}>{category.name.toUpperCase()}</option>
                     ))
                 }

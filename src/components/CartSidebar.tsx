@@ -178,7 +178,7 @@ const CartSidebar = ({ onClose }) => {
                                 : "0"
                               }
                             </span>
-                            <span className="text-[15px] line-through">{item.price.toFixed(2)}</span>
+                            <span className="text-[15px] line-through">{formatCurrency(item.price)}</span>
                           </span>
 
                           <div className="qty-plus-minus h-[28px] w-[85px] py-[7px] border-[1px] border-solid border-[#eee] overflow-hidden relative flex items-center justify-between bg-[#fff] rounded-[10px]">
@@ -207,7 +207,7 @@ const CartSidebar = ({ onClose }) => {
                           Sub-Total :
                         </td>
                         <td className="price text-[#777] text-right p-[.5rem]">
-                          <span className="text-[15px] line-through">{totalPrice.totalPrice.toFixed(2)}</span> ₹{totalPrice.discountPrice.toFixed(2)}
+                          <span className="text-[15px] line-through">{formatCurrency(totalPrice.totalPrice)}</span> {formatCurrency(totalPrice.discountPrice)}
                         </td>
                       </tr>
                       <tr>
@@ -215,7 +215,7 @@ const CartSidebar = ({ onClose }) => {
                           Shipping :
                         </td>
                         <td className="price text-[#777] text-right p-[.5rem]">
-                          {totalPrice.shippingTotal > 0 ? `₹${totalPrice.shippingTotal.toFixed(2)}` : 'Free'}
+                          {totalPrice.shippingTotal > 0 ? `${formatCurrency(totalPrice.shippingTotal)}` : 'Free'}
                         </td>
                       </tr>
                       <tr>
@@ -223,7 +223,7 @@ const CartSidebar = ({ onClose }) => {
                           Total :
                         </td>
                         <td className="price text-[#777] text-right p-[.5rem]">
-                          <span className="text-[15px] line-through">{(totalPrice.totalPrice + totalPrice.shippingTotal).toFixed(2)}</span> ₹{(totalPrice.discountPrice + totalPrice.shippingTotal).toFixed(2)}
+                          <span className="text-[15px] line-through">{formatCurrency(totalPrice.totalPrice + totalPrice.shippingTotal)}</span> {formatCurrency(totalPrice.discountPrice + totalPrice.shippingTotal)}
                         </td>
                       </tr>
                     </tbody>

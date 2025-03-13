@@ -101,6 +101,79 @@ const CustomizeOderModel = ({ item }) => {
                             </div>
                         )
                     }
+
+
+
+
+
+                    {
+                        item?.text && (
+                            <div className="flex items-center justify-between  border-b last:border-0">
+                                <p className="font-semibold">Text</p>
+                                <p>{item?.text}</p>
+                            </div>
+                        )
+                    }
+
+                    {
+                        item?.color && (
+                            <div className="flex items-center justify-between  border-b last:border-0">
+                                <p className="font-semibold">Color</p>
+                                <p>{item?.color}</p>
+                            </div>
+                        )
+                    }
+                    {
+                        item?.font && (
+                            <div className="flex items-center justify-between  border-b last:border-0">
+                                <p className="font-semibold">Font</p>
+                                <p>{item?.font}</p>
+                            </div>
+                        )
+                    }
+                    {
+                        item?.size && (
+                            <div className="flex items-center justify-between  border-b last:border-0">
+                                <p className="font-semibold">Size</p>
+                                <p>{item?.size}</p>
+                            </div>
+                        )
+                    }
+                    {
+                        item?.style && (
+                            <div className="flex items-center justify-between  border-b last:border-0">
+                                <p className="font-semibold">Style</p>
+                                <p>{item?.style}</p>
+                            </div>
+                        )
+                    }
+                    {
+                        item?.lineHeight && (
+                            <div className="flex items-center justify-between  border-b last:border-0">
+                                <p className="font-semibold">lineHeight</p>
+                                <p>{item?.lineHeight}</p>
+                            </div>
+                        )
+                    }
+
+                    {
+                        item?.fontSize && (
+                            <div className="flex items-center justify-between  border-b last:border-0">
+                                <p className="font-semibold">fontSize</p>
+                                <p>{item?.fontSize}</p>
+                            </div>
+                        )
+                    }
+
+                    {
+                        item?.width && (
+                            <div className="flex items-center justify-between  border-b last:border-0">
+                                <p className="font-semibold">Box Size</p>
+                                <p>{item?.width}" x {item?.height}"</p>
+                            </div>
+                        )
+                    }
+
                     {/* customize Acrylic  design end    */}
 
 

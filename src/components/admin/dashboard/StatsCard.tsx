@@ -23,7 +23,7 @@ export function StatsCard({ title, value, trend, Icon, color }: StatsCardProps) 
       </div>
       <div className="mt-4">
         <span className={`text-sm ${trend >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-          {trend >= 0 ? '+' : ''}{trend}%
+          {trend >= 0 ? '+' : ''}{trend}
         </span>
         <span className="text-sm text-gray-600"> from last month</span>
       </div>

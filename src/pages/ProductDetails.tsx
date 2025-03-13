@@ -171,7 +171,7 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                                   <span className="text-[#3d4750] text-[20px]">
                                     - {product.discountType === "percentage"
                                       ? `${product.discountPrice}%`
-                                      : `${product.discountPrice.toFixed(2)}₹`}
+                                      : `${formatCurrency(product.discountPrice)}`}
                                   </span>
                                 )}
 

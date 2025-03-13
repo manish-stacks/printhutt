@@ -1,8 +1,8 @@
 import AdminDashboard from "@/pages/admin/Dashboard"
 
 export const metadata = {
-  title: 'dashboard',
-  description: 'dashboard-page',
+  title: 'Admin-dashboard',
+  description: 'Dashboard-page',
 }
 
 const dashboardPage = () => {

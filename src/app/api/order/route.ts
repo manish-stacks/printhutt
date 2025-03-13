@@ -135,8 +135,8 @@ export async function POST(request: NextRequest) {
       },
       payAmt:
         body.paymentMethod === "online"
-          ? body.payAmt.toFixed(2)
-          : (body.payAmt * 0.2).toFixed(2),
+          ? Number(body.payAmt)
+          : Number(body.payAmt * 0.2),
       paymentType: body.paymentMethod,
       payment: {
         method: body.paymentMethod,

@@ -25,7 +25,7 @@ const Cart = () => {
     toast.info('Updated quantity');
   };
 
-  
+
 
 
   useEffect(() => {
@@ -66,7 +66,7 @@ const Cart = () => {
 
   }
 
-
+  // console.log(totalPrice.discountPrice)
 
   return (
     <>
@@ -137,7 +137,7 @@ const Cart = () => {
                                     (item.price * item.discountPrice) / 100
                                   )
                                   : formatCurrency(item.price - item.discountPrice)
-                                : "0"
+                                : formatCurrency(item.price)
                               }
                             </span>
                           </td>
@@ -216,16 +216,21 @@ const Cart = () => {
                             Free
                           </span>
                         </li>
-                        <li className="mb-[12px] flex justify-between leading-[28px]">
-                          <span className="text-left font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] text-[#686e7d] font-medium">
-                            Discount
-                          </span>
-                          <span className="text-right font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] text-[#686e7d] font-semibold">
-                            <a className="bb-coupon drop-coupon font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] font-medium text-[#ff0000] cursor-pointer">
-                              -{formatCurrency(totalPrice.totalPrice - totalPrice.discountPrice)}
-                            </a>
-                          </span>
-                        </li>
+                        {
+                          Number(totalPrice.totalPrice - totalPrice.discountPrice) != 0 && (
+                            <li className="mb-[12px] flex justify-between leading-[28px]">
+                              <span className="text-left font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] text-[#686e7d] font-medium">
+                                Discount
+                              </span>
+                              <span className="text-right font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] text-[#686e7d] font-semibold">
+                                <a className="bb-coupon drop-coupon font-Poppins leading-[28px] tracking-[0.03rem] text-[14px] font-medium text-[#ff0000] cursor-pointer">
+                                  -{formatCurrency(totalPrice.totalPrice - totalPrice.discountPrice)}
+                                </a>
+                              </span>
+                            </li>
+                          )
+                        }
+
 
                       </ul>
                     </div>

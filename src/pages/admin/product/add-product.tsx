@@ -68,9 +68,18 @@ const initialFormData: ProductFormData = {
   offers: [],
   isVarientStatus: false,
   varient: [],
-  customizeLink: ''
+  customizeLink: '',
+  totalPrice: 0
 };
 
+const calculateTotalPrice = (price: number, discountType: string, discountPrice: number) => {
+  if (discountType === 'percentage') {
+    return price - (price * discountPrice / 100);
+  } else if (discountType === 'fixed') {
+    return price - discountPrice;
+  }
+  return price;
+};
 
 export default function AddProduct() {
 
@@ -144,6 +153,14 @@ export default function AddProduct() {
       if (name === 'shippingInformation') {
         const shippingfilter = shippings.find(ship => ship._id === value);
         updatedData.shippingFee = shippingfilter?.shippingFee ? shippingfilter?.shippingFee : 0;
+      }
+
+      if (name === 'price' || name === 'discountType' || name === 'discountPrice') {
+        updatedData.totalPrice = calculateTotalPrice(
+          Number(updatedData.price),
+          updatedData.discountType,
+          Number(updatedData.discountPrice)
+        );
       }
 
       return updatedData;
@@ -497,7 +514,7 @@ export default function AddProduct() {
                 <label className="block text-sm font-medium text-gray-900">Product Data *</label>
                 <div className='flex justify-between gap-3'>
                   <div className="w-4/12 mt-4">
-                    <label className="block font-medium text-gray-700">Product Price</label>
+                    <label className="block font-medium text-gray-700">MRP</label>
                     <div className="mt-2">
                       <input
                         className="block w-full h-10 rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
@@ -545,10 +562,12 @@ export default function AddProduct() {
                       <input
                         className="block w-full h-10 rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                         type="number"
-                        name="discountPrice"
-                        id="discountPrice"
-                     
-                        placeholder='Discount price' />
+                        name="totalPrice"
+                        id="totalPrice"
+                        value={formData.totalPrice || ''}
+                        readOnly
+                        placeholder='Total price'
+                      />
                     </div>
                   </div>
                 </div>

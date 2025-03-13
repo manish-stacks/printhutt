@@ -207,7 +207,7 @@ const Checkout = () => {
       payAmt: totalPrice.discountPrice
     };
 
-    // console.log(order)
+    console.log(order)
     try {
       setIsSubmitting(true);
       const response: { order: { _id: string } } = await create_a_new_order(order);

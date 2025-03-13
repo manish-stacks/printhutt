@@ -67,7 +67,7 @@ const ProductCardTwo = ({ product }: PopupProps) => {
                                 Off {
                                     product.discountType === 'percentage'
                                         ? `${product?.discountPrice}%`
-                                        : `${product?.discountPrice.toFixed(2)}₹`
+                                        : `${formatCurrency(product?.discountPrice)}`
                                 }
                             </span>
                         )}
