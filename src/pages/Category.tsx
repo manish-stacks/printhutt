@@ -11,15 +11,15 @@ import Link from 'next/link';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+
 interface PropsInterface {
     slug: string;
 }
-const Category = ({ slug }: PropsInterface) => {
 
+const Category = ({ slug }: PropsInterface) => {
     const [categories, setCategoriesData] = useState([]);
     const [products, setProductData] = useState([]);
-    const [loading, setLoadinng] = useState(true);
-
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         (async () => {
@@ -33,10 +33,10 @@ const Category = ({ slug }: PropsInterface) => {
             } catch (error) {
                 console.error("Error fetching data:", error);
             } finally {
-                setLoadinng(false);
+                setLoading(false);
             }
         })();
-    }, []);
+    }, [slug]);
 
     const settings = {
         slidesPerView: 6,
@@ -72,16 +72,13 @@ const Category = ({ slug }: PropsInterface) => {
 
     return (
         <>
-
-            <Breadcrumb title={slug?.toLocaleUpperCase()} />
-
+            <Breadcrumb title={slug?.toUpperCase()} />
             {/* Category section */}
             <section className="section-category pt-[50px] max-[1199px]:pt-[35px] mb-[24px]">
                 <div className="flex flex-wrap justify-between relative items-center mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">
                     <div className="flex flex-wrap w-full">
                         <div className="w-full px-[12px]">
                             <div className="bb-category-6-colum">
-
                                 {
                                     loading ? (
                                         <div className='flex'>
@@ -92,7 +89,6 @@ const Category = ({ slug }: PropsInterface) => {
                                                         <div className="category-image mb-[12px]">
                                                             <div className="skeleton w-[50px] h-[50px] max-[1399px]:h-[65px] max-[1399px]:w-[65px] max-[1199px]:h-[50px] max-[1199px]:w-[50px] rounded-md bg-gray-200" />
                                                         </div>
-
                                                         {/* Skeleton for Text */}
                                                         <div className="category-sub-contact w-full">
                                                             <div className="skeleton w-[70%] h-[16px] bg-gray-200 mx-auto mb-[8px]" />
@@ -141,7 +137,6 @@ const Category = ({ slug }: PropsInterface) => {
                                         }
                                          </Swiper>
                                     )}
-
                             </div>
                         </div>
                     </div>
@@ -151,7 +146,6 @@ const Category = ({ slug }: PropsInterface) => {
             <section className="section-shop pb-[50px] max-[1199px]:pb-[35px]">
                 <div className="flex flex-wrap justify-between relative items-center mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">
                     <div className="flex flex-wrap w-full px-[12px]">
-
                         <div className="w-full">
                             <div className="bb-shop-pro-inner">
                                 <div className="flex flex-wrap mx-[-12px] mb-[-24px]">
@@ -172,7 +166,6 @@ const Category = ({ slug }: PropsInterface) => {
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
                                         </div>
                                     </div>
@@ -191,7 +184,6 @@ const Category = ({ slug }: PropsInterface) => {
                                                         <div className="bb-pro-img overflow-hidden relative border-b-[1px] border-solid border-[#eee] z-[4]">
                                                             <div className="skeleton w-full h-[300px] bg-gray-200 rounded-t-[20px]" />
                                                         </div>
-
                                                         {/* Skeleton for Product Content */}
                                                         <div className="bb-pro-contact p-[20px]">
                                                             {/* Skeleton for Subtitle */}
@@ -199,12 +191,10 @@ const Category = ({ slug }: PropsInterface) => {
                                                                 <div className="skeleton w-[50%] h-[16px] bg-gray-200" />
                                                                 <div className="skeleton w-[30%] h-[16px] bg-gray-200" />
                                                             </div>
-
                                                             {/* Skeleton for Title */}
                                                             <div className="bb-pro-title mb-[8px]">
                                                                 <div className="skeleton w-[80%] h-[18px] bg-gray-200" />
                                                             </div>
-
                                                             {/* Skeleton for Price */}
                                                             <div className="bb-price flex flex-wrap justify-between">
                                                                 <div className="skeleton w-[40%] h-[18px] bg-gray-200" />
@@ -219,15 +209,12 @@ const Category = ({ slug }: PropsInterface) => {
                                                 <div
                                                     key={index}
                                                     className="min-[1200px]:w-[25%] min-[768px]:w-[33.33%] w-[50%] max-[480px]:w-[50%] px-[12px] mb-[24px] "
-
                                                 >
                                                     <ProductCardThree product={product} />
                                                 </div>
                                             ))
                                         )
                                     }
-
-
                                 </div>
                             </div>
                         </div>

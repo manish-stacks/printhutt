@@ -46,8 +46,9 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
   const onchangeVarient = (id: string) => {
     setActiveVarient(id)
     const varient = product?.varient.find(item => item._id === id);
-    product.price = varient?.price || 0
-    // console.log(varient);
+    if (product && varient) {
+      product.price = varient.price || 0;
+    }
   }
   const handleQuantityChange = (change: number) => {
     const newQuantity = Math.max(1, quantity + change);
@@ -61,7 +62,8 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
 
   useEffect(() => {
     useQuickStore.setState({ isOpen: false });
-  })
+  }, [])
+
 
   return (
     <>
@@ -115,7 +117,7 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                             product?.isCustomize ?
                               (
                                 <Link
-                                  href={product?.customizeLink}
+                                  href={product?.customizeLink || '#'}
                                   className="bb-btn-2 transition-all duration-[0.3s] ease-in-out h-[40px] flex font-Poppins leading-[28px] tracking-[0.03rem] py-[6px] px-[25px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
                                 >
                                   Customize & Buy
@@ -304,47 +306,41 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                         }
                         <div className="buttons m-[2px]">
                           {
-                            product?.isCustomize ?
-                              (
-                                <Link
-                                  href={product?.customizeLink}
+                            product?.isCustomize ? (
+                              <Link
+                                href={product?.customizeLink || '#'}
+                                className="bb-btn-2 transition-all duration-[0.3s] ease-in-out h-[40px] flex font-Poppins leading-[28px] tracking-[0.03rem] py-[6px] px-[25px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
+                              >
+                                Customize & Buy
+                              </Link>
+                            ) : (
+                              item.quantity > 0 ? (
+                                <button
+                                  onClick={() => viwCart()}
                                   className="bb-btn-2 transition-all duration-[0.3s] ease-in-out h-[40px] flex font-Poppins leading-[28px] tracking-[0.03rem] py-[6px] px-[25px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
                                 >
-                                  Customize & Buy
-                                </Link>
+                                  View Cart
+                                </button>
                               ) : (
-                                item.quantity > 0 ? (
-                                  <button
-                                    onClick={() => viwCart()}
-                                    className="bb-btn-2 transition-all duration-[0.3s] ease-in-out h-[40px] flex font-Poppins leading-[28px] tracking-[0.03rem] py-[6px] px-[25px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
-                                  >
-                                    View Cart
-                                  </button>
-                                ) : (
-                                  <button
-                                    onClick={() => handleAddToCart()}
-                                    className="bb-btn-2 transition-all duration-[0.3s] ease-in-out h-[40px] flex font-Poppins leading-[28px] tracking-[0.03rem] py-[6px] px-[25px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
-                                  >
-                                    Add to Cart
-                                  </button>
-
-
-                                )
+                                <button
+                                  onClick={() => handleAddToCart()}
+                                  className="bb-btn-2 transition-all duration-[0.3s] ease-in-out h-[40px] flex font-Poppins leading-[28px] tracking-[0.03rem] py-[6px] px-[25px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
+                                >
+                                  Add to Cart
+                                </button>
                               )
+                            )
                           }
-
                         </div>
                         <ul className="bb-pro-actions my-[2px] flex">
                           <li className="bb-btn-group">
                             <a
-
                               title="heart"
                               className="transition-all duration-[0.3s] ease-in-out w-[40px] h-[40px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] hover:bg-[#6c7fd8] border-[1px] border-solid border-[#eee] rounded-[10px]"
                             >
                               <i className="ri-heart-line text-[16px] leading-[10px] text-[#777]" />
                             </a>
                           </li>
-
                         </ul>
                       </div>
                       {/* end md,lg screen only view */}
@@ -533,13 +529,67 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                     activeReviews && (
                       <div className="tab-pro-pane" id="reviews">
                         <div className="bb-inner-tabs border-[1px] border-solid border-[#eee] p-[15px] rounded-[20px]">
-                          <div className="bb-reviews">
-
+                          <Link href={`/product-details/${product?.slug}/write-review`} className="font-Poppins leading-[1.2] tracking-[0.03rem] mb-[5px] text-[14px] font-bold text-green-100 bg-green-600 py-1 px-2 rounded-md">Add Reviews</Link>
+                          <div className="bb-reviews mt-4">
                             {
                               product?.reviews?.length > 0 ? (
-
+                                product?.reviews &&
                                 product?.reviews.map((review, index) => (
-                                  <div key={index} className="reviews-bb-box flex mb-[24px] max-[575px]:flex-col">
+                                  <div key={index}>
+                                    <div  className="reviews-bb-box flex mb-[24px] max-[575px]:flex-col">
+                                      <div className="inner-image mr-[12px] max-[575px]:mr-[0] max-[575px]:mb-[12px]">
+                                        <img
+                                          src="/img/dummy-image.jpg"
+                                          alt="img-1"
+                                          className="w-[50px] h-[50px] max-w-[50px] rounded-[10px]"
+                                        />
+                                      </div>
+                                      <div className="inner-contact">
+                                        <h4 className="font-quicksand leading-[1.2] tracking-[0.03rem] mb-[5px] text-[16px] font-bold text-[#3d4750]">
+                                          {review?.userId?.displayName || "User"}
+                                        </h4>
+                                        <div className="bb-pro-rating flex">
+                                          {Array(review?.rating || 5)
+                                            .fill(0)
+                                            .map((_, starIndex) => (
+                                              <i
+                                                key={starIndex}
+                                                className={`${starIndex < review.rating
+                                                  ? "ri-star-fill text-[#fea99a]"
+                                                  : "ri-star-line text-[#777]"
+                                                  } float-left text-[15px] mr-[3px]`}
+                                              />
+                                            ))}
+                                        </div>
+                                        <p className="font-Poppins text-[14px] leading-[26px] font-light tracking-[0.03rem] text-[#686e7d]">
+                                          {review.review}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    {
+                                      review?.images && (
+                                        <div className="reviews-bb-box flex mb-[24px] max-[575px]:flex-col">
+                                          {
+                                            review?.images.map((image, index) => (
+                                              <div key={index} className="inner-image mr-[12px] max-[575px]:mr-[0] max-[575px]:mb-[12px]">
+                                                <img
+                                                  src={image.url}
+                                                  alt={`img-${index}`}
+                                                  className="w-[50px] h-[50px] max-w-[50px] rounded-[10px]"
+                                                />
+                                              </div>
+                                            ))
+                                          }
+
+                                        </div>
+                                      )
+                                    }
+
+                                  </div>
+                                ))
+                              ) : (
+                                <>
+                                  <div className="reviews-bb-box flex mb-[24px] max-[575px]:flex-col">
                                     <div className="inner-image mr-[12px] max-[575px]:mr-[0] max-[575px]:mb-[12px]">
                                       <img
                                         src="/img/dummy-image.jpg"
@@ -549,57 +599,31 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                                     </div>
                                     <div className="inner-contact">
                                       <h4 className="font-quicksand leading-[1.2] tracking-[0.03rem] mb-[5px] text-[16px] font-bold text-[#3d4750]">
-                                        {review.reviewerName || "Anonymous"}
+                                        Manish
                                       </h4>
                                       <div className="bb-pro-rating flex">
-                                        {Array(5)
-                                          .fill(0)
-                                          .map((_, starIndex) => (
-                                            <i
-                                              key={starIndex}
-                                              className={`${starIndex < review.rating
-                                                ? "ri-star-fill text-[#fea99a]"
-                                                : "ri-star-line text-[#777]"
-                                                } float-left text-[15px] mr-[3px]`}
-                                            />
-                                          ))}
+                                        <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
+                                        <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
+                                        <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
+                                        <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
+                                        <i className="ri-star-line float-left text-[15px] mr-[3px] text-[#777]" />
                                       </div>
                                       <p className="font-Poppins text-[14px] leading-[26px] font-light tracking-[0.03rem] text-[#686e7d]">
-                                        {review.comment}
+                                        The lamp exceeded my expectations. Bright, stylish, and personalized just how I wanted. Highly recommend!
                                       </p>
                                     </div>
+
                                   </div>
-                                ))
-                              ) : (
-                                <div className="reviews-bb-box flex mb-[24px] max-[575px]:flex-col">
-                                  <div className="inner-image mr-[12px] max-[575px]:mr-[0] max-[575px]:mb-[12px]">
-                                    <img
-                                      src="/img/dummy-image.jpg"
-                                      alt="img-1"
-                                      className="w-[50px] h-[50px] max-w-[50px] rounded-[10px]"
-                                    />
-                                  </div>
-                                  <div className="inner-contact">
-                                    <h4 className="font-quicksand leading-[1.2] tracking-[0.03rem] mb-[5px] text-[16px] font-bold text-[#3d4750]">
-                                      Manish
-                                    </h4>
-                                    <div className="bb-pro-rating flex">
-                                      <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
-                                      <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
-                                      <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
-                                      <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
-                                      <i className="ri-star-line float-left text-[15px] mr-[3px] text-[#777]" />
-                                    </div>
-                                    <p className="font-Poppins text-[14px] leading-[26px] font-light tracking-[0.03rem] text-[#686e7d]">
-                                      The lamp exceeded my expectations. Bright, stylish, and personalized just how I wanted. Highly recommend!
-                                    </p>
-                                  </div>
-                                </div>
+
+
+
+                                </>
+
                               )
                             }
 
                           </div>
-                          <div className="bb-reviews-form">
+                          {/* <div className="bb-reviews-form">
                             <h3 className="font-quicksand tracking-[0.03rem] leading-[1.2] mb-[8px] text-[20px] font-bold text-[#3d4750]">
                               Add a Review
                             </h3>
@@ -616,7 +640,6 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                               </div>
                             </div>
                             <form action="#">
-
                               <div className="input-box mb-[24px]">
                                 <textarea
                                   name="your-comment"
@@ -625,6 +648,7 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                                   defaultValue={""}
                                 />
                               </div>
+                              
                               <div className="input-button">
                                 <a
 
@@ -634,7 +658,7 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                                 </a>
                               </div>
                             </form>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     )

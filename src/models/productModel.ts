@@ -121,7 +121,7 @@ const productSchema = new Schema<IProduct>(
     ],
     status: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     ishome: {
       type: Boolean,

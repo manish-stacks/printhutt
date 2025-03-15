@@ -17,7 +17,7 @@ const Dashboard = () => {
     (async () => {
       try {
         const res = await axios.get('/api/v1/user');
-        console.log(res.data);
+        // console.log(res.data);
         setData(res.data.data);
       } catch (error) {
         console.log(error);

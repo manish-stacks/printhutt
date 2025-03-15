@@ -10,10 +10,11 @@ export async function POST(req: NextRequest) {
     await dbConnect();
     const { id } = await getDataFromToken(req)
     if (!id) return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
-    const { number, email, password } = await req.json();
    
+    const { number, email, password, displayName } = await req.json();
     const user = await User.findById(id);
     if (!user) { return NextResponse.json({ success: false, message: 'User not found' }, { status: 404 }); }
+    if (displayName) user.displayName = displayName;
     if (number) user.number = number;
     if (email) user.email = email;
     if (password) {

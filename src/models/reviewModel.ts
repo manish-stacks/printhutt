@@ -11,13 +11,13 @@ const reviewSchema = new Schema<IReview>(
       min: [1, "Rating must be at least 1"],
       max: [5, "Rating must not be more than 5"],
     },
-    comment: {
+    review: {
       type: String,
       required: true,
-      maxlength: [200, "Comment must not be more than 200 characters"]
     },
-    reviewerName: {
-      type: String,
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
       required: true
     },
     productId: {
@@ -25,6 +25,18 @@ const reviewSchema = new Schema<IReview>(
       ref: 'Product',
       required: true
     },
+    status: {
+      type: Boolean,
+      default: true,
+    },
+    images: [
+      {
+        url: String,
+        public_id: String,
+        fileType: String,
+        _id: false,
+      },
+    ],
   },
   { timestamps: true }
 );

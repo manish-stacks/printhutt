@@ -15,9 +15,9 @@ export const uploadImage = async (file, folderName = 'common', width: number, he
 
     const result = await cloudinary.uploader.upload(dataUri, {
       folder: folderName,
-      transformation: [
-        { width: width, height: height, crop: "fill", gravity: "center" },
-      ]
+      // transformation: [
+      //   { width: width, height: height, crop: "fill", gravity: "center" },
+      // ]
     });
     return {
       url: result.secure_url,
@@ -31,10 +31,32 @@ export const uploadImage = async (file, folderName = 'common', width: number, he
 };
 
 
-export const uploadImageOrder = async (dataUri:string, folderName:string): Promise<{ url: string; public_id: string; fileType: string }> => {
+export const uploadImageOrder = async (dataUri: string, folderName: string): Promise<{ url: string; public_id: string; fileType: string }> => {
   try {
     const result = await cloudinary.uploader.upload(dataUri, {
       folder: folderName
+    });
+    return {
+      url: result.secure_url,
+      public_id: result.public_id,
+      fileType: result.format
+    };
+  } catch (error) {
+    console.error('Error uploading to Cloudinary:', error);
+    throw new Error('Failed to upload image');
+  }
+};
+
+
+export const reviewImage = async (file): Promise<{ url: string; public_id: string; fileType: string }> => {
+ 
+  const buffer = await file.arrayBuffer();
+  const base64File = Buffer.from(buffer).toString('base64');
+  const dataUri = `data:${file.type};base64,${base64File}`;
+
+  try {
+    const result = await cloudinary.uploader.upload(dataUri, {
+      folder: 'reviews'
     });
     return {
       url: result.secure_url,

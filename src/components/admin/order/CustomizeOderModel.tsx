@@ -83,6 +83,7 @@ const CustomizeOderModel = ({ item }) => {
                             </div>
                         )
                     }
+                    
                     {
                         item?.sizeThickness && (
                             <div className="flex items-center justify-between  border-b last:border-0">
@@ -101,10 +102,6 @@ const CustomizeOderModel = ({ item }) => {
                             </div>
                         )
                     }
-
-
-
-
 
                     {
                         item?.text && (
@@ -175,9 +172,6 @@ const CustomizeOderModel = ({ item }) => {
                     }
 
                     {/* customize Acrylic  design end    */}
-
-
-
                     <div className='flex space-x-3'>
                         {item?.previewImage && (
                             <Image
@@ -199,9 +193,6 @@ const CustomizeOderModel = ({ item }) => {
                                 className="rounded-md w-[50%] h-[200px] object-cover"
                             />
                         )}
-
-
-
                     </div>
                 </>
             )}

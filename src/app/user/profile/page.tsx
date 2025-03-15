@@ -14,6 +14,7 @@ const Address = () => {
   const [loading, setLoading] = useState(true);
 
   const [formData, setFormData] = useState({
+    displayName: '',
     number: '',
     email: '',
     userId: '',
@@ -24,6 +25,7 @@ const Address = () => {
       try {
         const { data } = await axios.post('/api/auth/me');
         setFormData({
+          displayName: data.user.displayName,
           email: data.user.email,
           number: data.user.number,
           userId: data.user._id,
@@ -80,6 +82,21 @@ const Address = () => {
                 <div className="input-box-form mt-[20px]">
                   <form method="post" onSubmit={handleSubmit}>
                     <div className="flex flex-wrap mx-[-12px]">
+                      <div className="min-[992px]:w-[50%] w-full px-[12px]">
+                        <div className="input-item mb-[24px]">
+                          <label className="inline-block font-Poppins leading-[26px] tracking-[0.02rem] mb-[8px] text-[14px] font-medium text-[#3d4750]">
+                          Name *
+                          </label>
+                          <input
+                            type="text"
+                            name="displayName"
+                            placeholder="Enter your Name"
+                            className="w-full p-[10px] text-[14px] font-normal text-[#686e7d] border-[1px] border-solid border-[#eee] leading-[26px] outline-[0] rounded-[10px]"
+                            value={formData.displayName}
+                            onChange={handleChange}
+                          />
+                        </div>
+                      </div>
                       <div className="min-[992px]:w-[50%] w-full px-[12px]">
                         <div className="input-item mb-[24px]">
                           <label className="inline-block font-Poppins leading-[26px] tracking-[0.02rem] mb-[8px] text-[14px] font-medium text-[#3d4750]">

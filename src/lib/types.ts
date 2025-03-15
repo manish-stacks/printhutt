@@ -141,3 +141,10 @@ export interface CheckoutData {
     price: number;
     frameDesign: string;
 }
+
+export interface ReviewData {
+    rating: number;
+    review: string;
+    images: string[];
+    productId: string;
+}

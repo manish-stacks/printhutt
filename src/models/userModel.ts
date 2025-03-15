@@ -2,6 +2,7 @@ import mongoose, { Document, Model, Schema } from "mongoose";
 import bcryptjs from "bcryptjs";
 
 interface IUser extends Document {
+  displayName: string;
   username: string;
   email: string;
   password: string;
@@ -29,6 +30,9 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>(
     username: {
       type: String,
       default: "user",
+    },
+    displayName: {
+      type: String,
     },
     email: {
       type: String,

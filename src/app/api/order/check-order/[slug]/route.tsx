@@ -9,6 +9,8 @@ import ReturnPolicy from '@/models/returnPolicyModule';
 import Review from '@/models/reviewModel';
 import Offer from '@/models/offerModel';
 import User from '@/models/userModel';
+import Order from '@/models/orderModel';
+import { getDataFromToken } from '@/helpers/getDataFromToken';
 
 
 
@@ -22,43 +24,33 @@ const serverErrorResponse = (error: Error) => {
 
 
 export async function GET(request: NextRequest, context: { params: { slug: string } }) {
+
+    const userAgent = await getDataFromToken(request);
+    if (!userAgent) {
+        return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+    }
+
+    const userId = userAgent.id;
+
     try {
         const { slug } = await context.params;
         await dbConnect();
-        
-        if (!slug) {
-            return NextResponse.json(
-                { error: 'Product slug is required' },
-                { status: 400 }
-            );
-        }
 
-        
-        const product = await ProductModel.findOne({ slug })
-            .populate({ path: 'category', model: Category })
-            .populate({ path: 'subcategory', model: SubCategory })
-            .populate({ path: 'warrantyInformation', model: WarrantyInformation })
-            .populate({ path: 'shippingInformation', model: ShippingInformation })
-            .populate({ path: 'returnPolicy', model: ReturnPolicy })
-            .populate({
-                path: 'reviews', 
-                model: Review,
-                populate: {
-                    path: 'userId',  
-                    model: User     
-                }
-            })
-            .populate({ path: 'offers', model: Offer })
-            .exec();
-
+        const product = await ProductModel.findOne({ slug }).lean();
         if (!product) {
-            return NextResponse.json(
-                { error: 'Product not found' },
-                { status: 404 }
-            );
+            return NextResponse.json({ success: false, message: 'Product not found' }, { status: 404 });
         }
 
-        return NextResponse.json(product, { status: 200 });
+        const [orderCheck, reviewCheck] = await Promise.all([
+            Order.findOne({ userId, "items.productId": product._id }).lean(),
+            Review.findOne({ userId, productId: product._id }).lean()
+        ]);
+
+        return NextResponse.json({
+            success: true,
+            orderExists: !!orderCheck,
+            reviewExists: !!reviewCheck
+        }, { status: 200 });
     } catch (error) {
         if (error instanceof Error) {
             return serverErrorResponse(error);
