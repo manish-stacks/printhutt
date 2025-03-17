@@ -86,13 +86,20 @@ export default function Header() {
             <div className="flex flex-wrap w-full">
               <div className="w-full px-[12px]">
                 <div className="inner-top-header flex justify-between">
-                  <div className="col-left-bar">
-                    <Link
+                  <div className="col-left-bar w-[80%]">
+                    {/* <Link
                       href={"/offer"}
                       className="transition-all duration-[0.3s] ease-in-out font-Poppins font-light text-[16px] text-[#fff] leading-[28px] tracking-[0.03rem]"
                     >
                       Jai Balaji ✋ Blessings of Balaji always be with you! 
-                    </Link>
+                    </Link> */}
+
+                    <div className="overflow-hidden whitespace-nowrap">
+                      <div className="animate-marquee inline-block font-Poppins font-light text-[16px] text-[#fff] leading-[28px] tracking-[0.03rem]">
+                        <span>30% OFF / 12000 Items Delivered / 40 Years of experience</span>
+                      </div>
+                    </div>
+
                   </div>
                   <div className="col-right-bar flex">
                     <div className="cols px-[12px]">

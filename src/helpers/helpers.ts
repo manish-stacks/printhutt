@@ -14,14 +14,20 @@ export const generateSlug = (text: string) => {
 };
 
 
+
+
 export function formatCurrency(amount: number): string {
     return new Intl.NumberFormat('en-IN', {
         style: 'currency',
         currency: 'INR',
-    }).format(Number(amount));
-
+        maximumFractionDigits: 0, // Ensures no decimal places
+    }).format(Math.round(amount)); // Rounds to the nearest whole number
 }
 
+
+export function randomNumber(max: number, min: number) {
+    return Math.floor(Math.random() * (max - min + 1)) + 400;
+}
 export function formatDate(date: string | Date): string {
     return new Intl.DateTimeFormat('en-US', {
         year: 'numeric',
@@ -48,6 +54,6 @@ export async function shiprocketAuth() {
         return cachedToken;
     } catch (error) {
         console.error('Error authenticating with Shiprocket:', error);
-        throw error;  
+        throw error;
     }
 }

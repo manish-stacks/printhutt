@@ -7,10 +7,11 @@ import { useCartStore } from "@/store/useCartStore";
 import { toast } from "react-toastify";
 import CartSidebar from "@/components/CartSidebar";
 import type { Product } from "@/lib/types/product";
-import { formatCurrency } from "@/helpers/helpers";
+import { formatCurrency, randomNumber } from "@/helpers/helpers";
 import ProductSlider from "@/components/ProductSlider";
 import useQuickStore from "@/store/useQuickStore";
 import Link from "next/link";
+import {  RiEyeLine, RiShoppingCartFill } from "react-icons/ri";
 
 interface ProductProps {
   product: Product | null;
@@ -22,7 +23,9 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
   const [activeInformation, setActiveInformation] = useState(false);
   const [activeReviews, setActiveReviews] = useState(false);
   const addToCart = useCartStore(state => state.addToCart);
-  // const { items } = useCartStore();
+  const [viewers, setViewers] = useState<number | null>(null);
+  const [buyers, setBuyers] = useState<number | null>(null);
+  const [ratings, setRatings] = useState<number | null>(null);
   const [isCartOpen, setIsOpenCart] = useState(false);
   const items = useCartStore((state) => state.items);
   const toggelCartSidebarClose = () => setIsOpenCart(false);
@@ -62,6 +65,9 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
 
   useEffect(() => {
     useQuickStore.setState({ isOpen: false });
+    setViewers(randomNumber(300, 1));
+    setBuyers(randomNumber(3000, 1000));
+    setRatings(randomNumber(1000, 400));
   }, [])
 
 
@@ -100,7 +106,9 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                           ))}
                         </span>
                         <span className="bb-read-review">
-                          |&nbsp;&nbsp;<a href="#bb-spt-nav-review" className="font-Poppins text-[15px] font-light leading-[28px] tracking-[0.03rem] text-[#6c7fd8]">992 Ratings</a>
+                          |&nbsp;&nbsp;<a href="#bb-spt-nav-review" className="font-Poppins text-[15px] font-light leading-[28px] tracking-[0.03rem] text-[#6c7fd8]">
+                            {ratings} Ratings
+                          </a>
                         </span>
                       </div>
 
@@ -161,17 +169,17 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                         <div className="bb-single-price-wrap flex justify-between py-[10px]">
                           <div className="bb-single-price py-[15px]">
                             <div className="price mb-[8px]">
-                              <h5 className="font-quicksand leading-[1.2] tracking-[0.03rem] text-[20px] font-extrabold text-green-800">
+                              <h5 className="font-quicksand leading-[1.2] tracking-[0.03rem] text-[22px] font-extrabold text-green-800">
                                 {product?.price &&
                                   formatCurrency(
                                     product.discountType === "percentage"
                                       ? product.price - (product.price * product.discountPrice) / 100
                                       : product.price - (product.discountPrice || 0)
                                   )}
-
+                                &nbsp;-&nbsp;
                                 {product?.discountPrice > 0 && (
-                                  <span className="text-[#3d4750] text-[20px]">
-                                    - {product.discountType === "percentage"
+                                  <span className="text-white text-[16px] bg-rose-700 rounded-3xl py-1 px-4">
+                                    SAVE{product.discountType === "percentage"
                                       ? `${product.discountPrice}%`
                                       : `${formatCurrency(product.discountPrice)}`}
                                   </span>
@@ -211,7 +219,24 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
 
 
                       <div className="bb-single-list mb-[30px]">
-                        <ul className="my-[-8px] pl-[18px]">
+                        <div className="flex flex-col gap-1 text-gray-700 font-Poppins">
+                          
+                          <div className="flex items-center gap-2 p-2">
+                            <RiEyeLine className="text-amber-600 text-xl" />
+                            <span className="text-[16px] font-medium">
+                              {viewers} people are viewing this right now
+                            </span>
+                          </div>
+
+                          
+                          <div className="flex items-center gap-2 p-2">
+                            <RiShoppingCartFill className="text-amber-600 text-xl" />
+                            <span className="text-[16px] font-medium">
+                              {buyers} people bought this in the last 7 days
+                            </span>
+                          </div>
+                        </div>
+                        <ul className="my-[8px] pl-[18px]">
                           <li className="my-[8px] font-Poppins text-[14px] font-light leading-[28px] tracking-[0.03rem] text-[#777] list-disc">
                             <span className="font-Poppins text-[#777] text-[14px]">
                               Brand :
@@ -536,7 +561,7 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                                 product?.reviews &&
                                 product?.reviews.map((review, index) => (
                                   <div key={index}>
-                                    <div  className="reviews-bb-box flex mb-[24px] max-[575px]:flex-col">
+                                    <div className="reviews-bb-box flex mb-[24px] max-[575px]:flex-col">
                                       <div className="inner-image mr-[12px] max-[575px]:mr-[0] max-[575px]:mb-[12px]">
                                         <img
                                           src="/img/dummy-image.jpg"

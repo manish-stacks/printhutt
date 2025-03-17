@@ -359,11 +359,26 @@
   font-size: 14px;
   border-radius: 5px;
 }
+
 .generatedRadios.selected {
   font-weight: bold;
   background: #2196f3;
   color: #fff;
 }
 
+/* marquee for header section */
+@keyframes marquee {
+  from {
+    transform: translateX(100%);
+  }
 
+  to {
+    transform: translateX(-100%);
+  }
+}
 
+.animate-marquee {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee 25s linear infinite;
+}

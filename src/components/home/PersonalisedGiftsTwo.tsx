@@ -94,7 +94,8 @@ function PersonalizedGiftsTwo() {
                       {product.name}
                     </h3>
                     <button className="mt-2 px-4 py-2 text-sm bg-cyan-100 text-cyan-800 rounded-full hover:bg-cyan-200 transition-colors duration-200">
-                      Customize & Buy
+                      <span className="block md:hidden">Customize</span>
+                      <span className="hidden md:block">Customize & Buy</span>
                     </button>
                   </div>
                 </div>
