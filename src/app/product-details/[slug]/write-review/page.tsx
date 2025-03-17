@@ -30,23 +30,24 @@ export default function RatingsReviews() {
     const isLoggedIn = useUserStore((state) => state.isLoggedIn);
     const router = useRouter();
 
+    // console.log(isLoggedIn);
     useEffect(() => {
         if (!params?.slug) {
             return notFound();
         }
-        // if (!isLoggedIn) {
-        //     router.push('/login');
-        // }
-    }, [params, isLoggedIn, router]);
+        if (!isLoggedIn) {
+            router.push('/login');
+        }
+    }, [params, isLoggedIn]);
 
     const fetchOrder = async () => {
         try {
             setLoading(true);
             const product = await get_product_by_slug(params?.slug);
             const orderCheck = await commonApi.checkProductOrder(params?.slug);
-            // console.log(orderCheck);
+            console.log(orderCheck);
 
-            if (orderCheck.reviewExists) {
+            if (!orderCheck.reviewExists) {
                 setHasPurchased(false);
             }
             if (!product) {
