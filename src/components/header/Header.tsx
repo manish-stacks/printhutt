@@ -107,7 +107,7 @@ export default function Header() {
                         
                         className="transition-all duration-[0.3s] ease-in-out font-Poppins text-[16px] text-[#fff] font-light leading-[28px] tracking-[0.03rem]"
                       >
-                       Jai Balaji🙏
+                       Jai Balaji
                       </span>
                     </div>
                     <div className="cols px-[12px]">

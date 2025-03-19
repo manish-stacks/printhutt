@@ -51,7 +51,7 @@ export default function Page() {
       return canvas;
     };
 
-    const canvas1 = canvasRef.current && initializeCanvas(canvasRef.current, names.name1 || 'Preview', 100, 60);
+    const canvas1 = canvasRef.current && initializeCanvas(canvasRef.current, names.name1 || 'Preview', 100, 20);
 
     return () => {
       canvas1?.dispose();

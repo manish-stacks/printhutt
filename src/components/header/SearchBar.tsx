@@ -50,20 +50,13 @@ const SearchBar = () => {
         
     };
 
-    // const customStyles = {
-    //     control: (base) => ({
-    //         ...base,
-    //         border: 'none',
-    //         boxShadow: 'none',
-    //     }),
-    //     option: (base) => ({
-    //         ...base,
-    //         color: 'black',
-    //     }),
-    // };
-
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        return router.push(`/products/?search=${searchInput}`);
+        // console.log(searchInput)
+    };
     return (
-        <form className="bb-btn-group-form flex relative max-[991px]:ml-[20px] max-[767px]:m-[0]" action="#">
+        <form className="bb-btn-group-form flex relative max-[991px]:ml-[20px] max-[767px]:m-[0]" onSubmit={handleSubmit}>
             
             <button
                 className="submit absolute top-[0] left-[auto]  flex items-center justify-center w-[45px] h-full bg-transparent text-[#555] text-[16px] rounded-[0] outline-[0] border-[0] padding-[0]"
