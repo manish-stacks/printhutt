@@ -141,11 +141,13 @@ export default function EditProduct() {
 
   const calculateTotalPrice = (price: number, discountType: string, discountPrice: number) => {
     if (discountType === 'percentage') {
-      return price - (price * discountPrice / 100);
+      const discountFactor = (100 - discountPrice) / 100;
+      return Math.round(price / discountFactor);
     } else if (discountType === 'fixed') {
-      return price - discountPrice;
+      return Math.round(price + discountPrice);
+    } else {
+      return Math.round(price);
     }
-    return price;
   };
 
   useEffect(() => {
@@ -168,7 +170,7 @@ export default function EditProduct() {
           get_product_by_id(id)
         ])
 
-        console.log(categoryData)
+        // console.log(categoryData)
 
         setFormData(productData)
 
@@ -178,9 +180,9 @@ export default function EditProduct() {
           meta_keywords: productData.meta.meta_keywords,
           meta_title: productData.meta.meta_title,
           totalPrice: calculateTotalPrice(
-            Number(productData.price),
+            Math.round(productData.price),
             productData.discountType,
-            Number(productData.discountPrice)
+            Math.round(productData.discountPrice)
           )
         }));
 
@@ -230,13 +232,22 @@ export default function EditProduct() {
         updatedData.shippingFee = shippingfilter?.shippingFee ? shippingfilter?.shippingFee : 0;
       }
 
-      if (name === 'price' || name === 'discountType' || name === 'discountPrice') {
-        updatedData.totalPrice = calculateTotalPrice(
-          Number(updatedData.price),
-          updatedData.discountType,
-          Number(updatedData.discountPrice)
-        );
+      // if (name === 'price' || name === 'discountType' || name === 'discountPrice') {
+      //   updatedData.totalPrice = calculateTotalPrice(
+      //     Math.round(updatedData.price),
+      //     updatedData.discountType,
+      //     Math.round(updatedData.discountPrice)
+      //   );
+      // }
+
+      if (['totalPrice', 'discountType', 'discountPrice'].includes(name)) {
+        const totalPrice = parseFloat(updatedData.totalPrice) || 0;
+        const discountPrice = parseFloat(updatedData.discountPrice) || 0;
+
+        // console.log(totalPrice)
+        updatedData.price = calculateTotalPrice(totalPrice, updatedData.discountType, discountPrice);
       }
+
       return updatedData;
     });
 
@@ -595,16 +606,18 @@ export default function EditProduct() {
               <div>
                 <label className="block text-sm font-medium text-gray-900">Product Data *</label>
                 <div className='flex justify-between gap-3'>
+
                   <div className="w-4/12 mt-4">
-                    <label className="block font-medium text-gray-700">Product Price</label>
+                    <label className="block font-medium text-gray-700">Sell Price</label>
                     <div className="mt-2">
                       <input
                         className="block w-full h-10 rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                         type="number"
-                        name='price'
-                        value={formData.price || ''}
+                        name="totalPrice"
+                        id="totalPrice"
+                        value={formData.totalPrice || ''}
                         onChange={handleInputChange}
-                        placeholder='Product price'
+                        placeholder='Total price'
                       />
                     </div>
                   </div>
@@ -639,16 +652,15 @@ export default function EditProduct() {
                     </div>
                   </div>
                   <div className="w-4/12 mt-4">
-                    <label className="block font-medium text-gray-700">Total Price</label>
+                    <label className="block font-medium text-gray-700">Product MRP</label>
                     <div className="mt-2">
                       <input
                         className="block w-full h-10 rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                         type="number"
-                        name="totalPrice"
-                        id="totalPrice"
-                        value={formData.totalPrice || ''}
-                        readOnly
-                        placeholder='Total price'
+                        name='price'
+                        value={formData.price || ''}
+                        onChange={handleInputChange}
+                        placeholder='Product price'
                       />
                     </div>
                   </div>

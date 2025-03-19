@@ -103,12 +103,12 @@ export default function Header() {
                   </div>
                   <div className="col-right-bar flex">
                     <div className="cols px-[12px]">
-                      <Link
-                        href="/faq"
+                      <span
+                        
                         className="transition-all duration-[0.3s] ease-in-out font-Poppins text-[16px] text-[#fff] font-light leading-[28px] tracking-[0.03rem]"
                       >
-                        Help?
-                      </Link>
+                       Jai Balaji🙏
+                      </span>
                     </div>
                     <div className="cols px-[12px]">
                       <a
