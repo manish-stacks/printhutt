@@ -1,4 +1,5 @@
 'use client'
+import { image } from 'html2canvas/dist/types/css/types/image';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -27,24 +28,31 @@ const products = [
     url: '/product-details/couple-name-lamp-diamond-shape'
   },
   {
-    name: 'Couple LED Name Lamp',
-    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737913742/products/thumbnails/u2p4raxkfdvilirshc8x.jpg',
-    url: '/product-details/personalized-heart-night-lamp'
+    name: 'Wooden Rolling Dice',
+    // image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737913742/products/thumbnails/u2p4raxkfdvilirshc8x.jpg',
+    image: 'https://cloudify.printhutt.com/video/cube.mp4',
+    url: '/customize/frame/personalized-premium-wooden-rolling-dice-cube-with-photos',
+    type: 'video'
+  },
+  {
+    name: 'Fridge Magnets',
+    // image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737915138/products/pw0jklkcrhwpsnucnfgx.png',
+    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1742371242/products/v0adkqf07z4uqzkakqxy.jpg',
+    url: '/customize/magnet/custom-photo-fridge-magnets',
   },
   {
     name: 'Couple LED Name Lamp',
-    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737915138/products/pw0jklkcrhwpsnucnfgx.png',
-    url: '/product-details/personalized-double-heart-night-lamp'
-  },
-  {
-    name: 'Couple LED Name Lamp',
-    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737965914/products/xyutjqist7sfdla7lols.jpg',
-    url: '/product-details/acrylic-couple-lamp-with-name'
+    // image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737965914/products/xyutjqist7sfdla7lols.jpg',
+    image: "https://cloudify.printhutt.com/video/WhatsApp_Video_2025-03-01_at_11.51.09_AM_kc8lja.mp4",
+    url: '/product-details/acrylic-couple-lamp-with-name',
+    type: 'video'
   },
   {
     name: 'LED Photo Frame',
-    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737974050/products/nioal6cjozy2oeb3plee.jpg',
-    url: '/product-details/customize-acrylic-full-photo-frame-a4-size'
+    // image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737974050/products/nioal6cjozy2oeb3plee.jpg',
+    image: 'https://cloudify.printhutt.com/video/WhatsApp_Video_2025-03-01_at_11.58.10_AM_iyvpqf.mp4',
+    url: '/product-details/customize-acrylic-full-photo-frame-a4-size',
+    type: 'video'
   }
 ];
 
@@ -52,23 +60,23 @@ const products = [
 const productsTwo = [
   {
     name: ' Acrylic Cutout Photo',
-    image: 'https://res.cloudinary.com/dkprths9f/video/upload/v1740832469/WhatsApp_Video_2025-03-01_at_6.03.50_PM_l0wwwy.mp4',
+    image: 'https://cloudify.printhutt.com/video/WhatsApp_Video_2025-03-01_at_6.03.50_PM_l0wwwy.mp4',
     url: '/product-details/personalized-acrylic-cutout-photo-led-lamp'
   },
   {
     name: 'Couple LED Name Lamp',
-    image: 'https://res.cloudinary.com/dkprths9f/video/upload/v1740832332/WhatsApp_Video_2025-03-01_at_11.51.09_AM_kc8lja.mp4',
+    image: 'https://cloudify.printhutt.com/video/WhatsApp_Video_2025-03-01_at_11.51.09_AM_kc8lja.mp4',
     url: '/product-details/acrylic-couple-lamp-with-name'
   },
   {
     name: 'LED Name Lamp',
-    image: 'https://res.cloudinary.com/dkprths9f/video/upload/v1740832331/WhatsApp_Video_2025-03-01_at_11.41.08_AM_aeu7jl.mp4',
+    image: 'https://cloudify.printhutt.com/video/WhatsApp_Video_2025-03-01_at_11.41.08_AM_aeu7jl.mp4',
     url: '/product-details/customized-name-led-lamp'
   },
   {
     name: 'LED Photo Frame',
-    image: 'https://res.cloudinary.com/dkprths9f/video/upload/v1740832915/WhatsApp_Video_2025-03-01_at_11.58.10_AM_iyvpqf.mp4',
-    url: '/product-details/customize-acrylic-full-photo-frame-a4-size'
+    image: 'https://cloudify.printhutt.com/video/WhatsApp_Video_2025-03-01_at_11.58.10_AM_iyvpqf.mp4',
+    url: '/product-details/customize-acrylic-full-photo-frame-a4-size',
   }
 
 ];
@@ -76,7 +84,7 @@ const productsTwo = [
 function PersonalizedGifts() {
   return (
     <section>
-
+      {/*}
       <div>
         <div className="container mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px] px-4 py-16">
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -118,7 +126,8 @@ function PersonalizedGifts() {
           </div>
         </div>
       </div>
-      <div className="min-h-screen">
+      */}
+      <div className="min-h-screen mt-4">
         {/* Hero Section */}
         <div className="relative mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px] py-10">
           <div className="absolute inset-0" />
@@ -146,14 +155,30 @@ function PersonalizedGifts() {
               >
                 <div className="relative overflow-hidden rounded-2xl border-2 border-rose-400 bg-white shadow-md transition-all duration-300 hover:shadow-xl hover:border-amber-900">
                   <div className="aspect-square overflow-hidden">
-                    <Image
-                      width={300}
-                      height={300}
-                      src={`${product.image}?q=10&blur=30`}
-                      alt={product.name}
-                      className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
-                      loading="lazy"
-                    />
+                    {
+                      product?.type === 'video' ?
+                        <video
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105 border-2 rounded-t-2xl"
+                          width="470" height="470"
+                          preload="none"
+                        >
+                          <source src={product.image} type="video/mp4" />
+                          Your browser does not support the video tag.
+                        </video>
+                        :
+                        <Image
+                          width={300}
+                          height={300}
+                          src={`${product.image}?q=10&blur=30`}
+                          alt={product.name}
+                          className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                          loading="lazy"
+                        />
+                    }
                   </div>
                   <div className="p-4 text-center">
                     <h3 className="text-sm md:text-base font-semibold text-gray-800 group-hover:text-amber-700">

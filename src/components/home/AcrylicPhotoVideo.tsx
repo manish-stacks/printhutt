@@ -16,7 +16,7 @@ const AcrylicPhotoVideo = () => {
                             width="470" height="470"
                             preload="none"
                         >
-                            <source src="https://res.cloudinary.com/dkprths9f/video/upload/v1740998841/WhatsApp_Video_2025-03-01_at_9.11.26_PM_online-video-cutter.com_1_yq8a8p.mp4" type="video/mp4" />
+                            <source src="https://cloudify.printhutt.com/video/WhatsApp_Video_2025-03-01_at_9.11.26_PM_online-video-cutter.com_1_yq8a8p.mp4" type="video/mp4" />
                             Your browser does not support the video tag.
                         </video>
                     </div>

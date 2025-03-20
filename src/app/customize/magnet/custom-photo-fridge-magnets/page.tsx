@@ -9,7 +9,6 @@ import React, { useState, useCallback, ChangeEvent, useEffect } from 'react';
 import { BiMinus, BiPlus } from 'react-icons/bi';
 import { toast } from 'react-toastify';
 
-
 interface ShapeOption {
     id: string;
     name: string;
@@ -20,6 +19,7 @@ interface Position {
     x: number;
     y: number;
 }
+
 const shapes: ShapeOption[] = [
     { id: 'rectangle', name: 'Rectangle', className: 'rounded-lg' },
     { id: 'rhombus', name: 'Rhombus', className: 'rhombus-shape' },
@@ -32,12 +32,12 @@ const shapes: ShapeOption[] = [
     { id: 'rabbet', name: 'Rabbet', className: 'rabbet-shape' },
     { id: 'circle', name: 'Circle', className: 'circle-shape' },
     { id: 'ellipse', name: 'Ellipse', className: 'ellipse-shape' },
-    { id: 'star', name: 'Star', className: 'star-shape' },
+    // { id: 'star', name: 'Star', className: 'star-shape' },
 ];
 
 export default function App() {
     const [selectedShape, setSelectedShape] = useState<string>('rectangle');
-    const [previewImage, setPreviewImage] = useState<string>('https://res.cloudinary.com/dkprths9f/image/upload/v1737650717/photo-15_gyd3jd.avif');
+    const [previewImage, setPreviewImage] = useState<string>('https://res.cloudinary.com/dkprths9f/image/upload/v1742471595/image-preview_cvtp97.png');
     const [isDragging, setIsDragging] = useState(false);
     const [imagePosition, setImagePosition] = useState<Position>({ x: 0, y: 0 });
     const [isDraggingImage, setIsDraggingImage] = useState(false);
@@ -60,7 +60,7 @@ export default function App() {
                 setProductPrice(fetchedProduct?.varient[0].price);
             } catch {
                 console.error("Error fetching product.");
-            }finally {
+            } finally {
                 setLoading(false);
             }
         })();
@@ -120,7 +120,6 @@ export default function App() {
         const newX = e.clientX - dragStart.x;
         const newY = e.clientY - dragStart.y;
 
-
         const maxDrag = 100;
         const boundedX = Math.max(Math.min(newX, maxDrag), -maxDrag);
         const boundedY = Math.max(Math.min(newY, maxDrag), -maxDrag);
@@ -147,13 +146,12 @@ export default function App() {
         setImageScale(prev => Math.max(prev - 0.1, 1.0)); // Min 100%
     };
 
-
     const handleSizeChange = (size: string, price: number) => {
         setSelectedSize(size);
         setProductPrice(price);
     }
-    const handleAddToCart = async () => {
 
+    const handleAddToCart = async () => {
         if (!previewImage) {
             toast.error('Please upload a preview image.');
             return;
@@ -165,7 +163,7 @@ export default function App() {
                 const custom_data = {
                     previewImage,
                     variant: selectedSize,
-                    shapeName:selectedShape,
+                    shapeName: selectedShape,
                 };
 
                 const updatedProduct = {
@@ -175,7 +173,6 @@ export default function App() {
                     custom_data,
                 };
 
-                // console.log(updatedProduct); return;
                 setProduct(updatedProduct);
 
                 addToCart(updatedProduct, 1);
@@ -190,10 +187,10 @@ export default function App() {
         }
     };
 
-    // console.log(productPrice)
-    if(loading){
-        return <LoadingSpinner/>
+    if (loading) {
+        return <LoadingSpinner />
     }
+
     return (
         <div className="min-h-screen overflow-hidden bg-cover bg-center bg-no-repeat"
             style={{
@@ -268,8 +265,6 @@ export default function App() {
                                     </button>
                                 </div>
                             </div>
-
-
                         </div>
 
                         {/* Controls */}
@@ -319,6 +314,7 @@ export default function App() {
                                     <p className="mt-2 text-sm text-gray-600">or drag and drop your image here</p>
                                 </div>
                             </div>
+
                             <div className="bg-white p-8 rounded-lg shadow-xl transition-all hover:shadow-2xl">
                                 <div className="flex items-center justify-between">
                                     <div>
@@ -338,7 +334,6 @@ export default function App() {
                                 </div>
                             </div>
 
-
                             <button
                                 onClick={handleAddToCart}
                                 disabled={isAddingToCart}
@@ -347,7 +342,9 @@ export default function App() {
                                     : 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 transition-colors'
                                     }`}
                             >
-                                {isAddingToCart ? 'Adding to Cart...' : `Add to Cart - ${formatCurrency(productPrice)}`}
+                                {isAddingToCart ? 'Adding to Cart...' : `Add to Cart - ${product && product.discountType === 'percentage'
+                                    ? formatCurrency(productPrice - (productPrice * product.discountPrice) / 100)
+                                    : product && formatCurrency(productPrice - product.discountPrice)}`}
                             </button>
                         </div>
                     </div>
