@@ -1,4 +1,8 @@
 "use client"
+import { get_product_by_id } from '@/_services/admin/product';
+import { Product } from '@/lib/types/product';
+import { useCartStore } from '@/store/useCartStore';
+import { useRouter } from 'next/navigation'; 
 import React, { useState, useEffect, useRef } from 'react';
 import { BsUpload } from 'react-icons/bs';
 import { RiCloseLargeFill } from 'react-icons/ri';
@@ -12,7 +16,20 @@ export default function App() {
     const [previews, setPreviews] = useState<ImagePreview[]>([]);
     const [isAddingToCart, setIsAddingToCart] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const [product, setProduct] = useState<Product>();
+    const addToCart = useCartStore(state => state.addToCart);
+    const router = useRouter(); 
 
+    useEffect(() => {
+        (async () => {
+            try {
+                const product = await get_product_by_id('67dbd1ec8c6a18777f77f261');
+                setProduct(product);
+            } catch (error) {
+                console.error('Error fetching product:', error);
+            }
+        })();
+    }, []);
     const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
         if (!files) return;
@@ -38,15 +55,35 @@ export default function App() {
     };
 
     const handleAddToCart = async () => {
-        if (previews.length === 0) {
-            alert('Please upload at least one image before proceeding.');
+        if (previews.length < 4) {
+            alert('Please upload at least 4 images before proceeding.');
             return;
         }
-
+        
         try {
             setIsAddingToCart(true);
             // Simulate API call
-           
+            if (product) {
+                const custom_data = {
+                    previewImage: previews[0].url,
+                    previewImageTwo: previews[1].url,
+                    previewImageThree: previews[2].url,
+                    previewImageFour: previews[3].url, 
+                };
+
+                const updatedProduct = {
+                    ...product,
+                    custom_data,
+                };
+
+                setProduct(updatedProduct);
+
+                addToCart(updatedProduct, 1);
+                router.push('/cart');
+                console.log("Product added to cart:", updatedProduct);
+                return;
+            }
+
             alert('Images have been added to your cart.');
         } catch (error) {
             console.error("Error while adding to cart:", error);

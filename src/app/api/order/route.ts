@@ -103,6 +103,8 @@ export async function POST(request: NextRequest) {
             previewCanvas: customData?.previewCanvas && await uploadImageOrder(customData.previewCanvas, "customized preview canvas"),
             previewImage: customData?.previewImage && await uploadImageOrder(customData.previewImage, "customized image"),
             previewImageTwo: customData?.previewImageTwo && await uploadImageOrder(customData.previewImageTwo, "customized image"),
+            previewImageThree: customData?.previewImageThree && await uploadImageOrder(customData.previewImageThree, "customized image"),
+            previewImageFour: customData?.previewImageFour && await uploadImageOrder(customData.previewImageFour, "customized image"),
           };
 
           return {

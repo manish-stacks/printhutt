@@ -83,7 +83,7 @@ const CustomizeOderModel = ({ item }) => {
                             </div>
                         )
                     }
-                    
+
                     {
                         item?.sizeThickness && (
                             <div className="flex items-center justify-between  border-b last:border-0">
@@ -173,6 +173,18 @@ const CustomizeOderModel = ({ item }) => {
 
                     {/* customize Acrylic  design end    */}
                     <div className='flex space-x-3'>
+
+                        {item?.previewCanvas && (
+                            <Image
+                                onClick={() => downloadPreviewImage(item?.previewCanvas.url)}
+                                alt="img"
+                                src={item?.previewCanvas?.url || 'https://res.cloudinary.com/dkprths9f/image/upload/v1737632594/elementor-placeholder-image_wps86z.webp'}
+                                width={400}
+                                height={400}
+                                className="rounded-md w-[50%] h-[200px] object-cover"
+                            />
+                        )}
+
                         {item?.previewImage && (
                             <Image
                                 onClick={() => downloadPreviewImage(item?.previewImage.url)}
@@ -183,11 +195,37 @@ const CustomizeOderModel = ({ item }) => {
                                 className="rounded-md w-[50%] h-[200px] object-cover"
                             />
                         )}
-                        {item?.previewCanvas && (
+
+                    </div>
+                    <div className='flex space-x-3 my-4'>
+                        {item?.previewImageTwo && (
                             <Image
-                                onClick={() => downloadPreviewImage(item?.previewCanvas.url)}
+                                onClick={() => downloadPreviewImage(item?.previewImageTwo.url)}
                                 alt="img"
-                                src={item?.previewCanvas?.url || 'https://res.cloudinary.com/dkprths9f/image/upload/v1737632594/elementor-placeholder-image_wps86z.webp'}
+                                src={item?.previewImageTwo?.url || 'https://res.cloudinary.com/dkprths9f/image/upload/v1737632594/elementor-placeholder-image_wps86z.webp'}
+                                width={400}
+                                height={400}
+                                className="rounded-md w-[50%] h-[200px] object-cover"
+                            />
+                        )}
+                        {item?.previewImageThree && (
+                            <Image
+                                onClick={() => downloadPreviewImage(item?.previewImageThree.url)}
+                                alt="img"
+                                src={item?.previewImageThree?.url || 'https://res.cloudinary.com/dkprths9f/image/upload/v1737632594/elementor-placeholder-image_wps86z.webp'}
+                                width={400}
+                                height={400}
+                                className="rounded-md w-[50%] h-[200px] object-cover"
+                            />
+                        )}
+                    </div>
+                    <div className='flex space-x-3'>
+
+                        {item?.previewImageFour && (
+                            <Image
+                                onClick={() => downloadPreviewImage(item?.previewImageFour.url)}
+                                alt="img"
+                                src={item?.previewImageFour?.url || 'https://res.cloudinary.com/dkprths9f/image/upload/v1737632594/elementor-placeholder-image_wps86z.webp'}
                                 width={400}
                                 height={400}
                                 className="rounded-md w-[50%] h-[200px] object-cover"
