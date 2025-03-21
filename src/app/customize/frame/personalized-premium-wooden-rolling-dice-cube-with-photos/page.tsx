@@ -1,5 +1,6 @@
 "use client"
 import { get_product_by_id } from '@/_services/admin/product';
+import { formatCurrency } from '@/helpers/helpers';
 import { Product } from '@/lib/types/product';
 import { useCartStore } from '@/store/useCartStore';
 import { useRouter } from 'next/navigation'; 
@@ -190,7 +191,9 @@ export default function App() {
                                         : 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 transition-colors'
                                         }`}
                                 >
-                                    {isAddingToCart ? 'Adding to Cart...' : 'Add to Cart'}
+                                    {isAddingToCart ? 'Adding to Cart...' : `Add to Cart - ${product.discountType === 'percentage'
+                                                                            ? formatCurrency(product.price - (product.price * product.discountPrice) / 100)
+                                                                            : formatCurrency(product.price - product.discountPrice)}`}
                                 </button>
                             </div>
                         </div>

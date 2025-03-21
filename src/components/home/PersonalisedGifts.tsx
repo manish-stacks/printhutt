@@ -129,15 +129,15 @@ function PersonalizedGifts() {
       */}
       <div className="min-h-screen mt-4">
         {/* Hero Section */}
-        <div className="relative mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px] py-10">
+        <div className="relative mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px] py-10 max-[576px]:py-0">
           <div className="absolute inset-0" />
           <div className="relative container mx-auto px-4">
             <div className="text-center">
 
-              <h1 className="text-4xl md:text-5xl font-bold text-slate-600 mb-4 font-serif ">
-                Personalised <span className='text-pink-600'>Couple</span> Gifts
+              <h1 className="text-4xl max-[576px]:text-2xl md:text-5xl font-bold text-slate-600 mb-4 font-serif ">
+                Personalised <span className='text-pink-600' style={{fontFamily:"Buttervill"}}>Couple</span> Gifts
               </h1>
-              <p className="text-lg text-slate-600/90 max-w-2xl mx-auto">
+              <p className="text-lg text-slate-600/90 max-w-2xl mx-auto max-[576px]:text-sm">
                 Create lasting memories with our unique collection of personalized lighting gifts
               </p>
             </div>
@@ -179,13 +179,19 @@ function PersonalizedGifts() {
                           loading="lazy"
                         />
                     }
+
+                    <span className={`discount transition-all duration-[0.3s] ease-in-out absolute z-[5] top-[10px] right-[10px] bg-rose-500 text-[#fff] font-medium text-[12px] px-2 rounded-full`}>
+                      <span className="max-[576px]:hidden">SAVE</span> 30%
+                    </span>
+
                   </div>
-                  <div className="p-4 text-center">
+                  <div className="p-4 max-[576px]:p-1 text-center">
                     <h3 className="text-sm md:text-base font-semibold text-gray-800 group-hover:text-amber-700">
                       {product.name}
                     </h3>
-                    <button className="mt-2 px-4 py-2 text-sm bg-rose-100 text-rose-800 rounded-full hover:bg-rose-200 transition-colors duration-200">
-                      Customize & Buy
+                    <button className="mt-2 px-4 py-2 max-[567px]:px-2 max-[567px]:py-1 text-sm bg-rose-100 text-rose-800 rounded-full hover:bg-rose-200 transition-colors duration-200">
+                      <span className="block md:hidden">Customize</span>
+                      <span className="hidden md:block">Customize & Buy</span>
                     </button>
                   </div>
                 </div>

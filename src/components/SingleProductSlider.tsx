@@ -11,12 +11,11 @@ interface SingleProductSliderProps {
     images?: Array<{
       url: string;
     }>;
+    demoVideo?: string;
   };
 }
 
 const SingleProductSlider = ({ product }: SingleProductSliderProps) => {
-  
-
   const [navSlider, setNavSlider] = useState<Slider | null>(null);
   const [mainSlider, setMainSlider] = useState<Slider | null>(null);
   const [zoomStyle, setZoomStyle] = useState<React.CSSProperties | null>(null);
@@ -25,8 +24,8 @@ const SingleProductSlider = ({ product }: SingleProductSliderProps) => {
     return <div>Product details are not available.</div>;
   }
 
-  const { thumbnail, images, imgAlt, slug } = product;
-
+  const { thumbnail, images, imgAlt, slug, demoVideo } = product;
+  const productImages = [thumbnail.url, ...images.map((image) => image.url)];
 
   const mainSliderSettings: Settings = {
     slidesToShow: 1,
@@ -45,9 +44,21 @@ const SingleProductSlider = ({ product }: SingleProductSliderProps) => {
     arrows: true,
     focusOnSelect: true,
     ref: (slider) => setNavSlider(slider),
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+    ],
   };
-
-  const productImages = [thumbnail.url, ...images.map((image) => image.url)];
 
   const handleMouseMove = (
     e: React.MouseEvent<HTMLDivElement>,
@@ -69,19 +80,34 @@ const SingleProductSlider = ({ product }: SingleProductSliderProps) => {
   };
 
   return (
-    <div className="single-pro-slider sticky top-[0] p-[15px] border-[1px] border-solid border-[#eee] rounded-[24px] max-[991px]:max-w-[500px] max-[991px]:m-auto">
+    <div className="single-pro-slider sticky top-0 p-4 border border-gray-200 rounded-2xl max-w-lg mx-auto">
       {/* Main Product Slider */}
       <div className="single-product-cover relative">
         <Slider {...mainSliderSettings}>
+          {demoVideo && (
+            <div className="single-slide overflow-hidden relative w-full aspect-square">
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="auto"
+                className="w-full h-full object-cover object-center rounded-t-2xl"
+              >
+                <source src={demoVideo} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          )}
           {productImages.map((image, index) => (
             <div
               key={index}
-              className="single-slide zoom-container rounded-tl-[15px] rounded-tr-[15px] overflow-hidden relative"
+              className="single-slide rounded-t-2xl overflow-hidden relative"
               onMouseMove={(e) => handleMouseMove(e, image)}
               onMouseLeave={handleMouseLeave}
             >
               <img
-                className="img-responsive rounded-tl-[15px] rounded-tr-[15px]"
+                className="w-full h-full object-cover object-center rounded-t-2xl"
                 src={image}
                 alt={index === 0 ? imgAlt || "Product Image" : `${slug}-${index + 1}`}
               />
@@ -106,12 +132,27 @@ const SingleProductSlider = ({ product }: SingleProductSliderProps) => {
       </div>
 
       {/* Thumbnail Navigation Slider */}
-      <div className="single-nav-thumb w-full overflow-hidden">
+      <div className="single-nav-thumb w-full mt-4">
         <Slider {...navSliderSettings}>
+          {demoVideo && (
+            <div key="video-thumb" className="single-slide px-2">
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="auto"
+                className="w-full h-24 object-cover object-center rounded-lg"
+              >
+                <source src={demoVideo} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          )}
           {productImages.map((image, index) => (
-            <div key={index} className="single-slide px-[10px] block">
+            <div key={index} className="single-slide px-2">
               <img
-                className="img-responsive border-[1px] border-solid border-transparent transition-all duration-[0.3s] ease delay-[0s] cursor-pointer rounded-[15px]"
+                className="w-full h-24 object-cover object-center border border-transparent hover:border-gray-300 rounded-lg cursor-pointer"
                 src={image}
                 alt={`${slug}-thumb-${index + 1}`}
               />

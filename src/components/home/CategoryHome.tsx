@@ -7,39 +7,41 @@ import { categoryService } from "@/_services/common/categoryService";
 import Link from "next/link";
 import Image from "next/image";
 
+const settings = {
+  dots: false,
+  infinite: true,
+  autoplay: true,
+  speed: 500,
+  slidesToShow: 4,
+  slidesToScroll: 1,
+  arrows: true,
+  responsive: [
+    {
+      breakpoint: 1400,
+      settings: {
+        slidesToShow: 4,
+        slidesToScroll: 1,
+      },
+    },
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 1,
+      },
+    },
+    {
+      breakpoint: 768,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 1,
+      },
+    },
+  ],
+};
+
 const CategoryHome = () => {
-  const settings = {
-    dots: false,
-    infinite: true,
-    autoplay: true,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    arrows: true,
-    responsive: [
-      {
-        breakpoint: 1400,
-        settings: {
-          slidesToShow: 4,
-          slidesToScroll: 1,
-        },
-      },
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-        },
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-        },
-      },
-    ],
-  };
+  
 
   const [categoriesData, setCategoriesData] = useState([]);
   const [loading, setLoadinng] = useState(true);
@@ -140,7 +142,7 @@ const CategoryHome = () => {
                             categoriesData.map((category, index) => (
                               <div className="pr-2 pl-2" key={category?._id}>
                                 <div
-                                  className={`bb-category-box p-[30px] rounded-[20px] flex flex-col items-center text-center max-[1399px]:p-[20px] category-items-${index + 1} ${(index % 2 === 0 ? 'bg-[#f4f1fe]' : 'bg-[#fef1f1]')}`}
+                                  className={`bb-category-box p-[30px] max-[567px]:p-[5px] rounded-[20px] flex flex-col items-center text-center max-[1399px]:p-[20px] category-items-${index + 1} ${(index % 2 === 0 ? 'bg-[#f4f1fe]' : 'bg-[#fef1f1]')}`}
                                   data-aos-duration={1000}
                                   data-aos-delay={(index + 1) * 200}
                                 >

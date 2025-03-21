@@ -64,7 +64,8 @@ const ProductCardTwo = ({ product }: PopupProps) => {
                         </span>
                         {product.discountPrice > 0 && (
                             <span className={`discount transition-all duration-[0.3s] ease-in-out absolute z-[5] top-[10px] right-[10px] bg-rose-500 text-[#fff] font-medium text-[12px] px-2 rounded-full`}>
-                                Off {
+                                <span className="max-[576px]:hidden">SAVE</span>
+                                {
                                     product.discountType === 'percentage'
                                         ? `${product?.discountPrice}%`
                                         : `${formatCurrency(product?.discountPrice)}`
@@ -129,7 +130,7 @@ const ProductCardTwo = ({ product }: PopupProps) => {
                             </li>
                         </ul>
                     </div>
-                    <div className="bb-pro-contact p-[20px]">
+                    <div className="bb-pro-contact p-[20px] max-[576px]:p-[10px]">
                         <div className="bb-pro-subtitle mb-[8px] flex flex-wrap justify-between">
                             <Link
                                 href={`/category/${product?.category?.slug}`}
@@ -159,15 +160,16 @@ const ProductCardTwo = ({ product }: PopupProps) => {
                         {product?.showPrice ? (
                             <div className="bb-price flex flex-wrap justify-between">
                                 <div className="inner-price mx-[-3px]">
-                                    <span className="new-price px-[3px] text-[16px] max-[480px]:text-[12px] text-green-800 font-bold">
+                                    <span className="new-price px-[3px] text-[16px]  text-green-800 font-bold">
                                         {product.discountType === 'percentage'
                                             ? formatCurrency(product.price - (product.price * product.discountPrice) / 100)
                                             : formatCurrency(product.price - product.discountPrice)}
                                     </span>
-                                    <span className="old-price px-[3px] text-[14px] max-[480px]:text-[10px] text-rose-600 line-through">
+                                    <span className="old-price px-[3px] text-[14px]  text-rose-600 line-through">
                                         {product.discountPrice > 0 ? formatCurrency(product.price) : ''}
                                     </span>
                                 </div>
+                                <span className="last-items text-[14px] text-[#1f44a0] hidden md:block">In Stock</span>
                             </div>
                         ) : (
                             <Link
