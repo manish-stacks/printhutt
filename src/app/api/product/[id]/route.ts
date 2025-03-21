@@ -121,17 +121,17 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
 
         // Handle thumbnail upload
         const thumbnail = formData.get('thumbnail');
-        if (thumbnail instanceof File) {
+        if (typeof File !== 'undefined' && thumbnail instanceof File) {
             if (product.thumbnail?.public_id) await deleteImage(product.thumbnail.public_id);
             updatedData.thumbnail = await uploadImage(thumbnail, 'products/thumbnails', 800, 800);
         }
 
         // Handle images upload
         const imagesRaw = formData.getAll('images');
-        if (imagesRaw.length) {
+        if (imagesRaw.length && typeof File !== 'undefined') {
             const uploadedImages = await Promise.all(
                 imagesRaw.map(async (image) => {
-                    if (image instanceof File) return uploadImage(image, 'products', 800, 800);
+                    if (typeof File !== 'undefined' && image instanceof File) return uploadImage(image, 'products', 800, 800);
                     throw new Error('Invalid image file provided.');
                 })
             );
