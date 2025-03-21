@@ -3,7 +3,7 @@ import { get_product_by_id } from '@/_services/admin/product';
 import { formatCurrency } from '@/helpers/helpers';
 import { Product } from '@/lib/types/product';
 import { useCartStore } from '@/store/useCartStore';
-import { useRouter } from 'next/navigation'; 
+import { useRouter } from 'next/navigation';
 import React, { useState, useEffect, useRef } from 'react';
 import { BsUpload } from 'react-icons/bs';
 import { RiCloseLargeFill } from 'react-icons/ri';
@@ -19,7 +19,7 @@ export default function App() {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [product, setProduct] = useState<Product>();
     const addToCart = useCartStore(state => state.addToCart);
-    const router = useRouter(); 
+    const router = useRouter();
 
     useEffect(() => {
         (async () => {
@@ -60,7 +60,7 @@ export default function App() {
             alert('Please upload at least 4 images before proceeding.');
             return;
         }
-        
+
         try {
             setIsAddingToCart(true);
             // Simulate API call
@@ -69,7 +69,7 @@ export default function App() {
                     previewImage: previews[0].url,
                     previewImageTwo: previews[1].url,
                     previewImageThree: previews[2].url,
-                    previewImageFour: previews[3].url, 
+                    previewImageFour: previews[3].url,
                 };
 
                 const updatedProduct = {
@@ -191,9 +191,16 @@ export default function App() {
                                         : 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 transition-colors'
                                         }`}
                                 >
-                                    {isAddingToCart ? 'Adding to Cart...' : `Add to Cart - ${product.discountType === 'percentage'
-                                                                            ? formatCurrency(product.price - (product.price * product.discountPrice) / 100)
-                                                                            : formatCurrency(product.price - product.discountPrice)}`}
+                                    {isAddingToCart
+                                        ? 'Adding to Cart...'
+                                        : product && product.price !== undefined && product.discountType
+                                            ? `Add to Cart - ${formatCurrency(
+                                                product.discountType === 'percentage'
+                                                    ? product.price - (product.price * (product.discountPrice ?? 0)) / 100
+                                                    : product.price - (product.discountPrice ?? 0)
+                                            )}`
+                                            : 'Add to Cart'}
+
                                 </button>
                             </div>
                         </div>
