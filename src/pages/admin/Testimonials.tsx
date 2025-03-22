@@ -78,7 +78,7 @@ export default function Testimonials() {
         setIsSubmitting(true);
 
         const formDataToSend = new FormData();
-        if (formData.image instanceof File) {
+        if (typeof File !== 'undefined' && formData.image instanceof File) {
             formDataToSend.append('image', formData.image);
         }
 

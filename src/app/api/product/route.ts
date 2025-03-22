@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import  dbConnect  from '@/dbConfig/dbConfig';
+import dbConnect from '@/dbConfig/dbConfig';
 import { getDataFromToken } from '@/helpers/getDataFromToken';
 import { uploadImage } from '@/lib/cloudinary';
 import ProductModel from '@/models/productModel';
@@ -107,7 +107,8 @@ export async function POST(req: NextRequest) {
     if (savedProduct) {
       const uploadedImages = await Promise.all(
         imagesRaw.map(async (image) => {
-          if (image instanceof File) {
+
+          if (typeof File !== 'undefined' && image instanceof File) {
             return uploadImage(image, 'products', 800, 800);
           } else {
             throw new Error('Invalid image file provided.');

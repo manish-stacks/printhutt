@@ -60,7 +60,7 @@ const ProductCardThree = ({ product }: PopupProps) => {
                     </span>
                     {product.discountPrice > 0 && (
                         <span className={`discount transition-all duration-[0.3s] ease-in-out absolute z-[5] top-[10px] right-[10px] bg-rose-500 text-[#fff] font-medium text-[12px] px-2 rounded-full`}>
-                            <span className="max-[576px]:hidden">SAVE</span>
+                            <span className="max-[576px]:hidden">SAVE </span>
                             {
                                 product.discountType === 'percentage'
                                     ? `${product?.discountPrice}%`

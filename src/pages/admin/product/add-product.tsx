@@ -311,13 +311,13 @@ export default function AddProduct() {
       setIsSubmitting(true);
       const formDataToSend = new FormData();
 
-      if (formData.thumbnail instanceof File) {
+      if (typeof File !== 'undefined' && formData.thumbnail instanceof File) {
         formDataToSend.append('thumbnail', formData.thumbnail);
       }
 
       if (formData.images && formData.images.length > 0) {
         formData.images.forEach((image) => {
-          if (image.file instanceof File) {
+          if (typeof File !== 'undefined' && image.file instanceof File) {
             formDataToSend.append(`images`, image.file);
           }
         });

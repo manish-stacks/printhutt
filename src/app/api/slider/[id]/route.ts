@@ -23,7 +23,8 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     const formData = await request.formData();
     const sliderImage = formData.get('slider');
 
-    if (sliderImage instanceof File) {
+    if (typeof File !== 'undefined' && sliderImage instanceof File) {
+
       const sliderResponse = await uploadImage(sliderImage, 'slider', 1900, 550);
       if (sliderResponse) {
         if (slider.imageUrl?.public_id) await deleteImage(slider.imageUrl.public_id);

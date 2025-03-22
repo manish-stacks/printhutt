@@ -15,7 +15,8 @@ export async function POST(req: NextRequest) {
     const formData = await req.formData();
     const file = formData.get('imageUrl');
 
-    if (!file || !(file instanceof File)) {
+
+    if (!file || file instanceof File) {
       return NextResponse.json(
         { error: 'No valid file uploaded' },
         { status: 400 }

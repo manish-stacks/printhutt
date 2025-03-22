@@ -24,7 +24,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     const userImage = formData.get('image');
 
     // Handle image update
-    if (userImage instanceof File) {
+    if (typeof File !== 'undefined' && userImage instanceof File) {
       const imageResponse = await uploadImage(userImage, 'testimonial', 280, 280);
       if (imageResponse) {
         if (testimonial.image?.public_id) {

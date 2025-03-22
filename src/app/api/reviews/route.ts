@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
         if (imagesRaw.length > 0) {
             newReview.images = await Promise.all(
                 imagesRaw.map(async (image) => {
-                    if (image instanceof File) {
+                    if (typeof File !== 'undefined' && image instanceof File) {  
                         return reviewImage(image);
                     } else {
                         throw new Error('Invalid image file provided.');

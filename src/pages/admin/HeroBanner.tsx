@@ -79,7 +79,7 @@ export default function HeroBanner() {
         setIsSubmitting(true);
 
         const formDataToSend = new FormData();
-        if (formData.slider instanceof File) {
+        if (typeof File !== 'undefined' && formData.slider instanceof File) {
             formDataToSend.append('slider', formData.slider);
         }
 

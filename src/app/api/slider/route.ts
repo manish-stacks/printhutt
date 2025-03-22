@@ -54,7 +54,8 @@ export async function POST(req: NextRequest) {
     const formData = await req.formData();
     const slider = formData.get('slider');
 
-    if (!slider || !(slider instanceof File)) {
+
+    if (!slider || slider instanceof File) {
       return NextResponse.json(
         { success: false, message: 'Slider is required and must be a file' },
         { status: 400 }
