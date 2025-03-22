@@ -15,18 +15,16 @@ export type PreviewImage = {
   alt: string;
 };
 
-export type SizePreset = {
-  startWidth: number;
-  startHeight: number;
+export interface customSizeType {
+  _id: string;
   name: string;
+  maxTextLengthPerLine: number;
+  maxLineLength: number;
   width: number;
   height: number;
   price: number;
-  note?: string;
   isPopular?: boolean;
-  perLetter: number;
-  lineBreak: number;
-};
+}
 
 export type BackboardOption = {
   name: string;

@@ -19,13 +19,14 @@ import { useCartStore } from '@/store/useCartStore';
 import html2canvas from 'html2canvas';
 import { useRouter } from 'next/navigation';
 
+
 export default function NeonPage() {
   const [text, setText] = useState('');
   const [selectedColor, setSelectedColor] = useState(colors[7]);
   const [selectedFont, setSelectedFont] = useState('Buttervill');
   const [textLength, setTextLength] = useState(1);
   const [lineHeight, setLineHeight] = useState(1);
-  const [selectedSize, setSelectedSize] = useState(sizePresets[0]);
+  const [selectedSize, setSelectedSize] = useState(sizePresets[2]);
   const [width, setWidth] = useState(selectedSize.width);
   const [height, setHeight] = useState(selectedSize.height);
   const [selectedStyle, setSelectedStyle] = useState(styleOptions[0]);
@@ -40,7 +41,7 @@ export default function NeonPage() {
   const router = useRouter();
   const addToCart = useCartStore(state => state.addToCart);
   const removeFromCart = useCartStore(state => state.removeFromCart);
-  const existingCartState = useCartStore();
+ const existingCartState = useCartStore();
 
   useEffect(() => {
     (async () => {
@@ -53,59 +54,83 @@ export default function NeonPage() {
     })();
   }, []);
 
+
+
   const getTextLength = (newText: string) => {
     const textline = newText.split('\n');
+    // const calculatedLength = textline.reduce((total, line) => total + line.length, 0);
     const calculatedLength = textline.reduce((total, line) => total + line.replace(/\s/g, '').length, 0);
-    return calculatedLength;
+    setTextLength(calculatedLength);
   };
+
+
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newText = e.target.value;
     setText(newText);
-    const calculatedLength = getTextLength(newText);
-
-    setTextLength(calculatedLength);
-
-    // Filter sizes that support the text length
-    const matchingSizes = sizePresets.filter((size) => size.maxTextLengthPerLine >= calculatedLength);
-    setPreset(matchingSizes);
-
-    // Remove automatic size selection
-    if (matchingSizes.length > 0) {
-      setSelectedSize(matchingSizes[0]); // Select the first valid size
-    }
+    getTextLength(newText);
+    // setTextLength(newText.replace(/\s/g, '').length); // Count characters excluding spaces
   };
+
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter') {
-      if (lineHeight < selectedSize.maxLineLength) {
-        setLineHeight(lineHeight + 1);
-      } else {
-        toast.error(`Maximum ${selectedSize.maxLineLength} lines allowed`);
-        e.preventDefault();
-      }
+      setLineHeight((prev) => prev + 1);
     } else if (e.key === 'Backspace' && lineHeight > 1 && text.endsWith('\n')) {
-      setLineHeight(lineHeight - 1);
+      setLineHeight((prev) => prev - 1);
     }
   };
+
+
 
   useEffect(() => {
     getTextLength(text);
   }, [selectedSize, text]);
 
+
+
+
+
   useEffect(() => {
-    setTotal(selectedSize.price + selectedStyle.price);
+
+    const updatedPresets = sizePresets.map((item) => {
+
+      let updatedPrice = item.price + item.perLetter * Math.max(textLength - 1, 0);
+      let updatedWidth = item.startWidth * Math.max(textLength, 1);
+      let updatedHeight = item.startHeight * Math.max(lineHeight, 1) + (lineHeight > 1 ? item.lineBreak : 0);
+
+      return {
+        ...item,
+        price: updatedPrice,
+        width: updatedWidth,
+        height: updatedHeight,
+      };
+    });
+
+    setPreset(updatedPresets);
+
+    const selectSize = updatedPresets.find(item => item.name === selectedSize.name);
+    if (!selectSize) return
+    setWidth(selectSize.width);
+    setHeight(selectSize.height);
+    setTotal(selectSize.price + selectedStyle.price);
+
   }, [textLength, lineHeight, selectedSize, selectedStyle]);
+
 
   const handleCanvasAction = async () => {
     try {
       const previewElement = document.getElementById('preview-section');
+      // if(!previewElement) return
+      // previewElement.style.backgroundColor = '#FFF';
+
       if (!previewElement) {
         console.error('Preview section not found');
         return;
       }
 
       await new Promise(resolve => setTimeout(resolve, 100));
+
       const canvas = await html2canvas(previewElement, {
         useCORS: true,
         allowTaint: true,
@@ -133,16 +158,21 @@ export default function NeonPage() {
     }
   };
 
+
+
   const handleAddToCart = async () => {
+
     if (!text) {
       toast.error('Please enter some text');
-      return;
+      return
     }
+   
 
     try {
       setIsAddingToCart(true);
       const previewCanvas = await handleCanvasAction();
       if (previewCanvas && product) {
+
         const custom_data: CheckoutData = {
           previewCanvas,
           text,
@@ -164,6 +194,11 @@ export default function NeonPage() {
           custom_data,
         };
 
+
+
+        // console.log('updatedProduct', updatedProduct);
+        // console.log('product', product);
+        // return
         //check already cart item
         const existingItem = existingCartState.items.find(
           (item) => item._id === product._id
@@ -182,6 +217,7 @@ export default function NeonPage() {
     } finally {
       setIsAddingToCart(false);
     }
+
   };
 
   return (
@@ -211,18 +247,11 @@ export default function NeonPage() {
 
           <div className="w-full lg:w-[480px] bg-white shadow-xl p-6 space-y-8 mt-4 lg:mt-0 max-h-[calc(100vh-2rem)] overflow-y-auto ">
             <div className="flex justify-between items-center">
-              {/* Toggle Switch */}
               <div className="flex items-center space-x-2">
-                <div className="w-12 h-6 bg-green-500 rounded-full relative">
-                  <div className="w-6 h-6 bg-white rounded-full shadow-md transform transition-all duration-300" />
-                </div>
+                <div className="w-12 h-6 bg-green-500 rounded-full" />
                 <span className="text-sm text-gray-600">ON</span>
               </div>
-
-              {/* Total Display */}
-              <div className="text-xl font-bold sm:text-sm">
-                Total {formatCurrency(total)}
-              </div>
+              <div className="text-xl font-bold max-[576px]:text-sm">Total {formatCurrency(total)}</div>
             </div>
 
             <div className="space-y-4">
@@ -238,8 +267,10 @@ export default function NeonPage() {
             </div>
 
             <FontPicker selectedFont={selectedFont} onFontChange={setSelectedFont} />
+            <ColorPicker selectedColor={selectedColor} onColorChange={setSelectedColor} multiColor={multiColor} setMultiColor={setMultiColor} />
+
             <div className="space-y-4">
-              <h3 className="text-xl font-semibold max-[576px]:text-sm">3. CHOOSE SIZE</h3>
+              <h3 className="text-xl font-semibold max-[576px]:text-sm">4. CHOOSE SIZE</h3>
               <SizePresets
                 preset={preset}
                 selectedSize={selectedSize}
@@ -250,7 +281,6 @@ export default function NeonPage() {
                 }}
               />
             </div>
-            <ColorPicker selectedColor={selectedColor} onColorChange={setSelectedColor} multiColor={multiColor} setMultiColor={setMultiColor} />
 
             <StyleSelector selectedStyle={selectedStyle} onStyleChange={setSelectedStyle} />
             <button

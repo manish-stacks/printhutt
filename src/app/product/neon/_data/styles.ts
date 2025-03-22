@@ -12,12 +12,12 @@ export const styleOptions: StyleOption[] = [
     id: 'style2',
     name: 'Rectangle',
     preview: 'https://customneon.com/create-neon-sign/images/backboards/backboardrectangle.png',
-    price: 45
+    price: 0
   },
   {
     id: 'style3',
     name: 'Cut-To-Letter',
     preview: 'https://customneon.com/create-neon-sign/images/backboards/backboardletter.png',
-    price: 89
+    price: 0
   },
 ];

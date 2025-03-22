@@ -58,7 +58,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ selectedColor, onColor
 
   return (
     <div className="space-y-4">
-      <h3 className="text-xl font-semibold max-[576px]:text-sm`">3. CHOOSE COLOR</h3>
+      <h3 className="text-xl font-semibold max-[576px]:text-sm`">4. CHOOSE COLOR</h3>
       <p className="text-gray-600 text-xs max-[576px]:hidden">Digital Mockup Only. Click to see photos of {multiColor ? 'multiple colors' : selectedColor.name} colored signs.</p>
       <div className="grid grid-cols-9 gap-2">
         {colors.map((color) => (

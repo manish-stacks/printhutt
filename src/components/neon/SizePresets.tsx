@@ -1,10 +1,11 @@
+import { customSizeType } from '@/lib/types/neon';
 import React from 'react';
-import { SizePreset } from '@/lib/types/neon';
+
 
 interface SizePresetsProps {
-  selectedSize: SizePreset;
-  onSizeSelect: (size: SizePreset) => void;
-  preset: SizePreset[];
+  selectedSize: customSizeType;
+  onSizeSelect: (size: customSizeType) => void;
+  preset: customSizeType[];
 }
 
 export const SizePresets: React.FC<SizePresetsProps> = ({
@@ -13,15 +14,15 @@ export const SizePresets: React.FC<SizePresetsProps> = ({
   onSizeSelect,
 }) => {
 
-
+// console.log(preset)
   return (
-    <div className="grid grid-cols-2 gap-4">
-      {preset.map((size) => (
+    <div className="grid grid-cols-2 gap-4 max-h-[280px] overflow-y-auto pt-2">
+      {preset && preset.map((size) => (
         <button
-          key={size.name}
+          key={size._id}
           onClick={() => onSizeSelect(size)}
           className={`relative p-4 rounded-lg border-2 transition-all text-left
-          ${selectedSize.name === size.name
+          ${selectedSize._id === size._id
               ? "border-pink-500 bg-pink-50"
               : "border-gray-200 hover:border-pink-300"
             }`}

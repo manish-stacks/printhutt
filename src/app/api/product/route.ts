@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
     const formData = await req.formData();
     const imagesRaw = formData.getAll('images');
     const thumbnail = formData.get('thumbnail');
-    if (!thumbnail || !(thumbnail instanceof File)) {
+    if (typeof File === 'undefined' || !thumbnail || !(thumbnail instanceof File)) {
       return NextResponse.json({ success: false, message: 'Thumbnail is required and must be a file' }, { status: 400 });
     }
 

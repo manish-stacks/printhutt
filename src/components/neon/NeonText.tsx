@@ -45,6 +45,8 @@ export const NeonText: React.FC<NeonTextProps> = ({ text, color, font, width, he
     color: '#fff',
     fontSize: `${fontSize}px`,
     fontFamily: font,
+    // width: `${width+100}px`,
+    // height: `${height*10}px`,
     fontWeight: 'bold',
     whiteSpace: 'pre-line',
     textAlign: 'center',
@@ -52,6 +54,7 @@ export const NeonText: React.FC<NeonTextProps> = ({ text, color, font, width, he
     alignItems: 'center',
     justifyContent: 'center',
     lineHeight: '100px',
+    padding: '30px 60px',
   };
   const nodeRef = useRef(null);
   return (

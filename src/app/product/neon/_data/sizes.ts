@@ -1,8 +1,134 @@
-import { SizePreset } from "@/lib/types/neon";
+import { customSizeType } from "@/lib/types/neon";
 
-export const sizePresets: SizePreset[] = [
-  { name: 'Mini', startWidth: 2.5, width: 2.5, startHeight: 3, height: 3, price: 600, perLetter: 150, lineBreak: 1 },
-  { name: 'Small', startWidth: 4.5, width: 4.5, startHeight: 5, height: 5, price: 900, perLetter: 230, lineBreak: 2 },
-  { name: 'Medium', startWidth: 6, width: 6, startHeight: 8, height: 8, price: 1200, perLetter: 330, lineBreak: 4, isPopular: true },
-  { name: 'Large', startWidth: 8, width: 8, startHeight: 10, height: 10, price: 1800, perLetter: 400, lineBreak: 6 },
-];
+export const sizePresets: customSizeType[] = [
+  {
+    _id: '1',
+    name: 'Custom',
+    maxTextLengthPerLine: 5,
+    maxLineLength: 1,
+    width: 12,
+    height: 6,
+    price: 1200,
+    isPopular: true
+  },{
+    _id: '2',
+    name: 'Custom',
+    maxTextLengthPerLine: 9,
+    maxLineLength: 1,
+    width: 18,
+    height: 12,
+    price: 2100
+  },{
+    _id: '3',
+    name: 'Custom',
+    maxTextLengthPerLine: 9,
+    maxLineLength: 1,
+    width: 18,
+    height: 6,
+    price: 1600,
+  },{
+    _id: '4',
+    name: 'Custom',
+    maxTextLengthPerLine: 10,
+    maxLineLength: 2,
+    width: 18,
+    height: 18,
+    price: 2500
+  },{
+    _id: '5',
+    name: 'Custom',
+    maxTextLengthPerLine: 18,
+    maxLineLength: 1,
+    width: 24,
+    height: 6,
+    price: 2100
+  },{
+    _id: '6',
+    name: 'Custom',
+    maxTextLengthPerLine: 10,
+    maxLineLength: 2,
+    width: 24,
+    height: 18,
+    price: 3500
+  },{
+    _id: '7',
+    name: 'Custom',
+    maxTextLengthPerLine: 10,
+    maxLineLength: 1,
+    width: 24,
+    height: 12,
+    price: 2500
+  },{
+    _id: '8',
+    name: 'Custom',
+    maxTextLengthPerLine: 10,
+    maxLineLength: 3,
+    width: 24,
+    height: 24,
+    price: 4500
+  },{
+    _id: '9',
+    name: 'Custom',
+    maxTextLengthPerLine: 15,
+    maxLineLength: 1,
+    width: 36,
+    height: 12,
+    price: 3500
+  },{
+    _id: '10',
+    name: 'Custom',
+    maxTextLengthPerLine: 15,
+    maxLineLength: 2,
+    width: 36,
+    height: 18,
+    price: 5000
+  },{
+    _id: '11',
+    name: 'Custom',
+    maxTextLengthPerLine: 15,
+    maxLineLength: 3,
+    width: 36,
+    height: 24,
+    price: 6500
+  },{
+    _id: '12',
+    name: 'Custom',
+    maxTextLengthPerLine: 15,
+    maxLineLength: 3,
+    width: 36,
+    height: 24,
+    price: 6500 
+  },{
+    _id: '13',
+    name: 'Custom',
+    maxTextLengthPerLine: 18,
+    maxLineLength: 1,
+    width: 48,
+    height: 12,
+    price: 4500
+  },{
+    _id: '14',
+    name: 'Custom',
+    maxTextLengthPerLine: 18,
+    maxLineLength: 2,
+    width: 48,
+    height: 48,
+    price: 7000
+  },{
+    _id: '15',
+    name: 'Custom',
+    maxTextLengthPerLine: 18,
+    maxLineLength: 3,
+    width: 48,
+    height: 24,
+    price: 8500
+  },{
+    _id: '16',
+    name: 'Custom',
+    maxTextLengthPerLine: 18,
+    maxLineLength: 3,
+    width: 48,
+    height: 36,
+    price: 12000
+  }
+]
