@@ -18,9 +18,11 @@ const products = [
     url: '/product-details/personalized-couple-name-with-heart-led-neon-sign'
   },
   {
-    name: 'Couple LED Lamp',
-    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1741695836/h3lbzoharsjhnhruoyij_twmise.webp',
-    url: '/product-details/couple-name-lamp-rectangle-shape'
+    name: 'Wooden Rolling LED Dice',
+    // image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1741695836/h3lbzoharsjhnhruoyij_twmise.webp',
+    image: 'https://cloudify.printhutt.com/video/WhatsApp%20Video%202025-03-22%20at%206.10.05%20PM.mp4',
+    url: '/product-details/led-photo-rolling-dice',
+    type: 'video'
   },
   {
     name: 'Couple LED Lamp',
@@ -51,7 +53,7 @@ const products = [
     name: 'LED Photo Frame',
     // image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737974050/products/nioal6cjozy2oeb3plee.jpg',
     image: 'https://cloudify.printhutt.com/video/WhatsApp_Video_2025-03-01_at_11.58.10_AM_iyvpqf.mp4',
-    url: '/product-details/customize-acrylic-full-photo-frame-a4-size',
+    url: '/category/lamps/couple-lamp',
     type: 'video'
   }
 ];
