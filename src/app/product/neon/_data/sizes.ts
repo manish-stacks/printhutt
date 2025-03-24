@@ -33,7 +33,8 @@ export const sizePresets: customSizeType[] = [
     maxLineLength: 2,
     width: 18,
     height: 18,
-    price: 2500
+    price: 2500,
+    isPopular: true
   },{
     _id: '5',
     name: 'Custom',
@@ -49,7 +50,8 @@ export const sizePresets: customSizeType[] = [
     maxLineLength: 2,
     width: 24,
     height: 18,
-    price: 3500
+    price: 3500,
+    isPopular: true
   },{
     _id: '7',
     name: 'Custom',
@@ -65,7 +67,8 @@ export const sizePresets: customSizeType[] = [
     maxLineLength: 3,
     width: 24,
     height: 24,
-    price: 4500
+    price: 4500,
+    isPopular: true
   },{
     _id: '9',
     name: 'Custom',

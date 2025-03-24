@@ -7,9 +7,10 @@ interface NeonTextProps {
   width: number;
   height: number;
   fontSize: number;
+  textAlignment: string;
 }
 
-export const NeonText: React.FC<NeonTextProps> = ({ text, color, font, width, height, fontSize }) => {
+export const NeonText: React.FC<NeonTextProps> = ({ text, color, font, width, height, fontSize, textAlignment }) => {
 
   function hexToRgb(hex: string): string {
     hex = hex.replace(/^#/, '');
@@ -39,7 +40,6 @@ export const NeonText: React.FC<NeonTextProps> = ({ text, color, font, width, he
   const baseRgb = `rgb(${hexToRgb(color)})`;
   const darkColor = adjustColor(baseRgb, 0.7);
 
-
   const neonStyle: React.CSSProperties = {
     textShadow: `${darkColor} 0px 0px 3px, rgba(0, 0, 0,0.3) 1px 1px 1px, ${color} 0px 0px 6px, ${color} 0px 0px 10px, ${color} 0px 0px 13px, ${color} 0px 0px 16px, ${color} 0px 0px 20px, ${color} 0px 0px 24px, ${color} 0px 0px 28px, ${color} 0px 0px 32px, ${color} 0px 0px 40px`,
     color: '#fff',
@@ -53,9 +53,11 @@ export const NeonText: React.FC<NeonTextProps> = ({ text, color, font, width, he
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    lineHeight: '100px',
+    lineHeight: '120px',
     padding: '30px 60px',
+    textAlignLast: textAlignment,
   };
+
   const nodeRef = useRef(null);
   return (
     <Draggable
@@ -63,18 +65,13 @@ export const NeonText: React.FC<NeonTextProps> = ({ text, color, font, width, he
       bounds="parent"
       defaultPosition={{ x: 0, y: 0 }}>
       <div className="relative group cursor-move" ref={nodeRef}>
-
-        <div className="transition-all duration-300" style={neonStyle}>
+        <div className="transition-all duration-300 max-[567px]:!text-lg" style={neonStyle}>
           {text || 'Your Text'}
         </div>
-
-
         <div className="absolute top-1/2 -left-8 w-8 border-t border-gray-400 opacity-100 group-hover:opacity-100 transition-opacity" />
         <div className="absolute top-1/2 -right-8 w-8 border-t border-gray-400 opacity-100 group-hover:opacity-100 transition-opacity" />
         <div className="absolute -top-8 left-1/2 h-8 border-l border-gray-400 opacity-100 group-hover:opacity-100 transition-opacity" />
         <div className="absolute -bottom-8 left-1/2 h-8 border-l border-gray-400 opacity-100 group-hover:opacity-100 transition-opacity" />
-
-
         <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-black/75 text-white px-2 py-1 rounded text-sm opacity-100 group-hover:opacity-100 transition-opacity">
           {width}"
         </div>
@@ -82,15 +79,6 @@ export const NeonText: React.FC<NeonTextProps> = ({ text, color, font, width, he
           {height}"
         </div>
       </div>
-      {/* <div className="relative flex flex-col items-center justify-center h-32 w-10 ">
-        <div className="w-[2px] h-12 bg-gray-900 border-2"></div>
-        <span className="text-lg font-semibold text-gray-700">7"</span>
-        <div className="w-[2px] h-12 bg-gray-900 border-2"></div>
-      </div> */}
-
-
-
     </Draggable>
-
   );
 };

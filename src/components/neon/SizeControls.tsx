@@ -10,18 +10,18 @@ interface SizeControlsProps {
 }
 
 export const SizeControls: React.FC<SizeControlsProps> = ({
-  width,
-  height,
+  // width,
+  // height,
   fontSize,
-  onWidthChange,
-  onHeightChange,
+  // onWidthChange,
+  // onHeightChange,
   onFontSizeChange,
 }) => {
   return (
     <div className="space-y-4">
-      <h3 className="text-xl font-semibold">4. CHOOSE SIZE</h3>
+      {/* <h3 className="text-xl font-semibold">4. CHOOSE SIZE</h3> */}
       <div className="space-y-6">
-        <div>
+        {/* <div>
           <div className="flex justify-between">
             <label className="block text-sm font-medium text-gray-700">Width</label>
             <span className="text-sm text-gray-500">{width}"</span>
@@ -34,8 +34,8 @@ export const SizeControls: React.FC<SizeControlsProps> = ({
             onChange={(e) => onWidthChange(Number(e.target.value))}
             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer mt-2"
           />
-        </div>
-        <div>
+        </div> */}
+        {/* <div>
           <div className="flex justify-between">
             <label className="block text-sm font-medium text-gray-700">Height</label>
             <span className="text-sm text-gray-500">{height}"</span>
@@ -48,7 +48,7 @@ export const SizeControls: React.FC<SizeControlsProps> = ({
             onChange={(e) => onHeightChange(Number(e.target.value))}
             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer mt-2"
           />
-        </div>
+        </div> */}
         <div>
           <div className="flex justify-between">
             <label className="block text-sm font-medium text-gray-700">Text Size</label>

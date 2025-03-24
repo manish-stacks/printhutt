@@ -39,7 +39,7 @@ const Checkout = () => {
     setOriginalPrice(price.discountPrice);
   }, [items, getTotalPrice]);
 
-  console.log(items)
+ /*
   useEffect(() => {
     if (typeof window !== "undefined" && (window as any).dataLayer) {
       (window as any).dataLayer.push({ ecommerce: null }); // Clear previous ecommerce data
@@ -68,7 +68,7 @@ const Checkout = () => {
       });
     }
   }, [items, totalPrice, selectedCoupon]);
-
+*/
   const handle_select = (coupon) => {
     if (selectedCoupon?.code === coupon.code) {
       setErrorMsg('This coupon has already been applied');

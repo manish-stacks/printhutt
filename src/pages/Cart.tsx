@@ -31,7 +31,7 @@ const Cart = () => {
   useEffect(() => {
     setTotalPrice(getTotalPrice());
   }, [items, getTotalPrice]);
-
+/*
   useEffect(() => {
     if (typeof window !== "undefined" && (window as any).dataLayer) {
       (window as any).dataLayer.push({ ecommerce: null }); // Clear previous ecommerce data
@@ -60,7 +60,7 @@ const Cart = () => {
       });
     }
   }, [items, totalPrice]);
-
+*/
   const gotoCheckout = () => {
     return router.push('/checkout');
 

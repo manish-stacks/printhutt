@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { colors, multiColors } from '@/app/product/neon/_data/colors';
 import { NeonColor } from '@/lib/types/neon';
+import Link from 'next/link';
 
 interface ColorPickerProps {
   selectedColor: NeonColor;
@@ -84,9 +85,9 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ selectedColor, onColor
           <div className="text-gray-500 text-xs max-[576px]:hidden">Multiple colors with static and dynamic modes</div>
         </div>
         {/* Link */}
-        <a href="{linkUrl}" className="text-blue-600 font-semibold text-md max-[576px]:hidden">
+        <Link href={"/category/neon/neon-sign"} className="text-blue-600 font-semibold text-md max-[576px]:hidden">
           See Examples
-        </a>
+        </Link>
       </div>
     </div>
   );

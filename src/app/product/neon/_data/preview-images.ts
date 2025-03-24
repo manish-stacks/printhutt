@@ -4,7 +4,7 @@ import { PreviewImage } from "@/lib/types/neon";
 export const previewImages: PreviewImage[] = [
   {
     id: 1,
-    url: "https://res.cloudinary.com/dkprths9f/image/upload/v1741329794/office1_ikzsiv.jpg",
+    url: "https://res.cloudinary.com/dkprths9f/image/upload/v1741329794/lounge1_kkc2gc.jpg",
     alt: "Living Room Preview"
   },
   {
@@ -14,7 +14,7 @@ export const previewImages: PreviewImage[] = [
   },
   {
     id: 3,
-    url: "https://res.cloudinary.com/dkprths9f/image/upload/v1741329794/lounge1_kkc2gc.jpg",
+    url: "https://res.cloudinary.com/dkprths9f/image/upload/v1741329794/office1_ikzsiv.jpg",
     alt: "Cafe Preview"
   },
   {

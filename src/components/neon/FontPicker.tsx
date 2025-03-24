@@ -17,7 +17,7 @@ export const FontPicker: React.FC<FontPickerProps> = ({ selectedFont, onFontChan
 
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       <h3 className="text-xl font-semibold max-[576px]:text-sm">2. CHOOSE FONT</h3>
       <p className="text-gray-600 text-xs max-[576px]:hidden">Pick from over 50 typefaces. Prices vary by the amount of LED neon required.</p>
       <div
