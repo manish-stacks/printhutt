@@ -7,7 +7,7 @@ import { Canvas, IText } from 'fabric';
 import { useCartStore } from '@/store/useCartStore';
 import html2canvas from 'html2canvas';
 import { useRouter } from 'next/navigation';
-import { CustomizationButtonTwo } from '@/components/CustomizationButton';
+import { CustomizationButton } from '@/components/CustomizationButton';
 import Image from 'next/image';
 
 export default function Page() {
@@ -230,7 +230,7 @@ export default function Page() {
 
                 <div className="max-w-lg mx-auto mt-10">
                   <h2 className="text-xl font-semibold text-gray-800">Choose Your Font</h2>
-                  <CustomizationButtonTwo selectedFont={selectedFont} handleFontChange={handleFontChange} />
+                  <CustomizationButton selectedFont={selectedFont} handleFontChange={handleFontChange} />
                 </div>
 
                 <button
