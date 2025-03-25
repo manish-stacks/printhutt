@@ -13,16 +13,16 @@ const products = [
     url: '/product-details/couple-led-name-lamp-with-photo-wedding-gifts-for-couples'
   },
   {
-    name: 'Multi Color Heart Neon',
-    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737980307/products/thumbnails/f6cy0e1zk2epeoaet9cd.jpg',
-    url: '/product-details/personalized-couple-name-with-heart-led-neon-sign'
-  },
-  {
     name: 'Wooden Rolling LED Dice',
-    // image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1741695836/h3lbzoharsjhnhruoyij_twmise.webp',
+    // image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737980307/products/thumbnails/f6cy0e1zk2epeoaet9cd.jpg',
     image: 'https://cloudify.printhutt.com/video/WhatsApp%20Video%202025-03-22%20at%206.10.05%20PM.mp4',
     url: '/product-details/led-photo-rolling-dice',
     type: 'video'
+  },
+  {
+    name: 'Couple LED Lamp',
+    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1741695836/h3lbzoharsjhnhruoyij_twmise.webp',
+    url: '/product-details/couple-name-lamp-rectangle-shape',
   },
   {
     name: 'Couple LED Lamp',
@@ -33,7 +33,7 @@ const products = [
     name: 'Wooden Rolling Dice',
     // image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737913742/products/thumbnails/u2p4raxkfdvilirshc8x.jpg',
     image: 'https://cloudify.printhutt.com/video/cube.mp4',
-    url: '/customize/frame/personalized-premium-wooden-rolling-dice-cube-with-photos',
+    url: '/product-details/photo-rolling-dice-cube-with-photos',
     type: 'video'
   },
   {
@@ -46,14 +46,14 @@ const products = [
     name: 'Couple LED Name Lamp',
     // image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737965914/products/xyutjqist7sfdla7lols.jpg',
     image: "https://cloudify.printhutt.com/video/WhatsApp_Video_2025-03-01_at_11.51.09_AM_kc8lja.mp4",
-    url: '/product-details/acrylic-couple-lamp-with-name',
+    url: '/category/lamps/couple-lamp',
     type: 'video'
   },
   {
     name: 'LED Photo Frame',
     // image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737974050/products/nioal6cjozy2oeb3plee.jpg',
     image: 'https://cloudify.printhutt.com/video/WhatsApp_Video_2025-03-01_at_11.58.10_AM_iyvpqf.mp4',
-    url: '/category/lamps/couple-lamp',
+    url: '/product-details/customize-acrylic-full-photo-frame-a4-size',
     type: 'video'
   }
 ];
@@ -137,7 +137,7 @@ function PersonalizedGifts() {
             <div className="text-center">
 
               <h1 className="text-4xl max-[576px]:text-2xl md:text-5xl font-bold text-slate-600 mb-4 font-serif ">
-                Personalised <span className='text-pink-600' style={{fontFamily:"Buttervill"}}>Couple</span> Gifts
+                Personalised <span className='text-pink-600' style={{ fontFamily: "Buttervill" }}>Couple</span> Gifts
               </h1>
               <p className="text-lg text-slate-600/90 max-w-2xl mx-auto max-[576px]:text-sm">
                 Create lasting memories with our unique collection of personalized lighting gifts
