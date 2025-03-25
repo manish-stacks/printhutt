@@ -247,7 +247,7 @@ export default function Page() {
               </div>
             </div>
 
-            <div className="bg-white/95 rounded-lg p-8 shadow-xl">
+            <div className="bg-white/95 rounded-lg p-8 shadow-xl z-10">
               <div className="space-y-6">
 
                 <div>
