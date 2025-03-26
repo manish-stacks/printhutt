@@ -29,7 +29,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-
+        <meta name="google-site-verification" content="JPoKuGdzZUTIIKHchBqwbjUJsu7ufYIomoR9rhfsGtk" />
+        <meta name="robots" content="index, follow" />
         {/* Add Meta Pixel script */}
         <Script
           strategy="afterInteractive"
@@ -92,24 +93,6 @@ export default function RootLayout({
       </head>
 
       <body>
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-KT48HWMX"
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          ></iframe>
-        </noscript>
-        <noscript>
-          <img
-            height="1"
-            width="1"
-            style={{ display: "none" }}
-            src="https://www.facebook.com/tr?id=597830392692641&ev=PageView&noscript=1"
-            alt="Facebook Pixel"
-          />
-        </noscript>
-
         <MainLayout>
           <ToastContainer position="top-center" />
           {children}
