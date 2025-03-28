@@ -110,7 +110,7 @@ export const CheckoutAddressForm = ({ onChangeAddress }: TypeSelectorProps) => {
     return (
         <>
 
-            <div className="bg-white mb-4 p-4 rounded shadow-sm">
+            <div className="bg-white mb-4 p-4 rounded shadow-sm hidden">
                 <div className="flex justify-between">
                     <div className="flex items-center">
                         <span className="w-8 h-8 rounded-full bg-[#29bc29] text-white flex items-center justify-center text-sm">1</span>

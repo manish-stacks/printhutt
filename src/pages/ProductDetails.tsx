@@ -11,7 +11,9 @@ import { formatCurrency, randomNumber } from "@/helpers/helpers";
 import ProductSlider from "@/components/ProductSlider";
 import useQuickStore from "@/store/useQuickStore";
 import Link from "next/link";
-import {  RiEyeLine, RiShoppingCartFill } from "react-icons/ri";
+import { RiEyeLine, RiShoppingCartFill } from "react-icons/ri";
+import { TestimonialCard } from "@/components/TestimonialCard";
+import Image from "next/image";
 
 interface ProductProps {
   product: Product | null;
@@ -67,7 +69,7 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
     useQuickStore.setState({ isOpen: false });
     setViewers(randomNumber(300, 1));
     setBuyers(randomNumber(3000, 1000));
-    setRatings(randomNumber(1000, 400));
+    setRatings(randomNumber(5, 1));
   }, [])
 
 
@@ -93,6 +95,7 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                         </h4>
                       </div>
 
+                      
                       <div className="bb-single-rating mb-[12px]">
                         <span className="bb-pro-rating mr-[10px]">
                           {Array.from({ length: 5 }, (_, index) => (
@@ -111,6 +114,7 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                           </a>
                         </span>
                       </div>
+                      
 
                       <p className="font-Poppins text-[15px] font-light leading-[28px] tracking-[0.03rem]">
                         {product?.short_description}
@@ -197,7 +201,7 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                             )}
 
                           </div>
-                          <div className="bb-single-price py-[15px]">
+                          <div className="bb-single-price py-[15px] hidden">
                             <div className="sku mb-[8px]">
                               <h5 className="font-quicksand text-[18px] font-extrabold leading-[1.2] tracking-[0.03rem] text-[#3d4750]">
                                 SKU#: {product?.sku}
@@ -216,11 +220,14 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                           </div>
                         </div>
                       )}
+                      <div>
+                        <Image src={"/img/shape/badges-1.png"} width={230} height={50} alt="badges" />
+                      </div>
 
 
                       <div className="bb-single-list mb-[30px]">
                         <div className="flex flex-col gap-1 text-gray-700 font-Poppins">
-                          
+
                           <div className="flex items-center gap-2 p-2">
                             <RiEyeLine className="text-amber-600 text-xl" />
                             <span className="text-[16px] font-medium">
@@ -228,7 +235,7 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                             </span>
                           </div>
 
-                          
+
                           <div className="flex items-center gap-2 p-2">
                             <RiShoppingCartFill className="text-amber-600 text-xl" />
                             <span className="text-[16px] font-medium">
@@ -262,7 +269,7 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                             </span>{" "}
                             A-Grade Standard Quality
                           </li>
-                          <li className="my-[8px] font-Poppins text-[14px] font-light leading-[28px] tracking-[0.03rem] text-[#777] list-disc">
+                          <li className="my-[8px] font-Poppins text-[14px] font-light leading-[28px] tracking-[0.03rem] text-[#777] list-disc hidden">
                             <span className="font-Poppins text-[#777] text-[14px]">
                               Offers :
                             </span>{" "}
@@ -405,7 +412,7 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                         Information
                       </button>
                     </li>
-                    <li className="nav-item relative leading-[28px]">
+                    {/* <li className="nav-item relative leading-[28px]">
                       <button
                         className={`nav-link px-[20px] font-Poppins text-[16px] text-[#686e7d] font-medium capitalize leading-[28px] tracking-[0.03rem] block ${activeReviews && 'active text-[#6c7fd8]'}`}
                         data-tab="reviews"
@@ -417,18 +424,18 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                       >
                         Reviews
                       </button>
-                    </li>
+                    </li> */}
                   </ul>
                 </div>
                 <div className="tab-content">
                   {
                     activeDetails && (
                       <div className="tab-pro-pane" id="detail">
-                        <div className="bb-inner-tabs border-[1px] border-solid border-[#eee] p-[15px] rounded-[20px]">
+                        <div className="bb-inner-tabs ">
                           <div className="bb-details">
                             <div
                               dangerouslySetInnerHTML={{ __html: product?.description }}
-                              className="mb-[12px] font-Poppins text-[#686e7d] leading-[28px] tracking-[0.03rem] font-light"
+                              className="mb-[12px] font-Poppins text-[#686e7d] leading-[28px] tracking-[0.03rem] font-dark"
                             />
                             <div className="details-info">
                               <ul className="list-disc pl-[20px] mb-[0]">
@@ -481,7 +488,7 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                   {
                     activeInformation && (
                       <div className="tab-pro-pane" id="information">
-                        <div className="bb-inner-tabs border-[1px] border-solid border-[#eee] p-[15px] rounded-[20px]">
+                        <div className="bb-inner-tabs">
                           <div className="information">
                             <ul className="list-disc pl-[20px]">
                               <li className="font-Poppins text-[15px] font-light tracking-[0.03rem] leading-[28px] text-[#686e7d] py-[5px]">
@@ -551,16 +558,70 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                     )
                   }
                   {
-                    activeReviews && (
-                      <div className="tab-pro-pane" id="reviews">
-                        <div className="bb-inner-tabs border-[1px] border-solid border-[#eee] p-[15px] rounded-[20px]">
-                          <Link href={`/product-details/${product?.slug}/write-review`} className="font-Poppins leading-[1.2] tracking-[0.03rem] mb-[5px] text-[14px] font-bold text-green-100 bg-green-600 py-1 px-2 rounded-md">Add Reviews</Link>
-                          <div className="bb-reviews mt-4">
-                            {
-                              product?.reviews?.length > 0 ? (
-                                product?.reviews &&
-                                product?.reviews.map((review, index) => (
-                                  <div key={index}>
+                    /*
+  activeReviews && (
+                        <div className="tab-pro-pane" id="reviews">
+                          <div className="bb-inner-tabs border-[1px] border-solid border-[#eee] p-[15px] rounded-[20px]">
+                            <Link href={`/product-details/${product?.slug}/write-review`} className="font-Poppins leading-[1.2] tracking-[0.03rem] mb-[5px] text-[14px] font-bold text-green-100 bg-green-600 py-1 px-2 rounded-md">Add Reviews</Link>
+                            <div className="bb-reviews mt-4">
+                              {
+                                product?.reviews?.length > 0 ? (
+                                  product?.reviews &&
+                                  product?.reviews.map((review, index) => (
+                                    <div key={index}>
+                                      <div className="reviews-bb-box flex mb-[24px] max-[575px]:flex-col">
+                                        <div className="inner-image mr-[12px] max-[575px]:mr-[0] max-[575px]:mb-[12px]">
+                                          <img
+                                            src="/img/dummy-image.jpg"
+                                            alt="img-1"
+                                            className="w-[50px] h-[50px] max-w-[50px] rounded-[10px]"
+                                          />
+                                        </div>
+                                        <div className="inner-contact">
+                                          <h4 className="font-quicksand leading-[1.2] tracking-[0.03rem] mb-[5px] text-[16px] font-bold text-[#3d4750]">
+                                            {review?.userId?.displayName || "User"}
+                                          </h4>
+                                          <div className="bb-pro-rating flex">
+                                            {Array(review?.rating || 5)
+                                              .fill(0)
+                                              .map((_, starIndex) => (
+                                                <i
+                                                  key={starIndex}
+                                                  className={`${starIndex < review.rating
+                                                    ? "ri-star-fill text-[#fea99a]"
+                                                    : "ri-star-line text-[#777]"
+                                                    } float-left text-[15px] mr-[3px]`}
+                                                />
+                                              ))}
+                                          </div>
+                                          <p className="font-Poppins text-[14px] leading-[26px] font-light tracking-[0.03rem] text-[#686e7d]">
+                                            {review.review}
+                                          </p>
+                                        </div>
+                                      </div>
+                                      {
+                                        review?.images && (
+                                          <div className="reviews-bb-box flex mb-[24px] max-[575px]:flex-col">
+                                            {
+                                              review?.images.map((image, index) => (
+                                                <div key={index} className="inner-image mr-[12px] max-[575px]:mr-[0] max-[575px]:mb-[12px]">
+                                                  <img
+                                                    src={image.url}
+                                                    alt={`img-${index}`}
+                                                    className="w-[50px] h-[50px] max-w-[50px] rounded-[10px]"
+                                                  />
+                                                </div>
+                                              ))
+                                            }
+  
+                                          </div>
+                                        )
+                                      }
+  
+                                    </div>
+                                  ))
+                                ) : (
+                                  <>
                                     <div className="reviews-bb-box flex mb-[24px] max-[575px]:flex-col">
                                       <div className="inner-image mr-[12px] max-[575px]:mr-[0] max-[575px]:mb-[12px]">
                                         <img
@@ -571,122 +632,36 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                                       </div>
                                       <div className="inner-contact">
                                         <h4 className="font-quicksand leading-[1.2] tracking-[0.03rem] mb-[5px] text-[16px] font-bold text-[#3d4750]">
-                                          {review?.userId?.displayName || "User"}
+                                          Manish
                                         </h4>
                                         <div className="bb-pro-rating flex">
-                                          {Array(review?.rating || 5)
-                                            .fill(0)
-                                            .map((_, starIndex) => (
-                                              <i
-                                                key={starIndex}
-                                                className={`${starIndex < review.rating
-                                                  ? "ri-star-fill text-[#fea99a]"
-                                                  : "ri-star-line text-[#777]"
-                                                  } float-left text-[15px] mr-[3px]`}
-                                              />
-                                            ))}
+                                          <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
+                                          <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
+                                          <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
+                                          <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
+                                          <i className="ri-star-line float-left text-[15px] mr-[3px] text-[#777]" />
                                         </div>
                                         <p className="font-Poppins text-[14px] leading-[26px] font-light tracking-[0.03rem] text-[#686e7d]">
-                                          {review.review}
+                                          The lamp exceeded my expectations. Bright, stylish, and personalized just how I wanted. Highly recommend!
                                         </p>
                                       </div>
+  
                                     </div>
-                                    {
-                                      review?.images && (
-                                        <div className="reviews-bb-box flex mb-[24px] max-[575px]:flex-col">
-                                          {
-                                            review?.images.map((image, index) => (
-                                              <div key={index} className="inner-image mr-[12px] max-[575px]:mr-[0] max-[575px]:mb-[12px]">
-                                                <img
-                                                  src={image.url}
-                                                  alt={`img-${index}`}
-                                                  className="w-[50px] h-[50px] max-w-[50px] rounded-[10px]"
-                                                />
-                                              </div>
-                                            ))
-                                          }
-
-                                        </div>
-                                      )
-                                    }
-
-                                  </div>
-                                ))
-                              ) : (
-                                <>
-                                  <div className="reviews-bb-box flex mb-[24px] max-[575px]:flex-col">
-                                    <div className="inner-image mr-[12px] max-[575px]:mr-[0] max-[575px]:mb-[12px]">
-                                      <img
-                                        src="/img/dummy-image.jpg"
-                                        alt="img-1"
-                                        className="w-[50px] h-[50px] max-w-[50px] rounded-[10px]"
-                                      />
-                                    </div>
-                                    <div className="inner-contact">
-                                      <h4 className="font-quicksand leading-[1.2] tracking-[0.03rem] mb-[5px] text-[16px] font-bold text-[#3d4750]">
-                                        Manish
-                                      </h4>
-                                      <div className="bb-pro-rating flex">
-                                        <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
-                                        <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
-                                        <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
-                                        <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
-                                        <i className="ri-star-line float-left text-[15px] mr-[3px] text-[#777]" />
-                                      </div>
-                                      <p className="font-Poppins text-[14px] leading-[26px] font-light tracking-[0.03rem] text-[#686e7d]">
-                                        The lamp exceeded my expectations. Bright, stylish, and personalized just how I wanted. Highly recommend!
-                                      </p>
-                                    </div>
-
-                                  </div>
-
-
-
-                                </>
-
-                              )
-                            }
-
-                          </div>
-                          {/* <div className="bb-reviews-form">
-                            <h3 className="font-quicksand tracking-[0.03rem] leading-[1.2] mb-[8px] text-[20px] font-bold text-[#3d4750]">
-                              Add a Review
-                            </h3>
-                            <div className="bb-review-rating flex mb-[12px]">
-                              <span className="pr-[10px] font-Poppins text-[15px] font-semibold leading-[26px] tracking-[0.02rem] text-[#3d4750]">
-                                Your ratting :
-                              </span>
-                              <div className="bb-pro-rating">
-                                <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
-                                <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
-                                <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
-                                <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
-                                <i className="ri-star-line float-left text-[15px] mr-[3px] text-[#777]" />
-                              </div>
+  
+  
+  
+                                  </>
+  
+                                )
+                              }
+  
                             </div>
-                            <form action="#">
-                              <div className="input-box mb-[24px]">
-                                <textarea
-                                  name="your-comment"
-                                  placeholder="Enter Your Comment"
-                                  className="w-full h-[100px] border-[1px] border-solid border-[#eee] py-[20px] pl-[20px] pr-[10px] outline-[0] text-[14px] font-normal text-[#777] rounded-[20px] p-[10px]"
-                                  defaultValue={""}
-                                />
-                              </div>
-                              
-                              <div className="input-button">
-                                <a
-
-                                  className="bb-btn-2 transition-all duration-[0.3s] ease-in-out h-[40px] inline-flex font-Poppins leading-[28px] tracking-[0.03rem] py-[4px] px-[15px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
-                                >
-                                  Submit
-                                </a>
-                              </div>
-                            </form>
-                          </div> */}
+                            
+                          </div>
                         </div>
-                      </div>
-                    )
+                      )
+                    */
+
                   }
 
                 </div>
@@ -698,6 +673,7 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
 
 
 
+      <TestimonialCard />
       {/* Related product section */}
       <section className="section-related-product py-[50px] max-[1199px]:py-[35px]">
         <div className="flex flex-wrap justify-between relative items-center mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">

@@ -37,10 +37,19 @@ export default function App() {
     useEffect(() => {
         const initializeCanvas = (canvasElement: HTMLCanvasElement, text: string, left: number, top: number) => {
             const canvas = new Canvas(canvasElement);
+
+            // Set canvas dimensions for high-resolution rendering
+            const devicePixelRatio = window.devicePixelRatio || 1;
+            canvasElement.width = canvasElement.offsetWidth * devicePixelRatio;
+            canvasElement.height = canvasElement.offsetHeight * devicePixelRatio;
+            canvas.setWidth(canvasElement.offsetWidth);
+            canvas.setHeight(canvasElement.offsetHeight);
+            canvas.setZoom(devicePixelRatio);
+
             const textObj = new IText(text, {
                 left,
                 top,
-                fill: selectedColor=='White'?'#fff':'#fde68a',
+                fill: selectedColor === 'White' ? '#fff' : '#fde68a',
                 fontSize: 42,
                 fontFamily: selectedFont,
             });
@@ -54,7 +63,7 @@ export default function App() {
         return () => {
             canvas1?.dispose();
         };
-    }, [names, selectedFont,selectedColor]);
+    }, [names, selectedFont, selectedColor]);
 
 
     const handleFontChange = (font: string) => {
@@ -111,8 +120,8 @@ export default function App() {
                 //setProduct(updatedProduct);
 
                 addToCart(updatedProduct, 1);
-                router.push('/cart');
-                console.log("Product added to cart:", updatedProduct);
+                router.push('/checkout');
+                // console.log("Product added to cart:", updatedProduct);
                 return;
             }
         } catch (error) {
@@ -168,6 +177,7 @@ export default function App() {
                                             onChange={(e) => setNames({ ...names, name1: e.target.value })}
                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
                                             placeholder="Enter first name"
+                                            maxLength={20}
                                         />
                                     </div>
 

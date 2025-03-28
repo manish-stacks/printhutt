@@ -307,7 +307,7 @@ export const CheckoutloginForm = () => {
                 </div>
 
                 {/* Delivery Address Section */}
-                <div className="mt-8 bg-white rounded-lg shadow-md">
+                <div className="mt-8 bg-white rounded-lg shadow-md hidden">
                     <div className="p-4 sm:p-6">
                         <div className="flex items-center">
                             <span className="w-8 h-8 rounded-full bg-[#2874f0] text-white flex items-center justify-center text-sm font-medium">2</span>

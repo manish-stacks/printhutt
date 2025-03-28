@@ -217,7 +217,7 @@ export default function NeonPage() {
         }
 
         addToCart(updatedProduct, 1);
-        router.push('/cart');
+        router.push('/checkout');
         return;
       }
     } catch (error) {

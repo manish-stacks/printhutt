@@ -143,7 +143,7 @@ export default function Page() {
                 //setProduct(updatedProduct);
 
                 addToCart(updatedProduct, 1);
-                router.push('/cart');
+                router.push('/checkout');
                 console.log("Product added to cart:", updatedProduct);
                 return;
             }

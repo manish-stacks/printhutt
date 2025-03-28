@@ -332,6 +332,49 @@ const Checkout = () => {
 
             <div className="min-[992px]:w-[33.33%] w-full px-[12px] mb-[24px]">
               <div className="bb-checkout-sidebar mb-[-24px]">
+               
+                <div
+                  className="checkout-items border-[1px] border-solid border-[#eee] p-[20px] rounded-[20px] mb-[24px]"
+                  data-aos="fade-up"
+                  data-aos-duration={1000}
+                  data-aos-delay={400}
+                >
+                  <PaymentMethod
+                    value={paymentMethod}
+                    // onChange={(value) => setPaymentMethod(value)}
+                    onChange={(value) => setPaymentFunction(value)}
+                    totalPrice={totalPrice.discountPrice}
+                  />
+                </div>
+                <button
+                  className="w-full bb-btn-2  inline-flex items-center justify-center check-btn transition-all duration-[0.3s] ease-in-out font-Poppins leading-[28px] tracking-[0.03rem] py-[8px] px-[20px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
+                  data-aos="fade-up"
+                  data-aos-duration={1000}
+                  data-aos-delay={400}
+                  onClick={placeOrder}
+                >
+                  {isSubmitting ? 'Submitting...' : `Place Order - ${paymentMethod == 'offline' ? formatCurrency(totalPrice?.discountPrice * 0.2) : formatCurrency(totalPrice?.discountPrice)}`}
+                </button>
+
+                <div
+                  className="mt-5 checkout-items border-[1px] border-solid border-[#eee] p-[20px] rounded-[20px] mb-[24px]"
+                  data-aos="fade-up"
+                  data-aos-duration={1000}
+                  data-aos-delay={200}
+                >
+                  <div className="sub-title mb-[12px]">
+                    <h4 className="font-quicksand tracking-[0.03rem] leading-[1.2] text-[20px] font-bold text-[#3d4750]">
+                      Accepted Payment
+                    </h4>
+                  </div>
+                  <div className="payment-img">
+                    <img
+                      src="/img/payment/payment.png"
+                      alt="payment"
+                      className="w-full"
+                    />
+                  </div>
+                </div>
                 <div
                   className="checkout-items border-[1px] border-solid border-[#eee] p-[20px] rounded-[20px] mb-[24px]"
                   data-aos="fade-up"
@@ -426,48 +469,6 @@ const Checkout = () => {
                     </ul>
                   </div>
 
-                </div>
-                <div
-                  className="checkout-items border-[1px] border-solid border-[#eee] p-[20px] rounded-[20px] mb-[24px]"
-                  data-aos="fade-up"
-                  data-aos-duration={1000}
-                  data-aos-delay={400}
-                >
-                  <PaymentMethod
-                    value={paymentMethod}
-                    // onChange={(value) => setPaymentMethod(value)}
-                    onChange={(value) => setPaymentFunction(value)}
-                    totalPrice={totalPrice.discountPrice}
-                  />
-                </div>
-                <button
-                  className="w-full bb-btn-2  inline-flex items-center justify-center check-btn transition-all duration-[0.3s] ease-in-out font-Poppins leading-[28px] tracking-[0.03rem] py-[8px] px-[20px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
-                  data-aos="fade-up"
-                  data-aos-duration={1000}
-                  data-aos-delay={400}
-                  onClick={placeOrder}
-                >
-                  {isSubmitting ? 'Submitting...' : `Place Order - ${paymentMethod == 'offline' ? formatCurrency(totalPrice?.discountPrice * 0.2) : formatCurrency(totalPrice?.discountPrice)}`}
-                </button>
-
-                <div
-                  className="mt-5 checkout-items border-[1px] border-solid border-[#eee] p-[20px] rounded-[20px] mb-[24px]"
-                  data-aos="fade-up"
-                  data-aos-duration={1000}
-                  data-aos-delay={200}
-                >
-                  <div className="sub-title mb-[12px]">
-                    <h4 className="font-quicksand tracking-[0.03rem] leading-[1.2] text-[20px] font-bold text-[#3d4750]">
-                      Accepted Payment
-                    </h4>
-                  </div>
-                  <div className="payment-img">
-                    <img
-                      src="/img/payment/payment.png"
-                      alt="payment"
-                      className="w-full"
-                    />
-                  </div>
                 </div>
               </div>
             </div>

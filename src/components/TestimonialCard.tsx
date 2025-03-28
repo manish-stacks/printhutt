@@ -137,9 +137,9 @@ export const TestimonialCard = () => (
             <div className="absolute inset-0" />
             <div className="relative container mx-auto px-4">
                 <div className="text-center">
-                    <h1 className="max-[576px]:text-2xl md:text-5xl font-bold  mb-4 font-serif ">
-                        <span className='text-pink-600' style={{ fontFamily: "Buttervill", fontWeight: "bold", fontSize: "60px" }}>What users love about our products</span>
-                    </h1>
+                    <div className="md:text-6xl font-bold  mb-4 font-serif max-[576px]:text-4xl">
+                        <span className='text-pink-600' style={{ fontFamily: "Buttervill", fontWeight: "bold" }}>What users love about our products</span>
+                    </div>
                     <p className="text-lg text-slate-600/90 max-w-2xl mx-auto max-[576px]:text-sm py-4">
                         Hear what our customers have to say about our products and services.
                     </p>
@@ -147,7 +147,7 @@ export const TestimonialCard = () => (
             </div>
         </div>
         <div className="max-w-[1400px] mx-auto">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
                 {testimonials.map((testimonial, index) => (
                     <Testimonial key={index} {...testimonial} />
                 ))}
