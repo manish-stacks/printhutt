@@ -81,6 +81,7 @@ const ProductCardTwo = ({ product }: PopupProps) => {
                                     alt={product.title}
                                     width={800}
                                     height={800}
+                                    loading='lazy'
                                 />
                                 <img
                                     className="hover-img transition-all duration-[0.3s] ease-in-out absolute z-[2] top-[0] left-[0] opacity-[0] w-full"

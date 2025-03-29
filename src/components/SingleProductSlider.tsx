@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import Slider, { Settings } from "react-slick";
 
 interface SingleProductSliderProps {
@@ -80,34 +80,7 @@ const SingleProductSlider = ({ product }: SingleProductSliderProps) => {
   };
 
 
-   const [timeLeft, setTimeLeft] = useState(3600); // 1 hour in seconds
-    const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  
-    useEffect(() => {
-      const updateTimer = () => {
-        setTimeLeft((prev) => {
-          if (prev <= 1) {
-            return 3600; // Reset to 1 hour
-          }
-          return prev - 1;
-        });
-      };
-  
-      intervalRef.current = setInterval(updateTimer, 1000);
-  
-      return () => {
-        if (intervalRef.current) clearInterval(intervalRef.current);
-      };
-    }, []);
-  
-    const formatTime = (seconds: number) => {
-      const hrs = Math.floor(seconds / 3600);
-      const mins = Math.floor((seconds % 3600) / 60);
-      const secs = seconds % 60;
-      return `${hrs.toString().padStart(2, "0")}:${mins
-        .toString()
-        .padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
-    };
+
 
   return (
     <div className="single-pro-slider sticky top-0 p-4 border border-gray-200 rounded-2xl max-w-lg mx-auto">
@@ -159,14 +132,7 @@ const SingleProductSlider = ({ product }: SingleProductSliderProps) => {
             </div>
           ))}
         </Slider>
-        <div id="product-counter" className="my-2">
-          <div className="absolute top-0 right-0 inline-block bg-gradient-to-r from-red-500 to-orange-400 px-4 py-1 rounded-xl shadow-lg text-white">
-            <p className="text-2xl font-bold font-mono mt-2 animate-pulse max-[567px]:text-sm">{formatTime(timeLeft)}</p>
-            <div className="absolute -top-2 -right-2 bg-white text-red-600 px-2 py-1 text-xs font-semibold rounded-full shadow-md max-[567px]:text-[10px]">
-              Hurry!
-            </div>
-          </div>
-        </div>
+
       </div>
 
       {/* Thumbnail Navigation Slider */}

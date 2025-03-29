@@ -35,7 +35,7 @@ const testimonials = [
     {
         id: 3,
         imgSrc: "https://res.cloudinary.com/dkprths9f/image/upload/v1739611329/products/thumbnails/i7lchllalrxrzyaz81vf.png",
-        name: "Aria",
+        name: "Suhani",
         rating: 5,
         review: "The Acrylic Cutout Photo LED Lamp is amazing! The photo quality is sharp, and the LED light adds a cozy ambiance.",
         imgHeight: "380px",
@@ -45,7 +45,7 @@ const testimonials = [
     {
         id: 4,
         imgSrc: "https://res.cloudinary.com/dkprths9f/image/upload/v1737703833/products/thumbnails/xlg278vi3x9j3boeoxdh.jpg",
-        name: "Saloni",
+        name: "Vinay",
         rating: 5,
         review: "The 3D Name Lamp Plate is fantastic! The design is unique, and the lighting creates a beautiful effect. It’s a great personalized touch for any space.",
         imgHeight: "350px",
@@ -55,7 +55,7 @@ const testimonials = [
     {
         id: 5,
         imgSrc: "https://res.cloudinary.com/dkprths9f/image/upload/v1737652218/products/thumbnails/pa19lqntikn2o3m9rwg1.jpg",
-        name: "Aria",
+        name: "Anish",
         date: "5/6/2023",
         rating: 5,
         review: "I absolutely love the Customized Name LED Lamp with the wooden texture base! The personalized touch is perfect, and the soft LED glow adds a warm, inviting atmosphere.",
@@ -65,7 +65,7 @@ const testimonials = [
     {
         id: 6,
         imgSrc: "https://res.cloudinary.com/dkprths9f/image/upload/v1737974050/products/nioal6cjozy2oeb3plee.jpg",
-        name: "Vanshika",
+        name: "Harsh",
         date: "11/1/2024",
         rating: 5,
         review: "The Acrylic Full Photo Frame is just stunning! The clarity of the photo is excellent, and the acrylic material gives it a sleek, modern look.",
@@ -85,7 +85,7 @@ const testimonials = [
     {
         id: 8,
         imgSrc: "https://res.cloudinary.com/dkprths9f/image/upload/v1741695871/r1yxyjerptfidpxj1mff_elmlnn.webp",
-        name: "Samiksha",
+        name: "Anushka",
         date: "5/2/2025",
         rating: 5,
         review: "The Acrylic Cutout Photo LED Lamp is fantastic! The custom photo looks sharp, and the LED light adds a beautiful, warm glow.",

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SingleProductSlider from "@/components/SingleProductSlider";
 // import ProductSlider from "@/components/ProductSlider";
 import Breadcrumb from "@/components/Breadcrumb";
@@ -65,6 +65,36 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
     setIsOpenCart(true);
   }
 
+  const [timeLeft, setTimeLeft] = useState(3600); // 1 hour in seconds
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    const updateTimer = () => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          return 3600; // Reset to 1 hour
+        }
+        return prev - 1;
+      });
+    };
+
+    intervalRef.current = setInterval(updateTimer, 1000);
+
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, []);
+
+  const formatTime = (seconds: number) => {
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    return `${hrs.toString().padStart(2, "0")}:${mins
+      .toString()
+      .padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+  };
+
+
   useEffect(() => {
     useQuickStore.setState({ isOpen: false });
     setViewers(randomNumber(300, 1));
@@ -93,9 +123,10 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                         <h4 className="font-quicksand text-[22px] tracking-[0.03rem] font-bold leading-[1.2] text-[#3d4750]">
                           {product?.title}
                         </h4>
+                        <p className="text-2xl font-bold font-mono mt-2  max-[567px]:text-sm text-slate-800">{formatTime(timeLeft)}</p>
                       </div>
-
                       
+
                       <div className="bb-single-rating mb-[12px]">
                         <span className="bb-pro-rating mr-[10px]">
                           {Array.from({ length: 5 }, (_, index) => (
@@ -114,7 +145,7 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
                           </a>
                         </span>
                       </div>
-                      
+
 
                       <p className="font-Poppins text-[15px] font-light leading-[28px] tracking-[0.03rem]">
                         {product?.short_description}
