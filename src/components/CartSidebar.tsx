@@ -4,7 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
+import { RiArrowRightSLine } from "react-icons/ri";
 import { toast } from "react-toastify";
+import CheckOutPopUp from "./CheckOutPopUp";
 
 const CartSidebar = ({ onClose }) => {
   const popupRef = useRef(null);
@@ -15,16 +17,17 @@ const CartSidebar = ({ onClose }) => {
     }
   };
 
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
+  // useEffect(() => {
+  //   document.addEventListener("mousedown", handleClickOutside);
 
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, []);
 
   const [totalPrice, setTotalPrice] = useState({ totalPrice: 0, discountPrice: 0, shippingTotal: 0 });
   const { items, updateQuantity, removeFromCart, getTotalPrice } = useCartStore();
+  const [showMailModal, setShowMailModal] = useState(false);
   // console.log(items);
   const handleQuantityChange = (productId: string, newQuantity: number) => {
     if (newQuantity < 1) {
@@ -46,8 +49,9 @@ const CartSidebar = ({ onClose }) => {
 
   }
   const checkoutPage = () => {
-    onClose();
-    return router.push('/checkout');
+    setShowMailModal(true);
+    // onClose();
+    //return router.push('/checkout');
 
   }
 
@@ -206,8 +210,8 @@ const CartSidebar = ({ onClose }) => {
                         <td className="title font-medium text-[#777] p-[.5rem]">
                           Sub-Total :
                         </td>
-                        <td className="price text-[#777] text-right p-[.5rem]">
-                          <span className="text-[15px] line-through">{formatCurrency(totalPrice.totalPrice)}</span> {formatCurrency(totalPrice.discountPrice)}
+                        <td className="price text-[#777] text-right p-[.5rem] text-green-800">
+                          <span className="text-[15px] line-through text-rose-600">{formatCurrency(totalPrice.totalPrice)}</span> {formatCurrency(totalPrice.discountPrice)}
                         </td>
                       </tr>
                       <tr>
@@ -222,25 +226,25 @@ const CartSidebar = ({ onClose }) => {
                         <td className="title font-medium text-[#777] p-[.5rem]">
                           Total :
                         </td>
-                        <td className="price text-[#777] text-right p-[.5rem]">
-                          <span className="text-[15px] line-through">{formatCurrency(totalPrice.totalPrice + totalPrice.shippingTotal)}</span> {formatCurrency(totalPrice.discountPrice + totalPrice.shippingTotal)}
+                        <td className="price text-right p-[.5rem] text-green-800">
+                          {formatCurrency(totalPrice.discountPrice + totalPrice.shippingTotal)}
                         </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
                 <div className="cart-btn flex justify-between mb-[20px]">
-                  <button
+                  {/* <button
                     onClick={cartPage}
                     className="bb-btn-1 transition-all duration-[0.3s] ease-in-out font-Poppins leading-[28px] tracking-[0.03rem] py-[5px] px-[15px] text-[14px] font-normal text-[#3d4750] bg-transparent rounded-[10px] border-[1px] border-solid border-[#3d4750] hover:bg-[#6c7fd8] hover:border-[#6c7fd8] hover:text-[#fff]"
                   >
                     View Cart
-                  </button>
+                  </button> */}
                   <button
                     onClick={checkoutPage}
-                    className="bb-btn-2 transition-all duration-[0.3s] ease-in-out font-Poppins leading-[28px] tracking-[0.03rem] py-[5px] px-[15px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
+                    className="w-full flex items-center justify-center bb-btn-2 transition-all duration-[0.3s] ease-in-out font-Poppins leading-[28px] tracking-[0.03rem] py-[10px] px-[20px] text-[18px] font-normal text-[#fff] bg-[#000000] rounded-[5px] border-[1px] border-solid border-[#000000] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
                   >
-                    Checkout
+                    BUY NOW &nbsp;&nbsp;<Image src={"/img/shape/upi_options.svg"} alt="arrow" width={40} height={40} /> <RiArrowRightSLine className="text-[20px] ml-[5px]" />
                   </button>
                 </div>
               </div>
@@ -248,6 +252,14 @@ const CartSidebar = ({ onClose }) => {
           </div>
         </div>
       </div>
+
+
+      {
+        showMailModal && (
+          <CheckOutPopUp isOpen={showMailModal} onClose={() => setShowMailModal(false)} />
+        )
+      }
+
     </>
   );
 };

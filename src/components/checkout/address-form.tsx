@@ -1,22 +1,35 @@
 import { getAddress, saveAddress } from '@/_services/common/address';
 import { type AddressFormData, addressSchema } from '@/lib/types/address';
 import React, { useEffect, useState } from 'react'
-import { RiCheckFill } from 'react-icons/ri'
+import { RiArrowRightSLine, RiCheckFill } from 'react-icons/ri'
 import { toast } from 'react-toastify';
 import { ZodError } from 'zod';
 import LoadingSpinner from '../LoadingSpinner';
+import Image from 'next/image';
+import PaymentMethod from './payment-method';
 
 interface TypeSelectorProps {
     onChangeAddress: (type: string) => void;
+    isCheckout: boolean;
+    placeOrder: () => Promise<void>;
+    paymentMethod: 'online' | 'offline';
+    setPaymentFunction: (value: string) => void
+    totalPrice: {
+        discountPrice: number
+        shippingTotal: number
+        totalPrice: number
+    }
 }
-export const CheckoutAddressForm = ({ onChangeAddress }: TypeSelectorProps) => {
+export const CheckoutAddressForm = ({ onChangeAddress, isCheckout, placeOrder, paymentMethod, setPaymentFunction,totalPrice }: TypeSelectorProps) => {
 
     const [selectedAddress, setSelectedAddress] = useState<boolean>(true);
     const [addresslist, setAddresslist] = useState<AddressFormData[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
     // const [defaultId, setDefaultId] = useState<string | null>(null);
 
     const fetchAddress = async () => {
         try {
+            setIsLoading(true);
             const response: AddressFormData[] = await getAddress();
 
             if (response.addresses.length > 0) {
@@ -29,6 +42,8 @@ export const CheckoutAddressForm = ({ onChangeAddress }: TypeSelectorProps) => {
 
         } catch (error) {
             console.error(error);
+        } finally {
+            setIsLoading(false);
         }
     };
     useEffect(() => {
@@ -106,7 +121,13 @@ export const CheckoutAddressForm = ({ onChangeAddress }: TypeSelectorProps) => {
     }
 
 
-
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center h-[200px]">
+                <p className="text-gray-600">Loading ...</p>
+            </div>
+        );
+    }
     return (
         <>
 
@@ -119,7 +140,7 @@ export const CheckoutAddressForm = ({ onChangeAddress }: TypeSelectorProps) => {
                 </div>
             </div>
 
-            <div className="bg-[#E10176] p-4">
+            <div className="bg-[#E10176] p-4 hidden">
                 <div className="flex justify-between">
                     <div className="flex items-center">
                         <span className="w-8 h-8 rounded-full bg-white text-[#E10176] flex items-center justify-center text-sm">2</span>
@@ -144,7 +165,7 @@ export const CheckoutAddressForm = ({ onChangeAddress }: TypeSelectorProps) => {
                             htmlFor="address1"
                             className="relative font-normal text-[14px] text-[#686e7d] pl-[26px] cursor-pointer leading-[16px] inline-block tracking-[0]"
                         >
-                            I want to use an existing address
+                            Use an existing address
                         </label>
                     </div>
                     <div className="radio-itens" onClick={handleAddressChange}>
@@ -160,7 +181,7 @@ export const CheckoutAddressForm = ({ onChangeAddress }: TypeSelectorProps) => {
                             htmlFor="address2"
                             className="relative font-normal text-[14px] text-[#686e7d] pl-[26px] cursor-pointer leading-[16px] inline-block tracking-[0]"
                         >
-                            I want to use new address
+                            Use new address
                         </label>
                     </div>
                 </div>
@@ -170,36 +191,59 @@ export const CheckoutAddressForm = ({ onChangeAddress }: TypeSelectorProps) => {
 
                         {
                             addresslist.length > 0 ? (
-                                <div className="flex flex-col space-y-4">
-                                    {addresslist.map((address) => (
-                                        <div
-                                            onClick={() => changeAddress(address?._id)}
-                                            key={address?._id}
-                                            className={`py-4 max-w-full overflow-hidden border-s-4 ${address.isDefault ? 'border-lime-500' : ' border-slate-500'} `}>
+                                <>
+                                    <div className="flex flex-col space-y-4">
+                                        {addresslist.map((address) => (
+                                            <div
+                                                onClick={() => changeAddress(address?._id)}
+                                                key={address?._id}
+                                                className={`py-4 max-w-full overflow-hidden border-s-4 ${address.isDefault ? 'border-lime-500' : ' border-slate-500'} `}>
 
-                                            <div className="flex items-start justify-between space-x-4 max-[480px]:flex-col max-[480px]:space-x-0 max-[480px]:space-y-3">
-                                                {/* Address Details */}
-                                                <div className="relative text-sm text-gray-700 pl-6 cursor-pointer w-full max-w-[calc(100%-100px)]">
-                                                    {address.isDefault && (
-                                                        <div>
-                                                            <span className='text-sm text-white bg-amber-500 px-2 rounded-lg'>Selected</span>
-                                                        </div>
-                                                    )}
+                                                <div className="flex items-start justify-between space-x-4 max-[480px]:flex-col max-[480px]:space-x-0 max-[480px]:space-y-3">
+                                                    {/* Address Details */}
+                                                    <div className="relative text-sm text-gray-700 pl-6 cursor-pointer w-full max-w-[calc(100%-100px)]">
+                                                        {address.isDefault && (
+                                                            <div>
+                                                                <span className='text-sm text-white bg-amber-500 px-2 rounded-lg'>Selected</span>
+                                                            </div>
+                                                        )}
 
-                                                    <p className="font-medium flex items-center space-x-2  break-words">
-                                                        <span>{address.fullName}</span>
-                                                        <span className="bg-slate-100 px-3 py-1 rounded text-xs text-gray-600">{address.addressType}</span>
-                                                        <span className="font-bold text-black">{address.mobileNumber}</span>
-                                                    </p>
-                                                    <p className="mt-1 text-gray-600 break-words">
-                                                        {address.addressLine}, {address.city}, {address.state}, {address.postCode}
-                                                    </p>
+                                                        <p className="font-medium flex items-center space-x-2  break-words">
+                                                            <span>{address.fullName}</span>
+                                                            <span className="bg-slate-100 px-3 py-1 rounded text-xs text-gray-600">{address.addressType}</span>
+                                                            <span className="font-bold text-black">{address.mobileNumber}</span>
+                                                        </p>
+                                                        <p className="mt-1 text-gray-600 break-words">
+                                                            {address.addressLine}, {address.city}, {address.state}, {address.postCode}
+                                                        </p>
+                                                    </div>
+
                                                 </div>
-
                                             </div>
-                                        </div>
-                                    ))}
-                                </div>
+                                        ))}
+                                    </div>
+                                    {isCheckout ? (
+                                        <div className="w-full flex items-center justify-center bb-btn-2 transition-all duration-[0.3s] ease-in-out font-Poppins leading-[28px] tracking-[0.03rem] py-[10px] px-[20px] text-[18px] font-normal text-[#fff] bg-[#000000] rounded-[5px] border-[1px] border-solid border-[#000000] mt-2">Placing Order...</div>
+                                    ) : (
+                                        <>
+                                            <PaymentMethod
+                                                value={paymentMethod}
+                                                // onChange={(value) => setPaymentMethod(value)}
+                                                onChange={(value) => setPaymentFunction(value)}
+                                                totalPrice={totalPrice.discountPrice}
+                                            />
+
+                                            <button
+                                                onClick={placeOrder}
+                                                className="w-full flex items-center justify-center bb-btn-2 transition-all duration-[0.3s] ease-in-out font-Poppins leading-[28px] tracking-[0.03rem] py-[10px] px-[20px] text-[18px] font-normal text-[#fff] bg-[#000000] rounded-[5px] border-[1px] border-solid border-[#000000] mt-2"
+                                            >
+                                                Place Order &nbsp;<Image src={"/img/shape/upi_options.svg"} alt="arrow" width={40} height={40} /> <RiArrowRightSLine className="text-[20px] ml-[5px]" />
+                                            </button>
+                                        </>
+                                    )}
+
+
+                                </>
                             ) : (
                                 <div className="text-center text-gray-500">
                                     <LoadingSpinner />
@@ -214,13 +258,13 @@ export const CheckoutAddressForm = ({ onChangeAddress }: TypeSelectorProps) => {
                             <div className="flex flex-wrap mx-[-12px]">
                                 <div className="min-[992px]:w-[50%] w-full px-[12px]">
                                     <div className="input-item mb-[24px]">
-                                        <label className="inline-block font-Poppins leading-[26px] tracking-[0.02rem] mb-[8px] text-[14px] font-medium text-[#3d4750]">
+                                        {/* <label className="inline-block font-Poppins leading-[26px] tracking-[0.02rem] mb-[8px] text-[14px] font-medium text-[#3d4750]">
                                             Name *
-                                        </label>
+                                        </label> */}
                                         <input
                                             type="text"
                                             name="fullName"
-                                            placeholder="Enter your Name"
+                                            placeholder="Name"
                                             className="w-full p-[10px] text-[14px] font-normal text-[#686e7d] border-[1px] border-solid border-[#eee] leading-[26px] outline-[0] rounded-[10px]"
                                             value={formData.fullName || ''}
                                             onChange={handleChange}
@@ -232,13 +276,13 @@ export const CheckoutAddressForm = ({ onChangeAddress }: TypeSelectorProps) => {
                                 </div>
                                 <div className="min-[992px]:w-[50%] w-full px-[12px]">
                                     <div className="input-item mb-[24px]">
-                                        <label className="inline-block font-Poppins leading-[26px] tracking-[0.02rem] mb-[8px] text-[14px] font-medium text-[#3d4750]">
+                                        {/* <label className="inline-block font-Poppins leading-[26px] tracking-[0.02rem] mb-[8px] text-[14px] font-medium text-[#3d4750]">
                                             Mobile Number *
-                                        </label>
+                                        </label> */}
                                         <input
                                             type="text"
                                             name="mobileNumber"
-                                            placeholder="Enter your Mobile Number"
+                                            placeholder="Mobile Number"
                                             className="w-full p-[10px] text-[14px] font-normal text-[#686e7d] border-[1px] border-solid border-[#eee] leading-[26px] outline-[0] rounded-[10px]"
                                             value={formData.mobileNumber || ''}
                                             onChange={handleChange}
@@ -250,9 +294,9 @@ export const CheckoutAddressForm = ({ onChangeAddress }: TypeSelectorProps) => {
                                 </div>
                                 <div className="w-full px-[12px]">
                                     <div className="input-item mb-[24px]">
-                                        <label className="inline-block font-Poppins leading-[26px] tracking-[0.02rem] mb-[8px] text-[14px] font-medium text-[#3d4750]">
+                                        {/* <label className="inline-block font-Poppins leading-[26px] tracking-[0.02rem] mb-[8px] text-[14px] font-medium text-[#3d4750]">
                                             Address *
-                                        </label>
+                                        </label> */}
                                         <input
                                             type="text"
                                             name="addressLine"
@@ -269,9 +313,9 @@ export const CheckoutAddressForm = ({ onChangeAddress }: TypeSelectorProps) => {
                                 <div className="min-[992px]:w-[50%] w-full px-[12px]">
                                     <div className="input-item mb-[24px]">
 
-                                        <label className="inline-block font-Poppins leading-[26px] tracking-[0.02rem] mb-[8px] text-[14px] font-medium text-[#3d4750]">
+                                        {/* <label className="inline-block font-Poppins leading-[26px] tracking-[0.02rem] mb-[8px] text-[14px] font-medium text-[#3d4750]">
                                             City/District/Town *
-                                        </label>
+                                        </label> */}
                                         <input
                                             type="text"
                                             name="city"
@@ -287,9 +331,9 @@ export const CheckoutAddressForm = ({ onChangeAddress }: TypeSelectorProps) => {
                                 </div>
                                 <div className="min-[992px]:w-[50%] w-full px-[12px]">
                                     <div className="input-item mb-[24px]">
-                                        <label className="inline-block font-Poppins leading-[26px] tracking-[0.02rem] mb-[8px] text-[14px] font-medium text-[#3d4750]">
+                                        {/* <label className="inline-block font-Poppins leading-[26px] tracking-[0.02rem] mb-[8px] text-[14px] font-medium text-[#3d4750]">
                                             Post Code *
-                                        </label>
+                                        </label> */}
                                         <input
                                             type="text"
                                             name="postCode"
@@ -306,9 +350,9 @@ export const CheckoutAddressForm = ({ onChangeAddress }: TypeSelectorProps) => {
 
                                 <div className="min-[992px]:w-[50%] w-full px-[12px]">
                                     <div className="input-item mb-[24px]">
-                                        <label className="inline-block font-Poppins leading-[26px] tracking-[0.02rem] mb-[8px] text-[14px] font-medium text-[#3d4750]">
+                                        {/* <label className="inline-block font-Poppins leading-[26px] tracking-[0.02rem] mb-[8px] text-[14px] font-medium text-[#3d4750]">
                                             Region State *
-                                        </label>
+                                        </label> */}
                                         <input
                                             type="text"
                                             name="state"
@@ -326,9 +370,9 @@ export const CheckoutAddressForm = ({ onChangeAddress }: TypeSelectorProps) => {
 
                                 <div className="min-[992px]:w-[50%] w-full px-[12px]">
                                     <div className="input-item mb-[24px]">
-                                        <label className="inline-block font-Poppins leading-[26px] tracking-[0.02rem] mb-[8px] text-[14px] font-medium text-[#3d4750]">
+                                        {/* <label className="inline-block font-Poppins leading-[26px] tracking-[0.02rem] mb-[8px] text-[14px] font-medium text-[#3d4750]">
                                             Alternate Phone (Optional) *
-                                        </label>
+                                        </label> */}
                                         <input
                                             type="text"
                                             name="alternatePhone"
@@ -386,7 +430,7 @@ export const CheckoutAddressForm = ({ onChangeAddress }: TypeSelectorProps) => {
                                         <button
                                             type="submit"
                                             disabled={isSubmitting}
-                                            className="bb-btn-2 inline-block items-center justify-center check-btn transition-all duration-[0.3s] ease-in-out font-Poppins leading-[28px] tracking-[0.03rem] py-[4px] px-[25px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
+                                            className="w-full bb-btn-2 inline-block items-center justify-center check-btn transition-all duration-[0.3s] ease-in-out font-Poppins leading-[28px] tracking-[0.03rem] py-[4px] px-[25px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
                                         >
                                             {isSubmitting ? 'Saving...' : 'Save Address'}
                                         </button>

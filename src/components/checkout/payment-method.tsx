@@ -11,15 +11,15 @@ const PaymentMethod = ({ value, onChange, totalPrice }: TypeSelectorProps) => {
     
     return (
         <>
-            <div className="sub-title mb-[12px]">
+            <div className="sub-title mb-[12px] mt-10">
                 <h4 className="font-quicksand tracking-[0.03rem] leading-[1.2] text-[20px] font-bold text-[#3d4750]">
                     Payment Method
                 </h4>
             </div>
-            <div className="checkout-method mb-[24px]">
-                <span className="details font-Poppins leading-[26px] tracking-[0.02rem] text-[15px] font-medium text-[#686e7d]">
+            <div className="checkout-method mb-[24px] h-[200px] overflow-auto">
+                {/* <span className="details font-Poppins leading-[26px] tracking-[0.02rem] text-[15px] font-medium text-[#686e7d]">
                     Please select the preferred shipping method to use on this order.
-                </span>
+                </span> */}
                 <div className="bb-del-option mt-[12px] flex max-[480px]:flex-col">
                     <div className="inner-del w-[50%] max-[480px]:w-full space-y-2">
                         <div className="radio-itens">
@@ -62,7 +62,7 @@ const PaymentMethod = ({ value, onChange, totalPrice }: TypeSelectorProps) => {
 
                 {/* Conditional Rendering for the table */}
                 {value === 'offline' && (
-                    <div className="border p-4 md:p-6 rounded-lg bg-white mt-3">
+                    <div className="border p-4 md:p-6 rounded-lg bg-white mt-3 ">
                         <div className="alert bg-red-100 text-red-700 p-3 rounded text-sm">
                         For Cash on Delivery (COD) orders, a partial payment is required, and processing may take 2-3 additional business days due to product handling.
                         </div>

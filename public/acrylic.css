@@ -434,3 +434,8 @@
 }
 
 /* clip-path: xywh(0 5px 100% 75% round 15% 0); */
+
+
+.main-box-checkout::-webkit-scrollbar{
+  display: none;
+}

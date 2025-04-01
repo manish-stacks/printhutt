@@ -4,146 +4,29 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { RiNotification3Fill, RiStackFill, RiTruckLine } from 'react-icons/ri';
 import { toast } from 'react-toastify';
+import { useOtp } from '@/hooks/useOtp';
 
 export const CheckoutloginForm = () => {
-    const [emailOrMobile, setEmailOrMobile] = useState<string>("");
-    const [loading, setLoading] = useState<boolean>(false);
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
-    const [timer, setTimer] = useState<number>(30);
-    const [isResendEnabled, setIsResendEnabled] = useState<boolean>(false);
-    const [isOtpSent, setIsOtpSent] = useState<boolean>(false);
-    const [otp, setOtp] = useState<string[]>(new Array(6).fill(""));
-    const [loadingOtp, setLoadingOtp] = useState<boolean>(false);
+    const {
+        emailOrMobile,
+        otp,
+        isOtpSent,
+        timer,
+        isResendEnabled,
+        loading,
+        errorMessage,
+        handleInputChange,
+        sendOtp,
+        handleOtpKeyDown,
+        handleChangeOtp,
+        verifyOtp,
+    } = useOtp();
+
     const router = useRouter();
     const fetchUserDetails = useUserStore((state) => state.fetchUserDetails);
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEmailOrMobile(e.target.value);
-        if (errorMessage) {
-            setErrorMessage("");
-        }
-    };
-
-    const handleSubmitSendOtp = async (e: FormEvent) => {
-        e.preventDefault();
-        if (!emailOrMobile) {
-            setErrorMessage("Please enter a valid Email ID/Mobile number");
-            toast.error("Please enter a valid Email ID/Mobile number");
-            return;
-        }
-
-        try {
-            setLoading(true);
-            const { data } = await axios.post("/api/auth/login", {
-                emailOrMobile,
-            });
-            setTimer(30);
-            setIsResendEnabled(false);
-            if (data) {
-                toast.success(`OTP sent to ${emailOrMobile}`);
-            } else {
-                toast.error(`Failed to send OTP to ${emailOrMobile}`);
-            }
-            setIsOtpSent(true);
-        } catch (error: unknown) {
-            toast.error((error as Error).message);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleOtpKeyDown = (e: KeyboardEvent<HTMLInputElement>, index: number) => {
-        if (e.key === 'Backspace') {
-            e.preventDefault();
-            if (index > 0 && !otp[index]) {
-                const updatedOtp = [...otp];
-                updatedOtp[index - 1] = '';
-                setOtp(updatedOtp);
-                const prevInput = document.getElementById(`otp-input-${index - 1}`);
-                prevInput?.focus();
-            } else {
-                const updatedOtp = [...otp];
-                updatedOtp[index] = '';
-                setOtp(updatedOtp);
-            }
-        }
-    };
-
-    const handleChangeOtp = (value: string, index: number) => {
-        if (/^[0-9]?$/.test(value)) {
-            const updatedOtp = [...otp];
-            updatedOtp[index] = value;
-            setOtp(updatedOtp);
-
-            if (value && index < 5) {
-                const nextInput = document.getElementById(`otp-input-${index + 1}`);
-                nextInput?.focus();
-            }
-        }
-    };
-
-    const handleSubmitVerifyOtp = async (e: FormEvent) => {
-        e.preventDefault();
-
-        const otpValue = otp.join("");
-        if (otpValue.length !== 6) {
-            setErrorMessage("Please enter a 6-digit OTP.");
-            return;
-        }
-
-        try {
-            setLoadingOtp(true);
-            const { data } = await axios.post("/api/auth/verify-otp", {
-                otp: otpValue,
-                emailOrMobile: emailOrMobile
-            });
-
-            fetchUserDetails();
-            if (data.role === 'user') {
-                toast.success(data.message);
-            } else {
-                toast.error('Unauthorized access');
-                return router.push('/login');
-            }
-        } catch (err: unknown) {
-            setErrorMessage(err.response?.data?.error || "Failed to verify/expired OTP.");
-        } finally {
-            setLoadingOtp(false);
-        }
-    };
-
-    useEffect(() => {
-        if (timer === 0) {
-            setIsResendEnabled(true);
-            return;
-        }
-
-        const interval = setInterval(() => {
-            setTimer((prev) => prev - 1);
-        }, 1000);
-
-        return () => clearInterval(interval);
-    }, [timer]);
-
-    const sendOTP = async () => {
-        try {
-            setTimer(60);
-            setIsResendEnabled(false);
-            const { data } = await axios.post("/api/auth/login", {
-                emailOrMobile,
-            });
-            if (data) {
-                toast.success(`OTP sent to ${emailOrMobile}`);
-            } else {
-                toast.error('Failed to send OTP');
-            }
-        } catch (error: unknown) {
-            toast.error((error as Error).message);
-        }
-    };
-
     return (
-        <div className=" bg-gray-50 px-4 py-8 sm:px-6 lg:px-8">
+        <div className="bg-gray-50 px-4 py-8 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
                 {/* Progress Header */}
                 <div className="bg-[#E10176] p-4 rounded-t-lg shadow-sm">
@@ -159,7 +42,7 @@ export const CheckoutloginForm = () => {
                         {/* Login Form Section */}
                         <div className="space-y-6">
                             {!isOtpSent ? (
-                                <form onSubmit={handleSubmitSendOtp} className="space-y-6">
+                                <form onSubmit={(e) => { e.preventDefault(); sendOtp(); }} className="space-y-6">
                                     <div>
                                         <input
                                             type="text"
@@ -193,7 +76,7 @@ export const CheckoutloginForm = () => {
                                     </button>
                                 </form>
                             ) : (
-                                <form onSubmit={handleSubmitVerifyOtp} className="space-y-6">
+                                <form onSubmit={(e) => { e.preventDefault(); verifyOtp(); }} className="space-y-6">
                                     <div className="space-y-4">
                                         <div className="flex justify-center space-x-3 sm:space-x-4 max-[480px]:space-x-1">
                                             {otp.map((digit, index) => (
@@ -215,7 +98,7 @@ export const CheckoutloginForm = () => {
                                                 {isResendEnabled ? (
                                                     <button
                                                         type="button"
-                                                        onClick={sendOTP}
+                                                        onClick={sendOtp}
                                                         className="text-blue-600 hover:text-blue-800"
                                                     >
                                                         Resend OTP
