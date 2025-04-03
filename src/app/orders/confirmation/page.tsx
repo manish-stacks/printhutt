@@ -62,7 +62,7 @@ function OrderConfirmationContent() {
             <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
                 <div className="w-full max-w-2xl bg-white rounded-lg shadow-lg p-8 text-center">
                     <Image
-                        src="https://res.cloudinary.com/dkprths9f/image/upload/v1736248443/error_gjjbgx.gif"
+                        src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664958/error_gjjbgx_zm8hkz.gif"
                         width={180}
                         height={180}
                         alt="Check Circle"
@@ -89,7 +89,7 @@ function OrderConfirmationContent() {
                 <div className="bg-white rounded-lg shadow-lg p-8">
                     <div className="text-center mb-8">
                         <Image
-                            src="https://res.cloudinary.com/dkprths9f/image/upload/v1736246243/check-circle_josi46.gif"
+                            src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664959/check-circle_josi46_xkonkj.gif"
                             width={120}
                             height={120}
                             alt="Check Circle"

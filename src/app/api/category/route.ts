@@ -53,8 +53,8 @@ export async function POST(req: NextRequest) {
       status: formData.get("status")?.toString() || "active",
       image: uploadResponse,
     });
-    console.log("category",category)
-    console.log("category", formData.get("metaTitle"))
+    // console.log("category",category)
+    // console.log("category", formData.get("metaTitle"))
     await category.save();
 
     return NextResponse.json(

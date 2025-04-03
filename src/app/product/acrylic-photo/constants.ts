@@ -1,7 +1,7 @@
 import { SizeOption } from "@/lib/types";
 
 
-export const DEFAULT_IMAGE_URL = 'https://res.cloudinary.com/dkprths9f/image/upload/v1740638092/Preview-image_pctpb7.png';
+export const DEFAULT_IMAGE_URL = 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664965/Preview-image_pctpb7_sq7lcn.png';
 
 export const BUTTON_VALUES_AND_PRICES: SizeOption[] = [
   {

@@ -14,7 +14,7 @@ interface TestimonialProps {
 const testimonials = [
     {
         id: 1,
-        imgSrc: "https://res.cloudinary.com/dkprths9f/image/upload/v1737188297/products/thumbnails/ssmufuknsc2h8xi7u63j.jpg",
+        imgSrc: "https://res.cloudinary.com/dxhs6vjab/image/upload/v1743668469/ssmufuknsc2h8xi7u63j_eykick.jpg",
         name: "Sumit Gupta",
         rating: 5,
         review: "I recently bought the Hanuman Ji LED Acrylic Photo Frame from Printhutt, and I'm impressed! The quality is excellent.",
@@ -24,7 +24,7 @@ const testimonials = [
     },
     {
         id: 2,
-        imgSrc: "https://res.cloudinary.com/dkprths9f/image/upload/v1737915138/products/pw0jklkcrhwpsnucnfgx.png",
+        imgSrc: "https://res.cloudinary.com/dxhs6vjab/image/upload/v1743668467/pw0jklkcrhwpsnucnfgx_qstl9e.png",
         name: "Ravi",
         rating: 5,
         review: "I purchased the Couple Heart Night Lamp, and it's simply beautiful! The soft glow creates a warm, romantic atmosphere. The design is elegant, and it's perfect for any bedroom. A lovely addition to my home!",
@@ -34,7 +34,7 @@ const testimonials = [
     },
     {
         id: 3,
-        imgSrc: "https://res.cloudinary.com/dkprths9f/image/upload/v1739611329/products/thumbnails/i7lchllalrxrzyaz81vf.png",
+        imgSrc: "https://res.cloudinary.com/dxhs6vjab/image/upload/v1743668471/i7lchllalrxrzyaz81vf_q1xjhk.png",
         name: "Suhani",
         rating: 5,
         review: "The Acrylic Cutout Photo LED Lamp is amazing! The photo quality is sharp, and the LED light adds a cozy ambiance.",
@@ -44,7 +44,7 @@ const testimonials = [
     },
     {
         id: 4,
-        imgSrc: "https://res.cloudinary.com/dkprths9f/image/upload/v1737703833/products/thumbnails/xlg278vi3x9j3boeoxdh.jpg",
+        imgSrc: "https://res.cloudinary.com/dxhs6vjab/image/upload/v1743668474/xlg278vi3x9j3boeoxdh_vvig3w.jpg",
         name: "Vinay",
         rating: 5,
         review: "The 3D Name Lamp Plate is fantastic! The design is unique, and the lighting creates a beautiful effect. It’s a great personalized touch for any space.",
@@ -54,7 +54,7 @@ const testimonials = [
     },
     {
         id: 5,
-        imgSrc: "https://res.cloudinary.com/dkprths9f/image/upload/v1737652218/products/thumbnails/pa19lqntikn2o3m9rwg1.jpg",
+        imgSrc: "https://res.cloudinary.com/dxhs6vjab/image/upload/v1743668476/pa19lqntikn2o3m9rwg1_jau5cz.jpg",
         name: "Anish",
         date: "5/6/2023",
         rating: 5,
@@ -64,7 +64,7 @@ const testimonials = [
     },
     {
         id: 6,
-        imgSrc: "https://res.cloudinary.com/dkprths9f/image/upload/v1737974050/products/nioal6cjozy2oeb3plee.jpg",
+        imgSrc: "https://res.cloudinary.com/dxhs6vjab/image/upload/v1743668478/nioal6cjozy2oeb3plee_j3bqsc.jpg",
         name: "Harsh",
         date: "11/1/2024",
         rating: 5,
@@ -74,7 +74,7 @@ const testimonials = [
     },
     {
         id: 7,
-        imgSrc: "https://res.cloudinary.com/dkprths9f/image/upload/v1737183903/products/thumbnails/qdgakcjub6nprkmgkxhe.jpg",
+        imgSrc: "https://res.cloudinary.com/dxhs6vjab/image/upload/v1743668481/qdgakcjub6nprkmgkxhe_vucm39.jpg",
         name: "Jatin Pal",
         date: "6/2/2024",
         rating: 5,
@@ -84,7 +84,7 @@ const testimonials = [
     },
     {
         id: 8,
-        imgSrc: "https://res.cloudinary.com/dkprths9f/image/upload/v1741695871/r1yxyjerptfidpxj1mff_elmlnn.webp",
+        imgSrc: "https://res.cloudinary.com/dxhs6vjab/image/upload/v1743668483/r1yxyjerptfidpxj1mff_elmlnn_fafsie.webp",
         name: "Anushka",
         date: "5/2/2025",
         rating: 5,

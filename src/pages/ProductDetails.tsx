@@ -1,724 +1,560 @@
-"use client";
-import React, { useEffect, useRef, useState } from "react";
-import SingleProductSlider from "@/components/SingleProductSlider";
-// import ProductSlider from "@/components/ProductSlider";
-import Breadcrumb from "@/components/Breadcrumb";
-import { useCartStore } from "@/store/useCartStore";
-import { toast } from "react-toastify";
-import CartSidebar from "@/components/CartSidebar";
-import type { Product } from "@/lib/types/product";
-import { formatCurrency, randomNumber } from "@/helpers/helpers";
-import ProductSlider from "@/components/ProductSlider";
-import useQuickStore from "@/store/useQuickStore";
-import Link from "next/link";
-import { RiEyeLine, RiShoppingCartFill } from "react-icons/ri";
-import { TestimonialCard } from "@/components/TestimonialCard";
-import Image from "next/image";
-
+'use client';
+import { Product } from '@/lib/types/product';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { BiBell, BiChevronDown, BiChevronLeft, BiChevronRight, BiHeart, BiPackage, BiPlus, BiStar, BiX } from 'react-icons/bi';
+import { BsChevronDown, BsChevronLeft, BsChevronRight, BsFileText, BsTruck } from 'react-icons/bs';
+import { RiDiscountPercentFill, RiRotateLockLine, RiShoppingBag2Line, RiThumbUpFill } from 'react-icons/ri';
+import { motion } from "framer-motion";
+import Image from 'next/image';
+import Breadcrumb from '@/components/Breadcrumb';
+import { formatCurrency } from '@/helpers/helpers';
+import ProductSlider from '@/components/ProductSlider';
 interface ProductProps {
   product: Product | null;
   relatedProduct: Product[];
 }
-const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
-
-  const [activeDetails, setActiveDetails] = useState(true);
-  const [activeInformation, setActiveInformation] = useState(false);
-  const [activeReviews, setActiveReviews] = useState(false);
-  const addToCart = useCartStore(state => state.addToCart);
-  const [viewers, setViewers] = useState<number | null>(null);
-  const [buyers, setBuyers] = useState<number | null>(null);
-  const [ratings, setRatings] = useState<number | null>(null);
-  const [isCartOpen, setIsOpenCart] = useState(false);
-  const items = useCartStore((state) => state.items);
-  const toggelCartSidebarClose = () => setIsOpenCart(false);
-  const [quantity, setQuantity] = useState(1);
-  const [activeVarient, setActiveVarient] = useState(product?.varient[0]?._id || '0');
-  const handleAddToCart = () => {
-    if (!product || quantity <= 0) {
-      toast.error('Please select quantity');
-      return;
-    }
-    addToCart(product, quantity);
-    setIsOpenCart(true);
-    //toast('Added to cart');
-  }
-
-  // console.log(product)
-
-  const item = items.find(item => item._id === product?._id) || { _id: '', quantity: 0 };
-
-
-  const onchangeVarient = (id: string) => {
-    setActiveVarient(id)
-    const varient = product?.varient.find(item => item._id === id);
-    if (product && varient) {
-      product.price = varient.price || 0;
-    }
-  }
-  const handleQuantityChange = (change: number) => {
-    const newQuantity = Math.max(1, quantity + change);
-    setQuantity(newQuantity);
-    //toast.info('Updated quantity');
-  };
-
-  const viwCart = () => {
-    setIsOpenCart(true);
-  }
-
-  const [timeLeft, setTimeLeft] = useState(3600); // 1 hour in seconds
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+export default function ProductDetails({ product, relatedProduct }: ProductProps) {
+  const [selectedSize, setSelectedSize] = useState(product?.varient[0]?.size || '0');
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [showDescriptions, setShowDescriptions] = useState(false);
+  const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [activeTab, setActiveTab] = useState<'product' | 'brand'>('product');
+  // const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 56, seconds: 28 });
 
   useEffect(() => {
-    const updateTimer = () => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          return 3600; // Reset to 1 hour
-        }
-        return prev - 1;
-      });
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
     };
 
-    intervalRef.current = setInterval(updateTimer, 1000);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
 
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  const formatTime = (seconds: number) => {
-    const hrs = Math.floor(seconds / 3600);
-    const mins = Math.floor((seconds % 3600) / 60);
-    const secs = seconds % 60;
-    return `${hrs.toString().padStart(2, "0")}:${mins
-      .toString()
-      .padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
-  };
+  const sizes = useMemo(() => product?.varient || [], [product]);
 
+  const productImages = useMemo(() => {
+    if (!product) return [];
+    return [product.thumbnail.url, ...product.images.map((image) => image.url)];
+  }, [product]);
+
+
+
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (!isZoomed || isMobile) return;
+      const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+      const x = ((e.clientX - left) / width) * 100;
+      const y = ((e.clientY - top) / height) * 100;
+      setZoomPosition({ x, y });
+    },
+    [isZoomed, isMobile]
+  );
+
+  const keyHighlights = useMemo(() => [
+    { label: "Brand", value: product?.brand },
+    { label: "DimensionsFit", value: product?.dimensions },
+    { label: "Delivery", value: "5-8 Days or Depends on Location" },
+    { label: "Outer Material", value: "A-Grade Standard Quality" },
+    { label: "Shipping", value: product?.shippingFee || 'Free Shipping' },
+    { label: "Weight", value: `${product?.weight}g` },
+  ], [product]);
+
+  const reviews = useMemo(() => [
+    { id: 1, rating: 5, comment: "Best one I ever bought!", author: "Alroy", date: "6 January 2025", helpful: 2 },
+    { id: 2, rating: 4, comment: "Great quality and design", author: "Sarah", date: "15 January 2025", helpful: 1 },
+  ], []);
+
+  const ratingCounts = useMemo(() => ({
+    5: 251,
+    4: 139,
+    3: 55,
+    2: 1,
+    1: 3
+  }), []);
+
+  const totalRatings = useMemo(() => Object.values(ratingCounts).reduce((a, b) => a + b, 0), [ratingCounts]);
+
+  const averageRating = useMemo(() =>
+    Object.entries(ratingCounts).reduce((acc, [rating, count]) => acc + (Number(rating) * count), 0) / totalRatings,
+    [ratingCounts, totalRatings]
+  );
+
+  const handlePrevImage = useCallback(() => {
+    setCurrentImageIndex((prev) => (prev === 0 ? productImages.length - 1 : prev - 1));
+  }, [productImages]);
+
+  const handleNextImage = useCallback(() => {
+    setCurrentImageIndex((prev) => (prev === productImages.length - 1 ? 0 : prev + 1));
+  }, [productImages]);
+
+
+
+  const calculateDiscountedPrice = useCallback(() => {
+    if (!product) return null;
+    const discountedPrice =
+      product.discountType === "percentage"
+        ? product.price - (product.price * product.discountPrice) / 100
+        : product.price - (product.discountPrice || 0);
+
+    return product.price ? formatCurrency(discountedPrice) : null;
+  }, [product]);
+
+
+
+
+
+  const [_, forceRender] = useState(0); // Only used to force render when needed
+  const timeLeft = useRef({ hours: 0, minutes: 56, seconds: 28 }); // Initial countdown time
 
   useEffect(() => {
-    useQuickStore.setState({ isOpen: false });
-    setViewers(randomNumber(300, 1));
-    setBuyers(randomNumber(3000, 1000));
-    setRatings(randomNumber(5, 1));
-  }, [])
+    const interval = setInterval(() => {
+      const { hours, minutes, seconds } = timeLeft.current;
+
+      if (hours === 0 && minutes === 0 && seconds === 0) {
+        clearInterval(interval);
+        return;
+      }
+
+      let newHours = hours,
+        newMinutes = minutes,
+        newSeconds = seconds - 1;
+
+      if (newSeconds < 0) {
+        newSeconds = 59;
+        newMinutes -= 1;
+      }
+      if (newMinutes < 0) {
+        newMinutes = 59;
+        newHours -= 1;
+      }
+
+      timeLeft.current = { hours: newHours, minutes: newMinutes, seconds: newSeconds };
+
+      forceRender((prev) => prev + 1); // Only force render when needed
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
 
   return (
     <>
-      {/* Breadcrumb */}
-      <Breadcrumb title={"Product Page"} />
-      {/* product page */}
-      <section className="section-product py-[50px] max-[1199px]:py-[35px] overflow-hidden">
-        <div className="flex flex-wrap justify-between relative items-center mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">
-          <div className="flex flex-wrap w-full">
-            <div className="w-full px-[12px]">
-              <div className="bb-single-pro mb-[24px]">
-                <div className="flex flex-wrap mx-[-12px]">
-                  <div className="min-[992px]:w-[41.66%] w-full px-[12px] mb-[24px]">
-                    <SingleProductSlider product={product} />
-                  </div>
-                  <div className="min-[992px]:w-[58.33%] w-full px-[12px] mb-[24px]">
-                    <div className="bb-single-pro-contact">
-                      <div className="bb-sub-title mb-[20px]">
-                        <h4 className="font-quicksand text-[22px] tracking-[0.03rem] font-bold leading-[1.2] text-[#3d4750]">
-                          {product?.title}
-                        </h4>
-                        <p className="text-2xl font-bold font-mono mt-2  max-[567px]:text-sm text-slate-800">{formatTime(timeLeft)}</p>
-                      </div>
-                      
+      <div className="min-h-screen bg-gray-50">
+        <Breadcrumb title={"Product Page"} />
+        {/* Image Modal */}
+        {showModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center">
+            <div className="relative w-full max-w-6xl mx-4">
+              <button
+                onClick={() => setShowModal(false)}
+                className="absolute top-4 right-4 text-rose-700 hover:text-rose-800 z-[999]"
+              >
+                <BiX className="w-8 h-8" />
+              </button>
+              <div className="relative flex items-center justify-center">
+                <img
+                  src={productImages[currentImageIndex]}
+                  alt={currentImageIndex === 0 ? product?.imgAlt || "Product Image" : `${product?.slug}-${currentImageIndex + 1}`}
+                  className="w-auto h-[800px] sm:w-full max-[567px]:h-0 object-contain"
+                />
+                <button
+                  onClick={handlePrevImage}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-slate-600/60 hover:bg-slate-600/70 p-2 rounded-full"
+                >
+                  <BiChevronLeft className="w-8 h-8 text-white" />
+                </button>
+                <button
+                  onClick={handleNextImage}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-slate-600/60 hover:bg-slate-600/70 p-2 rounded-full"
+                >
+                  <BiChevronRight className="w-8 h-8 text-white" />
+                </button>
+              </div>
+              <div className="flex justify-center mt-4 gap-2">
+                {productImages.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setCurrentImageIndex(i)}
+                    className={`w-2 h-2 rounded-full ${currentImageIndex === i ? 'bg-white' : 'bg-white/50'
+                      }`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
 
-                      <div className="bb-single-rating mb-[12px]">
-                        <span className="bb-pro-rating mr-[10px]">
-                          {Array.from({ length: 5 }, (_, index) => (
-                            <i
-                              key={index}
-                              className={`float-left text-[15px] mr-[3px] leading-[18px] ${index < Math.round(product?.rating)
-                                ? "ri-star-fill text-[#fea99a]"
-                                : "ri-star-line text-[#777]"
-                                }`}
-                            />
-                          ))}
-                        </span>
-                        <span className="bb-read-review">
-                          |&nbsp;&nbsp;<a href="#bb-spt-nav-review" className="font-Poppins text-[15px] font-light leading-[28px] tracking-[0.03rem] text-[#6c7fd8]">
-                            {ratings} Ratings
-                          </a>
-                        </span>
-                      </div>
+        <div className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Left side - Product Images */}
+          <div className="md:sticky md:top-8 space-y-4 h-fit">
+            {/* Main Product Image */}
+            <div
+              className={`aspect-square bg-white rounded-lg overflow-hidden relative ${!isMobile ? 'cursor-zoom-in' : ''}`}
+              onMouseMove={handleMouseMove}
+              onMouseEnter={() => !isMobile && setIsZoomed(true)}
+              onMouseLeave={() => !isMobile && setIsZoomed(false)}
+              onClick={() => setShowModal(true)}
+            >
+              <img
+                src={productImages[currentImageIndex]}
+                alt={currentImageIndex === 0 ? product?.imgAlt || "Product Image" : `${product?.slug}-${currentImageIndex + 1}`}
+                className="w-full h-full object-cover"
+                style={!isMobile ? {
+                  transform: isZoomed ? 'scale(2)' : 'scale(1)',
+                  transformOrigin: `${zoomPosition.x}% ${zoomPosition.y}%`,
+                  transition: isZoomed ? 'none' : 'transform 0.3s ease-out'
+                } : {}}
+              />
+            </div>
 
+            {/* Thumbnail Grid (Ensure Single Line) */}
+            <div className="flex overflow-x-auto space-x-2 py-2">
+              {productImages.map((img, i) => (
+                <div
+                  key={i}
+                  className={`min-w-[70px] sm:min-w-[100px] aspect-square bg-white rounded-lg overflow-hidden cursor-pointer ${currentImageIndex === i ? 'ring-2 ring-black' : ''
+                    }`}
+                  onClick={() => setCurrentImageIndex(i)}
+                >
+                  <img
+                    src={img}
+                    alt={i === 0 ? product?.imgAlt || "Product Image" : `${product?.slug}-${i + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ))}
+            </div>
 
-                      <p className="font-Poppins text-[15px] font-light leading-[28px] tracking-[0.03rem]">
-                        {product?.short_description}
-                      </p>
-
-
-
-                      {/* start mobile only view */}
-                      <div className="bb-single-qty flex flex-wrap m-[-2px] my-4 sm:hidden">
-                        <div className="buttons m-[2px]">
-                          {
-                            product?.isCustomize ?
-                              (
-                                <Link
-                                  href={product?.customizeLink || '#'}
-                                  className="bb-btn-2 transition-all duration-[0.3s] ease-in-out h-[40px] flex font-Poppins leading-[28px] tracking-[0.03rem] py-[6px] px-[25px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
-                                >
-                                  Customize & Buy
-                                </Link>
-                              ) : (
-                                item.quantity > 0 ? (
-                                  <button
-                                    onClick={() => viwCart()}
-                                    className="bb-btn-2 transition-all duration-[0.3s] ease-in-out h-[40px] flex font-Poppins leading-[28px] tracking-[0.03rem] py-[6px] px-[25px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
-                                  >
-                                    View Cart
-                                  </button>
-                                ) : (
-                                  <button
-                                    onClick={() => handleAddToCart()}
-                                    className="bb-btn-2 transition-all duration-[0.3s] ease-in-out h-[40px] flex font-Poppins leading-[28px] tracking-[0.03rem] py-[6px] px-[25px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
-                                  >
-                                    Add to Cart
-                                  </button>
-                                )
-                              )
-                          }
-                        </div>
-                        <ul className="bb-pro-actions my-[2px] flex ">
-                          <li className="bb-btn-group">
-                            <a
-
-                              title="heart"
-                              className="transition-all duration-[0.3s] ease-in-out w-[40px] h-[40px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] hover:bg-[#6c7fd8] border-[1px] border-solid border-[#eee] rounded-[10px]"
-                            >
-                              <i className="ri-heart-line text-[16px] leading-[10px] text-[#777]" />
-                            </a>
-                          </li>
-
-                        </ul>
-                      </div>
-                      {/* end mobile only view */}
-
-
-                      {product?.showPrice && (
-                        <div className="bb-single-price-wrap flex justify-between py-[10px]">
-                          <div className="bb-single-price py-[15px]">
-                            <div className="price mb-[8px]">
-                              <h5 className="font-quicksand leading-[1.2] tracking-[0.03rem] text-[22px] font-extrabold text-green-800">
-                                {product?.price &&
-                                  formatCurrency(
-                                    product.discountType === "percentage"
-                                      ? product.price - (product.price * product.discountPrice) / 100
-                                      : product.price - (product.discountPrice || 0)
-                                  )}
-                                &nbsp;-&nbsp;
-                                {product?.discountPrice > 0 && (
-                                  <span className="text-white text-[16px] bg-rose-700 rounded-3xl py-1 px-4">
-                                    SAVE{product.discountType === "percentage"
-                                      ? `${product.discountPrice}%`
-                                      : `${formatCurrency(product.discountPrice)}`}
-                                  </span>
-                                )}
+            {/* Navigation Buttons Fixed on Left & Right */}
+            <div className="relative flex items-center justify-between w-full mt-4">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handlePrevImage();
+                }}
+                className="absolute left-0 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white"
+              >
+                <BsChevronLeft className="w-6 h-6" />
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleNextImage();
+                }}
+                className="absolute right-0 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white"
+              >
+                <BsChevronRight className="w-6 h-6" />
+              </button>
+            </div>
+          </div>
 
 
-                              </h5>
-                            </div>
-                            {product?.discountPrice > 0 && (
-                              <div className="mrp">
-                                <p className="font-Poppins text-[16px] font-light leading-[28px] tracking-[0.03rem] text-rose-600">
-                                  M.R.P. : <span className="text-[15px] line-through">{product.price.toFixed(2)}</span>
-                                </p>
-                              </div>
-                            )}
+          {/* Right side - Product Details */}
+          <div className="space-y-6 mt-8 md:mt-0">
 
-                          </div>
-                          <div className="bb-single-price py-[15px] hidden">
-                            <div className="sku mb-[8px]">
-                              <h5 className="font-quicksand text-[18px] font-extrabold leading-[1.2] tracking-[0.03rem] text-[#3d4750]">
-                                SKU#: {product?.sku}
-                              </h5>
-                            </div>
-                            <div className="stock">
-                              <span className="text-[18px] text-[#6c7fd8]">
 
-                                {
-                                  product?.stock > 0
-                                    ? `In stock`
-                                    : 'Out of stock'
-                                }
-                              </span>
-                            </div>
-                          </div>
-                        </div>
+            <div>
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">{product?.title}</h1>
+              <p className="text-xs sm:text-sm text-gray-500">{product?.short_description}</p>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <div className="flex flex-col sm:flex-row justify-between">
+                  <div className="mb-4 sm:mb-0">
+                    <div className="flex items-center space-x-2">
+                      <span className="text-lg sm:text-2xl font-bold">{calculateDiscountedPrice()}</span>
+                      {product?.discountPrice > 0 && (
+                        <span className="text-sm sm:text-lg text-rose-700 line-through">{formatCurrency(product?.price)}</span>
                       )}
-                      <div>
-                        <Image src={"/img/shape/badges-1.png"} width={230} height={50} alt="badges" />
-                      </div>
-
-
-                      <div className="bb-single-list mb-[30px]">
-                        <div className="flex flex-col gap-1 text-gray-700 font-Poppins">
-
-                          <div className="flex items-center gap-2 p-2">
-                            <RiEyeLine className="text-amber-600 text-xl" />
-                            <span className="text-[16px] font-medium">
-                              {viewers} people are viewing this right now
-                            </span>
-                          </div>
-
-
-                          <div className="flex items-center gap-2 p-2">
-                            <RiShoppingCartFill className="text-amber-600 text-xl" />
-                            <span className="text-[16px] font-medium">
-                              {buyers} people bought this in the last 7 days
-                            </span>
-                          </div>
-                        </div>
-                        <ul className="my-[8px] pl-[18px]">
-                          <li className="my-[8px] font-Poppins text-[14px] font-light leading-[28px] tracking-[0.03rem] text-[#777] list-disc">
-                            <span className="font-Poppins text-[#777] text-[14px]">
-                              Brand :
-                            </span>{" "}
-                            {product?.brand}
-                          </li>
-                          <li className="my-[8px] font-Poppins text-[14px] font-light leading-[28px] tracking-[0.03rem] text-[#777] list-disc">
-                            <span className="font-Poppins text-[#777] text-[14px]">
-                              Dimensions :
-                            </span>{" "}
-                            {product?.dimensions}
-                          </li>
-                          <li className="my-[8px] font-Poppins text-[14px] font-light leading-[28px] tracking-[0.03rem] text-[#777] list-disc">
-                            <span className="font-Poppins text-[#777] text-[14px]">
-                              Delivery :
-                            </span>{" "}
-                            5-8 Days or Depends on Location
-                          </li>
-
-                          <li className="my-[8px] font-Poppins text-[14px] font-light leading-[28px] tracking-[0.03rem] text-[#777] list-disc">
-                            <span className="font-Poppins text-[#777] text-[14px]">
-                              Outer Material :
-                            </span>{" "}
-                            A-Grade Standard Quality
-                          </li>
-                          <li className="my-[8px] font-Poppins text-[14px] font-light leading-[28px] tracking-[0.03rem] text-[#777] list-disc hidden">
-                            <span className="font-Poppins text-[#777] text-[14px]">
-                              Offers :
-                            </span>{" "}
-                            {product?.offers?.map((offer) => offer.offerTitle).join(', ') || 'No offers available'}
-                          </li>
-                          <li className="my-[8px] font-Poppins text-[14px] font-light leading-[28px] tracking-[0.03rem] text-[#777] list-disc">
-                            <span className="font-Poppins text-[#777] text-[14px]">
-                              Shipping :
-                            </span>{" "}
-                            {product?.shippingFee || 'Free Shipping'}
-                          </li>
+                      {product?.discountPrice > 0 && (
+                        <span className="text-sm sm:text-lg text-green-600 font-semibold">
                           {
-                            product?.weight > 0 && (
-                              <li className="my-[8px] font-Poppins text-[14px] font-light leading-[28px] tracking-[0.03rem] text-[#777] list-disc">
-                                <span className="font-Poppins text-[#777] text-[14px]">
-                                  Weight :
-                                </span>{" "}
-                                {product?.weight}g
-                              </li>
-                            )
+                            product.discountType === "percentage"
+                              ? `${product.discountPrice}%`
+                              : `${formatCurrency(product.discountPrice)}`
                           }
-
-                        </ul>
-                      </div>
-                      {
-                        product?.isVarientStatus && (
-                          <div className="bb-single-pro-weight mb-[24px]">
-                            <div className="pro-title mb-[12px]">
-                              <h4 className="font-quicksand leading-[1.2] tracking-[0.03rem] text-[16px] font-bold uppercase text-[#3d4750]">
-                                Varient
-                              </h4>
-                            </div>
-                            <div className="bb-pro-variation-contant">
-                              <ul className="flex flex-wrap m-[-2px]">
-                                {product?.varient.map((v, index) => (
-                                  <li key={index} className={`my-[10px] mx-[2px] py-[2px] px-[15px] border-[1px] border-solid border-[#eee] rounded-[10px] cursor-pointer ${activeVarient === v?._id ? 'active-variation' : ''}`}>
-                                    <span onClick={() => onchangeVarient(v?._id)} className="font-Poppins text-[#686e7d] font-light text-[14px] leading-[28px] tracking-[0.03rem]">
-                                      {v.size}
-                                    </span>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          </div>
-                        )
-                      }
-
-
-                      {/* start md,lg screen only view */}
-                      <div className="bb-single-qty hidden flex-wrap m-[-2px] sm:flex">
-                        {
-                          !product?.isCustomize &&
-                          <div className="qty-plus-minus m-[2px] w-[85px] h-[40px] py-[7px] border-[1px] border-solid border-[#eee] overflow-hidden relative flex items-center justify-between bg-[#fff] rounded-[10px]">
-                            <div className="dec bb-qtybtn" onClick={() => handleQuantityChange(-1)}>-</div>
-                            <input
-                              className="qty-input text-[#777] float-left text-[14px] h-auto m-[0] p-[0] text-center w-[32px] outline-[0] font-normal leading-[35px] rounded-[10px]"
-                              type="text"
-                              name="bb-qtybtn"
-                              value={quantity}
-                              min="1"
-                              readOnly
-                              onChange={(e) => setQuantity(Number(e.target.value))}
-                            />
-                            <div className="inc bb-qtybtn" onClick={() => handleQuantityChange(1)}>+</div>
-                          </div>
-                        }
-                        <div className="buttons m-[2px]">
-                          {
-                            product?.isCustomize ? (
-                              <Link
-                                href={product?.customizeLink || '#'}
-                                className="bb-btn-2 transition-all duration-[0.3s] ease-in-out h-[40px] flex font-Poppins leading-[28px] tracking-[0.03rem] py-[6px] px-[25px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
-                              >
-                                Customize & Buy
-                              </Link>
-                            ) : (
-                              item.quantity > 0 ? (
-                                <button
-                                  onClick={() => viwCart()}
-                                  className="bb-btn-2 transition-all duration-[0.3s] ease-in-out h-[40px] flex font-Poppins leading-[28px] tracking-[0.03rem] py-[6px] px-[25px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
-                                >
-                                  View Cart
-                                </button>
-                              ) : (
-                                <button
-                                  onClick={() => handleAddToCart()}
-                                  className="bb-btn-2 transition-all duration-[0.3s] ease-in-out h-[40px] flex font-Poppins leading-[28px] tracking-[0.03rem] py-[6px] px-[25px] text-[14px] font-normal text-[#fff] bg-[#6c7fd8] rounded-[10px] border-[1px] border-solid border-[#6c7fd8] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
-                                >
-                                  Add to Cart
-                                </button>
-                              )
-                            )
-                          }
-                        </div>
-                        <ul className="bb-pro-actions my-[2px] flex">
-                          <li className="bb-btn-group">
-                            <a
-                              title="heart"
-                              className="transition-all duration-[0.3s] ease-in-out w-[40px] h-[40px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] hover:bg-[#6c7fd8] border-[1px] border-solid border-[#eee] rounded-[10px]"
-                            >
-                              <i className="ri-heart-line text-[16px] leading-[10px] text-[#777]" />
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      {/* end md,lg screen only view */}
+                          OFF
+                        </span>
+                      )}
                     </div>
+                    <p className="text-xs sm:text-sm text-gray-500">inclusive of all taxes</p>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <BiStar className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-500 fill-yellow-500" />
+                    <span className="text-sm sm:text-lg font-medium">4.4</span>
+                    <span className="text-blue-600 text-sm sm:text-lg cursor-pointer">| 11 Reviews</span>
                   </div>
                 </div>
               </div>
-              <div className="bb-single-pro-tab">
-                <div className="bb-pro-tab mb-[24px]">
-                  <ul
-                    className="bb-pro-tab-nav flex flex-wrap mx-[-20px] max-[991px]:justify-center"
-                    id="ProTab"
-                  >
-                    <li className="nav-item relative leading-[28px]">
-                      <button
-                        className={`nav-link px-[20px] font-Poppins text-[16px] text-[#686e7d] font-medium capitalize leading-[28px] tracking-[0.03rem] block ${activeDetails && 'active text-[#6c7fd8]'}`}
-                        data-tab="detail"
-                        onClick={() => {
-                          setActiveDetails(prev => !prev);
-                          setActiveInformation(false);
-                          setActiveReviews(false);
-                        }}
-                      >
-                        Detail
-                      </button>
-                    </li>
-                    <li className="nav-item relative leading-[28px]">
-                      <button
-                        className={`nav-link px-[20px] font-Poppins text-[16px] text-[#686e7d] font-medium capitalize leading-[28px] tracking-[0.03rem] block ${activeInformation && 'active text-[#6c7fd8]'}`}
-                        data-tab="information"
-                        onClick={() => {
-                          setActiveInformation(prev => !prev);
-                          setActiveDetails(false);
-                          setActiveReviews(false);
-                        }}
-                      >
-                        Information
-                      </button>
-                    </li>
-                    {/* <li className="nav-item relative leading-[28px]">
-                      <button
-                        className={`nav-link px-[20px] font-Poppins text-[16px] text-[#686e7d] font-medium capitalize leading-[28px] tracking-[0.03rem] block ${activeReviews && 'active text-[#6c7fd8]'}`}
-                        data-tab="reviews"
-                        onClick={() => {
-                          setActiveReviews(prev => !prev);
-                          setActiveDetails(false);
-                          setActiveInformation(false);
-                        }}
-                      >
-                        Reviews
-                      </button>
-                    </li> */}
-                  </ul>
+
+              {
+                product?.isVarientStatus && (
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-900">Select Size</h3>
+                    <div className="mt-2 grid grid-cols-8 gap-2">
+                      {sizes.map((size, index) => (
+                        <button
+                          key={index}
+                          className={`py-2 text-sm font-medium rounded-md ${selectedSize === size.size
+                            ? 'bg-black text-white'
+                            : 'bg-white text-gray-900 border border-gray-300 hover:bg-gray-50'
+                            }`}
+                          onClick={() => setSelectedSize(size.size)}
+                        >
+                          {size.size}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              <div className="flex justify-between items-center bg-blue-50 p-2 sm:p-4 rounded-lg">
+
+                <div className="font-semibold text-black text-xs sm:text-base">
+                  Sale ends in: <span className="font-bold">
+                    {`${String(timeLeft.current.hours).padStart(2, "0")}h : 
+                    ${String(timeLeft.current.minutes).padStart(2, "0")}m : 
+                    ${String(timeLeft.current.seconds).padStart(2, "0")}s`}
+                  </span>
                 </div>
-                <div className="tab-content">
-                  {
-                    activeDetails && (
-                      <div className="tab-pro-pane" id="detail">
-                        <div className="bb-inner-tabs ">
-                          <div className="bb-details">
-                            <div
-                              dangerouslySetInnerHTML={{ __html: product?.description }}
-                              className="mb-[12px] font-Poppins text-[#686e7d] leading-[28px] tracking-[0.03rem] font-dark"
-                            />
-                            <div className="details-info">
-                              <ul className="list-disc pl-[20px] mb-[0]">
-                                <li className="py-[5px] text-[15px] text-[#686e7d] font-Poppins leading-[28px] font-light">
-                                  Warranty : {product?.warrantyInformation?.durationMonths} Months ({product?.warrantyInformation?.warrantyType.toUpperCase()}) <span title={product?.warrantyInformation?.claimProcess} className="text-blue-600">how?</span>
-                                </li>
-                                <li className="py-[5px] text-[15px] text-[#686e7d] font-Poppins leading-[28px] font-light">
-                                  Shipping : {product?.shippingInformation?.shippingTime} ({product?.shippingInformation?.shippingMethod})
-                                </li>
-                                {
-                                  product?.offers.length > 0 && (
-                                    <li className="py-[5px] text-[15px] text-[#686e7d] font-Poppins leading-[28px] font-light">
-                                      Offers: {product?.offers.map((offer, index) => (
-                                        <span key={index} className="font-Poppins text-[#777] text-[14px] leading-[28px] tracking-[0.03rem]">
-                                          {offer.offerTitle} - {offer.offerDescription}
-                                        </span>
-                                      ))}
-                                    </li>
-                                  )
-                                }
 
-                              </ul>
-                              <ul className="list-disc pl-[20px] mb-[0]">
-                                <li className="py-[5px] text-[15px] text-[#686e7d] font-Poppins leading-[28px] font-light">
-                                  <span className="inline-flex font-medium min-w-[150px]">
-                                    Highlights
-                                  </span>
-                                  Form FactorWhole
-                                </li>
-                                <li className="py-[5px] text-[15px] text-[#686e7d] font-Poppins leading-[28px] font-light">
-                                  <span className="inline-flex font-medium min-w-[150px]">
-                                    Return
-                                  </span>
-                                  {product?.returnPolicy?.returnPeriod || 'No Returns Allowed'}
+                <motion.div
+                  animate={{ x: [0, 8, -8, 0] }}
+                  transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}
+                >
+                  <BiBell className="text-gray-600 text-sm sm:text-md" />
+                </motion.div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex gap-2">
+                  <button className="flex-1 bg-yellow-400 text-slate-700 py-3 px-6 rounded-md font-medium hover:bg-yellow-500 flex items-center justify-center gap-2">
+                    <RiShoppingBag2Line className="w-5 h-5" /> ADD TO BAG
+                  </button>
+                  <button className="px-6 py-3 border border-gray-300 rounded-md hover:bg-gray-50">
+                    <BiHeart className="w-6 h-6" />
+                  </button>
+                </div>
+              </div>
 
-                                </li>
-                                <li className="py-[5px] text-[15px] text-[#686e7d] font-Poppins leading-[28px] font-light">
-                                  <span className="inline-flex font-medium min-w-[150px]">
-                                    Services
-                                  </span>
-                                  Cash on Delivery available
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
+
+              <div className="py-4">
+                <Image src={"/img/shape/badges.png"} width={400} height={50} alt="badges" className='w-[60%]' />
+              </div>
+              {/* <div className="grid grid-cols-3 gap-4 py-4">
+              <div className="text-center bg-slate-100 px-2 py-6 rounded-md text-slate-800">
+                <BsTruck className="w-6 h-6 mx-auto mb-2" />
+                <p className="text-md">Free Shipping</p>
+              </div>
+              <div className="text-center bg-slate-100 px-2 py-6 rounded-md text-slate-800">
+                <BiPackage className="w-6 h-6 mx-auto mb-2" />
+                <p className="text-md">Premium Quality</p>
+              </div>
+              <div className="text-center bg-slate-100 px-2 py-6 rounded-md text-slate-800">
+                <RiRotateLockLine className="w-6 h-6 mx-auto mb-2" />
+                <p className="text-md">Secure Payment</p>
+              </div>
+            </div> */}
+
+              <div className=" p-4 border border-green-400 bg-gradient-to-t from-green-200 to-green-50 rounded-lg flex items-center space-x-3 shadow-md">
+                <RiDiscountPercentFill className="text-green-600" size={32} />
+                <p className="text-black font-medium">
+                  Get Extra ₹100 Off on orders above Rs.500. <br />Coupon code - <span className="font-bold">FLAT100</span>
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                {/* Key Highlights */}
+                <div className="border-t pt-4">
+                  <div className="w-full py-2">
+                    <span className="text-xl text-slate-900 font-medium">Key Highlights</span>
+                  </div>
+
+                  <div className="mt-4 grid grid-cols-2 gap-4">
+                    {keyHighlights.map((highlight, index) => (
+                      <div key={index} className="space-y-1 border-b pb-2">
+                        <p className="text-md text-gray-500">{highlight.label}</p>
+                        <p className="text-md font-medium text-slate-700">{highlight.value}</p>
                       </div>
-                    )
-                  }
-                  {
-                    activeInformation && (
-                      <div className="tab-pro-pane" id="information">
-                        <div className="bb-inner-tabs">
-                          <div className="information">
-                            <ul className="list-disc pl-[20px]">
-                              <li className="font-Poppins text-[15px] font-light tracking-[0.03rem] leading-[28px] text-[#686e7d] py-[5px]">
-                                <span className="inline-flex min-w-[130px] font-medium">
-                                  Weight
-                                </span>{" "}
-                                {product?.weight}g
+                    ))}
+                  </div>
+
+                </div>
+
+                {/* Product Description */}
+
+                <div  >
+                  <div className="w-full cursor-pointer flex justify-between items-center py-2" onClick={() => setShowDescriptions(!showDescriptions)}>
+                    <div className="flex items-center gap-2">
+                      <BsFileText className="text-gray-600" size={30} />
+                      <div>
+                        <p className="font-semibold text-black">Product Description</p>
+                        <p className="text-gray-500 text-sm">Manufacture, Care and Fit</p>
+                      </div>
+                    </div>
+                    <motion.div animate={{ rotate: showDescriptions ? 45 : 0 }}>
+                      <BiPlus className="text-gray-600" size={20} />
+                    </motion.div>
+                  </div>
+                  {showDescriptions && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      transition={{ duration: 0.3 }}
+                      className="mt-2 text-gray-700"
+                    >
+                      <div className="mt-4 text-sm text-gray-600">
+                        <div className="bb-details">
+                          <div
+                            dangerouslySetInnerHTML={{ __html: product?.description }}
+                            className="mb-[12px] font-Poppins text-[#686e7d] leading-[28px] tracking-[0.03rem] font-dark"
+                          />
+                          <div className="details-info">
+                            <ul className="list-disc pl-[20px] mb-[0]">
+                              <li className="py-[5px] text-[15px] text-[#686e7d] font-Poppins leading-[28px] font-light">
+                                Warranty : {product?.warrantyInformation?.durationMonths} Months ({product?.warrantyInformation?.warrantyType.toUpperCase()}) <span title={product?.warrantyInformation?.claimProcess} className="text-blue-600">how?</span>
                               </li>
-                              <li className="font-Poppins text-[15px] font-light tracking-[0.03rem] leading-[28px] text-[#686e7d] py-[5px]">
-                                <span className="inline-flex min-w-[130px] font-medium">
-                                  Dimensions
-                                </span>{" "}
-                                {product?.dimensions}
+                              <li className="py-[5px] text-[15px] text-[#686e7d] font-Poppins leading-[28px] font-light">
+                                Shipping : {product?.shippingInformation?.shippingTime} ({product?.shippingInformation?.shippingMethod})
                               </li>
-                              <li className="font-Poppins text-[15px] font-light tracking-[0.03rem] leading-[28px] text-[#686e7d] py-[5px]">
-                                <span className="inline-flex min-w-[130px] font-medium">
-                                  Color
-                                </span>{" "}
-                                {product?.colors || 'White'}
-                              </li>
-                              <li className="font-Poppins text-[15px] font-light tracking-[0.03rem] leading-[28px] text-[#686e7d] py-[5px]">
-                                <span className="inline-flex min-w-[130px] font-medium">
-                                  Brand
-                                </span>{" "}
-                                {product?.brand}
-                              </li>
-                              <li className="font-Poppins text-[15px] font-light tracking-[0.03rem] leading-[28px] text-[#686e7d] py-[5px]">
-                                <span className="inline-flex min-w-[130px] font-medium">
-                                  Form Factor
+                              {
+                                product?.offers.length > 0 && (
+                                  <li className="py-[5px] text-[15px] text-[#686e7d] font-Poppins leading-[28px] font-light">
+                                    Offers: {product?.offers.map((offer, index) => (
+                                      <span key={index} className="font-Poppins text-[#777] text-[14px] leading-[28px] tracking-[0.03rem]">
+                                        {offer.offerTitle} - {offer.offerDescription}
+                                      </span>
+                                    ))}
+                                  </li>
+                                )
+                              }
+
+                            </ul>
+                            <ul className="list-disc pl-[20px] mb-[0]">
+                              <li className="py-[5px] text-[15px] text-[#686e7d] font-Poppins leading-[28px] font-light">
+                                <span className="inline-flex font-medium min-w-[150px]">
+                                  Highlights
                                 </span>
-                                Whole
+                                Form FactorWhole
                               </li>
-                              <li className="font-Poppins text-[15px] font-light tracking-[0.03rem] leading-[28px] text-[#686e7d] py-[5px]">
-                                <span className="inline-flex min-w-[130px] font-medium">
-                                  Quantity
+                              <li className="py-[5px] text-[15px] text-[#686e7d] font-Poppins leading-[28px] font-light">
+                                <span className="inline-flex font-medium min-w-[150px]">
+                                  Return
                                 </span>
-                                {product?.minimumOrderQuantity || 1}
+                                {product?.returnPolicy?.returnPeriod || 'No Returns Allowed'}
+
                               </li>
-                              <li className="font-Poppins text-[15px] font-light tracking-[0.03rem] leading-[28px] text-[#686e7d] py-[5px]">
-                                <span className="inline-flex min-w-[130px] font-medium">
-                                  Type
+                              <li className="py-[5px] text-[15px] text-[#686e7d] font-Poppins leading-[28px] font-light">
+                                <span className="inline-flex font-medium min-w-[150px]">
+                                  Services
                                 </span>
-                                {product?.category?.name}
-                              </li>
-                              <li className="font-Poppins text-[15px] font-light tracking-[0.03rem] leading-[28px] text-[#686e7d] py-[5px]">
-                                <span className="inline-flex min-w-[130px] font-medium">
-                                  Shelf Life
-                                </span>
-                                {'Life Time'}
-                              </li>
-                              <li className="font-Poppins text-[15px] font-light tracking-[0.03rem] leading-[28px] text-[#686e7d] py-[5px]">
-                                <span className="inline-flex min-w-[130px] font-medium">
-                                  Ingredients
-                                </span>
-                                {product?.inBox || 'No Ingredients'}
-                              </li>
-                              <li className="font-Poppins text-[15px] font-light tracking-[0.03rem] leading-[28px] text-[#686e7d] py-[5px]">
-                                <span className="inline-flex min-w-[130px] font-medium">
-                                  Instructions
-                                </span>
-                                Keep it away from water. Wipe clean with a soft cloth.
+                                Cash on Delivery available
                               </li>
                             </ul>
                           </div>
                         </div>
+
                       </div>
-                    )
-                  }
-                  {
-                    /*
-  activeReviews && (
-                        <div className="tab-pro-pane" id="reviews">
-                          <div className="bb-inner-tabs border-[1px] border-solid border-[#eee] p-[15px] rounded-[20px]">
-                            <Link href={`/product-details/${product?.slug}/write-review`} className="font-Poppins leading-[1.2] tracking-[0.03rem] mb-[5px] text-[14px] font-bold text-green-100 bg-green-600 py-1 px-2 rounded-md">Add Reviews</Link>
-                            <div className="bb-reviews mt-4">
-                              {
-                                product?.reviews?.length > 0 ? (
-                                  product?.reviews &&
-                                  product?.reviews.map((review, index) => (
-                                    <div key={index}>
-                                      <div className="reviews-bb-box flex mb-[24px] max-[575px]:flex-col">
-                                        <div className="inner-image mr-[12px] max-[575px]:mr-[0] max-[575px]:mb-[12px]">
-                                          <img
-                                            src="/img/dummy-image.jpg"
-                                            alt="img-1"
-                                            className="w-[50px] h-[50px] max-w-[50px] rounded-[10px]"
-                                          />
-                                        </div>
-                                        <div className="inner-contact">
-                                          <h4 className="font-quicksand leading-[1.2] tracking-[0.03rem] mb-[5px] text-[16px] font-bold text-[#3d4750]">
-                                            {review?.userId?.displayName || "User"}
-                                          </h4>
-                                          <div className="bb-pro-rating flex">
-                                            {Array(review?.rating || 5)
-                                              .fill(0)
-                                              .map((_, starIndex) => (
-                                                <i
-                                                  key={starIndex}
-                                                  className={`${starIndex < review.rating
-                                                    ? "ri-star-fill text-[#fea99a]"
-                                                    : "ri-star-line text-[#777]"
-                                                    } float-left text-[15px] mr-[3px]`}
-                                                />
-                                              ))}
-                                          </div>
-                                          <p className="font-Poppins text-[14px] leading-[26px] font-light tracking-[0.03rem] text-[#686e7d]">
-                                            {review.review}
-                                          </p>
-                                        </div>
-                                      </div>
-                                      {
-                                        review?.images && (
-                                          <div className="reviews-bb-box flex mb-[24px] max-[575px]:flex-col">
-                                            {
-                                              review?.images.map((image, index) => (
-                                                <div key={index} className="inner-image mr-[12px] max-[575px]:mr-[0] max-[575px]:mb-[12px]">
-                                                  <img
-                                                    src={image.url}
-                                                    alt={`img-${index}`}
-                                                    className="w-[50px] h-[50px] max-w-[50px] rounded-[10px]"
-                                                  />
-                                                </div>
-                                              ))
-                                            }
-  
-                                          </div>
-                                        )
-                                      }
-  
-                                    </div>
-                                  ))
-                                ) : (
-                                  <>
-                                    <div className="reviews-bb-box flex mb-[24px] max-[575px]:flex-col">
-                                      <div className="inner-image mr-[12px] max-[575px]:mr-[0] max-[575px]:mb-[12px]">
-                                        <img
-                                          src="/img/dummy-image.jpg"
-                                          alt="img-1"
-                                          className="w-[50px] h-[50px] max-w-[50px] rounded-[10px]"
-                                        />
-                                      </div>
-                                      <div className="inner-contact">
-                                        <h4 className="font-quicksand leading-[1.2] tracking-[0.03rem] mb-[5px] text-[16px] font-bold text-[#3d4750]">
-                                          Manish
-                                        </h4>
-                                        <div className="bb-pro-rating flex">
-                                          <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
-                                          <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
-                                          <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
-                                          <i className="ri-star-fill float-left text-[15px] mr-[3px] text-[#fea99a]" />
-                                          <i className="ri-star-line float-left text-[15px] mr-[3px] text-[#777]" />
-                                        </div>
-                                        <p className="font-Poppins text-[14px] leading-[26px] font-light tracking-[0.03rem] text-[#686e7d]">
-                                          The lamp exceeded my expectations. Bright, stylish, and personalized just how I wanted. Highly recommend!
-                                        </p>
-                                      </div>
-  
-                                    </div>
-  
-  
-  
-                                  </>
-  
-                                )
-                              }
-  
+
+                    </motion.div>
+                  )}
+                </div>
+
+
+                <div className="w-full">
+                  <div className="flex border-b">
+                    <button
+                      className={`px-4 py-2 font-semibold w-1/2 text-md max-[567px]:text-xs max-[567px]:p-0 ${activeTab === 'product' ? 'border-b-2 border-yellow-500 text-black' : 'text-gray-500'}`}
+                      onClick={() => setActiveTab('product')}
+                    >
+                      Product Reviews
+                    </button>
+                    <button
+                      className={`px-4 py-2 font-semibold w-1/2 text-md max-[567px]:text-xs max-[567px]:p-0 ${activeTab === 'brand' ? 'border-b-2 border-yellow-500 text-black' : 'text-gray-500'}`}
+                      onClick={() => setActiveTab('brand')}
+                    >
+                      Brand Reviews
+                    </button>
+                  </div>
+                  <div className="p-4">
+                    {activeTab === 'product' ? (
+                      <div className="mt-4 space-y-6">
+                        <p className="text-black font-medium text-md flex gap-2 max-[567px]:text-xs"><RiThumbUpFill size={20} />87% of verified buyers recommend this product.</p>
+                        <div className="flex flex-col md:flex-row items-center justify-between">
+                          <div className="flex flex-col items-center gap-6 md:flex-row md:items-center">
+                            <div className="text-center md:text-left">
+                              <div className="text-3xl font-bold">{averageRating.toFixed(1)}</div>
+                              <div className="flex items-center justify-center mt-1">
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                  <BiStar key={star} className="w-4 h-4 text-yellow-400 fill-current" />
+                                ))}
+                              </div>
+                              <p className="text-sm text-gray-500 mt-1">{totalRatings} ratings</p>
                             </div>
-                            
+                            <div className="flex-1 space-y-2 md:space-y-0 md:flex md:flex-col md:gap-2">
+                              {[5, 4, 3, 2, 1].map((rating) => (
+                                <div key={rating} className="flex items-center gap-2">
+                                  <span className="text-sm w-3">{rating}</span>
+                                  <BiStar className="w-4 h-4 text-yellow-400 fill-current" />
+                                  <div className="w-52 h-2 bg-gray-300 ml-2 rounded-full overflow-hidden">
+                                    <div className="h-2 bg-green-500" style={{ width: `${(ratingCounts[rating] / totalRatings) * 100}%` }} />
+                                  </div>
+                                  <span className="text-sm text-gray-500 w-10">({ratingCounts[rating]})</span>
+                                </div>
+                              ))}
+                            </div>
                           </div>
                         </div>
-                      )
-                    */
 
-                  }
 
+                        <div className="space-y-4">
+                          {reviews.map((review) => (
+                            <div key={review.id} className="border-t pt-4">
+                              <div className="flex items-center mb-2">
+                                {[...Array(review.rating)].map((_, i) => (
+                                  <BiStar key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                                ))}
+                              </div>
+                              <p className="text-sm mb-2">{review.comment}</p>
+                              <div className="flex items-center justify-between text-sm text-gray-500">
+                                <p>{review.author} - {review.date}</p>
+                                <div className="flex items-center">
+                                  <span>{review.helpful} people found this helpful</span>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <p className="text-gray-600">Brand Reviews section content goes here.</p>
+                    )}
+                  </div>
                 </div>
+
+
               </div>
             </div>
           </div>
         </div>
-      </section>
-
-
-
-      <TestimonialCard />
-      {/* Related product section */}
+      </div>
       <section className="section-related-product py-[50px] max-[1199px]:py-[35px]">
         <div className="flex flex-wrap justify-between relative items-center mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">
           <div className="flex flex-wrap w-full">
             <div className="w-full px-[12px]">
               <div
-                className="section-title mb-[20px] pb-[20px] z-[5] relative flex flex-col items-center text-center max-[991px]:pb-[0]"
+                className="section-title mb-[20px] pb-[20px] z-[5] relative flex flex-col max-[991px]:pb-[0]"
                 data-aos="fade-up"
                 data-aos-duration={1000}
                 data-aos-delay={200}
               >
                 <div className="section-detail max-[991px]:mb-[12px]">
                   <h2 className="bb-title font-quicksand mb-[0] p-[0] text-[25px] font-bold text-[#3d4750] relative inline capitalize leading-[1] tracking-[0.03rem] max-[767px]:text-[23px]">
-                    Related <span className="text-[#6c7fd8]">Product</span>
+                    You May Also Like
                   </h2>
                   <p className="font-Poppins max-w-[400px] mt-[10px] text-[14px] text-[#686e7d] leading-[18px] font-light tracking-[0.03rem] max-[991px]:mx-[auto]">
                     Browse The Collection of Top Products.
@@ -736,11 +572,6 @@ const ProductDetails = ({ product, relatedProduct }: ProductProps) => {
           </div>
         </div>
       </section>
-
-      {isCartOpen && <CartSidebar onClose={toggelCartSidebarClose} />}
-
     </>
   );
-};
-
-export default ProductDetails;
+}

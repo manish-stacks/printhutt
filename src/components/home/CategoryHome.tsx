@@ -66,8 +66,8 @@ const CategoryHome = () => {
   // console.log(categoriesData)
 
   const neonImage = [
-    "https://res.cloudinary.com/dkprths9f/image/upload/v1736598650/lamp-product-banner_locrte.jpg",
-    "https://res.cloudinary.com/dkprths9f/image/upload/v1740650751/pre-product-banner_ndont2.jpg",
+    "https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664963/lamp-product-banner_locrte_peorfc.jpg",
+    "https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664964/pre-product-banner_ndont2_xa92yn.jpg"
   ];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   useEffect(() => {

@@ -77,7 +77,7 @@ const HeroSlider = () => {
 
             <div className="overflow-hidden whitespace-nowrap block md:hidden">
                 <div className="animate-marquee inline-block font-Poppins font-light text-[16px] text-[#000] leading-[28px] tracking-[0.03rem]">
-                    <span>30% OFF / 12000 Items Delivered / 40 Years of experience || Get extra ✨ Rs 100 off by applying coupon code FLAT10 on orders above Rs 500</span>
+                    <span>30% OFF / 12000 Items Delivered / 40 Years of experience || Get extra ✨ Rs 100 off by applying coupon code FLAT100 on orders above Rs 500</span>
                 </div>
             </div>
         </>

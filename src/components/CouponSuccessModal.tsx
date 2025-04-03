@@ -16,7 +16,7 @@ interface CouponSuccessModalProps {
 const CouponSuccessModal: React.FC<CouponSuccessModalProps> = ({
     isOpen = true,
     onClose,
-    coupon = "FLAT10",
+    coupon = "FLAT100",
     discountAmount = "200",
 }) => {
     const [showConfetti, setShowConfetti] = useState(false)

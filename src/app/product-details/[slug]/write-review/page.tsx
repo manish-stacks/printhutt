@@ -307,7 +307,7 @@ export default function RatingsReviews() {
                         ) : (
                             <div className="bg-white rounded-lg shadow p-8 text-center">
                                 <img
-                                    src="https://res.cloudinary.com/dkprths9f/image/upload/v1742025289/flat-never-leave-your-pet_23-2148521875_tc1gmz.avif"
+                                    src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664958/flat-never-leave-your-pet_23-2148521875_tc1gmz_sfres8.avif"
                                     alt="Review illustration"
                                     className="mx-auto mb-6 rounded-lg h-52 w-52 object-cover"
                                 />

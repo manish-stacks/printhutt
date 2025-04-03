@@ -47,9 +47,9 @@ const NewProductArea = () => {
                 data-aos-delay={200}
               >
                 <div className="section-detail max-[991px]:mb-[12px]">
-                  <h2 className="bb-title font-quicksand mb-[0] p-[0] text-[25px] font-bold text-[#3d4750] relative inline capitalize leading-[1] tracking-[0.03rem] max-[767px]:text-[23px]">
-                    New <span className="text-[#6c7fd8]">Arrivals</span>
-                  </h2>
+                  
+                  <h1 className="text-4xl max-[576px]:text-2xl md:text-6xl font-bold text-slate-600 mb-4 font-serif"> <span className="text-rose-900" style={{ fontFamily: "DancingScript-VariableFont" }}>New Arrivals</span></h1>
+
                   <p className="font-Poppins max-w-[400px] mt-[10px] text-[14px] text-[#686e7d] leading-[18px] font-light tracking-[0.03rem] max-[991px]:mx-[auto]">
                     Shop online for new arrivals and get free shipping!
                   </p>

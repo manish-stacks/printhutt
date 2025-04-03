@@ -394,14 +394,14 @@ export default function EditProduct() {
 
       const formDataToSend = new FormData();
 
-      if (typeof File !== 'undefined' && formData.thumbnail instanceof File) {
+      if (formData.thumbnail instanceof File) {
         formDataToSend.append('thumbnail', formData.thumbnail);
       }
 
       if (formData.images && formData.images.length > 0) {
-        formData.images.forEach((image) => {
-          if (typeof File !== 'undefined' && image.file instanceof File) {
-            formDataToSend.append('images', image.file);
+        formData.images.forEach((image, index) => {
+          if (image.file instanceof File) {
+            formDataToSend.append(`images`, image.file);
           }
         });
       }
@@ -430,7 +430,7 @@ export default function EditProduct() {
         toast.success('Product updated successfully!');
         setFormData(initialFormData);
         setImage(null);
-        return router.push('/admin/products');
+        return router.back();
       } else {
         toast.error(response.message || 'Failed to update product');
       }

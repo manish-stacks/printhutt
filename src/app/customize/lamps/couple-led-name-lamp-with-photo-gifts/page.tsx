@@ -152,7 +152,7 @@ export default function Page() {
         <div
             className="min-h-screen overflow-hidden bg-cover bg-center bg-no-repeat"
             style={{
-                backgroundImage: 'url("https://res.cloudinary.com/dkprths9f/image/upload/v1737650777/photo-1506744038136-46273834b3fb_hq8v7q.avif")',
+                backgroundImage: 'url("https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664964/photo-1506744038136-46273834b3fb_hq8v7q_xgcbbw.avif")',
             }}
         >
             <div className="min-h-screen bg-black/40 py-8">
@@ -191,7 +191,7 @@ export default function Page() {
                                                 </div>
                                                 <div className="flex items-center h-[20%] justify-center">
                                                     <Image
-                                                        src="https://res.cloudinary.com/dkprths9f/image/upload/v1737534586/heart-2_kvhmjm.png"
+                                                        src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664959/heart-2_kvhmjm_updrxw.png"
                                                         alt="heart"
                                                         width={48}
                                                         height={48}

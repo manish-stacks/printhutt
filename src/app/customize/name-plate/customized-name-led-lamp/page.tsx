@@ -127,7 +127,7 @@ export default function Page() {
             className="min-h-screen bg-cover bg-center bg-no-repeat"
             style={{
 
-                backgroundImage: 'url("https://res.cloudinary.com/dkprths9f/image/upload/v1737650717/photo-15_gyd3jd.avif")',
+                backgroundImage: 'url("https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664964/photo-15_gyd3jd_ffbqvb.avif")',
             }}
         >
             <div className="min-h-screen bg-black/40 backdrop-blur-sm py-8">
@@ -222,7 +222,7 @@ export default function Page() {
                                             {selectedDesign === 'cutout' && (
                                                 <div id="cutoutDesign">
                                                     <img
-                                                        src="https://res.cloudinary.com/dkprths9f/image/upload/v1737654372/510341279_20240810_152907_nioxer.jpg"
+                                                        src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743665002/510341279_20240810_152907_nioxer_bm8dwt.jpg"
                                                         alt="cutout"
                                                         className="h-[96px] w-[170px] object-cover rounded-xl"
                                                     />
@@ -231,7 +231,7 @@ export default function Page() {
                                             {selectedDesign === 'rectangle' && (
                                                 <div id="rectangleDesign">
                                                     <img
-                                                        src="https://res.cloudinary.com/dkprths9f/image/upload/v1737654373/rect_n4e399.jpg"
+                                                        src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743665006/rect_n4e399_ets0sv.jpg"
                                                         alt="rectangle"
                                                         className="h-[96px] w-[170px] object-cover rounded-xl"
                                                     />

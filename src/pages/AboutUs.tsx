@@ -21,7 +21,7 @@ import Image from "next/image";
                 <Image
                   height={500}
                   width={500}
-                  src="https://res.cloudinary.com/dkprths9f/image/upload/v1735904182/about_l1sq5j.png"
+                  src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664958/about_l1sq5j_kfd2uc.png"
                   alt="about-one"
                   className="w-full"
                 />

@@ -55,12 +55,13 @@ export async function POST(req: NextRequest) {
     const slider = formData.get('slider');
 
 
-    if (!slider || slider instanceof File) {
+    if (!slider || !(slider instanceof Blob)) {
       return NextResponse.json(
         { success: false, message: 'Slider is required and must be a file' },
         { status: 400 }
       );
     }
+
 
     const sliderResponse = await uploadImage(slider, 'slider', 1900, 550);
 

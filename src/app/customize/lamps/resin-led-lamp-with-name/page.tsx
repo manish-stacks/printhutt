@@ -123,7 +123,7 @@ export default function App() {
             className="min-h-screen bg-cover bg-center bg-no-repeat"
             style={{
 
-                backgroundImage: 'url("https://res.cloudinary.com/dkprths9f/image/upload/v1737650717/photo-15_gyd3jd.avif")',
+                backgroundImage: 'url("https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664964/photo-15_gyd3jd_ffbqvb.avif")',
             }}
         >
             <div className="min-h-screen bg-black/40 backdrop-blur-sm py-8">

@@ -52,7 +52,7 @@ const FAQ = () => {
                 <Image
                   height={500}
                   width={500}
-                  src="https://res.cloudinary.com/dkprths9f/image/upload/v1737703831/products/gdszkumgmliqurujumck.png"
+                  src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743668695/gdszkumgmliqurujumck_ijmmki.png"
                   alt="faq-img"
                   className="w-full rounded-[20px]"
                 />

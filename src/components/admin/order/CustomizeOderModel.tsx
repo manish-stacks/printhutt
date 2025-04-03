@@ -178,7 +178,7 @@ const CustomizeOderModel = ({ item }) => {
                             <Image
                                 onClick={() => downloadPreviewImage(item?.previewCanvas.url)}
                                 alt="img"
-                                src={item?.previewCanvas?.url || 'https://res.cloudinary.com/dkprths9f/image/upload/v1737632594/elementor-placeholder-image_wps86z.webp'}
+                                src={item?.previewCanvas?.url || 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664958/elementor-placeholder-image_wps86z_qulbgy.webp'}
                                 width={400}
                                 height={400}
                                 className="rounded-md w-[50%] h-[200px] object-cover"
@@ -189,7 +189,7 @@ const CustomizeOderModel = ({ item }) => {
                             <Image
                                 onClick={() => downloadPreviewImage(item?.previewImage.url)}
                                 alt="img"
-                                src={item?.previewImage?.url || 'https://res.cloudinary.com/dkprths9f/image/upload/v1737632594/elementor-placeholder-image_wps86z.webp'}
+                                src={item?.previewImage?.url || 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664958/elementor-placeholder-image_wps86z_qulbgy.webp'}
                                 width={400}
                                 height={400}
                                 className="rounded-md w-[50%] h-[200px] object-cover"
@@ -202,7 +202,7 @@ const CustomizeOderModel = ({ item }) => {
                             <Image
                                 onClick={() => downloadPreviewImage(item?.previewImageTwo.url)}
                                 alt="img"
-                                src={item?.previewImageTwo?.url || 'https://res.cloudinary.com/dkprths9f/image/upload/v1737632594/elementor-placeholder-image_wps86z.webp'}
+                                src={item?.previewImageTwo?.url || 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664958/elementor-placeholder-image_wps86z_qulbgy.webp'}
                                 width={400}
                                 height={400}
                                 className="rounded-md w-[50%] h-[200px] object-cover"
@@ -212,7 +212,7 @@ const CustomizeOderModel = ({ item }) => {
                             <Image
                                 onClick={() => downloadPreviewImage(item?.previewImageThree.url)}
                                 alt="img"
-                                src={item?.previewImageThree?.url || 'https://res.cloudinary.com/dkprths9f/image/upload/v1737632594/elementor-placeholder-image_wps86z.webp'}
+                                src={item?.previewImageThree?.url || 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664958/elementor-placeholder-image_wps86z_qulbgy.webp'}
                                 width={400}
                                 height={400}
                                 className="rounded-md w-[50%] h-[200px] object-cover"
@@ -225,7 +225,7 @@ const CustomizeOderModel = ({ item }) => {
                             <Image
                                 onClick={() => downloadPreviewImage(item?.previewImageFour.url)}
                                 alt="img"
-                                src={item?.previewImageFour?.url || 'https://res.cloudinary.com/dkprths9f/image/upload/v1737632594/elementor-placeholder-image_wps86z.webp'}
+                                src={item?.previewImageFour?.url || 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664958/elementor-placeholder-image_wps86z_qulbgy.webp'}
                                 width={400}
                                 height={400}
                                 className="rounded-md w-[50%] h-[200px] object-cover"

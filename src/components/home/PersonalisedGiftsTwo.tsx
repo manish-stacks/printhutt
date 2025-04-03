@@ -8,46 +8,44 @@ import React from 'react';
 const products = [
   {
     name: 'LED Name Lamp',
-    // image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737652218/products/thumbnails/pa19lqntikn2o3m9rwg1.jpg',
     image: 'https://cloudify.printhutt.com/video/WhatsApp_Video_2025-03-01_at_11.41.08_AM_aeu7jl.mp4',
     url: '/product-details/customized-name-led-lamp',
     type: 'video'
   },
   {
     name: 'LED Photo Acrylic',
-    // image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1741695871/r1yxyjerptfidpxj1mff_elmlnn.webp',
     image: 'https://cloudify.printhutt.com/video/WhatsApp_Video_2025-03-01_at_6.03.50_PM_l0wwwy.mp4',
     url: '/product-details/personalized-acrylic-cutout-photo-led-lamp',
     type: 'video'
   },
   {
     name: 'Raisen Name Lamps',
-    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737701189/products/odxhhyobm1godscsqpul.jpg',
+    image: 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1743671843/odxhhyobm1godscsqpul_gptkgm.jpg',
     url: '/product-details/resin-led-lamp-with-name'
   },
   {
     name: '3D Name Plate',
-    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737703831/products/gdszkumgmliqurujumck.png',
+    image: 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1743668695/gdszkumgmliqurujumck_ijmmki.png',
     url: '/product-details/3d-name-lamp-plate'
   },
   {
     name: 'Customize Kids LED Lamp',
-    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737905381/products/thumbnails/n0v6qlolpj5m1e7lh5no.jpg',
+    image: 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1743672564/n0v6qlolpj5m1e7lh5no_f0aaog.jpg',
     url: '/category/lamps/kids-lamp'
   },
   {
     name: 'Table Photo Frame',
-    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737958555/products/thumbnails/n0f1r1snff3ycwdtlmhr.jpg',
+    image: 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1743672578/n0f1r1snff3ycwdtlmhr_zyk52r.jpg',
     url: '/product-details/engraved-table-photo-frame'
   },
   {
     name: '3D Name Plate With Photo',
-    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737974633/products/gbcrcki3sy5efbrdu6jo.jpg',
+    image: 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1743672613/gbcrcki3sy5efbrdu6jo_okyoaj.jpg',
     url: '/product-details/customized-acrylic-picture-frame-with-name'
   },
   {
     name: 'Acrylic Cutout Fream',
-    image: 'https://res.cloudinary.com/dkprths9f/image/upload/v1737971007/products/thumbnails/wa3ajoqy8npjtha8k0qz.png',
+    image: 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1743672639/wa3ajoqy8npjtha8k0qz_cirzlw.png',
     url: '/product-details/personalized-color-acrylic-cutout-photo-frame',
 
   }
@@ -64,7 +62,7 @@ function PersonalizedGiftsTwo() {
             <div className="text-center">
 
               <h1 className="text-4xl max-[576px]:text-2xl md:text-5xl font-bold text-slate-600 mb-4 font-serif">
-                Personalised <span className='text-teal-600' style={{fontFamily:"Buttervill"}}>Gifts</span>
+              <span className="text-rose-900" style={{ fontFamily: "DancingScript-VariableFont" }}>Personalised </span><span className='text-teal-600' style={{fontFamily:"Buttervill"}}>Gifts</span>
               </h1>
               <p className="text-lg text-slate-600/90 max-w-2xl mx-auto max-[576px]:text-sm">
                 Create lasting memories with our unique collection of personalized lighting gifts
@@ -83,7 +81,7 @@ function PersonalizedGiftsTwo() {
                 href={product.url}
                 className="group block"
               >
-                <div className="relative overflow-hidden rounded-2xl border-2 border-cyan-600 bg-white shadow-md transition-all duration-300 hover:shadow-xl hover:border-amber-800">
+                <div className="relative overflow-hidden rounded-[5px] border-0 border-cyan-600 bg-white shadow-md transition-all duration-300 hover:shadow-xl hover:border-amber-800">
                   <div className="aspect-square overflow-hidden">
                     {
                       product.type === 'video' ?
@@ -92,7 +90,7 @@ function PersonalizedGiftsTwo() {
                           loop
                           muted
                           playsInline
-                          className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105 border-2 rounded-t-2xl"
+                          className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105 border-2 rounded-t-[5px]"
                           width="470" height="470"
                           preload="none"
                         >

@@ -196,7 +196,7 @@ export default function OrderDetailsPage() {
                                                         <p className="font-medium flex gap-2">
                                                             <Image
                                                                 alt={item.name}
-                                                                src={item.product_image || 'https://res.cloudinary.com/dkprths9f/image/upload/v1737632594/elementor-placeholder-image_wps86z.webp'}
+                                                                src={item.product_image || 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664958/elementor-placeholder-image_wps86z_qulbgy.webp'}
                                                                 width={60}
                                                                 height={60}
                                                                 className="rounded-md w-10 h-10 object-cover"

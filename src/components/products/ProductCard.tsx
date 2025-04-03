@@ -45,7 +45,7 @@ const ProductCard = ({ product }: PopupProps) => {
     }
     return (
         <>
-            <div className="bb-pro-box bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[20px]">
+            <div className="bb-pro-box bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[5px]">
                 <div className="bb-pro-img overflow-hidden relative border-b-[1px] border-solid border-[#eee] z-[4]">
                     <span className="flags transition-all duration-[0.3s] ease-in-out absolute z-[5] top-[10px] left-[6px]">
                         {(product.new || product.trending || product.sale) && (
@@ -65,7 +65,7 @@ const ProductCard = ({ product }: PopupProps) => {
                         </span>
                     )}
                     <Link href={`/product-details/${product.slug}`}>
-                        <div className="inner-img relative block overflow-hidden pointer-events-none rounded-t-[20px]">
+                        <div className="inner-img relative block overflow-hidden pointer-events-none rounded-t-[5px]">
                             <Image
                                 className="main-img transition-all duration-[0.3s] ease-in-out w-full"
                                 src={product?.thumbnail?.url}

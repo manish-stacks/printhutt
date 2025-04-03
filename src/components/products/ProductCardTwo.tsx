@@ -51,7 +51,7 @@ const ProductCardTwo = ({ product }: PopupProps) => {
                 data-aos-duration={1000}
                 data-aos-delay={200}
             >
-                <div className="bb-pro-box bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[20px]">
+                <div className="bb-pro-box bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[5px]">
                     <div className="bb-pro-img overflow-hidden relative border-b-[1px] border-solid border-[#eee] z-[4]">
                         <span className="flags transition-all duration-[0.3s] ease-in-out absolute z-[5] top-[10px] left-[6px]">
                             <span className="text-[14px] text-[#777] font-medium uppercase">
@@ -74,7 +74,7 @@ const ProductCardTwo = ({ product }: PopupProps) => {
                         )}
 
                         <Link href={`/product-details/${product.slug}`}>
-                            <div className="inner-img relative block overflow-hidden pointer-events-none rounded-t-[20px]">
+                            <div className="inner-img relative block overflow-hidden pointer-events-none rounded-t-[5px]">
                                 <Image
                                     className="main-img transition-all duration-[0.3s] ease-in-out w-full"
                                     src={product?.thumbnail?.url}
@@ -140,15 +140,10 @@ const ProductCardTwo = ({ product }: PopupProps) => {
                                 {product?.category?.name || 'PrintHutt'}
                             </Link>
                             <span className="bb-pro-rating">
-                                {Array.from({ length: 5 }, (_, index) => (
-                                    <i
-                                        key={index}
-                                        className={`float-left text-[15px] mr-[3px] leading-[18px] ${index < Math.round(product.rating)
-                                            ? "ri-star-fill text-[#fea99a]"
-                                            : "ri-star-line text-[#777]"
-                                            }`}
-                                    />
-                                ))}
+                                <i className={`float-left text-[15px] mr-[3px] leading-[18px] 
+                                            ri-star-fill text-[#e4c22a]`}
+                                />
+                                {Math.round(product.rating)}
                             </span>
                         </div>
                         <h4 className="bb-pro-title mb-[8px] text-[16px] leading-[18px]">

@@ -186,7 +186,7 @@ export default function Page() {
     <div
       className="min-h-screen bg-cover bg-center bg-no-repeat overflow-hidden"
       style={{
-        backgroundImage: 'url("https://res.cloudinary.com/dkprths9f/image/upload/v1737650777/photo-1506744038136-46273834b3fb_hq8v7q.avif")',
+        backgroundImage: 'url("https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664964/photo-1506744038136-46273834b3fb_hq8v7q_xgcbbw.avif")',
       }}
     >
       <div className="min-h-screen bg-black/40 py-8 lamp-rectangle-shape">
@@ -200,7 +200,7 @@ export default function Page() {
               <div id="preview-section" className="relative rounded-lg p-2 border border-white/10">
                 <div className="img-box relative">
                   <img
-                    src="https://res.cloudinary.com/dkprths9f/image/upload/v1737985238/love-forever_sutsha_c_fill_w_600_h_600_lcjqut.png"
+                    src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743665004/love-forever_sutsha_c_fill_w_600_h_600_lcjqut_n6xol2.png"
                     alt="Preview"
                     className="w-full h-full object-cover rounded-lg"
                     crossOrigin="anonymous"

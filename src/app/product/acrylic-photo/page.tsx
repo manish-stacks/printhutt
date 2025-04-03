@@ -427,7 +427,7 @@ export default function AcrylicPhoto() {
                             </div>
                           )}
                         </div>
-                        <a className="sizeguide" target='_blank' href="https://res.cloudinary.com/dkprths9f/image/upload/v1740653736/size-chart-new_optimized_tns7y8.webp">Size guide?</a>
+                        <a className="sizeguide" target='_blank' href="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664965/size-chart-new_optimized_tns7y8_yujbed.webp">Size guide?</a>
                       </div>
                     </div>
 

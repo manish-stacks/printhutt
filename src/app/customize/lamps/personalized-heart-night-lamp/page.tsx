@@ -163,7 +163,7 @@ export default function Page() {
     <div
       className="min-h-screen overflow-hidden bg-cover bg-center bg-no-repeat"
       style={{
-        backgroundImage: 'url("https://res.cloudinary.com/dkprths9f/image/upload/v1737650777/photo-1506744038136-46273834b3fb_hq8v7q.avif")',
+        backgroundImage: 'url("https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664964/photo-1506744038136-46273834b3fb_hq8v7q_xgcbbw.avif")',
       }}
     >
       <div className="min-h-screen bg-black/40 py-8">
@@ -177,7 +177,7 @@ export default function Page() {
               <div id="preview-section" className="relative rounded-lg p-2 border border-white/10">
                 <div className="img-box relative">
                   <img
-                    src="https://res.cloudinary.com/dkprths9f/image/upload/v1737913578/998663784_love-heart-3_1_e14xx5.png"
+                    src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743665003/998663784_love-heart-3_1_e14xx5_fg5ts9.png"
                     alt="Preview"
                     className="w-full h-full object-cover rounded-lg"
                     crossOrigin="anonymous"
@@ -187,7 +187,7 @@ export default function Page() {
                   </div>
                   <div className="absolute top-[40%] left-[43%] h-12 flex items-center justify-center">
                     <Image
-                      src="https://res.cloudinary.com/dkprths9f/image/upload/v1737534586/heart-2_kvhmjm.png"
+                      src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664959/heart-2_kvhmjm_updrxw.png"
                       alt="heart"
                       width={48}
                       height={48}
