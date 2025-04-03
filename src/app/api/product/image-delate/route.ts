@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import dbConnect from '@/dbConfig/dbConfig'
+import  dbConnect  from '@/dbConfig/dbConfig'
 import { getDataFromToken } from '@/helpers/getDataFromToken';
 import ProductModel from '@/models/productModel';
 import { deleteImage } from '@/lib/cloudinary';
@@ -31,11 +31,19 @@ export async function POST(req: NextRequest) {
             (img: { public_id: string }) => img.public_id === image.public_id
         );
 
-        if (imageIndex) {
-            await deleteImage(image.public_id);
-            product.images.splice(imageIndex, 1);
-            await product.save();
+        if (imageIndex === -1) {
+            return NextResponse.json(
+                { error: "Image not found in product" },
+                { status: 404 }
+            );
         }
+
+
+        await deleteImage(image.public_id);
+
+        product.images.splice(imageIndex, 1);
+        await product.save();
+
         return NextResponse.json(
             {
                 success: true,
