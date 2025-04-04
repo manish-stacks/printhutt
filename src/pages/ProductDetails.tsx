@@ -87,9 +87,11 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
 
   const sizes = useMemo(() => product?.varient || [], [product]);
 
-  const productImages = [
-    product.thumbnail.url, ...product.images.map((image) => image.url)
-  ].map(url => `${url}?auto=format&fit=crop&w=800&q=80`);
+  const productImages = useMemo(() => {
+    const thumbnailUrl = product?.thumbnail?.url ? `${product.thumbnail.url}?auto=format&fit=crop&w=800&q=80` : null;
+    const imageUrls = product?.images?.map((image) => `${image.url}?auto=format&fit=crop&w=800&q=80`) || [];
+    return [thumbnailUrl, ...imageUrls].filter(Boolean);
+  }, [product]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!isZoomed) return;
