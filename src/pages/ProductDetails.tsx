@@ -362,20 +362,19 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
                 <div className="flex flex-col sm:flex-row justify-between">
                   <div className="mb-4 sm:mb-0">
                     <div className="flex items-center space-x-2">
-                      <span className="text-lg sm:text-2xl font-bold">{calculateDiscountedPrice()}</span>
+                      <span className="text-lg sm:text-2xl font-bold">
+                        {product ? calculateDiscountedPrice() : 'N/A'}
+                      </span>
                       {product?.discountPrice && product?.price != null && product.discountPrice > 0 && (
                         <span className="text-sm sm:text-lg text-rose-700 line-through">
                           {formatCurrency(product.price)}
                         </span>
                       )}
-                      {product.discountPrice && product?.discountPrice > 0 && (
+                      {product?.discountPrice && product?.discountPrice > 0 && (
                         <span className="text-sm sm:text-lg text-green-600 font-semibold">
-                          {
-                            product.discountType === "percentage"
-                              ? `${product.discountPrice}%`
-                              : `${formatCurrency(product.discountPrice)}`
-                          }
-                          OFF
+                          {product.discountType === "percentage"
+                            ? `${product.discountPrice}%`
+                            : `${formatCurrency(product.discountPrice)}`}OFF
                         </span>
                       )}
                     </div>
