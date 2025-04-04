@@ -1,7 +1,7 @@
 'use client';
 import { Product } from '@/lib/types/product';
 import { wishlistService } from '@/_services/common/wishlist';
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { BiBell, BiChevronLeft, BiChevronRight, BiHeart, BiPlus, BiStar, BiX, BiZoomIn } from 'react-icons/bi';
 import { BsFileText } from 'react-icons/bs';
 import { RiDiscountPercentFill, RiShoppingBag2Line, RiThumbUpFill } from 'react-icons/ri';
@@ -172,7 +172,7 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
 
   // const item = items.find(item => item._id === product?._id) || { _id: '', quantity: 0 };
 
-  const calculateDiscountedPrice = useMemo(() => {
+  const calculateDiscountedPrice = useCallback(() => {
     if (!product || product.price == null) return null;
     const discountedPrice =
       product.discountType === "percentage"
@@ -188,7 +188,7 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
     if (product && varient) {
       product.price = varient.price || 0;
     }
-
+    calculateDiscountedPrice();
   }
 
   const handleAddToCart = () => {
@@ -362,7 +362,7 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
                 <div className="flex flex-col sm:flex-row justify-between">
                   <div className="mb-4 sm:mb-0">
                     <div className="flex items-center space-x-2">
-                      <span className="text-lg sm:text-2xl font-bold">{calculateDiscountedPrice}</span>
+                      <span className="text-lg sm:text-2xl font-bold">{calculateDiscountedPrice()}</span>
                       {product?.discountPrice && product?.price != null && product.discountPrice > 0 && (
                         <span className="text-sm sm:text-lg text-rose-700 line-through">
                           {formatCurrency(product.price)}
