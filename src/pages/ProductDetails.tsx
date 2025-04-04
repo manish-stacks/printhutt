@@ -53,6 +53,9 @@ interface ProductProps {
       createdAt?: string;
       images?: { url: string }[];
     }[];
+    category?: {
+      name: string;
+    };
   };
   relatedProduct: Product[];
 
@@ -109,7 +112,7 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
     { label: "Delivery", value: "5-8 Days or Depends on Location" },
     { label: "Outer Material", value: "A-Grade Standard Quality" },
     { label: "Shipping", value: product?.shippingFee || 'Free Shipping' },
-    { label: "Weight", value: `${product?.weight}g` },
+    { label: "Type", value: product?.category?.name },
   ], [product]);
 
   const reviews = useMemo(() => [
@@ -142,9 +145,6 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
     );
   };
 
-
-
-
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
@@ -161,16 +161,6 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
 
     return () => clearInterval(timer);
   }, []);
-
-
-
-
-  // const handleQuantityChange = (change: number) => {
-  //   const newQuantity = Math.max(1, quantity + change);
-  //   setQuantity(newQuantity);
-  // };
-
-  // const item = items.find(item => item._id === product?._id) || { _id: '', quantity: 0 };
 
   const calculateDiscountedPrice = useCallback(() => {
     if (!product || product.price == null) return null;
@@ -460,7 +450,7 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
               <div className=" p-4 border border-green-400 bg-gradient-to-t from-green-200 to-green-50 rounded-lg flex items-center space-x-3 shadow-md">
                 <RiDiscountPercentFill className="text-green-600" size={32} />
                 <p className="text-black font-medium max-[567px]:text-xs">
-                  Get ₹100 Off on prepaid orders above. <br />Coupon code - <span className="font-bold">FLAT100</span>
+                  Get ₹100 Off on prepaid orders. <br />Coupon code - <span className="font-bold">FLAT100</span>
                 </p>
               </div>
 
