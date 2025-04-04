@@ -1,28 +1,70 @@
 'use client';
 import { Product } from '@/lib/types/product';
-import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { BiBell, BiChevronDown, BiChevronLeft, BiChevronRight, BiHeart, BiPackage, BiPlus, BiStar, BiX } from 'react-icons/bi';
-import { BsChevronDown, BsChevronLeft, BsChevronRight, BsFileText, BsTruck } from 'react-icons/bs';
-import { RiDiscountPercentFill, RiRotateLockLine, RiShoppingBag2Line, RiThumbUpFill } from 'react-icons/ri';
+import { wishlistService } from '@/_services/common/wishlist';
+import React, { useState, useEffect, useMemo } from 'react';
+import { BiBell, BiChevronLeft, BiChevronRight, BiHeart, BiPlus, BiStar, BiX, BiZoomIn } from 'react-icons/bi';
+import { BsFileText } from 'react-icons/bs';
+import { RiDiscountPercentFill, RiShoppingBag2Line, RiThumbUpFill } from 'react-icons/ri';
 import { motion } from "framer-motion";
 import Image from 'next/image';
 import Breadcrumb from '@/components/Breadcrumb';
 import { formatCurrency } from '@/helpers/helpers';
 import ProductSlider from '@/components/ProductSlider';
+import useCartSidebarStore from '@/store/useCartSidebarStore';
+import { useCartStore } from '@/store/useCartStore';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
+import { useUserStore } from '@/store/useUserStore';
 interface ProductProps {
-  product: Product | null;
+  product: {
+    _id: string;
+    title: string;
+    short_description: string;
+    description: string;
+    slug: string;
+    imgAlt: string;
+    thumbnail: { url: string };
+    images: { url: string }[];
+    varient: { size: string; price: number; discountPrice?: number; discountType?: string; _id: string }[];
+    brand: string;
+    dimensions: string;
+    shippingFee?: number;
+    weight?: number;
+    isVarientStatus?: boolean;
+    returnPolicy?: { returnPeriod?: string };
+    warrantyInformation?: { durationMonths?: number; warrantyType?: string; claimProcess?: string };
+    shippingInformation?: { shippingTime?: string; shippingMethod?: string };
+    offers?: { offerTitle?: string; offerDescription?: string }[];
+    discountPrice?: number;
+    discountType?: string;
+    price?: number;
+    meta?: {
+      meta_title?: string;
+      meta_description?: string;
+      meta_keywords?: string;
+    };
+    customizeLink: string;
+    isCustomize?: boolean;
+  };
   relatedProduct: Product[];
+
 }
 export default function ProductDetails({ product, relatedProduct }: ProductProps) {
-  const [selectedSize, setSelectedSize] = useState(product?.varient[0]?.size || '0');
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [selectedSize, setSelectedSize] = useState(product?.varient[0]?._id || '0');
   const [showDescriptions, setShowDescriptions] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
   const [isZoomed, setIsZoomed] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [activeTab, setActiveTab] = useState<'product' | 'brand'>('product');
-  // const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 56, seconds: 28 });
+  const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 58, seconds: 28 });
+  const { openCartSidebarView } = useCartSidebarStore();
+  const addToCart = useCartStore(state => state.addToCart);
+  const [quantity, setQuantity] = useState(1);
+  const isLoggedIn = useUserStore((state) => state.isLoggedIn);
+  // const items = useCartStore((state) => state.items);
+  const router = useRouter();
 
   useEffect(() => {
     const checkMobile = () => {
@@ -37,23 +79,19 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
 
   const sizes = useMemo(() => product?.varient || [], [product]);
 
-  const productImages = useMemo(() => {
-    if (!product) return [];
-    return [product.thumbnail.url, ...product.images.map((image) => image.url)];
-  }, [product]);
+  const productImages = [
+    product.thumbnail.url, ...product.images.map((image) => image.url)
+  ].map(url => `${url}?auto=format&fit=crop&w=800&q=80`);
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isZoomed) return;
 
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
 
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!isZoomed || isMobile) return;
-      const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
-      const x = ((e.clientX - left) / width) * 100;
-      const y = ((e.clientY - top) / height) * 100;
-      setZoomPosition({ x, y });
-    },
-    [isZoomed, isMobile]
-  );
+    setZoomPosition({ x, y });
+  };
 
   const keyHighlights = useMemo(() => [
     { label: "Brand", value: product?.brand },
@@ -84,63 +122,83 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
     [ratingCounts, totalRatings]
   );
 
-  const handlePrevImage = useCallback(() => {
-    setCurrentImageIndex((prev) => (prev === 0 ? productImages.length - 1 : prev - 1));
-  }, [productImages]);
+  const handlePrevImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % productImages.length);
+  };
 
-  const handleNextImage = useCallback(() => {
-    setCurrentImageIndex((prev) => (prev === productImages.length - 1 ? 0 : prev + 1));
-  }, [productImages]);
+  const handleNextImage = () => {
+    setCurrentImageIndex((prev) =>
+      prev === 0 ? productImages.length - 1 : prev - 1
+    );
+  };
 
 
-
-  const calculateDiscountedPrice = useCallback(() => {
+  const calculateDiscountedPrice = useMemo(() => {
     if (!product) return null;
     const discountedPrice =
       product.discountType === "percentage"
-        ? product.price - (product.price * product.discountPrice) / 100
-        : product.price - (product.discountPrice || 0);
+        ? (product.price ?? 0) - ((product.price ?? 0) * (product.discountPrice ?? 0)) / 100
+        : (product.price ?? 0) - (product.discountPrice || 0);
 
     return product.price ? formatCurrency(discountedPrice) : null;
-  }, [product]);
-
-
-
-
-
-  const [_, forceRender] = useState(0); // Only used to force render when needed
-  const timeLeft = useRef({ hours: 0, minutes: 56, seconds: 28 }); // Initial countdown time
+  }, [product, product.price]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      const { hours, minutes, seconds } = timeLeft.current;
-
-      if (hours === 0 && minutes === 0 && seconds === 0) {
-        clearInterval(interval);
-        return;
-      }
-
-      let newHours = hours,
-        newMinutes = minutes,
-        newSeconds = seconds - 1;
-
-      if (newSeconds < 0) {
-        newSeconds = 59;
-        newMinutes -= 1;
-      }
-      if (newMinutes < 0) {
-        newMinutes = 59;
-        newHours -= 1;
-      }
-
-      timeLeft.current = { hours: newHours, minutes: newMinutes, seconds: newSeconds };
-
-      forceRender((prev) => prev + 1); // Only force render when needed
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev.seconds > 0) {
+          return { ...prev, seconds: prev.seconds - 1 };
+        } else if (prev.minutes > 0) {
+          return { ...prev, minutes: prev.minutes - 1, seconds: 59 };
+        } else if (prev.hours > 0) {
+          return { hours: prev.hours - 1, minutes: 59, seconds: 59 };
+        }
+        return prev;
+      });
     }, 1000);
 
-    return () => clearInterval(interval);
+    return () => clearInterval(timer);
   }, []);
 
+
+
+
+  // const handleQuantityChange = (change: number) => {
+  //   const newQuantity = Math.max(1, quantity + change);
+  //   setQuantity(newQuantity);
+  // };
+
+  // const item = items.find(item => item._id === product?._id) || { _id: '', quantity: 0 };
+
+
+  const onchangeVarient = (id: string) => {
+    setSelectedSize(id)
+    const varient = product?.varient.find(item => item._id === id);
+    if (product && varient) {
+      product.price = varient.price || 0;
+    }
+  }
+
+  const handleAddToCart = () => {
+    if (!product || quantity <= 0) {
+      toast.error('Please select quantity');
+      return;
+    }
+    if (product.isCustomize) {
+      return router.push(product.customizeLink);
+    }
+    addToCart(product, quantity);
+    openCartSidebarView();
+    return toast.success('Product added to cart successfully!');
+  }
+
+
+
+  const handleAddToWishlist = async () => {
+    if (!isLoggedIn) return router.push('/login');
+    await wishlistService.addWishlist(product._id);
+    return toast.success('Product added to wishlist successfully!');
+  }
 
   return (
     <>
@@ -191,10 +249,11 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
 
         <div className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Left side - Product Images */}
+
           <div className="md:sticky md:top-8 space-y-4 h-fit">
-            {/* Main Product Image */}
+            {/* Main Image */}
             <div
-              className={`aspect-square bg-white rounded-lg overflow-hidden relative ${!isMobile ? 'cursor-zoom-in' : ''}`}
+              className={`aspect-square bg-white rounded-lg overflow-hidden relative shadow-lg ${!isMobile ? 'cursor-zoom-in' : ''}`}
               onMouseMove={handleMouseMove}
               onMouseEnter={() => !isMobile && setIsZoomed(true)}
               onMouseLeave={() => !isMobile && setIsZoomed(false)}
@@ -203,56 +262,79 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
               <img
                 src={productImages[currentImageIndex]}
                 alt={currentImageIndex === 0 ? product?.imgAlt || "Product Image" : `${product?.slug}-${currentImageIndex + 1}`}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-transform duration-200"
                 style={!isMobile ? {
                   transform: isZoomed ? 'scale(2)' : 'scale(1)',
                   transformOrigin: `${zoomPosition.x}% ${zoomPosition.y}%`,
                   transition: isZoomed ? 'none' : 'transform 0.3s ease-out'
                 } : {}}
               />
-            </div>
 
-            {/* Thumbnail Grid (Ensure Single Line) */}
-            <div className="flex overflow-x-auto space-x-2 py-2">
-              {productImages.map((img, i) => (
-                <div
-                  key={i}
-                  className={`min-w-[70px] sm:min-w-[100px] aspect-square bg-white rounded-lg overflow-hidden cursor-pointer ${currentImageIndex === i ? 'ring-2 ring-black' : ''
-                    }`}
-                  onClick={() => setCurrentImageIndex(i)}
-                >
-                  <img
-                    src={img}
-                    alt={i === 0 ? product?.imgAlt || "Product Image" : `${product?.slug}-${i + 1}`}
-                    className="w-full h-full object-cover"
-                  />
+              {/* Zoom indicator */}
+              {!isZoomed && (
+                <div className="absolute top-4 right-4 bg-white/80 p-2 rounded-full">
+                  <BiZoomIn className="w-5 h-5 text-gray-600" />
                 </div>
-              ))}
-            </div>
+              )}
 
-            {/* Navigation Buttons Fixed on Left & Right */}
-            <div className="relative flex items-center justify-between w-full mt-4">
+              {/* Navigation buttons */}
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   handlePrevImage();
                 }}
-                className="absolute left-0 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white"
+
+                className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white transition-colors"
               >
-                <BsChevronLeft className="w-6 h-6" />
+                <BiChevronLeft className="w-6 h-6" />
               </button>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   handleNextImage();
                 }}
-                className="absolute right-0 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white"
+                className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white transition-colors"
               >
-                <BsChevronRight className="w-6 h-6" />
+                <BiChevronRight className="w-6 h-6" />
               </button>
             </div>
-          </div>
 
+            {/* Thumbnails Slider */}
+            <div className="relative">
+              <div className="overflow-x-auto scrollbar-hide">
+                <div className="flex space-x-2 pb-2">
+                  {productImages.map((image, index) => (
+                    <div
+                      key={index}
+                      // className={`min-w-[70px] sm:min-w-[100px] aspect-square bg-white rounded-lg overflow-hidden cursor-pointer ${currentImageIndex === index ? 'ring-2 ring-black' : ''
+                      //   }`}
+                      className={`
+                          flex-none w-24 max-[567px]:w-20 aspect-square rounded-lg overflow-hidden
+                          ${currentImageIndex === index
+                          ? 'ring-2 ring-black ring-offset-2'
+                          : 'hover:opacity-75'
+                        }
+                        `}
+                      onClick={() => setCurrentImageIndex(index)}
+                    >
+                      <img
+                        src={image}
+                        alt={index === 0 ? product?.imgAlt || "Product Image" : `${product?.slug}-${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+
+
+
+              {/* Gradient overlays to indicate scroll */}
+              <div className="absolute left-0 top-0 bottom-2 w-8 bg-gradient-to-r from-gray-50 pointer-events-none" />
+              <div className="absolute right-0 top-0 bottom-2 w-8 bg-gradient-to-l from-gray-50 pointer-events-none" />
+            </div>
+          </div>
 
           {/* Right side - Product Details */}
           <div className="space-y-6 mt-8 md:mt-0">
@@ -268,11 +350,11 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
                 <div className="flex flex-col sm:flex-row justify-between">
                   <div className="mb-4 sm:mb-0">
                     <div className="flex items-center space-x-2">
-                      <span className="text-lg sm:text-2xl font-bold">{calculateDiscountedPrice()}</span>
-                      {product?.discountPrice > 0 && (
-                        <span className="text-sm sm:text-lg text-rose-700 line-through">{formatCurrency(product?.price)}</span>
+                      <span className="text-lg sm:text-2xl font-bold">{calculateDiscountedPrice}</span>
+                      {product.discountPrice && product?.discountPrice > 0 && (
+                        <span className="text-sm sm:text-lg text-rose-700 line-through">{formatCurrency(product?.price || 0)}</span>
                       )}
-                      {product?.discountPrice > 0 && (
+                      {product.discountPrice && product?.discountPrice > 0 && (
                         <span className="text-sm sm:text-lg text-green-600 font-semibold">
                           {
                             product.discountType === "percentage"
@@ -301,11 +383,11 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
                       {sizes.map((size, index) => (
                         <button
                           key={index}
-                          className={`py-2 text-sm font-medium rounded-md ${selectedSize === size.size
+                          className={`py-2 text-sm font-medium rounded-md ${selectedSize === size._id
                             ? 'bg-black text-white'
                             : 'bg-white text-gray-900 border border-gray-300 hover:bg-gray-50'
                             }`}
-                          onClick={() => setSelectedSize(size.size)}
+                          onClick={() => onchangeVarient(size._id)}
                         >
                           {size.size}
                         </button>
@@ -317,25 +399,27 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
 
                 <div className="font-semibold text-black text-xs sm:text-base">
                   Sale ends in: <span className="font-bold">
-                    {`${String(timeLeft.current.hours).padStart(2, "0")}h : 
-                    ${String(timeLeft.current.minutes).padStart(2, "0")}m : 
-                    ${String(timeLeft.current.seconds).padStart(2, "0")}s`}
+                    {`${String(timeLeft.hours).padStart(2, '0')}:
+                    ${String(timeLeft.minutes).padStart(2, '0')}:
+                    ${String(timeLeft.seconds).padStart(2, '0')}`}
                   </span>
                 </div>
 
                 <motion.div
-                  animate={{ x: [0, 8, -8, 0] }}
-                  transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}
+                  animate={{ x: [0, 5, -5, 0] }}
+                  transition={{ repeat: Infinity, duration: 1 }}
                 >
-                  <BiBell className="text-gray-600 text-sm sm:text-md" />
+                  <BiBell className="text-gray-600 text-xl" />
                 </motion.div>
+
+
               </div>
               <div className="space-y-2">
-                <div className="flex gap-2">
-                  <button className="flex-1 bg-yellow-400 text-slate-700 py-3 px-6 rounded-md font-medium hover:bg-yellow-500 flex items-center justify-center gap-2">
-                    <RiShoppingBag2Line className="w-5 h-5" /> ADD TO BAG
+                <div className="flex gap-2" >
+                  <button onClick={() => handleAddToCart()} className="flex-1 bg-yellow-400 text-slate-700 py-3 px-6 rounded-md font-medium hover:bg-yellow-500 flex items-center justify-center gap-2">
+                    <RiShoppingBag2Line className="w-5 h-5" /> {product?.isCustomize ? "Customize & Buy" : "ADD TO BAG"}
                   </button>
-                  <button className="px-6 py-3 border border-gray-300 rounded-md hover:bg-gray-50">
+                  <button onClick={() => handleAddToWishlist()} className="px-6 py-3 border border-gray-300 rounded-md hover:bg-gray-50">
                     <BiHeart className="w-6 h-6" />
                   </button>
                 </div>
@@ -343,7 +427,7 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
 
 
               <div className="py-4">
-                <Image src={"/img/shape/badges.png"} width={400} height={50} alt="badges" className='w-[60%]' />
+                <Image src={"/img/shape/badges.png"} width={400} height={50} alt="badges" className='w-[50%] max-[567px]:w-full' />
               </div>
               {/* <div className="grid grid-cols-3 gap-4 py-4">
               <div className="text-center bg-slate-100 px-2 py-6 rounded-md text-slate-800">
@@ -362,8 +446,8 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
 
               <div className=" p-4 border border-green-400 bg-gradient-to-t from-green-200 to-green-50 rounded-lg flex items-center space-x-3 shadow-md">
                 <RiDiscountPercentFill className="text-green-600" size={32} />
-                <p className="text-black font-medium">
-                  Get Extra ₹100 Off on orders above Rs.500. <br />Coupon code - <span className="font-bold">FLAT100</span>
+                <p className="text-black font-medium max-[567px]:text-xs">
+                  Get ₹100 Off on prepaid orders above. <br />Coupon code - <span className="font-bold">FLAT100</span>
                 </p>
               </div>
 
@@ -416,13 +500,13 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
                           <div className="details-info">
                             <ul className="list-disc pl-[20px] mb-[0]">
                               <li className="py-[5px] text-[15px] text-[#686e7d] font-Poppins leading-[28px] font-light">
-                                Warranty : {product?.warrantyInformation?.durationMonths} Months ({product?.warrantyInformation?.warrantyType.toUpperCase()}) <span title={product?.warrantyInformation?.claimProcess} className="text-blue-600">how?</span>
+                                Warranty : {product?.warrantyInformation?.durationMonths} Months ({product?.warrantyInformation?.warrantyType?.toUpperCase() ?? "N/A"}) <span title={product?.warrantyInformation?.claimProcess} className="text-blue-600">how?</span>
                               </li>
                               <li className="py-[5px] text-[15px] text-[#686e7d] font-Poppins leading-[28px] font-light">
                                 Shipping : {product?.shippingInformation?.shippingTime} ({product?.shippingInformation?.shippingMethod})
                               </li>
                               {
-                                product?.offers.length > 0 && (
+                                product?.offers && product?.offers.length > 0 && (
                                   <li className="py-[5px] text-[15px] text-[#686e7d] font-Poppins leading-[28px] font-light">
                                     Offers: {product?.offers.map((offer, index) => (
                                       <span key={index} className="font-Poppins text-[#777] text-[14px] leading-[28px] tracking-[0.03rem]">
@@ -495,15 +579,15 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
                               </div>
                               <p className="text-sm text-gray-500 mt-1">{totalRatings} ratings</p>
                             </div>
-                            <div className="flex-1 space-y-2 md:space-y-0 md:flex md:flex-col md:gap-2">
+                            <div className="flex-1 space-y-2 md:space-y-0 md:flex md:flex-col md:gap-2 max-[567px]:p-3">
                               {[5, 4, 3, 2, 1].map((rating) => (
                                 <div key={rating} className="flex items-center gap-2">
                                   <span className="text-sm w-3">{rating}</span>
                                   <BiStar className="w-4 h-4 text-yellow-400 fill-current" />
                                   <div className="w-52 h-2 bg-gray-300 ml-2 rounded-full overflow-hidden">
-                                    <div className="h-2 bg-green-500" style={{ width: `${(ratingCounts[rating] / totalRatings) * 100}%` }} />
+                                    <div className="h-2 bg-green-500" style={{ width: `${(ratingCounts[rating as 1 | 2 | 3 | 4 | 5] / totalRatings) * 100}%` }} />
                                   </div>
-                                  <span className="text-sm text-gray-500 w-10">({ratingCounts[rating]})</span>
+                                  <span className="text-sm text-gray-500 w-10">({ratingCounts[rating as 1 | 2 | 3 | 4 | 5]})</span>
                                 </div>
                               ))}
                             </div>
@@ -542,6 +626,8 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
           </div>
         </div>
       </div>
+
+
       <section className="section-related-product py-[50px] max-[1199px]:py-[35px]">
         <div className="flex flex-wrap justify-between relative items-center mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">
           <div className="flex flex-wrap w-full">

@@ -17,11 +17,14 @@ import BackToTop from "./BackToTop";
 import Image from "next/image";
 import QuickView from "./QuickView";
 import useQuickStore from "@/store/useQuickStore";
+import CartSidebar from "./CartSidebar";
+import useCartSidebarStore from "@/store/useCartSidebarStore";
 
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   const isQuickViewOpen = useQuickStore(state => state.isOpen);
+  const isCartOpen = useCartSidebarStore(state => state.isOpen);
   const product = useQuickStore(state => state.product);
 
   // console.log(product)
@@ -29,7 +32,9 @@ const Footer = () => {
   const handleQuickViewClose = () => {
     useQuickStore.setState({ isOpen: false });
   };
-
+  const toggleCartSidebarClose = () => {
+    useCartSidebarStore.setState({ isOpen: false });
+  };
 
   return (
     <>
@@ -443,7 +448,7 @@ const Footer = () => {
           onClose={handleQuickViewClose}
         />
       )}
-
+      {isCartOpen && <CartSidebar onClose={toggleCartSidebarClose} />}
       <BackToTop />
     </>
   )

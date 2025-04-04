@@ -6,8 +6,8 @@ import { useCartStore } from '@/store/useCartStore';
 import html2canvas from 'html2canvas';
 import { get_product_by_id } from '@/_services/admin/product';
 import { Product } from '@/lib/types/product';
-import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
+import useCartSidebarStore from '@/store/useCartSidebarStore';
 
 export default function Page() {
     const [names, setNames] = useState({ name1: '' });
@@ -16,9 +16,9 @@ export default function Page() {
     const [selectedFont, setSelectedFont] = useState("Barbara-Calligraphy");
     const [isAddingToCart, setIsAddingToCart] = useState(false);
     const [selectedDesign, setSelectedDesign] = useState('cutout');
-
     const addToCart = useCartStore(state => state.addToCart);
-    const router = useRouter();
+    const { openCartSidebarView } = useCartSidebarStore();
+
     const fetchProduct = async (id: string) => {
         try {
             const product = await get_product_by_id(id);
@@ -111,7 +111,7 @@ export default function Page() {
                 //setProduct(updatedProduct);
 
                 addToCart(updatedProduct, 1);
-                router.push('/checkout');
+                openCartSidebarView();
                 console.log("Product added to cart:", updatedProduct);
                 return;
             }

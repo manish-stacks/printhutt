@@ -16,9 +16,9 @@ import { Product } from '@/lib/types/product';
 import { get_product_by_id } from '@/_services/admin/product';
 import { useCartStore } from '@/store/useCartStore';
 import html2canvas from 'html2canvas';
-import { useRouter } from 'next/navigation';
 import { RiMenu2Line, RiMenu3Line, RiMenuLine } from 'react-icons/ri';
 import { SizeControls } from '@/components/neon/SizeControls';
+import useCartSidebarStore from '@/store/useCartSidebarStore';
 
 interface CheckoutData {
   previewCanvas: string;
@@ -52,7 +52,7 @@ export default function NeonPage() {
   const currentPreview = previewImages.find(img => img.id === selectedPreview);
   const [product, setProduct] = useState<Product>();
   const [isAddingToCart, setIsAddingToCart] = useState(false);
-  const router = useRouter();
+  const { openCartSidebarView } = useCartSidebarStore();
   const addToCart = useCartStore(state => state.addToCart);
   const removeFromCart = useCartStore(state => state.removeFromCart);
   const existingCartState = useCartStore();
@@ -217,7 +217,7 @@ export default function NeonPage() {
         }
 
         addToCart(updatedProduct, 1);
-        router.push('/checkout');
+        openCartSidebarView();
         return;
       }
     } catch (error) {

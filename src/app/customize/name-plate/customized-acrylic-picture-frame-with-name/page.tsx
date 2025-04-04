@@ -8,9 +8,9 @@ import { useCartStore } from '@/store/useCartStore';
 import html2canvas from 'html2canvas';
 import { get_product_by_id } from '@/_services/admin/product';
 import { Product } from '@/lib/types/product';
-import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import useCartSidebarStore from '@/store/useCartSidebarStore';
 
 export default function Page() {
     const [names, setNames] = useState({ name1: '' });
@@ -19,14 +19,13 @@ export default function Page() {
     const [product, setProduct] = useState<Product>();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    // const [previewCanvas, setPreviewCanvas] = useState<string>('');
     const [selectedFont, setSelectedFont] = useState("Barbara-Calligraphy");
     const [isAddingToCart, setIsAddingToCart] = useState(false);
     const addToCart = useCartStore(state => state.addToCart);
-    const router = useRouter();
+    const { openCartSidebarView } = useCartSidebarStore();
     const [selectedColor, setSelectedColor] = useState('White');
     const [lineHeight, setLineHeight] = useState(1.5);
-    const [fontSize, setFontSize] = useState(28); // New state for font size
+    const [fontSize, setFontSize] = useState(28); 
 
 
     useEffect(() => {
@@ -143,7 +142,7 @@ export default function Page() {
                 //setProduct(updatedProduct);
 
                 addToCart(updatedProduct, 1);
-                router.push('/checkout');
+                openCartSidebarView();
                 console.log("Product added to cart:", updatedProduct);
                 return;
             }

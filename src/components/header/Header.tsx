@@ -18,31 +18,25 @@ import { useUserStore } from "@/store/useUserStore";
 import { categoryService } from "@/_services/common/categoryService";
 import { productService } from "@/_services/common/productService";
 import HeaderCategoryList from "./category-list";
-import CartSidebar from "../CartSidebar";
 import CategoryPopup from "../CategoryPopup";
 // import Headerlocation from "./location";
 import SearchBar from "./SearchBar";
 import { wishlistService } from "@/_services/common/wishlist";
+import useCartSidebarStore from "@/store/useCartSidebarStore";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const toggleCategory = () => setIsOpen((prev) => !prev);
   const toggleClose = () => setIsOpen(false);
-  const [isCartOpen, setIsOpenCart] = useState(false);
-  const toggleCartSidebar = () => setIsOpenCart((prev) => !prev);
-  const toggleCartSidebarClose = () => setIsOpenCart(false);
-
   const [isMobileMenu, setMobileMenu] = useState(false);
   const toggleMenu = () => setMobileMenu((prev) => !prev);
   const items = useCartStore((state) => state.items);
-
   const totalItem = items.length;
-
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
-
   const [categoriesData, setCategoriesData] = useState([]);
   const [productData, setProductData] = useState([]);
   const [wishlistCount, setWishlistCount] = useState(0);
+  const { openCartSidebarView } = useCartSidebarStore();
 
 
   const fetchData = async () => {
@@ -265,7 +259,7 @@ export default function Header() {
                           </div>
                         </Link>
                         <a
-                          onClick={toggleCartSidebar}
+                          onClick={openCartSidebarView}
                           className="bb-header-btn bb-cart-toggle transition-all duration-[0.3s] ease-in-out relative flex w-[auto] items-center ml-[30px] max-[1199px]:ml-[20px] cursor-pointer"
                           title="Cart"
                         >
@@ -532,7 +526,8 @@ export default function Header() {
           <CategoryPopup onClose={toggleClose} category={categoriesData.slice(0, 6)} products={productData} />
         </Suspense>
       )}
-      {isCartOpen && <CartSidebar onClose={toggleCartSidebarClose} />}
+      
+
     </>
   );
 };

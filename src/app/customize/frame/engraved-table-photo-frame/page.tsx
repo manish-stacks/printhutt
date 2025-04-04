@@ -11,6 +11,7 @@ import { Product } from '@/lib/types/product';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import useCartSidebarStore from '@/store/useCartSidebarStore';
 
 export default function App() {
     const [names, setNames] = useState({ name1: '' });
@@ -27,7 +28,7 @@ export default function App() {
     const [selectedColor, setSelectedColor] = useState('White');
     const [lineHeight, setLineHeight] = useState(1.5);
     const [fontSize, setFontSize] = useState(28); // New state for font size
-
+    const { openCartSidebarView } = useCartSidebarStore();
 
     useEffect(() => {
         setLoading(true);
@@ -143,7 +144,7 @@ export default function App() {
                 //setProduct(updatedProduct);
 
                 addToCart(updatedProduct, 1);
-                router.push('/checkout');
+                openCartSidebarView();
                 console.log("Product added to cart:", updatedProduct);
                 return;
             }

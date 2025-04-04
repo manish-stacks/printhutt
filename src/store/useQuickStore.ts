@@ -23,4 +23,5 @@ const useQuickStore = create<QuickViewState>((set) => ({
     closeQuickView: () => set({ isOpen: false, product: null }),
 }));
 
+
 export default useQuickStore;

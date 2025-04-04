@@ -8,8 +8,8 @@ import html2canvas from 'html2canvas';
 import { get_product_by_id } from '@/_services/admin/product';
 import { Product } from '@/lib/types/product';
 import { useCartStore } from '@/store/useCartStore';
-import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
+import useCartSidebarStore from '@/store/useCartSidebarStore';
 
 export default function AcrylicPhoto() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -25,7 +25,7 @@ export default function AcrylicPhoto() {
   const addToCart = useCartStore(state => state.addToCart);
   const removeFromCart = useCartStore(state => state.removeFromCart);
   const existingCartState = useCartStore();
-  const router = useRouter();
+  const { openCartSidebarView } = useCartSidebarStore();
   const [design, setDesign] = useState('frame');
   const [isShape, setIsShape] = useState(true);
 
@@ -297,7 +297,7 @@ export default function AcrylicPhoto() {
         }
 
         addToCart(updatedProduct, 1);
-        router.push('/checkout');
+        openCartSidebarView();
         console.log("Product added to cart:", updatedProduct);
         return;
       }

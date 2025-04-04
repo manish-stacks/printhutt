@@ -2,6 +2,7 @@
 import { get_product_by_id } from '@/_services/admin/product';
 import { formatCurrency } from '@/helpers/helpers';
 import { Product } from '@/lib/types/product';
+import useCartSidebarStore from '@/store/useCartSidebarStore';
 import { useCartStore } from '@/store/useCartStore';
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect, useRef } from 'react';
@@ -19,7 +20,7 @@ export default function App() {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [product, setProduct] = useState<Product>();
     const addToCart = useCartStore(state => state.addToCart);
-    const router = useRouter();
+    const { openCartSidebarView } = useCartSidebarStore();
 
     useEffect(() => {
         (async () => {
@@ -80,7 +81,7 @@ export default function App() {
                 setProduct(updatedProduct);
 
                 addToCart(updatedProduct, 1);
-                router.push('/checkout');
+                openCartSidebarView();
                 console.log("Product added to cart:", updatedProduct);
                 return;
             }

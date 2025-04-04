@@ -3,8 +3,8 @@ import { get_product_by_id } from '@/_services/admin/product';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { formatCurrency } from '@/helpers/helpers';
 import { Product } from '@/lib/types/product';
+import useCartSidebarStore from '@/store/useCartSidebarStore';
 import { useCartStore } from '@/store/useCartStore';
-import { useRouter } from 'next/navigation';
 import React, { useState, useCallback, ChangeEvent, useEffect } from 'react';
 import { BiMinus, BiPlus } from 'react-icons/bi';
 import { toast } from 'react-toastify';
@@ -47,7 +47,7 @@ export default function App() {
     const [product, setProduct] = useState<Product>();
     const [isAddingToCart, setIsAddingToCart] = useState(false);
     const addToCart = useCartStore(state => state.addToCart);
-    const router = useRouter();
+    const { openCartSidebarView } = useCartSidebarStore();
     const [productPrice, setProductPrice] = useState(0);
     const [loading, setLoading] = useState(false);
 
@@ -176,7 +176,7 @@ export default function App() {
                 setProduct(updatedProduct);
 
                 addToCart(updatedProduct, 1);
-                router.push('/checkout');
+                openCartSidebarView();
                 console.log("Product added to cart:", updatedProduct);
                 return;
             }

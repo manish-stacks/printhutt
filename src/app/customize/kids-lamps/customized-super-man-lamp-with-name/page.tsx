@@ -8,6 +8,7 @@ import { useCartStore } from '@/store/useCartStore';
 import html2canvas from 'html2canvas';
 import { useRouter } from 'next/navigation';
 import { CustomizationButton } from '@/components/CustomizationButton';
+import useCartSidebarStore from '@/store/useCartSidebarStore';
 
 export default function Page() {
   const [names, setNames] = useState({ name1: '' });
@@ -17,7 +18,7 @@ export default function Page() {
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const addToCart = useCartStore(state => state.addToCart);
-  const router = useRouter();
+  const { openCartSidebarView } = useCartSidebarStore();
 
   useEffect(() => {
     (async () => {
@@ -143,7 +144,7 @@ export default function Page() {
         };
 
         addToCart(updatedProduct, 1);
-        router.push('/checkout');
+        openCartSidebarView();
         console.log("Product added to cart:", updatedProduct);
         return;
       }

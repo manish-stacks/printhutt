@@ -11,6 +11,7 @@ import { Product } from '@/lib/types/product';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { formatCurrency } from '@/helpers/helpers';
+import useCartSidebarStore from '@/store/useCartSidebarStore';
 
 export default function App() {
   const [previewImage, setPreviewImage] = useState('');
@@ -27,6 +28,8 @@ export default function App() {
   const [activeVarient, setActiveVarient] = useState<string>('0');
   const [isDownloading, setIsDownloading] = useState(false);
   const [varientSize, setVarientSize] = useState('default');
+  const { openCartSidebarView } = useCartSidebarStore();
+
   useEffect(() => {
     (async () => {
       try {
@@ -183,7 +186,7 @@ export default function App() {
         setProduct(updatedProduct);
 
         addToCart(updatedProduct, 1);
-        router.push('/checkout');
+        openCartSidebarView();
         console.log("Product added to cart:", updatedProduct);
         return;
       }
