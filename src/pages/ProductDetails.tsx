@@ -143,15 +143,7 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
   };
 
 
-  const calculateDiscountedPrice = useMemo(() => {
-    if (!product) return null;
-    const discountedPrice =
-      product.discountType === "percentage"
-        ? (product.price ?? 0) - ((product.price ?? 0) * (product.discountPrice ?? 0)) / 100
-        : (product.price ?? 0) - (product.discountPrice || 0);
 
-    return product.price ? formatCurrency(discountedPrice) : null;
-  }, [product, product.price]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -180,6 +172,15 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
 
   // const item = items.find(item => item._id === product?._id) || { _id: '', quantity: 0 };
 
+  const calculateDiscountedPrice = useMemo(() => {
+    if (!product || product.price == null) return null;
+    const discountedPrice =
+      product.discountType === "percentage"
+        ? product.price - (product.price * (product.discountPrice ?? 0)) / 100
+        : product.price - (product.discountPrice || 0);
+
+    return formatCurrency(discountedPrice);
+  }, [product]);
 
   const onchangeVarient = (id: string) => {
     setSelectedSize(id)
@@ -187,6 +188,7 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
     if (product && varient) {
       product.price = varient.price || 0;
     }
+
   }
 
   const handleAddToCart = () => {
@@ -361,8 +363,10 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
                   <div className="mb-4 sm:mb-0">
                     <div className="flex items-center space-x-2">
                       <span className="text-lg sm:text-2xl font-bold">{calculateDiscountedPrice}</span>
-                      {product.discountPrice && product?.discountPrice > 0 && (
-                        <span className="text-sm sm:text-lg text-rose-700 line-through">{formatCurrency(product?.price || 0)}</span>
+                      {product?.discountPrice && product?.price != null && product.discountPrice > 0 && (
+                        <span className="text-sm sm:text-lg text-rose-700 line-through">
+                          {formatCurrency(product.price)}
+                        </span>
                       )}
                       {product.discountPrice && product?.discountPrice > 0 && (
                         <span className="text-sm sm:text-lg text-green-600 font-semibold">
@@ -607,7 +611,7 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
 
 
                         <div className="space-y-4">
-                         
+
                           {
                             product?.reviews && product?.reviews?.length > 0 ? (
                               product?.reviews.map((review, index) => (
@@ -663,7 +667,7 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
 
                                 </div>
                               ))
-                            ):(
+                            ) : (
                               reviews.map((review) => (
                                 <div key={review.id} className="border-t pt-4">
                                   <div className="flex items-center mb-2">
