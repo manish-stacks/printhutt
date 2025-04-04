@@ -15,6 +15,7 @@ import { useCartStore } from '@/store/useCartStore';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { useUserStore } from '@/store/useUserStore';
+import Link from 'next/link';
 interface ProductProps {
   product: {
     _id: string;
@@ -45,6 +46,13 @@ interface ProductProps {
     };
     customizeLink: string;
     isCustomize?: boolean;
+    reviews?: {
+      userId?: { displayName?: string };
+      rating?: number;
+      review?: string;
+      createdAt?: string;
+      images?: { url: string }[];
+    }[];
   };
   relatedProduct: Product[];
 
@@ -370,7 +378,7 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
                   <div className="flex items-center space-x-1">
                     <BiStar className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-500 fill-yellow-500" />
                     <span className="text-sm sm:text-lg font-medium">4.4</span>
-                    <span className="text-blue-600 text-sm sm:text-lg cursor-pointer">| 11 Reviews</span>
+                    <span className="text-blue-600 text-sm sm:text-lg cursor-pointer">| {totalRatings} Reviews</span>
                   </div>
                 </div>
               </div>
@@ -577,7 +585,8 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
                                   <BiStar key={star} className="w-4 h-4 text-yellow-400 fill-current" />
                                 ))}
                               </div>
-                              <p className="text-sm text-gray-500 mt-1">{totalRatings} ratings</p>
+                              <p className="text-sm text-gray-500 mt-1 mb-4">{totalRatings} ratings</p>
+                              <Link href={`/product-details/${product?.slug}/write-review`} className='border-2 border-sky-500 text-sky-600 px-4 py-2 rounded-md mt-2 font-semibold'>RATE</Link>
                             </div>
                             <div className="flex-1 space-y-2 md:space-y-0 md:flex md:flex-col md:gap-2 max-[567px]:p-3">
                               {[5, 4, 3, 2, 1].map((rating) => (
@@ -596,22 +605,81 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
 
 
                         <div className="space-y-4">
-                          {reviews.map((review) => (
-                            <div key={review.id} className="border-t pt-4">
-                              <div className="flex items-center mb-2">
-                                {[...Array(review.rating)].map((_, i) => (
-                                  <BiStar key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-                                ))}
-                              </div>
-                              <p className="text-sm mb-2">{review.comment}</p>
-                              <div className="flex items-center justify-between text-sm text-gray-500">
-                                <p>{review.author} - {review.date}</p>
-                                <div className="flex items-center">
-                                  <span>{review.helpful} people found this helpful</span>
+                         
+                          {
+                            product?.reviews && product?.reviews?.length > 0 ? (
+                              product?.reviews.map((review, index) => (
+                                <div key={index}>
+                                  <div className="reviews-bb-box flex mb-[24px] max-[575px]:flex-col">
+                                    <div className="inner-image mr-[12px] max-[575px]:mr-[0] max-[575px]:mb-[12px]">
+                                      <img
+                                        src="/img/dummy-image.jpg"
+                                        alt="img-1"
+                                        className="w-[50px] h-[50px] max-w-[50px] rounded-[10px]"
+                                      />
+                                    </div>
+                                    <div className="inner-contact">
+                                      <h4 className="font-quicksand leading-[1.2] tracking-[0.03rem] mb-[5px] text-[16px] font-bold text-[#3d4750]">
+                                        {review?.userId?.displayName || "User"}
+                                      </h4>
+                                      <div className="bb-pro-rating flex">
+                                        {Array(review?.rating || 5)
+                                          .fill(0)
+                                          .map((_, starIndex) => (
+                                            <i
+                                              key={starIndex}
+                                              className={`${starIndex < (review.rating ?? 5)
+                                                ? "ri-star-fill text-[#fea99a]"
+                                                : "ri-star-line text-[#777]"
+                                                } float-left text-[15px] mr-[3px]`}
+                                            />
+                                          ))}
+                                      </div>
+                                      <p className="font-Poppins text-[14px] leading-[26px] font-light tracking-[0.03rem] text-[#686e7d]">
+                                        {review.review}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  {
+                                    review?.images && (
+                                      <div className="reviews-bb-box flex mb-[24px] max-[575px]:flex-col">
+                                        {
+                                          review?.images.map((image, index) => (
+                                            <div key={index} className="inner-image mr-[12px] max-[575px]:mr-[0] max-[575px]:mb-[12px]">
+                                              <img
+                                                src={image.url}
+                                                alt={`img-${index}`}
+                                                className="w-[50px] h-[50px] max-w-[50px] rounded-[10px]"
+                                              />
+                                            </div>
+                                          ))
+                                        }
+
+                                      </div>
+                                    )
+                                  }
+
                                 </div>
-                              </div>
-                            </div>
-                          ))}
+                              ))
+                            ):(
+                              reviews.map((review) => (
+                                <div key={review.id} className="border-t pt-4">
+                                  <div className="flex items-center mb-2">
+                                    {[...Array(review.rating)].map((_, i) => (
+                                      <BiStar key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                                    ))}
+                                  </div>
+                                  <p className="text-sm mb-2">{review.comment}</p>
+                                  <div className="flex items-center justify-between text-sm text-gray-500">
+                                    <p>{review.author} - {review.date}</p>
+                                    <div className="flex items-center">
+                                      <span>{review.helpful} people found this helpful</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              ))
+                            )
+                          }
                         </div>
                       </div>
                     ) : (
