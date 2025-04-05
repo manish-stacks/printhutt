@@ -16,6 +16,7 @@ const PaymentMethod = ({ value, onChange, totalPrice }: TypeSelectorProps) => {
                     Payment Method
                 </h4>
             </div>
+            
             <div className="checkout-method mb-[24px] h-[200px] overflow-auto">
                 {/* <span className="details font-Poppins leading-[26px] tracking-[0.02rem] text-[15px] font-medium text-[#686e7d]">
                     Please select the preferred shipping method to use on this order.

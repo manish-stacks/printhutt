@@ -282,7 +282,7 @@ export default function AcrylicPhoto() {
         const updatedProduct = {
           ...product,
           thumbnail: { ...product.thumbnail, url: previewCanvas },
-          price: selectedThickness.price * 2,
+          price: product.discountType === "percentage" ? (selectedThickness.price / ((100 - product.discountPrice) / 100)) : (selectedThickness.price + product.discountPrice),
           custom_data,
         };
 

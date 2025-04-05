@@ -361,7 +361,7 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
                         </span>
                       )}
                       {product?.discountPrice && product?.discountPrice > 0 && (
-                        <span className="text-sm sm:text-lg text-green-600 font-semibold">
+                        <span className="text-sm sm:text-lg text-rose-600 font-semibold py-1 px-3 bg-rose-100 rounded-full">
                           {product.discountType === "percentage"
                             ? `${product.discountPrice}%`
                             : `${formatCurrency(product.discountPrice)}`}OFF
@@ -428,10 +428,10 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
                 </div>
               </div>
 
-
+              {/* 
               <div className="py-4">
                 <Image src={"/img/shape/badges.png"} width={400} height={50} alt="badges" className='w-[50%] max-[567px]:w-full' />
-              </div>
+              </div> */}
               {/* <div className="grid grid-cols-3 gap-4 py-4">
               <div className="text-center bg-slate-100 px-2 py-6 rounded-md text-slate-800">
                 <BsTruck className="w-6 h-6 mx-auto mb-2" />

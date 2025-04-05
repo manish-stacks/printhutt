@@ -20,21 +20,24 @@ interface TypeSelectorProps {
         totalPrice: number
     }
 }
-export const CheckoutAddressForm = ({ onChangeAddress, isCheckout, placeOrder, paymentMethod, setPaymentFunction,totalPrice }: TypeSelectorProps) => {
+export const CheckoutAddressForm = ({ onChangeAddress, isCheckout, placeOrder, paymentMethod, setPaymentFunction, totalPrice }: TypeSelectorProps) => {
 
     const [selectedAddress, setSelectedAddress] = useState<boolean>(true);
     const [addresslist, setAddresslist] = useState<AddressFormData[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    // const [defaultId, setDefaultId] = useState<string | null>(null);
 
     const fetchAddress = async () => {
         try {
             setIsLoading(true);
             const response: AddressFormData[] = await getAddress();
-
+            console.log(response)
             if (response.addresses.length > 0) {
                 setSelectedAddress(true);
                 setAddresslist(response.addresses);
+                const defaultAddress = response.addresses.find((address) => address.isDefault);
+                if (defaultAddress) {
+                    onChangeAddress(defaultAddress._id);
+                }
             } else {
                 setSelectedAddress(false);
                 setAddresslist([]);
@@ -46,16 +49,12 @@ export const CheckoutAddressForm = ({ onChangeAddress, isCheckout, placeOrder, p
             setIsLoading(false);
         }
     };
-    useEffect(() => {
-        fetchAddress();
-    }, [])
 
     useEffect(() => {
-        const defaultAddress = addresslist.find((address) => address.isDefault);
-        if (defaultAddress) {
-            onChangeAddress(defaultAddress._id);
-        }
-    }, [])
+        fetchAddress();
+    }, []);
+
+
     const handleAddressChange = () => {
         setSelectedAddress((prev) => !prev);
     }
@@ -222,31 +221,30 @@ export const CheckoutAddressForm = ({ onChangeAddress, isCheckout, placeOrder, p
                                             </div>
                                         ))}
                                     </div>
+
+                                    <PaymentMethod
+                                        value={paymentMethod}
+                                        // onChange={(value) => setPaymentMethod(value)}
+                                        onChange={(value) => setPaymentFunction(value)}
+                                        totalPrice={totalPrice.discountPrice}
+                                    />
                                     {isCheckout ? (
                                         <div className="w-full flex items-center justify-center bb-btn-2 transition-all duration-[0.3s] ease-in-out font-Poppins leading-[28px] tracking-[0.03rem] py-[10px] px-[20px] text-[18px] font-normal text-[#fff] bg-[#000000] rounded-[5px] border-[1px] border-solid border-[#000000] mt-2">Placing Order...</div>
                                     ) : (
-                                        <>
-                                            <PaymentMethod
-                                                value={paymentMethod}
-                                                // onChange={(value) => setPaymentMethod(value)}
-                                                onChange={(value) => setPaymentFunction(value)}
-                                                totalPrice={totalPrice.discountPrice}
-                                            />
+                                        <button
+                                            onClick={placeOrder}
+                                            className="w-full flex items-center justify-center bb-btn-2 transition-all duration-[0.3s] ease-in-out font-Poppins leading-[28px] tracking-[0.03rem] py-[10px] px-[20px] text-[18px] font-normal text-[#fff] bg-[#000000] rounded-[5px] border-[1px] border-solid border-[#000000] mt-2"
+                                        >
+                                            Place Order &nbsp;<Image src={"/img/shape/upi_options.svg"} alt="arrow" width={40} height={40} /> <RiArrowRightSLine className="text-[20px] ml-[5px]" />
+                                        </button>
 
-                                            <button
-                                                onClick={placeOrder}
-                                                className="w-full flex items-center justify-center bb-btn-2 transition-all duration-[0.3s] ease-in-out font-Poppins leading-[28px] tracking-[0.03rem] py-[10px] px-[20px] text-[18px] font-normal text-[#fff] bg-[#000000] rounded-[5px] border-[1px] border-solid border-[#000000] mt-2"
-                                            >
-                                                Place Order &nbsp;<Image src={"/img/shape/upi_options.svg"} alt="arrow" width={40} height={40} /> <RiArrowRightSLine className="text-[20px] ml-[5px]" />
-                                            </button>
-                                        </>
                                     )}
 
 
                                 </>
                             ) : (
-                                <div className="text-center text-gray-500">
-                                    <LoadingSpinner />
+                                <div className="flex items-center justify-center h-[200px]">
+                                    <p className="text-gray-600">No address found</p>
                                 </div>
                             )
                         }

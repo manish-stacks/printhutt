@@ -50,7 +50,7 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
         const price = getTotalPrice();
         setTotalPrice(price);
         setOriginalPrice(price.discountPrice);
-    }, [items, getTotalPrice]);
+    }, [items, getTotalPrice, paymentMethod]);
 
 
 
@@ -83,16 +83,20 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
                 const redirectUrl = paymentResponse?.instrumentResponse?.redirectInfo?.url;
                 return window.location.href = redirectUrl;
             } else {
-                toast.error("Payment initiation failed!");
+                setErrorMsg("Payment initiation failed!");
             }
         } catch (error) {
             console.error(error);
-            toast.error(error.message || 'Something Went Wrong');
+            setErrorMsg(error.message || 'Something Went Wrong');
         }
     }
 
     const handleSelect = (coupon) => {
 
+        if (paymentMethod === 'offline') {
+            setErrorMsg('COD Not Applied for Coupons');
+            return;
+        }
         if (selectedCoupon?.code === coupon.code) {
             setErrorMsg('This coupon has already been applied');
             return;
@@ -138,25 +142,29 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
 
             setSelectedCoupon(coupon);
         } else {
-            toast.error(`Minimum purchase amount of ${formatCurrency(coupon.minimumPurchaseAmount)} required`);
+            setErrorMsg(`Minimum purchase amount of ${formatCurrency(coupon.minimumPurchaseAmount)} required`);
         }
     };
 
     const setPaymentFunction = (value: string) => {
         setPaymentMethod(value);
+
         if (value === 'offline') {
-          setTotalPrice(prev => ({
-            ...prev,
-            coupon_discount: 0
-          }));
-          setErrorMsg('COD Not Applied for Coupons');
-          return;
+            if (selectedCoupon) {
+                setErrorMsg('COD Not Applied for Coupons');
+            }
+            setSelectedCoupon(null);
+            setTotalPrice(prev => ({
+                ...prev,
+                coupon_discount: 0
+            }));
+
         }
         else {
-          window.location.reload();
+            setErrorMsg('');
         }
         console.log(value)
-      }
+    }
 
     const placeOrder = async () => {
         const getPrice = await getTotalPrice();
@@ -193,7 +201,7 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
         };
 
         console.log('order checkout', order);
-
+    
         try {
             setIsSubmitting(true);
             const response: { order: { _id: string } } = await create_a_new_order(order);
@@ -208,7 +216,7 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
 
         } catch (error) {
             console.error(error);
-            toast.error(error.message || 'Something Went Wrong');
+            setErrorMsg(error.message || 'Something Went Wrong');
         } finally {
             setIsSubmitting(false);
         }
@@ -245,7 +253,7 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
                                 </div>
 
                                 {/* Coupon Section */}
-                                {errorMsg && <div className="text-red-600 text-sm mt-1">{errorMsg}</div>}
+                                {errorMsg && <div className="text-red-600 text-sm mt-1 bg-rose-100 py-2 px-4 rounded-sm mb-2">{errorMsg}</div>}
 
 
                                 {/* Available Coupons */}
