@@ -8,12 +8,13 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { formatCurrency } from "@/helpers/helpers";
 import Link from "next/link";
+import useCartSidebarStore from "@/store/useCartSidebarStore";
 
 const Cart = () => {
   const router = useRouter();
   const [totalPrice, setTotalPrice] = useState({ totalPrice: 0, discountPrice: 0, shippingTotal: 0 });
   const { updateQuantity, removeFromCart, getTotalPrice } = useCartStore();
-
+  const { openCartSidebarView } = useCartSidebarStore();
   const items = useCartStore((state) => state.items);
 
   const handleQuantityChange = (productId: string, newQuantity: number) => {
@@ -253,7 +254,7 @@ const Cart = () => {
                       data-aos="fade-up"
                       data-aos-duration={1000}
                       data-aos-delay={400}
-                      onClick={gotoCheckout}
+                      onClick={openCartSidebarView}
                     >
                       Proceed to Checkout
                     </button>

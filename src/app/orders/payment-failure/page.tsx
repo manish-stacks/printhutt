@@ -1,8 +1,10 @@
+"use client" 
+import useCartSidebarStore from "@/store/useCartSidebarStore";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function PaymentFailure() {
-
+    const { openCartSidebarView } = useCartSidebarStore();
     return (
         <>
             <div className="min-h-screen bg-gray-50 py-12">
@@ -29,12 +31,13 @@ export default function PaymentFailure() {
                             >
                                 Go to Home
                             </Link>
-                            <Link
-                                href="/checkout"
+                            <button
+                                onClick={openCartSidebarView}
+                                type="button"
                                 className="px-6 py-3 bg-gray-200 text-red-700 font-semibold rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 transition"
                             >
                                 Retry Payment
-                            </Link>
+                            </button>
                         </div>
                     </div>
                 </div>

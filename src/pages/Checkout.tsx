@@ -13,7 +13,7 @@ import { useCartStore } from "@/store/useCartStore";
 import { useUserStore } from "@/store/useUserStore";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -33,7 +33,9 @@ const Checkout = () => {
   const [showMailModal, setShowMailModal] = useState(false);
   const router = useRouter();
 
+
   useEffect(() => {
+    return notFound();
     const price = getTotalPrice();
     setTotalPrice(price);
     setOriginalPrice(price.discountPrice);
@@ -343,7 +345,7 @@ const Checkout = () => {
                     value={paymentMethod}
                     // onChange={(value) => setPaymentMethod(value)}
                     onChange={(value) => setPaymentFunction(value)}
-                    totalPrice={totalPrice.discountPrice}
+                    totalPrice={totalPrice?.discountPrice || 0}
                   />
                 </div>
                 <button

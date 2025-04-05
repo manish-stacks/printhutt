@@ -226,7 +226,7 @@ export const CheckoutAddressForm = ({ onChangeAddress, isCheckout, placeOrder, p
                                         value={paymentMethod}
                                         // onChange={(value) => setPaymentMethod(value)}
                                         onChange={(value) => setPaymentFunction(value)}
-                                        totalPrice={totalPrice.discountPrice}
+                                        totalPrice={totalPrice.discountPrice || 0}
                                     />
                                     {isCheckout ? (
                                         <div className="w-full flex items-center justify-center bb-btn-2 transition-all duration-[0.3s] ease-in-out font-Poppins leading-[28px] tracking-[0.03rem] py-[10px] px-[20px] text-[18px] font-normal text-[#fff] bg-[#000000] rounded-[5px] border-[1px] border-solid border-[#000000] mt-2">Placing Order...</div>
