@@ -4,7 +4,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { BiShoppingBag } from 'react-icons/bi';
 import { BsX } from 'react-icons/bs';
-import { RiArrowRightSLine, RiSecurePaymentLine, RiTruckLine, RiVerifiedBadgeLine } from 'react-icons/ri';
+import { RiArrowDownLine, RiArrowDownSLine, RiArrowRightSLine, RiArrowUpSLine, RiSecurePaymentLine, RiTruckLine, RiVerifiedBadgeLine } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 import { useOtp } from '@/hooks/useOtp';
 import { useUserStore } from '@/store/useUserStore';
@@ -14,6 +14,7 @@ import { create_a_new_order, initiate_Payment } from '@/_services/common/order';
 import MailModal from './MailModal';
 import { getAllCouponsPagination } from '@/_services/admin/coupon';
 import confetti from 'canvas-confetti';
+import siteLogo from '/public/print-hutt-logo.webp';
 
 interface ModalProps {
     isOpen?: boolean
@@ -31,6 +32,7 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
     const [errorMsg, setErrorMsg] = useState("");
     const [originalPrice, setOriginalPrice] = useState(0);
     const [paymentMethod, setPaymentMethod] = useState<'online' | 'offline'>('online');
+    const [isCoupon, setIsCoupon] = useState(true);
     const {
         emailOrMobile,
         otp,
@@ -201,7 +203,7 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
         };
 
         console.log('order checkout', order);
-    
+
         try {
             setIsSubmitting(true);
             const response: { order: { _id: string } } = await create_a_new_order(order);
@@ -237,20 +239,20 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
                         <div className="p-6 h-screen">
                             {/* Header */}
                             <div className="flex justify-center mb-4 pt-2">
-                                <BiShoppingBag className="w-8 h-8" />
+                                {/* <BiShoppingBag className="w-8 h-8" /> */}
+                                <Image src={siteLogo} alt="Logo" width={100} height={50} />
                             </div>
 
                             {/* Discount Banner */}
-                            {/* <div className="bg-black text-white text-center py-2 mb-6">
-                                30% off on prepaid orders
-                            </div> */}
-
-                            {/* Order Summary */}
-                            <div className="mb-6 bb-cart-box item h-[80%] overflow-auto main-box-checkout">
-                                <div className="flex justify-between items-center mb-4">
+                            <div className="bg-black text-white text-center py-2 mb-6 rounded-md">
+                                <div className="flex justify-between items-center px-2">
                                     <h2 className="text-lg font-semibold">Order summary ({items.length} Item)</h2>
                                     <span className="text-lg">{formatCurrency(totalPrice.discountPrice)}</span>
                                 </div>
+                            </div>
+                            {/* Order Summary */}
+                            <div className="mb-6 bb-cart-box item h-[80%] overflow-auto main-box-checkout">
+
 
                                 {/* Coupon Section */}
                                 {errorMsg && <div className="text-red-600 text-sm mt-1 bg-rose-100 py-2 px-4 rounded-sm mb-2">{errorMsg}</div>}
@@ -259,9 +261,20 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
                                 {/* Available Coupons */}
                                 {
                                     availableCoupons.length > 0 && (
-                                        <div className="mb-4">
-                                            <h3 className="text-lg font-medium mb-2">Available Coupons</h3>
-                                            {availableCoupons.map((coupon) => (
+                                        <div className="mb-4 border rounded p-3">
+                                            <div className="flex items-center justify-between mb-3">
+                                                <h3 className="text-lg text-orange-800">Available Coupons</h3>
+
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setIsCoupon(!isCoupon)}
+                                                    className="text-gray-600 hover:text-black transition-all"
+                                                >
+                                                    {isCoupon ? <RiArrowUpSLine size={22} /> : <RiArrowDownSLine size={22} />}
+                                                </button>
+                                            </div>
+
+                                            {isCoupon && availableCoupons.map((coupon) => (
                                                 <div className="border rounded p-3 mb-4" key={coupon.code}>
                                                     <div className="flex justify-between items-center">
                                                         <div className="flex items-center gap-2">

@@ -437,5 +437,5 @@
 
 
 .main-box-checkout::-webkit-scrollbar{
-  display: none;
+  width: 2px;
 }

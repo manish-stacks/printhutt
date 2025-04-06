@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { RiArrowRightSLine, RiCheckFill } from 'react-icons/ri'
 import { toast } from 'react-toastify';
 import { ZodError } from 'zod';
-import LoadingSpinner from '../LoadingSpinner';
+import { motion } from 'framer-motion'
 import Image from 'next/image';
 import PaymentMethod from './payment-method';
 
@@ -127,6 +127,22 @@ export const CheckoutAddressForm = ({ onChangeAddress, isCheckout, placeOrder, p
             </div>
         );
     }
+
+
+    if (isCheckout) {
+        return (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <motion.div
+                    className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.5 }}
+                />
+                {/* <p className="absolute bottom-10 text-gray-500 text-sm">Loading, please wait...</p> */}
+            </div>
+        )
+    }
+
     return (
         <>
 
@@ -139,10 +155,10 @@ export const CheckoutAddressForm = ({ onChangeAddress, isCheckout, placeOrder, p
                 </div>
             </div>
 
-            <div className="bg-[#E10176] p-4 hidden">
+            <div className="bg-[#E10176] p-2 rounded-md ">
                 <div className="flex justify-between">
                     <div className="flex items-center">
-                        <span className="w-8 h-8 rounded-full bg-white text-[#E10176] flex items-center justify-center text-sm">2</span>
+                        <span className="w-6 h-6 rounded-full bg-white text-[#E10176] flex items-center justify-center text-sm">1</span>
                         <span className="ml-2 font-medium text-white uppercase max-[480px]:text-sm">Delivery Address</span>
                     </div>
                 </div>
@@ -196,20 +212,20 @@ export const CheckoutAddressForm = ({ onChangeAddress, isCheckout, placeOrder, p
                                             <div
                                                 onClick={() => changeAddress(address?._id)}
                                                 key={address?._id}
-                                                className={`py-4 max-w-full overflow-hidden border-s-4 ${address.isDefault ? 'border-lime-500' : ' border-slate-500'} `}>
+                                                className={`py-2 max-w-full overflow-hidden border-s-4 ${address.isDefault ? 'border-lime-500' : ' border-slate-500'} `}>
 
                                                 <div className="flex items-start justify-between space-x-4 max-[480px]:flex-col max-[480px]:space-x-0 max-[480px]:space-y-3">
                                                     {/* Address Details */}
                                                     <div className="relative text-sm text-gray-700 pl-6 cursor-pointer w-full max-w-[calc(100%-100px)]">
-                                                        {address.isDefault && (
+                                                        {/* {address.isDefault && (
                                                             <div>
                                                                 <span className='text-sm text-white bg-amber-500 px-2 rounded-lg'>Selected</span>
                                                             </div>
-                                                        )}
+                                                        )} */}
 
                                                         <p className="font-medium flex items-center space-x-2  break-words">
                                                             <span>{address.fullName}</span>
-                                                            <span className="bg-slate-100 px-3 py-1 rounded text-xs text-gray-600">{address.addressType}</span>
+                                                            <span className="bg-slate-100 px-3 py-1 rounded text-xs text-gray-600">{address.addressType.toUpperCase()}</span>
                                                             <span className="font-bold text-black">{address.mobileNumber}</span>
                                                         </p>
                                                         <p className="mt-1 text-gray-600 break-words">
@@ -224,23 +240,25 @@ export const CheckoutAddressForm = ({ onChangeAddress, isCheckout, placeOrder, p
 
                                     <PaymentMethod
                                         value={paymentMethod}
-                                        // onChange={(value) => setPaymentMethod(value)}
                                         onChange={(value) => setPaymentFunction(value)}
                                         totalPrice={totalPrice.discountPrice || 0}
                                     />
-                                    {isCheckout ? (
-                                        <div className="w-full flex items-center justify-center bb-btn-2 transition-all duration-[0.3s] ease-in-out font-Poppins leading-[28px] tracking-[0.03rem] py-[10px] px-[20px] text-[18px] font-normal text-[#fff] bg-[#000000] rounded-[5px] border-[1px] border-solid border-[#000000] mt-2">Placing Order...</div>
-                                    ) : (
-                                        <button
-                                            onClick={placeOrder}
-                                            className="w-full flex items-center justify-center bb-btn-2 transition-all duration-[0.3s] ease-in-out font-Poppins leading-[28px] tracking-[0.03rem] py-[10px] px-[20px] text-[18px] font-normal text-[#fff] bg-[#000000] rounded-[5px] border-[1px] border-solid border-[#000000] mt-2"
-                                        >
-                                            Place Order &nbsp;<Image src={"/img/shape/upi_options.svg"} alt="arrow" width={40} height={40} /> <RiArrowRightSLine className="text-[20px] ml-[5px]" />
-                                        </button>
 
-                                    )}
-
-
+                                    <button
+                                        onClick={placeOrder}
+                                        disabled={isCheckout}
+                                        className={`w-full flex items-center justify-center bb-btn-2 transition-all duration-300 ease-in-out font-Poppins leading-[28px] tracking-[0.03rem] py-[10px] px-[20px] text-[18px] font-normal text-[#fff] bg-[#000000] rounded-[5px] border border-solid border-[#000000] mt-2 ${isCheckout ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                    >
+                                        {isCheckout ? (
+                                            "Placing Order..."
+                                        ) : (
+                                            <>
+                                                Place Order&nbsp;
+                                                <Image src="/img/shape/upi_options.svg" alt="upi" width={40} height={40} />
+                                                <RiArrowRightSLine className="text-[20px] ml-[5px]" />
+                                            </>
+                                        )}
+                                    </button>
                                 </>
                             ) : (
                                 <div className="flex items-center justify-center h-[200px]">

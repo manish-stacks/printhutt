@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import 'tailwindcss/tailwind.css'
 import { userService } from '@/_services/common/userService'
 import { toast } from 'react-toastify'
+import { BiX } from 'react-icons/bi'
 
 interface ModalProps {
     isOpen?: boolean
@@ -11,17 +12,21 @@ interface ModalProps {
 
 const MailModal = ({ isOpen, onClose }: ModalProps) => {
     const [email, setEmail] = useState('')
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
     const handleSubmit = async(e: React.FormEvent) => {
         e.preventDefault()
         console.log('Form submitted:', email)
+        setIsSubmitting(true)
         try {
             const response = await userService.updateProfile({email});
             console.log(response);
         } catch (error) {
             console.log(error)
             toast.error("Failed to update email");
-        } 
+        }finally {
+            setIsSubmitting(false)
+        }
         setEmail('')
         onClose()
     }
@@ -36,7 +41,7 @@ const MailModal = ({ isOpen, onClose }: ModalProps) => {
         <AnimatePresence>
             {isOpen && (
                 <motion.div
-                    className="fixed inset-0 bg-gray-800 bg-opacity-50 backdrop-blur-sm z-50 flex items-center justify-center p-4 "
+                    className="fixed inset-0 bg-gray-800 bg-opacity-50 backdrop-blur-sm flex items-center justify-center p-4 z-[9999]"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -51,7 +56,7 @@ const MailModal = ({ isOpen, onClose }: ModalProps) => {
                             className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
                             onClick={handleClose}
                         >
-                            Close
+                            <BiX size={24} />
                         </button>
                         <form onSubmit={handleSubmit}>
 
@@ -83,7 +88,7 @@ const MailModal = ({ isOpen, onClose }: ModalProps) => {
                                 animate={{ x: 0, opacity: 1 }}
                                 transition={{ delay: 0.6 }}
                             >
-                                Submit
+                                {isSubmitting ? 'Submitting...' : 'Submit'}
                             </motion.button>
                         </form>
                     </motion.div>
