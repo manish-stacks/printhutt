@@ -615,7 +615,7 @@ export default function EditProduct() {
                         type="number"
                         name="totalPrice"
                         id="totalPrice"
-                        value={formData.totalPrice || ''}
+                        value={formData.price || ''}
                         onChange={handleInputChange}
                         placeholder='Total price'
                       />
@@ -658,7 +658,7 @@ export default function EditProduct() {
                         className="block w-full h-10 rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                         type="number"
                         name='price'
-                        value={formData.price || ''}
+                        value={formData.totalPrice || ''}
                         onChange={handleInputChange}
                         placeholder='Product price'
                       />

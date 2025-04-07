@@ -14,7 +14,6 @@ interface ImagePreview {
     url: string;
 }
 
-
 export default function App() {
     const [previews, setPreviews] = useState<ImagePreview[]>([]);
     const [isAddingToCart, setIsAddingToCart] = useState(false);

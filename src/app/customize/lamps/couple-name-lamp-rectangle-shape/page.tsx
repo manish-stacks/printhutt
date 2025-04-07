@@ -86,7 +86,7 @@ export default function Page() {
   };
   const handleCanvasAction = async () => {
     try {
-      setIsDownloading(true);
+      //setIsDownloading(true);
       const previewElement = document.getElementById('preview-section');
 
       if (!previewElement) {
@@ -127,7 +127,7 @@ export default function Page() {
       console.error('Error during download:', error);
       toast.error('Failed to download preview');
     } finally {
-      setIsDownloading(false);
+      //setIsDownloading(false);
     }
   };
 
@@ -314,7 +314,7 @@ export default function Page() {
                       type="text"
                       value={names.name1}
                       onChange={(e) => setNames({ ...names, name1: e.target.value })}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 p-2 p-2"
                       placeholder="Enter name"
                       maxLength={20}
                     />

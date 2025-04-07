@@ -247,7 +247,7 @@ export default function App() {
                                         <textarea
                                             value={names.name1}
                                             onChange={(e) => setNames({ ...names, name1: e.target.value })}
-                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
+                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 p-2"
                                             placeholder="Enter Line"
                                             rows={3}
                                         >

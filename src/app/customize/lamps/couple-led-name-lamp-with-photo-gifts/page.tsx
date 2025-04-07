@@ -253,7 +253,7 @@ export default function Page() {
                                             type="text"
                                             value={names.name1}
                                             onChange={(e) => setNames({ ...names, name1: e.target.value })}
-                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
+                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 p-2"
                                             placeholder="Enter first name"
                                         />
                                     </div>
@@ -263,7 +263,7 @@ export default function Page() {
                                             type="text"
                                             value={names.name2}
                                             onChange={(e) => setNames({ ...names, name2: e.target.value })}
-                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
+                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 p-2"
                                             placeholder="Enter second name"
                                         />
                                     </div>

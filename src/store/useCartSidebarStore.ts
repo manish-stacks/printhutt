@@ -1,15 +1,15 @@
 import { create } from 'zustand';
 
-type CartSidebarViewState = {
+interface CartSidebarStore {
     isOpen: boolean;
     openCartSidebarView: () => void;
     closeCartSidebarView: () => void;
-};
+}
 
-const useCartSidebarStore = create<CartSidebarViewState>((set) => ({
+const useCartSidebarStore = create<CartSidebarStore>((set) => ({
     isOpen: false,
     openCartSidebarView: () => set({ isOpen: true }),
-    closeCartSidebarView: () => set({ isOpen: false}),
+    closeCartSidebarView: () => set({ isOpen: false }),
 }));
 
 
