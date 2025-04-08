@@ -18,6 +18,7 @@ export default function Page() {
   const canvasRefTwo = useRef<HTMLCanvasElement>(null);
   const [selectedFont, setSelectedFont] = useState("orangina_demo");
   const [product, setProduct] = useState<Product>();
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
   const addToCart = useCartStore(state => state.addToCart);
   const { openCartSidebarView } = useCartSidebarStore();
 
@@ -104,7 +105,7 @@ export default function Page() {
     } catch (error) {
       console.error('Error during download:', error);
       toast.error('Failed to download preview');
-    }
+    } 
   };
 
 
@@ -128,7 +129,7 @@ export default function Page() {
     }
 
     try {
-      
+      setIsAddingToCart(true);
       const previewCanvas = await handleCanvasAction();
 
       if (previewCanvas && product) {
@@ -153,7 +154,7 @@ export default function Page() {
     } catch (error) {
       console.error("Error while adding to cart:", error);
     } finally {
-     
+      setIsAddingToCart(false);
     }
   };
 
@@ -174,7 +175,9 @@ export default function Page() {
             <div className="relative rounded-lg">
               <div id="preview-section" className="relative rounded-lg p-2 border border-white/10">
                 <div className="img-box relative">
-                  <img                    src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743665003/998663784_love-heart-3_1_e14xx5_fg5ts9.png"
+                  <Image
+                    fill
+                    src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743665003/998663784_love-heart-3_1_e14xx5_fg5ts9.png"
                     alt="Preview"
                     className="w-full h-full object-cover rounded-lg"
                     crossOrigin="anonymous"
