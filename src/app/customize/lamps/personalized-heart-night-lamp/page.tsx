@@ -128,7 +128,7 @@ export default function Page() {
     }
 
     try {
-      setIsAddingToCart(true);
+      
       const previewCanvas = await handleCanvasAction();
 
       if (previewCanvas && product) {
@@ -153,7 +153,7 @@ export default function Page() {
     } catch (error) {
       console.error("Error while adding to cart:", error);
     } finally {
-      setIsAddingToCart(false);
+     
     }
   };
 
