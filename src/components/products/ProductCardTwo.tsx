@@ -83,7 +83,7 @@ const ProductCardTwo = ({ product }: PopupProps) => {
                                     height={800}
                                     loading='lazy'
                                 />
-                                <img
+                                <Image
                                     className="hover-img transition-all duration-[0.3s] ease-in-out absolute z-[2] top-[0] left-[0] opacity-[0] w-full"
                                     src={product?.images[0]?.url}
                                     alt={product.title}
@@ -111,7 +111,7 @@ const ProductCardTwo = ({ product }: PopupProps) => {
                                     <i className="ri-eye-line transition-all duration-[0.3s] ease-in-out text-[18px] text-[#777] leading-[10px]" />
                                 </button>
                             </li>
-                            <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
+                            {/* <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                                 <Link
                                     href="/compare"
                                     title="Compare"
@@ -119,7 +119,7 @@ const ProductCardTwo = ({ product }: PopupProps) => {
                                 >
                                     <i className="ri-repeat-line transition-all duration-[0.3s] ease-in-out text-[18px] text-[#777] leading-[10px]" />
                                 </Link>
-                            </li>
+                            </li> */}
                             <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                                 <button
                                     onClick={() => handleAddToCart(product)}

@@ -3,6 +3,7 @@ import { get_parent_categories } from '@/_services/admin/category';
 import { add_new_sub_category } from '@/_services/admin/sub-category';
 import { generateSlug } from '@/helpers/helpers';
 import { CategoryFormData } from '@/lib/types/category';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import React, { useState, useEffect } from 'react';
@@ -253,7 +254,9 @@ const CategoriesAdd = () => {
                   <div className="flex-1">
                     {previewUrl ? (
                       <div className="relative aspect-video w-40 h-40 rounded-lg overflow-hidden">
-                        <img
+                        <Image
+                          height={100}
+                          width={100}
                           src={previewUrl}
                           alt="Preview"
                           className="h-full object-cover"

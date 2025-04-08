@@ -1,13 +1,16 @@
 "use client"
 import React, { useState, useRef, useEffect } from 'react';
 import { Canvas, IText } from 'fabric';
-import { CustomizationButton } from '@/components/CustomizationButton';
 import { useCartStore } from '@/store/useCartStore';
 import html2canvas from 'html2canvas';
 import { get_product_by_id } from '@/_services/admin/product';
 import { Product } from '@/lib/types/product';
 import { toast } from 'react-toastify';
 import useCartSidebarStore from '@/store/useCartSidebarStore';
+import { FontPicker } from '@/components/neon/FontPicker';
+import { RiShoppingBag2Line } from 'react-icons/ri';
+import { BiDownload } from 'react-icons/bi';
+import Image from 'next/image';
 
 export default function Page() {
     const [names, setNames] = useState({ name1: '' });
@@ -150,7 +153,7 @@ export default function Page() {
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </div>
 
 
@@ -173,8 +176,7 @@ export default function Page() {
 
                                 </div>
                                 <div className="max-w-lg mx-auto mt-10">
-                                    <h2 className="text-xl font-semibold text-gray-800">Choose Your Font Family</h2>
-                                    <CustomizationButton selectedFont={selectedFont} handleFontChange={handleFontChange} />
+                                    <FontPicker selectedFont={selectedFont} onFontChange={handleFontChange} />
                                 </div>
 
                                 <div className="list-group-item mb-10 mt-10">
@@ -221,7 +223,8 @@ export default function Page() {
                                         <div className="w-full md:w-1/2">
                                             {selectedDesign === 'cutout' && (
                                                 <div id="cutoutDesign">
-                                                    <img
+                                                    <Image
+                                                        fill
                                                         src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743665002/510341279_20240810_152907_nioxer_bm8dwt.jpg"
                                                         alt="cutout"
                                                         className="h-[96px] w-[170px] object-cover rounded-xl"
@@ -230,7 +233,8 @@ export default function Page() {
                                             )}
                                             {selectedDesign === 'rectangle' && (
                                                 <div id="rectangleDesign">
-                                                    <img
+                                                    <Image
+                                                        fill
                                                         src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743665006/rect_n4e399_ets0sv.jpg"
                                                         alt="rectangle"
                                                         className="h-[96px] w-[170px] object-cover rounded-xl"
@@ -240,22 +244,19 @@ export default function Page() {
                                         </div>
                                     </div>
                                 </div>
-                                <button
-                                    onClick={handleAddToCart}
-                                    disabled={isAddingToCart} // Disable button while loading
-                                    className={`w-full py-3 rounded-lg font-semibold shadow-lg ${isAddingToCart
-                                        ? 'bg-gray-400 cursor-not-allowed'
-                                        : 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 transition-colors'
-                                        }`}
-                                >
-                                    {isAddingToCart ? 'Adding to Cart...' : 'Add to Cart'}
-                                </button>
-
-                                <button
-                                    onClick={handleDownload}
-                                    className="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-lg hover:from-amber-600 hover:to-amber-700 transition-colors font-semibold shadow-lg">
-                                    Download Preview
-                                </button>
+                                <div className="space-y-2">
+                                    <div className="flex gap-2" >
+                                        <button
+                                            onClick={() => handleAddToCart()}
+                                            disabled={isAddingToCart}
+                                            className="flex-1 bg-yellow-400 text-slate-700 py-3 px-6 max-[567px]:px-1 rounded-md font-medium hover:bg-yellow-500 flex items-center justify-center gap-2">
+                                            <RiShoppingBag2Line className="w-5 h-5" /> {isAddingToCart ? 'Adding to Cart...' : 'Add to Cart'}
+                                        </button>
+                                        <button onClick={() => handleDownload()} className="px-6 py-3 border border-gray-300 rounded-md hover:bg-gray-50">
+                                            <BiDownload className="w-6 h-6" />
+                                        </button>
+                                    </div>
+                                </div>
 
                             </div>
                         </div>

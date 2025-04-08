@@ -4,6 +4,7 @@ import { get_sub_category_by_id, update_sub_category } from '@/_services/admin/s
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { generateSlug } from '@/helpers/helpers';
 import { CategoryFormData } from '@/lib/types/category';
+import Image from 'next/image';
 
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
@@ -88,7 +89,7 @@ const CategoriesEdit = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const data = await get_parent_categories() 
+                const data = await get_parent_categories()
                 setCategories(data.data);
             } catch (error) {
                 setCategories([]);
@@ -178,7 +179,7 @@ const CategoriesEdit = () => {
             if (res.success) {
                 toast.success(res?.message);
                 setTimeout(() => {
-                   return router.push('/admin/sub-categories')
+                    return router.push('/admin/sub-categories')
                 }, 1000);
                 setIsSubmitting(false);
             } else {
@@ -186,8 +187,8 @@ const CategoriesEdit = () => {
                 setIsSubmitting(false);
             }
         } catch (error) {
-            if(error instanceof Error){
-            
+            if (error instanceof Error) {
+
                 toast.error(error?.message)
             }
         } finally {
@@ -212,9 +213,9 @@ const CategoriesEdit = () => {
 
     if (isLoading) {
         return (
-          <LoadingSpinner />
+            <LoadingSpinner />
         );
-      }
+    }
 
     return (
         <>
@@ -310,7 +311,9 @@ const CategoriesEdit = () => {
                                     <div className="flex-1">
                                         {previewUrl ? (
                                             <div className="relative aspect-video w-40 h-40 rounded-lg overflow-hidden">
-                                                <img
+                                                <Image
+                                                    width={100}
+                                                    height={100}
                                                     src={previewUrl}
                                                     alt="Preview"
                                                     className="h-full object-cover"
@@ -319,7 +322,9 @@ const CategoriesEdit = () => {
                                         ) : (
                                             <div className="flex items-center justify-center w-40 h-40 bg-gray-100 rounded-lg">
                                                 {formData.imageUrl ? (
-                                                    <img
+                                                    <Image
+                                                        width={100}
+                                                        height={100}
                                                         src={typeof formData.imageUrl === 'string' ? formData.imageUrl : URL.createObjectURL(formData.imageUrl)}
                                                         alt="Preview"
                                                         className="w-full h-full object-cover rounded-lg"

@@ -2,6 +2,7 @@
 import { add_new_category } from '@/_services/admin/category';
 import { generateSlug } from '@/helpers/helpers';
 import type { CategoryFormData } from '@/lib/types/category';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { FaImage } from 'react-icons/fa';
@@ -119,8 +120,8 @@ const CategoriesAdd = () => {
         setIsSubmitting(false);
       }
     } catch (error) {
-      if(error instanceof Error){
-            
+      if (error instanceof Error) {
+
         toast.error(error?.message)
       }
     } finally {
@@ -206,8 +207,7 @@ const CategoriesAdd = () => {
                   <div className="flex-1">
                     {previewUrl ? (
                       <div className="relative aspect-video w-40 h-40 rounded-lg overflow-hidden">
-                        <img
-                          src={previewUrl}
+                        <img                          src={previewUrl}
                           alt="Preview"
                           className="h-full object-cover"
                         />

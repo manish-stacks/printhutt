@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NeonText } from '@/components/neon/NeonText';
 import { ColorPicker } from '@/components/neon/ColorPicker';
 import { FontPicker } from '@/components/neon/FontPicker';
@@ -95,9 +95,9 @@ export default function NeonPage() {
 
     const updatedPresets = sizePresets.map((item) => {
 
-      let updatedPrice = item.price + item.perLetter * Math.max(textLength - 1, 0);
-      let updatedWidth = item.startWidth * Math.max(textLength, 1);
-      let updatedHeight = item.startHeight * Math.max(lineHeight, 1) + (lineHeight > 1 ? item.lineBreak : 0);
+      const updatedPrice = item.price + item.perLetter * Math.max(textLength - 1, 0);
+      const updatedWidth = item.startWidth * Math.max(textLength, 1);
+      const updatedHeight = item.startHeight * Math.max(lineHeight, 1) + (lineHeight > 1 ? item.lineBreak : 0);
 
       return {
         ...item,

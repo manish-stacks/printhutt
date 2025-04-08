@@ -79,7 +79,7 @@ export default function NeonPage() {
   const updateAvailableSizes = (text: string) => {
     const lines = text.split('\n').filter(line => line.trim() !== '');
     const currentLineCount = lines.length;
-    const maxLineLength = Math.max(...lines.map(line => line.replace(/\s/g, '').length), 0);
+    // const maxLineLength = Math.max(...lines.map(line => line.replace(/\s/g, '').length), 0);
 
     const matchingSizes = sizePresets.filter((size) => {
       const supportsLineCount = size.maxLineLength >= currentLineCount;

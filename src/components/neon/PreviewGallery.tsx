@@ -1,4 +1,5 @@
 import { previewImages } from '@/app/product/neon/_data/preview-images';
+import Image from 'next/image';
 import React from 'react';
 // import { previewImages } from '../data/preview-images';
 
@@ -22,8 +23,7 @@ export const PreviewGallery: React.FC<PreviewGalleryProps> = ({
           >
             <div className={`w-20 h-20 rounded-lg overflow-hidden transition-all duration-200
               ${selectedPreview === image.id ? 'ring-2 ring-blue-500 scale-105' : 'opacity-75 hover:opacity-100'}`}>
-              <img
-                src={image.url}
+              <img                src={image.url}
                 alt={image.alt}
                 className="w-full h-full object-cover"
               />

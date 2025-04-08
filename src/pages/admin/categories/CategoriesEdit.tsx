@@ -3,6 +3,7 @@ import { get_category_by_id, update_category } from '@/_services/admin/category'
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { generateSlug } from '@/helpers/helpers';
 import type { CategoryFormData } from '@/lib/types/category';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useState, useEffect, ChangeEvent } from 'react';
@@ -238,8 +239,7 @@ const CategoriesEdit = () => {
                                     <div className="flex-1">
                                         {previewUrl ? (
                                             <div className="relative aspect-video w-40 h-40 rounded-lg overflow-hidden">
-                                                <img
-                                                    src={previewUrl}
+                                                <img                                                    src={previewUrl}
                                                     alt="Preview"
                                                     className="h-full object-cover"
                                                 />
@@ -247,8 +247,7 @@ const CategoriesEdit = () => {
                                         ) : (
                                             <div className="flex items-center justify-center w-40 h-40 bg-gray-100 rounded-lg">
                                                 {formData.imageUrl ? (
-                                                    <img
-                                                        src={typeof formData.imageUrl === 'string' ? formData.imageUrl : URL.createObjectURL(formData.imageUrl)}
+                                                    <img                                                        src={typeof formData.imageUrl === 'string' ? formData.imageUrl : URL.createObjectURL(formData.imageUrl)}
                                                         alt="Preview"
                                                         className="w-full h-full object-cover rounded-lg"
                                                     />

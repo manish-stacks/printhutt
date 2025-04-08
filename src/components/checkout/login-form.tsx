@@ -1,9 +1,5 @@
-import React, { FormEvent, useEffect, useState, KeyboardEvent } from 'react';
-import { useUserStore } from '@/store/useUserStore';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
+import React from 'react';
 import { RiNotification3Fill, RiStackFill, RiTruckLine } from 'react-icons/ri';
-import { toast } from 'react-toastify';
 import { useOtp } from '@/hooks/useOtp';
 
 export const CheckoutloginForm = () => {
@@ -22,8 +18,8 @@ export const CheckoutloginForm = () => {
         verifyOtp,
     } = useOtp();
 
-    const router = useRouter();
-    const fetchUserDetails = useUserStore((state) => state.fetchUserDetails);
+    // const router = useRouter();
+    // const fetchUserDetails = useUserStore((state) => state.fetchUserDetails);
 
     return (
         <div className="bg-gray-50 px-4 py-8 sm:px-6 lg:px-8">

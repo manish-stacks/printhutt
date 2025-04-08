@@ -1,7 +1,12 @@
-
 import type { NextConfig } from "next";
+import withPWA from "next-pwa";
 
-const nextConfig: NextConfig = {
+const nextConfig: NextConfig = withPWA({
+  dest: "public",
+  disable: process.env.NODE_ENV === 'development',
+  register: true,
+  skipWaiting: true,
+})({
   images: {
     remotePatterns: [
       {
@@ -16,7 +21,6 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-
-};
+});
 
 export default nextConfig

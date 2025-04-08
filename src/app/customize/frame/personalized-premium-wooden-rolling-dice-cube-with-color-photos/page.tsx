@@ -4,7 +4,7 @@ import { formatCurrency } from '@/helpers/helpers';
 import { Product } from '@/lib/types/product';
 import useCartSidebarStore from '@/store/useCartSidebarStore';
 import { useCartStore } from '@/store/useCartStore';
-import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import React, { useState, useEffect, useRef } from 'react';
 import { BsUpload } from 'react-icons/bs';
 import { RiCloseLargeFill } from 'react-icons/ri';
@@ -155,7 +155,8 @@ export default function App() {
                                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                             {previews.map((preview) => (
                                                 <div key={preview.id} className="relative group">
-                                                    <img
+                                                    <Image
+                                                        fill
                                                         src={preview.url}
                                                         alt="Preview"
                                                         className="h-30 w-30 object-cover rounded-lg"

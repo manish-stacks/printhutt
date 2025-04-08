@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
@@ -17,8 +18,7 @@ const BannerOne = () => {
                                 <div className="banner-box p-[30px] rounded-[20px] relative overflow-hidden bg-box-color-one bg-[#fbf2e5]">
                                     <div className="inner-banner-box relative z-[1] flex justify-between max-[480px]:flex-col">
                                         <div className="side-image px-[12px] flex items-center max-[480px]:p-[0] max-[480px]:mb-[12px] max-[480px]:justify-center">
-                                            <img
-                                                src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664958/Acrylic-Frame_scbtw9_scaxd2.webp"
+                                            <img                                                src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664958/Acrylic-Frame_scbtw9_scaxd2.webp"
                                                 alt="one"
                                                 className="max-w-max w-[280px] h-[280px] max-[1399px]:w-[230px] max-[1399px]:h-[230px] max-[1199px]:w-[140px] max-[1199px]:h-[140px] max-[991px]:w-[280px] max-[991px]:h-[280px] max-[767px]:h-[200px] max-[767px]:w-[200px] max-[575px]:w-full max-[575px]:h-[auto] max-[480px]:w-[calc(100%-70px)]"
                                             />
@@ -50,8 +50,7 @@ const BannerOne = () => {
                                 <div className="banner-box p-[30px] rounded-[20px] relative overflow-hidden bg-box-color-two bg-[#ffe8ee]">
                                     <div className="inner-banner-box relative z-[1] flex justify-between max-[480px]:flex-col">
                                         <div className="side-image px-[12px] flex items-center max-[480px]:p-[0] max-[480px]:mb-[12px] max-[480px]:justify-center">
-                                            <img
-                                                src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664968/table-name-lemp_bo7yau_tx6j3q.webp"
+                                            <img                                                src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664968/table-name-lemp_bo7yau_tx6j3q.webp"
                                                 alt="two"
                                                 className="max-w-max w-[280px] h-[280px] max-[1399px]:w-[230px] max-[1399px]:h-[230px] max-[1199px]:w-[140px] max-[1199px]:h-[140px] max-[991px]:w-[280px] max-[991px]:h-[280px] max-[767px]:h-[200px] max-[767px]:w-[200px] max-[575px]:w-full max-[575px]:h-[auto] max-[480px]:w-[calc(100%-70px)]"
                                             />

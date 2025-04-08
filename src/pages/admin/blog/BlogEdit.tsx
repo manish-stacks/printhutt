@@ -1,11 +1,10 @@
 'use client'
 import { blogCategoryService, blogService } from '@/_services/admin/blog';
-// import { blogService } from '@/_services/common/blogService';
 import LoadingSpinner from '@/components/LoadingSpinner';
-// import QuillEditor from '@/components/QuillEditor';
 import { generateSlug } from '@/helpers/helpers';
 import type { BlogPost } from '@/lib/types/blog';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useState, useEffect, ChangeEvent } from 'react';
@@ -63,7 +62,7 @@ const BlogEdit = () => {
                 const data = await blogService.getBlog(id);
                 if (data) {
                     setFormData({
-                        category:data?.category,
+                        category: data?.category,
                         title: data?.title || "",
                         slug: data?.slug || "",
                         description: data?.description || "",
@@ -278,8 +277,7 @@ const BlogEdit = () => {
                                     <div className="flex-1">
                                         {previewUrl ? (
                                             <div className="relative aspect-video w-40 h-40 rounded-lg overflow-hidden">
-                                                <img
-                                                    src={previewUrl}
+                                                <img                                                    src={previewUrl}
                                                     alt="Preview"
                                                     className="h-full object-cover"
                                                 />
@@ -287,7 +285,8 @@ const BlogEdit = () => {
                                         ) : (
                                             <div className="flex items-center justify-center w-40 h-40 bg-gray-100 rounded-lg">
                                                 {formData.imageUrl ? (
-                                                    <img
+                                                    <Image
+                                                        fill
                                                         src={typeof formData.imageUrl === 'string' ? formData.imageUrl : URL.createObjectURL(formData.imageUrl)}
                                                         alt="Preview"
                                                         className="w-full h-full object-cover rounded-lg"

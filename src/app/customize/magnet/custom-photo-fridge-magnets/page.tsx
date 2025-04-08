@@ -5,6 +5,7 @@ import { formatCurrency } from '@/helpers/helpers';
 import { Product } from '@/lib/types/product';
 import useCartSidebarStore from '@/store/useCartSidebarStore';
 import { useCartStore } from '@/store/useCartStore';
+import Image from 'next/image';
 import React, { useState, useCallback, ChangeEvent, useEffect } from 'react';
 import { BiMinus, BiPlus } from 'react-icons/bi';
 import { toast } from 'react-toastify';
@@ -223,8 +224,7 @@ export default function App() {
                                         }}
                                         onMouseDown={handleImageMouseDown}
                                     >
-                                        <img
-                                            src={previewImage}
+                                        <img                                            src={previewImage}
                                             alt="Preview"
                                             className="object-cover absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2"
                                             style={{

@@ -26,6 +26,7 @@ import type { Option } from '@/lib/types';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import dynamic from 'next/dynamic';
 import type { ChangeEvent, KeyboardEvent, FormEvent } from 'react';
+import Image from 'next/image';
 
 const QuillEditor = dynamic(() => import('@/components/QuillEditor'), { ssr: false });
 
@@ -438,7 +439,7 @@ export default function AddProduct() {
                 <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
                   <div className="text-center">
                     {image ? (
-                      <img src={image} alt="Thumbnail Preview" className="mx-auto max-w-full rounded-md w-40 h-40" />
+                      <Image fill src={image} alt="Thumbnail Preview" className="mx-auto max-w-full rounded-md w-40 h-40" />
                     ) : (
                       <svg
                         className="mx-auto size-12 text-gray-300"

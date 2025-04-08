@@ -1,5 +1,6 @@
 import { formatCurrency } from '@/helpers/helpers';
 import { useCartStore } from '@/store/useCartStore';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react'
@@ -11,7 +12,7 @@ interface QuickViewProps {
         thumbnail: { url: string };
         short_description: string;
         slug: string;
-        discountType:string;
+        discountType: string;
         discountPrice: number;
         price: number;
         oldPrice: string;
@@ -65,8 +66,7 @@ const QuickView = ({ product, onClose }: QuickViewProps) => {
                                     <div className="single-pro-img single-pro-img-no-sidebar h-full border-[1px] border-solid border-[#eee] overflow-hidden rounded-[20px]">
                                         <div className="single-product-scroll h-full">
                                             <div className="single-slide zoom-image-hover h-full bg-[#fff] flex items-center">
-                                                <img
-                                                    className="img-responsive max-w-full block"
+                                                <img                                                    className="img-responsive max-w-full block"
                                                     src={product?.thumbnail?.url}
                                                     alt={product.title}
                                                 />

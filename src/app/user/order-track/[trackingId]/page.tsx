@@ -9,8 +9,8 @@ import { FaShippingFast, FaMapMarkerAlt, FaBox, FaCheckCircle } from "react-icon
 const OrderTrack = () => {
   const params = useParams();
   const trackingId = params?.trackingId as string | undefined;
-  const [shipping, setShipping] = useState<any>(null);
-  const [order, setOrder] = useState<any>(null);
+  const [shipping, setShipping] = useState(null);
+  const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const getShipping = async () => {
@@ -61,7 +61,7 @@ const OrderTrack = () => {
 
                 {/* Shipment Details */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {shipping?.shipment_track?.map((track: any, index: number) => (
+                  {shipping?.shipment_track?.map((track, index: number) => (
                     <div
                       key={index}
                       className="border p-4 rounded-lg bg-gray-50 shadow-sm"
@@ -107,7 +107,7 @@ const OrderTrack = () => {
                   <h3 className="text-lg font-semibold text-gray-700 mb-4">Shipment Activities</h3>
                   <ul className="space-y-4">
                     {shipping?.shipment_track_activities?.map(
-                      (activity: any, index: number) => (
+                      (activity, index: number) => (
                         <li
                           key={index}
                           className="p-4 border rounded-lg bg-gray-50 shadow-sm"

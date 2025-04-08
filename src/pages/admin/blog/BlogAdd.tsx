@@ -4,6 +4,7 @@ import { blogCategoryService, blogService } from '@/_services/admin/blog';
 import { generateSlug } from '@/helpers/helpers';
 import type { BlogPost, BlogCategory } from '@/lib/types/blog';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { FaImage } from 'react-icons/fa';
@@ -245,8 +246,7 @@ const BlogAddPage = () => {
                   <div className="flex-1">
                     {previewUrl ? (
                       <div className="relative aspect-video w-40 h-40 rounded-lg overflow-hidden">
-                        <img
-                          src={previewUrl}
+                        <img                          src={previewUrl}
                           alt="Preview"
                           className="h-full object-cover"
                         />

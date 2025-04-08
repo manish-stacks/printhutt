@@ -5,11 +5,12 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { FaSearch } from 'react-icons/fa';
 import { Pagination } from '@/components/admin/Pagination';
 import { toast } from 'react-toastify';
-import {  ITestimonial } from '@/lib/types';
+import { ITestimonial } from '@/lib/types';
 import { RiDeleteBin2Line, RiEdit2Fill, RiLoader2Line } from 'react-icons/ri';
 import Swal from 'sweetalert2';
 import { TestimonialForm } from '@/components/admin/tesrimonial/TestimonialForm';
 import { createTestimonial, deleteTestimonial, getTestimonial, updateTestimonial } from '@/_services/admin/testimonial';
+import Image from 'next/image';
 
 export default function Testimonials() {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -233,9 +234,10 @@ export default function Testimonials() {
                                                 <td className="py-3 px-4">{testimonial.name}</td>
                                                 <td className="py-3 px-4">
                                                     {testimonial.image && (
-                                                        <img
-                                                            src={testimonial.image.url}
+                                                        <Image
+                                                            fill
                                                             alt={testimonial.title}
+                                                            src={testimonial.image.url}
                                                             className="w-20 h-20 object-cover rounded"
                                                         />
                                                     )}

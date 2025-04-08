@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 const services = [
@@ -47,8 +48,7 @@ const OurServices = () => {
               >
                 <div className="bb-services-box p-[30px] max-[576px]:p-[10px] border-[1px] border-solid border-[#eee] rounded-[20px] text-center">
                   <div className="services-img mb-[20px] flex justify-center">
-                    <img
-                      src={service.imgSrc}
+                    <img                      src={service.imgSrc}
                       alt={service.imgAlt}
                       className="w-[50px]"
                     />

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React, { useState } from "react";
 import Slider, { Settings } from "react-slick";
 
@@ -109,8 +110,7 @@ const SingleProductSlider = ({ product }: SingleProductSliderProps) => {
               onMouseMove={(e) => handleMouseMove(e, image)}
               onMouseLeave={handleMouseLeave}
             >
-              <img
-                className="w-full h-full object-cover object-center rounded-t-2xl"
+              <img                className="w-full h-full object-cover object-center rounded-t-2xl"
                 src={image}
                 alt={index === 0 ? imgAlt || "Product Image" : `${slug}-${index + 1}`}
               />
@@ -155,8 +155,7 @@ const SingleProductSlider = ({ product }: SingleProductSliderProps) => {
           )}
           {productImages.map((image, index) => (
             <div key={index} className="single-slide px-2">
-              <img
-                className="w-full h-24 object-cover object-center border border-transparent hover:border-gray-300 rounded-lg cursor-pointer"
+              <img                className="w-full h-24 object-cover object-center border border-transparent hover:border-gray-300 rounded-lg cursor-pointer"
                 src={image}
                 alt={`${slug}-thumb-${index + 1}`}
               />

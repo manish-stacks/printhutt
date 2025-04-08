@@ -1,6 +1,7 @@
 'use client';
 
 import { ITestimonial } from '@/lib/types';
+import Image from 'next/image';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { RiLoader2Line } from 'react-icons/ri';
 import Select from 'react-select';
@@ -80,7 +81,7 @@ export function TestimonialForm({
                 <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
                   <div className="text-center">
                     {image ? (
-                      <img src={image} alt="Preview" className="mx-auto max-w-full rounded-md w-100 h-40" />
+                      <Image fill src={image} alt="Preview" className="mx-auto max-w-full rounded-md w-100 h-40" />
                     ) : (
                       <div className="mx-auto h-100 w-32 flex items-center justify-center rounded-lg bg-gray-50">
                         <span className="text-gray-500">No image</span>

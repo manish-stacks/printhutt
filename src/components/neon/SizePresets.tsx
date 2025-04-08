@@ -37,8 +37,8 @@ export const SizePresets: React.FC<SizePresetsProps> = ({
           <div className="flex justify-between">
             <div>
               <div className="font-medium max-[576px]:text-xs">{size.name}</div>
-              <div className="text-sm text-gray-500 max-[576px]:text-xs">Length: {size.width}"</div>
-              <div className="text-sm text-gray-500 max-[576px]:text-xs">Height: {size.height}"</div>
+              <div className="text-sm text-gray-500 max-[576px]:text-xs">Length: {size.width}&quot;</div>
+              <div className="text-sm text-gray-500 max-[576px]:text-xs">Height: {size.height}&quot;</div>
             </div>
             <div className="text-lg font-bold max-[576px]:text-xs">₹{size.price}</div>
           </div>

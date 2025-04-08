@@ -5,13 +5,11 @@ import Breadcrumb from "@/components/Breadcrumb";
 import { useCartStore } from "@/store/useCartStore";
 import Image from "next/image";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
 import { formatCurrency } from "@/helpers/helpers";
 import Link from "next/link";
 import useCartSidebarStore from "@/store/useCartSidebarStore";
 
 const Cart = () => {
-  const router = useRouter();
   const [totalPrice, setTotalPrice] = useState({ totalPrice: 0, discountPrice: 0, shippingTotal: 0 });
   const { updateQuantity, removeFromCart, getTotalPrice } = useCartStore();
   const { openCartSidebarView } = useCartSidebarStore();
@@ -32,40 +30,40 @@ const Cart = () => {
   useEffect(() => {
     setTotalPrice(getTotalPrice());
   }, [items, getTotalPrice]);
-/*
-  useEffect(() => {
-    if (typeof window !== "undefined" && (window as any).dataLayer) {
-      (window as any).dataLayer.push({ ecommerce: null }); // Clear previous ecommerce data
-      (window as any).dataLayer.push({
-        event: "add_to_cart",
-        ecommerce: {
-          currency: "INR",
-          value: (totalPrice.discountPrice + totalPrice.shippingTotal).toFixed(2),
-          items: items.map((item, index) => ({
-            item_id: item.sku,
-            item_name: item.title,
-            item_brand: item?.brand,
-            // coupon: selectedCoupon?.code || "",
-            discount: item.discountPrice,
-            index: index,
-            price: Number(
-              (
-                item.discountType === "percentage"
-                  ? item.price - (item.price * item.discountPrice) / 100
-                  : item.price - item.discountPrice
-              ) * item.quantity
-            ).toFixed(2),
-            quantity: item.quantity
-          })),
-        },
-      });
-    }
-  }, [items, totalPrice]);
-*/
-  const gotoCheckout = () => {
-    return router.push('/checkout');
+  /*
+    useEffect(() => {
+      if (typeof window !== "undefined" && (window as any).dataLayer) {
+        (window as any).dataLayer.push({ ecommerce: null }); // Clear previous ecommerce data
+        (window as any).dataLayer.push({
+          event: "add_to_cart",
+          ecommerce: {
+            currency: "INR",
+            value: (totalPrice.discountPrice + totalPrice.shippingTotal).toFixed(2),
+            items: items.map((item, index) => ({
+              item_id: item.sku,
+              item_name: item.title,
+              item_brand: item?.brand,
+              // coupon: selectedCoupon?.code || "",
+              discount: item.discountPrice,
+              index: index,
+              price: Number(
+                (
+                  item.discountType === "percentage"
+                    ? item.price - (item.price * item.discountPrice) / 100
+                    : item.price - item.discountPrice
+                ) * item.quantity
+              ).toFixed(2),
+              quantity: item.quantity
+            })),
+          },
+        });
+      }
+    }, [items, totalPrice]);
+  */
+  // const gotoCheckout = () => {
+  //   return router.push('/checkout');
 
-  }
+  // }
 
   // console.log(totalPrice.discountPrice)
 

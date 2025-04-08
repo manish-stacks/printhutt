@@ -55,8 +55,8 @@ const HeroSlider = () => {
                                         src={slider.imageUrl.url}
                                         alt={slider.title}
                                         className="w-full"
-                                        width={1900}
-                                        height={550}
+                                        width={1000}
+                                        height={400}
                                         placeholder="blur"
                                         blurDataURL="https://via.placeholder.com/1900x545.png?text=1900*545"
                                         onError={fail}

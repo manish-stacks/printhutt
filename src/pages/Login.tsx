@@ -5,6 +5,7 @@ import axios from "axios";
 import { toast } from 'react-toastify';
 import { useRouter } from "next/navigation";
 import { useUserStore } from "@/store/useUserStore";
+import Image from "next/image";
 
 const Login = () => {
   const router = useRouter();
@@ -46,7 +47,7 @@ const Login = () => {
       setTimer(30);
       setIsResendEnabled(false);
 
-      if(data) {
+      if (data) {
         toast.success(`Otp sent to ${emailOrMobile}`);
       } else {
         toast.error(`Failed to send OTP to ${emailOrMobile}`);
@@ -142,13 +143,13 @@ const Login = () => {
         emailOrMobile,
       });
 
-      if(data) {
+      if (data) {
         toast.success(`OTP sent to ${emailOrMobile}`);
       } else {
         toast.error('Failed to send OTP');
       }
     } catch (error) {
-      if(error instanceof Error) {
+      if (error instanceof Error) {
         toast.error(error.message);
       }
     }
@@ -160,7 +161,7 @@ const Login = () => {
 
       <div className="flex items-center justify-center p-4 min-h-[calc(100vh-200px)]">
         <div className="w-full max-w-4xl mx-auto">
-          <div 
+          <div
             className="flex flex-col md:flex-row shadow-lg rounded-lg overflow-hidden border bg-white"
             data-aos="fade-up"
             data-aos-duration={1000}
@@ -173,8 +174,7 @@ const Login = () => {
                 Get access to your Orders, Wishlist and Recommendations
               </p>
               <div className="w-24 h-24 md:w-28 md:h-28 bg-white rounded-full flex items-center justify-center">
-                <img
-                  src={!isOtpSent 
+                <img                  src={!isOtpSent
                     ? "https://t3.ftcdn.net/jpg/03/39/70/90/360_F_339709048_ZITR4wrVsOXCKdjHncdtabSNWpIhiaR7.jpg"
                     : "https://t4.ftcdn.net/jpg/03/39/70/91/360_F_339709166_kKKqiQFynWG7bEkl3LisH3saRrEB0HGa.jpg"
                   }
@@ -200,9 +200,8 @@ const Login = () => {
                     onChange={handleInputChange}
                     placeholder="Email/Mobile number"
                     autoComplete="off"
-                    className={`w-full p-3 pl-0 text-md border-0 rounded-none border-b-2 ${
-                      errorMessage ? "border-rose-700" : "border-gray-300"
-                    } focus:outline-none focus:border-blue-500 mb-4`}
+                    className={`w-full p-3 pl-0 text-md border-0 rounded-none border-b-2 ${errorMessage ? "border-rose-700" : "border-gray-300"
+                      } focus:outline-none focus:border-blue-500 mb-4`}
                   />
                   {errorMessage && <div className="text-rose-800 mb-4">{errorMessage}</div>}
 
@@ -216,11 +215,10 @@ const Login = () => {
                   <button
                     type="submit"
                     disabled={loading}
-                    className={`w-full py-3 rounded-md text-lg font-semibold ${
-                      loading
+                    className={`w-full py-3 rounded-md text-lg font-semibold ${loading
                         ? "bg-rose-950 cursor-not-allowed"
                         : "bg-rose-600 text-white hover:bg-orange-600"
-                    }`}
+                      }`}
                   >
                     {loading ? "Sending OTP..." : "Request OTP"}
                   </button>
@@ -230,8 +228,8 @@ const Login = () => {
                   <p className="text-center text-gray-800 text-sm mb-6">
                     Please enter the OTP sent to <br />
                     <span className="font-semibold">{emailOrMobile}</span>{" "}
-                    <button 
-                      onClick={() => window.location.reload()} 
+                    <button
+                      onClick={() => window.location.reload()}
                       className="text-blue-600 font-medium"
                     >
                       Change
@@ -253,18 +251,17 @@ const Login = () => {
                         />
                       ))}
                     </div>
-                    
+
                     {error && <p className="text-red-500 text-center mb-3">{error}</p>}
                     {success && <p className="text-green-500 text-center mb-3">{success}</p>}
-                    
+
                     <button
                       type="submit"
                       disabled={loadingOtp}
-                      className={`w-full py-3 rounded-md text-lg font-semibold ${
-                        loadingOtp
+                      className={`w-full py-3 rounded-md text-lg font-semibold ${loadingOtp
                           ? "bg-blue-950 cursor-not-allowed"
                           : "bg-blue-500 text-white hover:bg-blue-600"
-                      }`}
+                        }`}
                     >
                       {loadingOtp ? "Verifying..." : "Verify"}
                     </button>

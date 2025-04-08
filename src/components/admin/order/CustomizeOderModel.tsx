@@ -166,7 +166,7 @@ const CustomizeOderModel = ({ item }) => {
                         item?.width && (
                             <div className="flex items-center justify-between  border-b last:border-0">
                                 <p className="font-semibold">Box Size</p>
-                                <p>{item?.width}" x {item?.height}"</p>
+                                <p>{item?.width}&quot; x {item?.height}&quot;</p>
                             </div>
                         )
                     }

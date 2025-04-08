@@ -73,10 +73,10 @@ export const NeonText: React.FC<NeonTextProps> = ({ text, color, font, width, he
         <div className="absolute -top-8 left-1/2 h-8 border-l border-gray-400 opacity-100 group-hover:opacity-100 transition-opacity" />
         <div className="absolute -bottom-8 left-1/2 h-8 border-l border-gray-400 opacity-100 group-hover:opacity-100 transition-opacity" />
         <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-black/75 text-white px-2 py-1 rounded text-sm opacity-100 group-hover:opacity-100 transition-opacity">
-          {width}"
+          {width}&quot;
         </div>
         <div className="absolute bottom-[38%] -left-20 transform -translate-y-1/2 bg-black/75 text-white px-2 py-1 rounded text-sm opacity-100 group-hover:opacity-100 transition-opacity">
-          {height}"
+          {height}&quot;
         </div>
       </div>
     </Draggable>

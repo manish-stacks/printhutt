@@ -39,7 +39,7 @@ const Footer = () => {
   return (
     <>
       {/* footer */}
-      <footer className="bb-footer mt-[50px] max-[1199px]:mt-[35px] bg-[#f8f8fb] text-[#fff]">
+      <footer className="bb-footer  bg-[#f8f8fb] text-[#fff]">
         <div className="footer-container border-t-[1px] border-solid border-[#eee]">
           <div className="footer-top py-[50px] max-[1199px]:py-[35px]">
             <div className="flex flex-wrap justify-between relative items-center mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">
@@ -374,7 +374,7 @@ const Footer = () => {
                           className="site-name transition-all duration-[0.3s] ease-in-out font-medium text-[#6c7fd8] hover:text-[#3d4750] font-Poppins text-[15px] leading-[28px] tracking-[0.03rem]"
                           href="/"
                         >
-                          {""} HBS  {" "}
+                          {""} PrintHutt  {" "}
                         </Link>
                         all rights reserved.
                       </div>
@@ -383,7 +383,9 @@ const Footer = () => {
                   <div className="footer-bottom-right">
                     <div className="footer-bottom-payment flex justify-center">
                       <div className="payment-link">
-                        <img
+                        <Image
+                          width={200}
+                          height={100}
                           src="/img/payment/payment.png"
                           alt="payment"
                           className="max-[360px]:w-full"

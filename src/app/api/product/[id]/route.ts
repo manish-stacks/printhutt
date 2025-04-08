@@ -6,25 +6,15 @@ import { deleteImage, uploadImage } from '@/lib/cloudinary';
 import mongoose from 'mongoose';
 import type { ProductUpdateData } from '@/lib/types/product';
 
-// Helper function to validate ObjectId
+
 const isValidObjectId = (id: string): boolean => mongoose.Types.ObjectId.isValid(id);
-
-// Helper function to validate admin role
 const isAdmin = (role: string): boolean => role === 'admin';
-
-// Helper function to handle unauthorized requests
 const unauthorizedResponse = () =>
     NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
-
-// Helper function to handle invalid ID responses
 const invalidIdResponse = () =>
     NextResponse.json({ success: false, message: 'Invalid Product ID' }, { status: 400 });
-
-// Helper function to handle not found responses
 const notFoundResponse = () =>
     NextResponse.json({ success: false, message: 'Product not found' }, { status: 404 });
-
-// Helper function to handle server errors
 const serverErrorResponse = (error: Error) => {
     console.error('Error:', error.message);
     return NextResponse.json(
@@ -33,7 +23,7 @@ const serverErrorResponse = (error: Error) => {
     );
 };
 
-// GET: Fetch a product by ID
+
 export async function GET(request: NextRequest, context: { params: { id: string } }) {
     try {
         await dbConnect();
@@ -54,7 +44,7 @@ export async function GET(request: NextRequest, context: { params: { id: string 
     }
 }
 
-// PUT: Update a product by ID
+
 export async function PUT(request: NextRequest, context: { params: { id: string } }) {
     try {
         const { id } = await context.params;
@@ -69,7 +59,7 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
         const product = await ProductModel.findById(id);
         if (!product) return notFoundResponse();
 
-        // Parse form data
+        
         const offers = formData.get('offers');
         const offersAsObjectIds = offers
             ? JSON.parse(offers as string).map((id: string) => new mongoose.Types.ObjectId(id))
@@ -119,26 +109,27 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
             varient: JSON.parse(formData.get('varient')?.toString() || JSON.stringify(product.varient)),
         };
 
-        // Handle thumbnail upload
         const thumbnail = formData.get('thumbnail');
-        if (typeof File !== 'undefined' && thumbnail instanceof File) {
-            if (product.thumbnail?.public_id) await deleteImage(product.thumbnail.public_id);
+        if (thumbnail && typeof thumbnail === 'object' && 'arrayBuffer' in thumbnail) {
+            if (product.thumbnail?.public_id) {
+                await deleteImage(product.thumbnail.public_id);
+            }
             updatedData.thumbnail = await uploadImage(thumbnail, 'products/thumbnails', 800, 800);
         }
 
-        // Handle images upload
         const imagesRaw = formData.getAll('images');
-        if (imagesRaw.length && typeof File !== 'undefined') {
-            const uploadedImages = await Promise.all(
-                imagesRaw.map(async (image) => {
-                    if (typeof File !== 'undefined' && image instanceof File) return uploadImage(image, 'products', 800, 800);
-                    throw new Error('Invalid image file provided.');
-                })
-            );
-            updatedData.images = [...(product.images || []), ...uploadedImages];
+        if (imagesRaw.length > 0) {
+            const validImages = imagesRaw.filter(img => typeof img === 'object' && 'arrayBuffer' in img);
+            if (validImages.length > 0) {
+                const uploadedImages = await Promise.all(
+                    validImages.map(async (image) => {
+                        return uploadImage(image, 'products', 800, 800);
+                    })
+                );
+                updatedData.images = [...(product.images || []), ...uploadedImages];
+            }
         }
 
-        // Update and save product
         Object.assign(product, updatedData);
         const savedProduct = await product.save();
 
@@ -152,7 +143,7 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
     }
 }
 
-// DELETE: Delete a product by ID
+
 export async function DELETE(request: NextRequest, context: { params: { id: string } }) {
     try {
         const { id } = await context.params;
@@ -184,7 +175,7 @@ export async function DELETE(request: NextRequest, context: { params: { id: stri
     }
 }
 
-// PATCH: Update product status
+
 export async function PATCH(request: NextRequest, context: { params: { id: string } }) {
     try {
         const { id } = await context.params;

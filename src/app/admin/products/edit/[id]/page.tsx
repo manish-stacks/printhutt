@@ -25,6 +25,7 @@ import type { ImageType, Option } from '@/lib/types';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import dynamic from 'next/dynamic';
 import { ProductVariant } from '@/lib/types/product';
+import Image from 'next/image';
 const QuillEditor = dynamic(() => import('@/components/QuillEditor'), { ssr: false });
 interface ProductFormData {
   title: string;
@@ -399,7 +400,7 @@ export default function EditProduct() {
       }
 
       if (formData.images && formData.images.length > 0) {
-        formData.images.forEach((image, index) => {
+        formData.images.forEach((image) => {
           if (image.file instanceof File) {
             formDataToSend.append(`images`, image.file);
           }
@@ -531,7 +532,7 @@ export default function EditProduct() {
                 <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
                   <div className="text-center">
                     {image ? (
-                      <img src={image} alt="Thumbnail Preview" className="mx-auto max-w-full rounded-md w-40 h-40" />
+                      <Image width={100} height={100} src={image} alt="Thumbnail Preview" className="mx-auto max-w-full rounded-md w-40 h-40" />
                     ) : (
                       <svg
                         className="mx-auto size-12 text-gray-300"

@@ -1,5 +1,6 @@
 import Breadcrumb from "@/components/Breadcrumb";
 import { BlogPost } from "@/lib/types/blog";
+import Image from "next/image";
 import React from "react";
 
 interface ProductProps {
@@ -47,7 +48,8 @@ const BlogDetails = ({ blogData, relatedBlog }: ProductProps) => {
 
                           <div key={index} className="blog-sidebar-card mb-[24px] p-[15px] bg-[#f8f8fb] border-[1px] border-solid border-[#eee] rounded-[20px] flex max-[991px]:flex-row max-[360px]:flex-col">
                             <div className="inner-image mr-[15px] max-[991px]:mr-[20px] max-[991px]:mb-[0] max-[360px]:mr-[0] max-[360px]:mb-[15px]">
-                              <img
+                              <Image
+                                fill
                                 src={blog?.image?.url}
                                 alt="blog"
                                 className="max-w-[80px] rounded-[5px] max-[360px]:max-w-full"
@@ -119,8 +121,7 @@ const BlogDetails = ({ blogData, relatedBlog }: ProductProps) => {
                 data-aos-delay={400}
               >
                 <div className="inner-blog-details-image mb-[24px]">
-                  <img
-                    src={blogData?.image?.url}
+                  <img                    src={blogData?.image?.url}
                     alt="details-one"
                     className="w-full rounded-[15px]"
                   />

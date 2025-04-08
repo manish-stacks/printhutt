@@ -3,15 +3,15 @@ import React, { useState, useRef, useEffect } from 'react';
 import { BiRefresh, BiUpload } from 'react-icons/bi';
 import { BsUpload } from 'react-icons/bs';
 import { Canvas, IText } from 'fabric';
-import { CustomizationButton } from '@/components/CustomizationButton';
 import { useCartStore } from '@/store/useCartStore';
 import html2canvas from 'html2canvas';
 import { get_product_by_id } from '@/_services/admin/product';
 import { Product } from '@/lib/types/product';
-import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { formatCurrency } from '@/helpers/helpers';
 import useCartSidebarStore from '@/store/useCartSidebarStore';
+import { FontPicker } from '@/components/neon/FontPicker';
+import Image from 'next/image';
 
 export default function App() {
   const [previewImage, setPreviewImage] = useState('');
@@ -20,7 +20,6 @@ export default function App() {
   const [selectedFont, setSelectedFont] = useState("ariblk");
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const addToCart = useCartStore(state => state.addToCart);
-  const router = useRouter();
   const [names, setNames] = useState({ name1: '' });
   const [fontSize, setFontSize] = useState(32);
   const [lineHeight, setLineHeight] = useState(1.5);
@@ -49,7 +48,7 @@ export default function App() {
         left,
         top,
         fill: '#fde68a',
-        fontSize: fontSize, // Use font size state
+        fontSize: fontSize, 
         fontFamily: selectedFont,
         lineHeight: lineHeight,
       });
@@ -63,7 +62,7 @@ export default function App() {
     return () => {
       canvas1?.dispose();
     };
-  }, [names, selectedFont, lineHeight, fontSize]); // Add fontSize to dependencies
+  }, [names, selectedFont, lineHeight, fontSize]); 
 
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -164,7 +163,7 @@ export default function App() {
       return;
     }
     try {
-     
+
       setIsAddingToCart(true);
       const previewCanvas = await handleCanvasAction();
       if (previewCanvas && product) {
@@ -174,7 +173,7 @@ export default function App() {
           previewCanvas,
           selectedFont,
           price: product?.price,
-          variant: varientSize=='default'?product?.varient[0]?.size :varientSize,
+          variant: varientSize == 'default' ? product?.varient[0]?.size : varientSize,
         };
 
         const updatedProduct = {
@@ -222,8 +221,7 @@ export default function App() {
                       {previewImage ? (
                         <div className="w-full h-full relative">
                           <div className="inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent"></div>
-                          <img
-                            src={previewImage}
+                          <img                            src={previewImage}
                             alt="Preview"
                             className="w-full h-full object-cover rounded-lg"
                           />
@@ -312,10 +310,7 @@ export default function App() {
                   </div>
                 </div>
                 <div className="max-w-lg mx-auto mt-10">
-                  <h2 className="text-xl font-semibold text-gray-800">Choose Your Font Family</h2>
-                  <div className="max-h-[250px] overflow-auto">
-                    <CustomizationButton selectedFont={selectedFont} handleFontChange={handleFontChange} />
-                  </div>
+                  <FontPicker selectedFont={selectedFont} onFontChange={handleFontChange} />
                 </div>
 
                 {product?.isVarientStatus && (

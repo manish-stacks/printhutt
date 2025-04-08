@@ -11,6 +11,7 @@ import Link from 'next/link';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import Image from 'next/image';
 
 interface PropsInterface {
     slug: string;
@@ -111,7 +112,9 @@ const Category = ({ slug }: PropsInterface) => {
                                                                 data-aos-delay={(index + 1) * 200}
                                                             >
                                                                 <div className="category-image mb-[12px] flex items-center justify-center">
-                                                                    <img
+                                                                    <Image
+                                                                        width={50}
+                                                                        height={50}
                                                                         src={category?.image?.url}
                                                                         alt={category?.name}
                                                                         className="w-[50px] h-[50px] max-[1399px]:h-[65px] max-[1399px]:w-[65px] max-[1199px]:h-[50px] max-[1199px]:w-[50px] rounded-full"

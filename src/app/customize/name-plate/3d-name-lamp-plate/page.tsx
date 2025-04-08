@@ -1,13 +1,15 @@
 "use client"
 import React, { useState, useRef, useEffect } from 'react';
 import { Canvas, IText } from 'fabric';
-import { CustomizationButton } from '@/components/CustomizationButton';
 import { useCartStore } from '@/store/useCartStore';
 import html2canvas from 'html2canvas';
 import { get_product_by_id } from '@/_services/admin/product';
 import { Product } from '@/lib/types/product';
 import { toast } from 'react-toastify';
 import useCartSidebarStore from '@/store/useCartSidebarStore';
+import { FontPicker } from '@/components/neon/FontPicker';
+import { BiDownload } from 'react-icons/bi';
+import { RiShoppingBag2Line } from 'react-icons/ri';
 
 export default function App() {
     const [names, setNames] = useState({ name1: '' });
@@ -18,6 +20,7 @@ export default function App() {
     const [selectedColor, setSelectedColor] = useState('White');
     const addToCart = useCartStore(state => state.addToCart);
     const { openCartSidebarView } = useCartSidebarStore();
+    const [isMobile, setIsMobile] = useState(false);
 
     const fetchProduct = async (id: string) => {
         try {
@@ -31,9 +34,21 @@ export default function App() {
 
 
     useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
+    useEffect(() => {
         fetchProduct('67934192624b716ca19da403');
     }, []);
 
+    console.log(isMobile)
     useEffect(() => {
         const initializeCanvas = (canvasElement: HTMLCanvasElement, text: string, left: number, top: number) => {
             const canvas = new Canvas(canvasElement);
@@ -50,7 +65,7 @@ export default function App() {
                 left,
                 top,
                 fill: selectedColor === 'White' ? '#fff' : '#fde68a',
-                fontSize: 42,
+                fontSize: isMobile ? 40 : 42,
                 fontFamily: selectedFont,
             });
             canvas.add(textObj);
@@ -58,12 +73,12 @@ export default function App() {
             return canvas;
         };
 
-        const canvas1 = canvasRef.current && initializeCanvas(canvasRef.current, names.name1 || 'First Name', 50, 60);
+        const canvas1 = canvasRef.current && initializeCanvas(canvasRef.current, names.name1 || 'Preview', 10, 10);
 
         return () => {
             canvas1?.dispose();
         };
-    }, [names, selectedFont, selectedColor]);
+    }, [names, selectedFont, selectedColor, isMobile]);
 
 
     const handleFontChange = (font: string) => {
@@ -141,7 +156,7 @@ export default function App() {
         >
             <div className="min-h-screen bg-black/40 backdrop-blur-sm py-8">
                 <div className="container mx-auto px-4">
-                    <h1 className="text-4xl font-script text-white text-center mb-8">
+                    <h1 className="text-4xl font-script text-white text-center mb-8 max-[567px]:text-lg">
                         Create Your Memory Light
                     </h1>
 
@@ -154,12 +169,12 @@ export default function App() {
                                 <div className="aspect-[16/9] rounded-lg overflow-hidden flex items-center justify-center">
                                     <div className="relative w-full h-full flex items-center justify-center">
                                         <div className="absolute inset-0 flex items-center justify-center">
-                                            <canvas ref={canvasRef} className="w-full h-full"></canvas>
+                                            <canvas ref={canvasRef} width="534" height="145" className="w-full h-full flex justify-center items-center"></canvas>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </div>
 
 
@@ -183,8 +198,7 @@ export default function App() {
 
                                 </div>
                                 <div className="max-w-lg mx-auto mt-10">
-                                    <h2 className="text-xl font-semibold text-gray-800">Choose Your Font Family</h2>
-                                    <CustomizationButton selectedFont={selectedFont} handleFontChange={handleFontChange} />
+                                    <FontPicker selectedFont={selectedFont} onFontChange={handleFontChange} />
                                 </div>
 
                                 <div className="list-group-item mb-10 mt-10">
@@ -228,25 +242,23 @@ export default function App() {
 
 
                                         </div>
-                                       
+
                                     </div>
                                 </div>
-                                <button
-                                    onClick={handleAddToCart}
-                                    disabled={isAddingToCart} // Disable button while loading
-                                    className={`w-full py-3 rounded-lg font-semibold shadow-lg ${isAddingToCart
-                                        ? 'bg-gray-400 cursor-not-allowed'
-                                        : 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 transition-colors'
-                                        }`}
-                                >
-                                    {isAddingToCart ? 'Adding to Cart...' : 'Add to Cart'}
-                                </button>
+                                <div className="space-y-2">
+                                    <div className="flex gap-2" >
+                                        <button
+                                            onClick={() => handleAddToCart()}
+                                            disabled={isAddingToCart}
+                                            className="flex-1 bg-yellow-400 text-slate-700 py-3 px-6 max-[567px]:px-1 rounded-md font-medium hover:bg-yellow-500 flex items-center justify-center gap-2">
+                                            <RiShoppingBag2Line className="w-5 h-5" /> {isAddingToCart ? 'Adding to Cart...' : 'Add to Cart'}
+                                        </button>
+                                        <button onClick={() => handleDownload()} className="px-6 py-3 border border-gray-300 rounded-md hover:bg-gray-50">
+                                            <BiDownload className="w-6 h-6" />
+                                        </button>
+                                    </div>
+                                </div>
 
-                                <button
-                                    onClick={handleDownload}
-                                    className="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-lg hover:from-amber-600 hover:to-amber-700 transition-colors font-semibold shadow-lg">
-                                    Download Preview
-                                </button>
 
                             </div>
                         </div>

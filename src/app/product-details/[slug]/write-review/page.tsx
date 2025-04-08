@@ -10,6 +10,7 @@ import { commonApi } from '@/_services/common/common';
 import { RiShieldCheckLine } from 'react-icons/ri';
 import confetti from 'canvas-confetti';
 import { useUserStore } from '@/store/useUserStore';
+import Image from 'next/image';
 
 
 
@@ -162,7 +163,9 @@ export default function RatingsReviews() {
                     <h1 className="text-2xl font-semibold text-gray-900 mb-4">Ratings & Reviews</h1>
                     <div className="flex items-center space-x-4">
                         <Link href={`/product-details/${product?.slug}`} className="text-lg font-medium text-gray-900">{product?.title?.slice(0, 28)}...</Link>
-                        <img
+                        <Image
+                            width={40}
+                            height={40}
                             src={product?.thumbnail?.url}
                             alt="Product"
                             className="rounded-lg h-12 w-12 object-cover"
@@ -260,7 +263,9 @@ export default function RatingsReviews() {
                                             <div className="grid grid-cols-6 gap-4 mb-4">
                                                 {selectedImages.map((img, index) => (
                                                     <div key={index} className="relative">
-                                                        <img
+                                                        <Image
+                                                            width={50}
+                                                            height={50}
                                                             src={img}
                                                             alt={`Upload ${index + 1}`}
                                                             className="h-24 w-24 object-cover rounded-lg"
@@ -306,14 +311,16 @@ export default function RatingsReviews() {
                             </div>
                         ) : (
                             <div className="bg-white rounded-lg shadow p-8 text-center">
-                                <img
+                                <Image
+                                    width={200}
+                                    height={200}
                                     src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664958/flat-never-leave-your-pet_23-2148521875_tc1gmz_sfres8.avif"
                                     alt="Review illustration"
                                     className="mx-auto mb-6 rounded-lg h-52 w-52 object-cover"
                                 />
-                                <h2 className="text-xl font-semibold text-gray-900 mb-3">Haven't purchased this product?</h2>
+                                <h2 className="text-xl font-semibold text-gray-900 mb-3">Haven&apos;t purchased this product?</h2>
                                 <p className="text-gray-600 mb-6">
-                                    Sorry! You are not allowed to review this product since you haven't bought it yet.
+                                    Sorry! You are not allowed to review this product since you haven&apos;t bought it yet.
                                 </p>
                                 <div className="inline-flex items-center text-sm text-blue-600">
                                     <BiHelpCircle className="h-4 w-4 mr-2" />

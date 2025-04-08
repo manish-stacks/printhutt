@@ -10,6 +10,7 @@ import { getSlider, createSlider, updateSlider, deleteSlider } from '@/_services
 import { ISlider } from '@/lib/types';
 import { RiDeleteBin2Line, RiEdit2Fill, RiLoader2Line } from 'react-icons/ri';
 import Swal from 'sweetalert2';
+import Image from 'next/image';
 
 export default function HeroBanner() {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -234,7 +235,8 @@ export default function HeroBanner() {
                                                 <td className="py-3 px-4">{slider.title}</td>
                                                 <td className="py-3 px-4">
                                                     {slider.imageUrl?.url && (
-                                                        <img
+                                                        <Image
+                                                            fill
                                                             src={slider.imageUrl.url}
                                                             alt={slider.title}
                                                             className="w-20 h-20 object-cover rounded"

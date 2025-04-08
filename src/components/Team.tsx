@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 import Slider from "react-slick";
 
@@ -63,8 +64,7 @@ const Team = () => {
                             </li>
                           </ul>
                         </div>
-                        <img
-                          src="https://maraviyainfotech.com/projects/blueberry-tailwind/assets/img/team/1.jpg"
+                        <img                          src="https://maraviyainfotech.com/projects/blueberry-tailwind/assets/img/team/1.jpg"
                           alt="team-1"
                           className="w-full rounded-[20px]"
                         />
@@ -107,8 +107,7 @@ const Team = () => {
                             </li>
                           </ul>
                         </div>
-                        <img
-                          src="https://maraviyainfotech.com/projects/blueberry-tailwind/assets/img/team/2.jpg"
+                        <img                          src="https://maraviyainfotech.com/projects/blueberry-tailwind/assets/img/team/2.jpg"
                           alt="team-2"
                           className="w-full rounded-[20px]"
                         />
@@ -151,8 +150,7 @@ const Team = () => {
                             </li>
                           </ul>
                         </div>
-                        <img
-                          src="https://maraviyainfotech.com/projects/blueberry-tailwind/assets/img/team/3.jpg"
+                        <img                          src="https://maraviyainfotech.com/projects/blueberry-tailwind/assets/img/team/3.jpg"
                           alt="team-3"
                           className="w-full rounded-[20px]"
                         />
@@ -195,8 +193,7 @@ const Team = () => {
                             </li>
                           </ul>
                         </div>
-                        <img
-                          src="https://maraviyainfotech.com/projects/blueberry-tailwind/assets/img/team/4.jpg"
+                        <img                          src="https://maraviyainfotech.com/projects/blueberry-tailwind/assets/img/team/4.jpg"
                           alt="team-4"
                           className="w-full rounded-[20px]"
                         />

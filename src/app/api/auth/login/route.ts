@@ -24,14 +24,17 @@ export async function POST(request: NextRequest) {
         const isEmailInput = isEmail(emailOrMobile); // Check if input is email
         const queryKey = isEmailInput ? 'email' : 'number';
 
-        let user = await UserModel.findOne({ [queryKey]: emailOrMobile });
+        let user = await UserModel.findOne({
+            [queryKey]: emailOrMobile
+        });
 
         if (!user) {
-            user = new UserModel({
-                [queryKey]: emailOrMobile,
-                otpVerification: otp,
-                otpVerificationExpiry: otpExpiry,
-            });
+            const userData = {};
+            userData[queryKey] = emailOrMobile;
+            userData.otpVerification = otp;
+            userData.otpVerificationExpiry = otpExpiry;
+            
+            user = new UserModel(userData);
             await user.save();
         } else {
             user.otpVerification = otp;
@@ -49,9 +52,10 @@ export async function POST(request: NextRequest) {
             { status: 200 }
         );
     } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : 'Internal server error';
         console.error('Error in OTP generation:', error);
         return NextResponse.json(
-            { error: (error as Error).message || 'Internal server error' },
+            { error: errorMessage },
             { status: 500 }
         );
     }

@@ -67,7 +67,7 @@ export default function OrderDetailsPage() {
 
     useEffect(() => {
         fetchOrder();
-    }, [id]);
+    }, []);
 
     if (!order) {
         return <LoadingSpinner />;

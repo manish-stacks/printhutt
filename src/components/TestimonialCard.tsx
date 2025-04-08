@@ -1,9 +1,10 @@
+import Image from 'next/image';
 import React from 'react';
 import { BiPlay, BiStar } from 'react-icons/bi';
 
 interface TestimonialProps {
     imgSrc: string;
-    name: string;   
+    name: string;
     date: string;
     rating: number;
     review: string;
@@ -98,8 +99,7 @@ const Testimonial = ({ imgSrc, name, date, rating, review, hasVideo, imgHeight }
     <div className="h-full bg-[#fdf8f5] rounded-2xl">
         <div className="flex flex-col h-full">
             <div className="relative mb-3 flex-shrink-0">
-                <img
-                    src={imgSrc}
+                <img                    src={imgSrc}
                     alt={name}
                     className={`w-full h-[${imgHeight}] object-cover rounded-t-2xl `}
                 />

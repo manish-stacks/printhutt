@@ -41,36 +41,36 @@ const Checkout = () => {
     setOriginalPrice(price.discountPrice);
   }, [items, getTotalPrice]);
 
- /*
-  useEffect(() => {
-    if (typeof window !== "undefined" && (window as any).dataLayer) {
-      (window as any).dataLayer.push({ ecommerce: null }); // Clear previous ecommerce data
-      (window as any).dataLayer.push({
-        event: "begin_checkout",
-        ecommerce: {
-          currency: "INR",
-          value: (totalPrice.discountPrice + totalPrice.shippingTotal).toFixed(2),
-          items: items.map((item, index) => ({
-            item_id: item.sku,
-            item_name: item.title,
-            item_brand: item?.brand,
-            // coupon: selectedCoupon?.code || "",
-            discount: item.discountPrice,
-            index: index,
-            price: Number(
-              (
-                item.discountType === "percentage"
-                  ? item.price - (item.price * item.discountPrice) / 100
-                  : item.price - item.discountPrice
-              ) * item.quantity
-            ).toFixed(2),
-            quantity: item.quantity
-          })),
-        },
-      });
-    }
-  }, [items, totalPrice, selectedCoupon]);
-*/
+  /*
+   useEffect(() => {
+     if (typeof window !== "undefined" && (window as any).dataLayer) {
+       (window as any).dataLayer.push({ ecommerce: null }); // Clear previous ecommerce data
+       (window as any).dataLayer.push({
+         event: "begin_checkout",
+         ecommerce: {
+           currency: "INR",
+           value: (totalPrice.discountPrice + totalPrice.shippingTotal).toFixed(2),
+           items: items.map((item, index) => ({
+             item_id: item.sku,
+             item_name: item.title,
+             item_brand: item?.brand,
+             // coupon: selectedCoupon?.code || "",
+             discount: item.discountPrice,
+             index: index,
+             price: Number(
+               (
+                 item.discountType === "percentage"
+                   ? item.price - (item.price * item.discountPrice) / 100
+                   : item.price - item.discountPrice
+               ) * item.quantity
+             ).toFixed(2),
+             quantity: item.quantity
+           })),
+         },
+       });
+     }
+   }, [items, totalPrice, selectedCoupon]);
+ */
   const handle_select = (coupon) => {
     if (selectedCoupon?.code === coupon.code) {
       setErrorMsg('This coupon has already been applied');
@@ -167,6 +167,7 @@ const Checkout = () => {
         setErrorMsg('The coupon code is either invalid or has expired. Please try another one.');
       }
     } catch (error) {
+      console.error(error);
       setErrorMsg('The coupon code is either invalid or has expired. Please try another one.');
       // console.error(error);
     }
@@ -334,7 +335,7 @@ const Checkout = () => {
 
             <div className="min-[992px]:w-[33.33%] w-full px-[12px] mb-[24px]">
               <div className="bb-checkout-sidebar mb-[-24px]">
-               
+
                 <div
                   className="checkout-items border-[1px] border-solid border-[#eee] p-[20px] rounded-[20px] mb-[24px]"
                   data-aos="fade-up"
@@ -370,8 +371,7 @@ const Checkout = () => {
                     </h4>
                   </div>
                   <div className="payment-img">
-                    <img
-                      src="/img/payment/payment.png"
+                    <img                      src="/img/payment/payment.png"
                       alt="payment"
                       className="w-full"
                     />

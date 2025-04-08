@@ -15,6 +15,7 @@ import { ToastContainer } from 'react-toastify';
 import Script from "next/script";
 
 
+
 export const metadata: Metadata = {
   title: "Shop made for everyone’s dream Decoration - Print Hutt",
   description:
@@ -33,6 +34,7 @@ export default function RootLayout({
         <meta name="robots" content="index, follow" />
         {/* Add Meta Pixel script */}
         <Script
+          id="fb-pixel"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
@@ -48,17 +50,10 @@ export default function RootLayout({
             `,
           }}
         />
-        <noscript>
-          <img
-            height="1"
-            width="1"
-            style={{ display: "none" }}
-            src="https://www.facebook.com/tr?id=762819811557058&ev=PageView&noscript=1"
-          />
-        </noscript>
+        
 
         {/* clarity script */}
-        <Script>
+        <Script id="ms-clarity">
           {`
             (function(c,l,a,r,i,t,y){
             c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};

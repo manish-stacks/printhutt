@@ -6,9 +6,11 @@ import { toast } from 'react-toastify';
 import { Canvas, IText } from 'fabric';
 import { useCartStore } from '@/store/useCartStore';
 import html2canvas from 'html2canvas';
-import { CustomizationButton } from '@/components/CustomizationButton';
 import Image from 'next/image';
 import useCartSidebarStore from '@/store/useCartSidebarStore';
+import { FontPicker } from '@/components/neon/FontPicker';
+import { RiShoppingBag2Line } from 'react-icons/ri';
+import { BiDownload } from 'react-icons/bi';
 
 export default function Page() {
   const [names, setNames] = useState({ name1: '' });
@@ -16,7 +18,6 @@ export default function Page() {
   const [selectedFont, setSelectedFont] = useState("orangina_demo");
   const [product, setProduct] = useState<Product>();
   const [isAddingToCart, setIsAddingToCart] = useState(false);
-  const [isDownloading, setIsDownloading] = useState(false);
   const addToCart = useCartStore(state => state.addToCart);
   const { openCartSidebarView } = useCartSidebarStore();
 
@@ -61,7 +62,7 @@ export default function Page() {
 
   const handleCanvasAction = async () => {
     try {
-      setIsDownloading(true);
+      
       const previewElement = document.getElementById('preview-section');
 
       if (!previewElement) {
@@ -101,9 +102,7 @@ export default function Page() {
     } catch (error) {
       console.error('Error during download:', error);
       toast.error('Failed to download preview');
-    } finally {
-      setIsDownloading(false);
-    }
+    } 
   };
 
 
@@ -179,7 +178,7 @@ export default function Page() {
                     alt="Preview"
                     className="w-full h-full object-cover rounded-lg"
                     crossOrigin="anonymous"
-                    
+
                   />
                   <div className="text-box absolute top-[72%] left-[48%] transform -translate-x-1/2 -translate-y-1/2 text-center">
                     <canvas ref={canvasRef} width="260" height="100" className="w-full h-full"></canvas>
@@ -206,31 +205,25 @@ export default function Page() {
                 </div>
 
                 <div className="max-w-lg mx-auto mt-10">
-                  <h2 className="text-xl font-semibold text-gray-800">Choose Your Font</h2>
-                  <CustomizationButton selectedFont={selectedFont} handleFontChange={handleFontChange} />
+                  <FontPicker selectedFont={selectedFont} onFontChange={handleFontChange} />
                 </div>
 
-                <button
-                  onClick={handleAddToCart}
-                  disabled={isAddingToCart}
-                  className={`w-full py-3 rounded-lg font-semibold shadow-lg ${isAddingToCart
-                      ? 'bg-gray-400 cursor-not-allowed'
-                      : 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 transition-colors'
-                    }`}
-                >
-                  {isAddingToCart ? 'Adding to Cart...' : 'Add to Cart'}
-                </button>
+                <div className="space-y-2">
+                  <div className="flex gap-2" >
+                    <button
+                      onClick={() => handleAddToCart()}
+                      disabled={isAddingToCart}
+                      className="flex-1 bg-yellow-400 text-slate-700 py-3 px-6 max-[567px]:px-1 rounded-md font-medium hover:bg-yellow-500 flex items-center justify-center gap-2">
+                      <RiShoppingBag2Line className="w-5 h-5" /> {isAddingToCart ? 'Adding to Cart...' : 'Add to Cart'}
+                    </button>
+                    <button
+                      onClick={() => handleDownload()}
+                      className="px-6 py-3 border border-gray-300 rounded-md hover:bg-gray-50">
+                      <BiDownload className="w-6 h-6" />
+                    </button>
+                  </div>
+                </div>
 
-                <button
-                  onClick={handleDownload}
-                  disabled={isDownloading}
-                  className={`w-full py-3 rounded-lg font-semibold shadow-lg ${isDownloading
-                      ? 'bg-gray-400 cursor-not-allowed'
-                      : 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 transition-colors'
-                    }`}
-                >
-                  {isDownloading ? 'Downloading...' : 'Download Preview'}
-                </button>
               </div>
             </div>
           </div>

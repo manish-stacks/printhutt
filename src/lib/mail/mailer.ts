@@ -8,6 +8,7 @@ import { getOwnerEmailTemplate } from './templates/owner';
 import dotenv from "dotenv"
 import { generateOrderStatusEmail, getShippedEmailTemplate } from "./templates/order-status";
 import axios from "axios";
+import { ShippingInformation } from "../types/shipping";
 dotenv.config()
 
 const transporter = nodemailer.createTransport({
@@ -122,7 +123,7 @@ export async function sendOrderConfirmationEmail(orderData: {
   items: { name: string; quantity: number; price: number }[];
   totalAmount: { discountPrice: number; shippingTotal: number; totalPrice: number };
   payment: string;
-  shipping: any;
+  shipping: ShippingInformation;
   coupon?: string;
   payAmt: number;
   status: string;

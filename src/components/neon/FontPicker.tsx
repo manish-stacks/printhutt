@@ -1,6 +1,4 @@
 import React from 'react';
-import { fonts } from '@/app/product/neon/_data/fonts';
-import { Font } from '@/lib/types/neon';
 import { CustomizationButton, fontsName } from '../CustomizationButton';
 import { BiSolidDownArrow, BiSolidUpArrow } from 'react-icons/bi';
 
@@ -18,8 +16,8 @@ export const FontPicker: React.FC<FontPickerProps> = ({ selectedFont, onFontChan
 
   return (
     <div className="space-y-2">
-      <h3 className="text-xl font-semibold max-[576px]:text-sm">2. CHOOSE FONT</h3>
-      <p className="text-gray-600 text-xs max-[576px]:hidden">Pick from over 50 typefaces. Prices vary by the amount of LED neon required.</p>
+      <h3 className="text-xl font-semibold max-[576px]:text-sm">CHOOSE FONT</h3>
+      <p className="text-gray-600 text-xs max-[576px]:hidden">Pick from over 50 typefaces.</p>
       <div
         onClick={() => setOpen(!open)}
         className='relative p-2 px-3 rounded-lg border-2 border-gray-200 hover:border-pink-300 flex'>

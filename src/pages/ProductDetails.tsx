@@ -72,7 +72,7 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
   const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 58, seconds: 28 });
   const { openCartSidebarView } = useCartSidebarStore();
   const addToCart = useCartStore(state => state.addToCart);
-  const [quantity, setQuantity] = useState(1);
+  const quantity = 1;
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
   // const items = useCartStore((state) => state.items);
   const router = useRouter();
@@ -217,8 +217,7 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
                 <BiX className="w-8 h-8" />
               </button>
               <div className="relative flex items-center justify-center">
-                <img
-                  src={productImages[currentImageIndex]}
+                <img                  src={productImages[currentImageIndex]}
                   alt={currentImageIndex === 0 ? product?.imgAlt || "Product Image" : `${product?.slug}-${currentImageIndex + 1}`}
                   className="w-auto h-[800px] sm:w-full max-[567px]:h-0 object-contain"
                 />
@@ -261,8 +260,7 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
               onMouseLeave={() => !isMobile && setIsZoomed(false)}
               onClick={() => setShowModal(true)}
             >
-              <img
-                src={productImages[currentImageIndex]}
+              <img                src={productImages[currentImageIndex]}
                 alt={currentImageIndex === 0 ? product?.imgAlt || "Product Image" : `${product?.slug}-${currentImageIndex + 1}`}
                 className="w-full h-full object-cover transition-transform duration-200"
                 style={!isMobile ? {
@@ -319,8 +317,7 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
                         `}
                       onClick={() => setCurrentImageIndex(index)}
                     >
-                      <img
-                        src={image}
+                      <img                        src={image}
                         alt={index === 0 ? product?.imgAlt || "Product Image" : `${product?.slug}-${index + 1}`}
                         className="w-full h-full object-cover"
                       />
@@ -428,7 +425,7 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
                 </div>
               </div>
 
-              
+
               <div className="py-4">
                 <Image src={"/img/shape/badges.png"} width={400} height={50} alt="badges" className='w-[70%] max-[567px]:w-full' />
               </div>
@@ -607,8 +604,7 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
                                 <div key={index}>
                                   <div className="reviews-bb-box flex mb-[24px] max-[575px]:flex-col">
                                     <div className="inner-image mr-[12px] max-[575px]:mr-[0] max-[575px]:mb-[12px]">
-                                      <img
-                                        src="/img/dummy-image.jpg"
+                                      <img                                        src="/img/dummy-image.jpg"
                                         alt="img-1"
                                         className="w-[50px] h-[50px] max-w-[50px] rounded-[10px]"
                                       />
@@ -641,8 +637,7 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
                                         {
                                           review?.images.map((image, index) => (
                                             <div key={index} className="inner-image mr-[12px] max-[575px]:mr-[0] max-[575px]:mb-[12px]">
-                                              <img
-                                                src={image.url}
+                                              <img                                                src={image.url}
                                                 alt={`img-${index}`}
                                                 className="w-[50px] h-[50px] max-w-[50px] rounded-[10px]"
                                               />

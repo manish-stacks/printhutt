@@ -1,11 +1,8 @@
 import { formatCurrency } from '@/helpers/helpers';
 import { useCartStore } from '@/store/useCartStore';
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { BiShoppingBag } from 'react-icons/bi';
 import { BsX } from 'react-icons/bs';
-import { RiArrowDownLine, RiArrowDownSLine, RiArrowRightSLine, RiArrowUpSLine, RiSecurePaymentLine, RiTruckLine, RiVerifiedBadgeLine } from 'react-icons/ri';
-import { toast } from 'react-toastify';
+import { RiArrowDownSLine, RiArrowUpSLine, RiSecurePaymentLine, RiTruckLine, RiVerifiedBadgeLine } from 'react-icons/ri';
 import { useOtp } from '@/hooks/useOtp';
 import { useUserStore } from '@/store/useUserStore';
 import { CheckoutAddressForm } from './checkout/address-form';
@@ -40,7 +37,6 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
         timer,
         isResendEnabled,
         loading,
-        errorMessage,
         handleInputChange,
         sendOtp,
         handleOtpKeyDown,

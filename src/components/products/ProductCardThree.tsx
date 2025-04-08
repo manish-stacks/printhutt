@@ -106,7 +106,7 @@ const ProductCardThree = ({ product }: PopupProps) => {
                                 <i className="ri-eye-line transition-all duration-[0.3s] ease-in-out text-[18px] text-[#777] leading-[10px]" />
                             </button>
                         </li>
-                        <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
+                        {/* <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                             <Link
                                 href="/compare."
                                 title="Compare"
@@ -114,7 +114,7 @@ const ProductCardThree = ({ product }: PopupProps) => {
                             >
                                 <i className="ri-repeat-line transition-all duration-[0.3s] ease-in-out text-[18px] text-[#777] leading-[10px]" />
                             </Link>
-                        </li>
+                        </li> */}
                         <li className="bb-btn-group transition-all duration-[0.3s] ease-in-out w-[35px] h-[35px] mx-[2px] flex items-center justify-center text-[#fff] bg-[#fff] border-[1px] border-solid border-[#eee] rounded-[10px]">
                             <button
                                 onClick={() => handleAddToCart(product)}

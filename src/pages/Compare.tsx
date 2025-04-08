@@ -1,4 +1,5 @@
 import Breadcrumb from "@/components/Breadcrumb";
+import Image from "next/image";
 import React from "react";
 
 const Compare = () => {
@@ -105,8 +106,7 @@ const Compare = () => {
                           </a>
                         </span>
                         <div className="compare-pro-img h-[250px] m-[auto] flex items-center justify-center">
-                          <img
-                            src="https://printhutt.com/media/product/125520269_Jai%20Shri%20Ram.jpg"
+                          <img                            src="https://printhutt.com/media/product/125520269_Jai%20Shri%20Ram.jpg"
                             alt="products-1"
                             className="h-full max-[991px]:w-full"
                           />
@@ -201,8 +201,7 @@ const Compare = () => {
                           </a>
                         </span>
                         <div className="compare-pro-img h-[250px] m-[auto] flex items-center justify-center">
-                          <img
-                            src="https://printhutt.com/media/product/125520269_Jai%20Shri%20Ram.jpg"
+                          <img                            src="https://printhutt.com/media/product/125520269_Jai%20Shri%20Ram.jpg"
                             alt="products-2"
                             className="h-full max-[991px]:w-full"
                           />
@@ -297,8 +296,7 @@ const Compare = () => {
                           </a>
                         </span>
                         <div className="compare-pro-img h-[250px] m-[auto] flex items-center justify-center">
-                          <img
-                            src="https://printhutt.com/media/product/125520269_Jai%20Shri%20Ram.jpg"
+                          <img                            src="https://printhutt.com/media/product/125520269_Jai%20Shri%20Ram.jpg"
                             alt="products-3"
                             className="h-full max-[991px]:w-full"
                           />
@@ -393,8 +391,7 @@ const Compare = () => {
                           </a>
                         </span>
                         <div className="compare-pro-img h-[250px] m-[auto] flex items-center justify-center">
-                          <img
-                            src="https://printhutt.com/media/product/125520269_Jai%20Shri%20Ram.jpg"
+                          <img                            src="https://printhutt.com/media/product/125520269_Jai%20Shri%20Ram.jpg"
                             alt="products-4"
                             className="h-full max-[991px]:w-full"
                           />

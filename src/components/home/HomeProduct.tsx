@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import React from 'react'
 
 const HomeProduct = () => {
@@ -40,14 +41,14 @@ const HomeProduct = () => {
                                         >
                                             <i className="ri-arrow-right-up-line text-[20px] text-[#fff]" />
                                         </a>
-                                        <img
-                                            src="https://printhutt.com/media/imgpsh_fullsize_anim.jfif"
+                                        <img                                            src="https://printhutt.com/media/imgpsh_fullsize_anim.jfif"
                                             alt="vendors-img-1"
                                             className="w-full rounded-[30px] border-[1px] border-solid border-[#eee]"
                                         />
                                         <div className="vendors-local-shape absolute bottom-[0] right-[0] h-[120px] w-[120px] bg-[#fff] pt-[20px] pl-[20px] rounded-tl-[30px]">
                                             <div className="inner-shape relative" />
-                                            <img
+                                            <Image 
+                                                fill
                                                 src="https://maraviyainfotech.com/projects/blueberry-tailwind/assets/img/vendors/vendor-1.jpg"
                                                 alt="vendor"
                                                 className="w-[100px] h-[100px] rounded-[30px] border-[1px] border-solid border-[#eee]"

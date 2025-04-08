@@ -1,5 +1,6 @@
 import { styleOptions } from '@/app/product/neon/_data/styles';
 import { StyleOption } from '@/lib/types/neon';
+import Image from 'next/image';
 import React from 'react';
 
 
@@ -14,7 +15,7 @@ export const StyleSelector: React.FC<StyleSelectorProps> = ({
 }) => {
   return (
     <div className="space-y-4">
-      <h3 className="text-xl font-semibold">5. BACKBOARD STYLE</h3>
+      <h3 className="text-xl font-semibold">BACKBOARD STYLE</h3>
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
         {styleOptions.map((style) => (
           <button
@@ -23,8 +24,7 @@ export const StyleSelector: React.FC<StyleSelectorProps> = ({
             className={`relative aspect-square border border-slate-300 rounded-lg overflow-hidden group 
               ${selectedStyle.id === style.id ? "ring-1 ring-pink-500" : ""}`}
           >
-            <img
-              src={style.preview}
+            <img              src={style.preview}
               alt={style.name}
               className="w-full h-full object-contain p-4"
             />

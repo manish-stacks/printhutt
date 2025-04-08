@@ -2,7 +2,6 @@ import { formatCurrency } from "@/helpers/helpers";
 import { useCartStore } from "@/store/useCartStore";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { RiArrowRightSLine } from "react-icons/ri";
 import { toast } from "react-toastify";
@@ -10,12 +9,11 @@ import CheckOutPopUp from "./CheckOutPopUp";
 
 const CartSidebar = ({ onClose }) => {
   const popupRef = useRef(null);
-  const router = useRouter();
-  const handleClickOutside = (event) => {
-    if (popupRef.current && !popupRef.current.contains(event.target)) {
-      onClose();
-    }
-  };
+  // const handleClickOutside = (event) => {
+  //   if (popupRef.current && !popupRef.current.contains(event.target)) {
+  //     onClose();
+//   }
+  // };
 
   // useEffect(() => {
   //   document.addEventListener("mousedown", handleClickOutside);
@@ -43,11 +41,10 @@ const CartSidebar = ({ onClose }) => {
     setTotalPrice(getTotalPrice());
   }, [items]);
 
-  const cartPage = () => {
-    onClose();
-    return router.push('/cart');
-
-  }
+  // const cartPage = () => {
+  //   onClose();
+  //   return router.push('/cart');
+  // }
   const checkoutPage = () => {
     setShowMailModal(true);
     // onClose();
@@ -74,8 +71,7 @@ const CartSidebar = ({ onClose }) => {
 
               <div className="bb-cart-banner mb-[24px]">
                 <div className="banner rounded-[20px] relative overflow-hidden">
-                  <img
-                    src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743668000/loi5p36j7ezhhgk32ply_dek6kp.png"
+                  <img                    src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743668000/loi5p36j7ezhhgk32ply_dek6kp.png"
                     alt="cart-banner"
                     className="w-full transition-all duration-[0.3s] ease-in-out"
                   />
@@ -97,8 +93,7 @@ const CartSidebar = ({ onClose }) => {
               </div>
               <div className="bb-cart-banner mb-[24px]">
                 <div className="banner rounded-[20px] relative overflow-hidden">
-                  <img
-                    src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743668022/aaabwgrbbmfnd6km1ksq_vpndun.jpg"
+                  <img                    src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743668022/aaabwgrbbmfnd6km1ksq_vpndun.jpg"
                     alt="cart-banner"
                     className="w-full transition-all duration-[0.3s] ease-in-out"
                   />

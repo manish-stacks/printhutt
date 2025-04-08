@@ -17,7 +17,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ selectedColor, onColor
   useEffect(() => {
     if (!multiColor) return;
 
-    let interval = setInterval(() => {
+    const interval = setInterval(() => {
       setCurrentColorIndex((prevIndex) => {
         const newIndex = (prevIndex + 1) % multiColors.length;
         return newIndex;

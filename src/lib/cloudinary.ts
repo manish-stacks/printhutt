@@ -12,7 +12,7 @@ export const uploadImage = async (file, folderName = 'common', width: number, he
     const buffer = await file.arrayBuffer();
     const base64File = Buffer.from(buffer).toString('base64');
     const dataUri = `data:${file.type};base64,${base64File}`;
-
+    console.log(width, height)
     const result = await cloudinary.uploader.upload(dataUri, {
       folder: folderName,
       // transformation: [
@@ -49,7 +49,7 @@ export const uploadImageOrder = async (dataUri: string, folderName: string): Pro
 
 
 export const reviewImage = async (file): Promise<{ url: string; public_id: string; fileType: string }> => {
- 
+
   const buffer = await file.arrayBuffer();
   const base64File = Buffer.from(buffer).toString('base64');
   const dataUri = `data:${file.type};base64,${base64File}`;

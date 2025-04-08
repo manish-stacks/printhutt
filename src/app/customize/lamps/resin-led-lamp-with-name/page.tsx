@@ -9,6 +9,8 @@ import { get_product_by_id } from '@/_services/admin/product';
 import { Product } from '@/lib/types/product';
 import { toast } from 'react-toastify';
 import useCartSidebarStore from '@/store/useCartSidebarStore';
+import { RiShoppingBag2Line } from 'react-icons/ri';
+import { BiDownload } from 'react-icons/bi';
 
 export default function App() {
     const [names, setNames] = useState({ name1: '' });
@@ -146,7 +148,7 @@ export default function App() {
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </div>
 
 
@@ -174,23 +176,20 @@ export default function App() {
                                     <CustomizationButtonTwo selectedFont={selectedFont} handleFontChange={handleFontChange} />
                                 </div>
 
-                                
-                                <button
-                                    onClick={handleAddToCart}
-                                    disabled={isAddingToCart} // Disable button while loading
-                                    className={`w-full py-3 rounded-lg font-semibold shadow-lg ${isAddingToCart
-                                        ? 'bg-gray-400 cursor-not-allowed'
-                                        : 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 transition-colors'
-                                        }`}
-                                >
-                                    {isAddingToCart ? 'Adding to Cart...' : 'Add to Cart'}
-                                </button>
 
-                                <button
-                                    onClick={handleDownload}
-                                    className="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-lg hover:from-amber-600 hover:to-amber-700 transition-colors font-semibold shadow-lg">
-                                    Download Preview
-                                </button>
+                                <div className="space-y-2">
+                                    <div className="flex gap-2" >
+                                        <button
+                                            onClick={() => handleAddToCart()}
+                                            disabled={isAddingToCart}
+                                            className="flex-1 bg-yellow-400 text-slate-700 py-3 px-6 max-[567px]:px-1 rounded-md font-medium hover:bg-yellow-500 flex items-center justify-center gap-2">
+                                            <RiShoppingBag2Line className="w-5 h-5" /> {isAddingToCart ? 'Adding to Cart...' : 'Add to Cart'}
+                                        </button>
+                                        <button onClick={() => handleDownload()} className="px-6 py-3 border border-gray-300 rounded-md hover:bg-gray-50">
+                                            <BiDownload className="w-6 h-6" />
+                                        </button>
+                                    </div>
+                                </div>
 
                             </div>
                         </div>

@@ -5,9 +5,10 @@ import { BsUpload } from 'react-icons/bs';
 import { useCartStore } from '@/store/useCartStore';
 import { get_product_by_id } from '@/_services/admin/product';
 import { Product } from '@/lib/types/product';
-import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import useCartSidebarStore from '@/store/useCartSidebarStore';
+import { RiShoppingBag2Line } from 'react-icons/ri';
+import Image from 'next/image';
 
 export default function App() {
   const [previewImage, setPreviewImage] = useState('');
@@ -18,18 +19,18 @@ export default function App() {
   const { openCartSidebarView } = useCartSidebarStore();
 
 
-    useEffect(() => {
-      (async () => {
-        try {
-          const product = await get_product_by_id('679755385656f753f4d67a4a');
-          setProduct(product);
-        } catch (error) {
-          console.error('Error fetching product:', error);
-        } 
-      })();
-    }, []);
+  useEffect(() => {
+    (async () => {
+      try {
+        const product = await get_product_by_id('679755385656f753f4d67a4a');
+        setProduct(product);
+      } catch (error) {
+        console.error('Error fetching product:', error);
+      }
+    })();
+  }, []);
 
- 
+
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -44,7 +45,7 @@ export default function App() {
 
 
   const handleAddToCart = async () => {
-    
+
     if (!previewImage) {
       toast.error('Please upload a preview image.');
       return;
@@ -55,7 +56,7 @@ export default function App() {
       if (product) {
         const custom_data = {
           previewImage,
-          previewCanvas:previewImage,
+          previewCanvas: previewImage,
           // selectedFont,
         };
 
@@ -104,8 +105,7 @@ export default function App() {
                       {previewImage ? (
                         <div className="w-full h-full relative">
                           <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent"></div>
-                          <img
-                            src={previewImage}
+                          <img                            src={previewImage}
                             alt="Preview"
                             className="w-full h-full object-cover rounded-lg"
                           />
@@ -115,7 +115,7 @@ export default function App() {
                           <BiUpload className="w-12 h-12 text-amber-500/70" />
                         </div>
                       )}
-                      
+
                     </div>
                   </div>
                 </div>
@@ -169,16 +169,16 @@ export default function App() {
 
                 </div>
 
-                <button
-                  onClick={handleAddToCart}
-                  disabled={isAddingToCart} // Disable button while loading
-                  className={`w-full py-3 rounded-lg font-semibold shadow-lg ${isAddingToCart
-                    ? 'bg-gray-400 cursor-not-allowed'
-                    : 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 transition-colors'
-                    }`}
-                >
-                  {isAddingToCart ? 'Adding to Cart...' : 'Add to Cart'}
-                </button>
+                <div className="space-y-2">
+                  <div className="flex gap-2" >
+                    <button
+                      onClick={() => handleAddToCart()}
+                      disabled={isAddingToCart}
+                      className="flex-1 bg-yellow-400 text-slate-700 py-3 px-6 max-[567px]:px-1 rounded-md font-medium hover:bg-yellow-500 flex items-center justify-center gap-2">
+                      <RiShoppingBag2Line className="w-5 h-5" /> {isAddingToCart ? 'Adding to Cart...' : 'Add to Cart'}
+                    </button>
+                  </div>
+                </div>
 
 
 
