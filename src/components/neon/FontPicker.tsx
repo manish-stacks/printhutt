@@ -1,19 +1,14 @@
-import React from 'react';
+import React from 'react'
+import { BiSolidDownArrow, BiSolidUpArrow } from 'react-icons/bi'
 import { CustomizationButton, fontsName } from '../CustomizationButton';
-import { BiSolidDownArrow, BiSolidUpArrow } from 'react-icons/bi';
-
-
 interface FontPickerProps {
   selectedFont: string;
   onFontChange: (font: string) => void;
 }
-
-export const FontPicker: React.FC<FontPickerProps> = ({ selectedFont, onFontChange }) => {
+export const FontPicker = ({ selectedFont, onFontChange }: FontPickerProps) => {
   const [open, setOpen] = React.useState(false);
   const selectFont = fontsName.find(item => item.font === selectedFont);
   if (!selectFont) return
-
-
   return (
     <div className="space-y-2">
       <h3 className="text-xl font-semibold max-[576px]:text-sm">CHOOSE FONT</h3>
@@ -35,5 +30,5 @@ export const FontPicker: React.FC<FontPickerProps> = ({ selectedFont, onFontChan
       }
 
     </div>
-  );
-};
+  )
+}

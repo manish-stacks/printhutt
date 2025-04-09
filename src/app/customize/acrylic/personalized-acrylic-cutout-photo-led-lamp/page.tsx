@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useRef, useEffect } from 'react';
-import { BiRefresh, BiUpload } from 'react-icons/bi';
+import { BiDownload, BiRefresh, BiUpload } from 'react-icons/bi';
 import { BsUpload } from 'react-icons/bs';
 import { Canvas, IText } from 'fabric';
 import { useCartStore } from '@/store/useCartStore';
@@ -12,12 +12,13 @@ import { formatCurrency } from '@/helpers/helpers';
 import useCartSidebarStore from '@/store/useCartSidebarStore';
 import { FontPicker } from '@/components/neon/FontPicker';
 import Image from 'next/image';
+import { RiShoppingBag2Line } from 'react-icons/ri';
 
 export default function App() {
   const [previewImage, setPreviewImage] = useState('');
   const [product, setProduct] = useState<Product>();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [selectedFont, setSelectedFont] = useState("ariblk");
+  const [selectedFont, setSelectedFont] = useState("Barbara-Calligraphy");
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const addToCart = useCartStore(state => state.addToCart);
   const [names, setNames] = useState({ name1: '' });
@@ -48,7 +49,7 @@ export default function App() {
         left,
         top,
         fill: '#fde68a',
-        fontSize: fontSize, 
+        fontSize: fontSize,
         fontFamily: selectedFont,
         lineHeight: lineHeight,
       });
@@ -62,7 +63,7 @@ export default function App() {
     return () => {
       canvas1?.dispose();
     };
-  }, [names, selectedFont, lineHeight, fontSize]); 
+  }, [names, selectedFont, lineHeight, fontSize]);
 
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -221,7 +222,8 @@ export default function App() {
                       {previewImage ? (
                         <div className="w-full h-full relative">
                           <div className="inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent"></div>
-                          <img                            src={previewImage}
+                          <img
+                            src={previewImage}
                             alt="Preview"
                             className="w-full h-full object-cover rounded-lg"
                           />
@@ -321,16 +323,22 @@ export default function App() {
                       </h4>
                     </div>
                     <div className="bb-pro-variation-contant">
-                      <ul className="flex flex-wrap m-[-2px]">
+                      <ul className="flex flex-wrap gap-2">
                         {product?.varient.map((v, index) => (
-                          <li key={index} className={`my-[10px] mx-[2px] py-[2px] px-[15px] border-[1px] border-solid border-[#eee] rounded-[10px] cursor-pointer ${activeVarient === v?._id ? 'bg-blue-500 text-slate-200' : 'text-[#686e7d]'}`}>
-                            <span onClick={() => onchangeVarient(v?._id)} className="font-Poppins font-light text-[14px] leading-[28px] tracking-[0.03rem]">
-                              {v.size}
-                            </span>
+                          <li
+                            key={index}
+                            onClick={() => onchangeVarient(v?._id)}
+                            className={`min-w-[50px] text-center py-1 px-4 border rounded-lg cursor-pointer transition-all duration-300 
+                            ${activeVarient === v?._id
+                                ? 'bg-blue-600 text-white border-blue-600 shadow-md'
+                                : 'bg-white text-gray-700 border-gray-300 hover:bg-blue-50 hover:border-blue-400'}`}
+                          >
+                            <span className="font-medium text-sm">{v.size}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
+
                   </div>
                 )}
 
@@ -359,26 +367,24 @@ export default function App() {
                   }
                 </div>
 
-                <button
-                  onClick={handleAddToCart}
-                  disabled={isAddingToCart} // Disable button while loading
-                  className={`w-full py-3 rounded-lg font-semibold shadow-lg ${isAddingToCart
-                    ? 'bg-gray-400 cursor-not-allowed'
-                    : 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 transition-colors'
-                    }`}
-                >
-                  {isAddingToCart ? 'Adding to Cart...' : `Add to Cart`}
-                </button>
-                <button
-                  onClick={handleDownload}
-                  disabled={isDownloading}
-                  className={`w-full py-3 rounded-lg font-semibold shadow-lg ${isDownloading
-                    ? 'bg-gray-400 cursor-not-allowed'
-                    : 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 transition-colors'
-                    }`}
-                >
-                  {isDownloading ? 'Downloading...' : 'Download Preview'}
-                </button>
+
+
+                <div className="space-y-2">
+                  <div className="flex gap-2" >
+                    <button
+                      onClick={() => handleAddToCart()}
+                      disabled={isAddingToCart}
+                      className="flex-1 bg-yellow-400 text-slate-700 py-3 px-6 max-[567px]:px-1 rounded-md font-medium hover:bg-yellow-500 flex items-center justify-center gap-2">
+                      <RiShoppingBag2Line className="w-5 h-5" /> {isAddingToCart ? 'Adding to Cart...' : 'Add to Cart'}
+                    </button>
+                    <button
+                      onClick={() => handleDownload()}
+                      className="px-6 py-3 border border-gray-300 rounded-md hover:bg-gray-50">
+                      <BiDownload className="w-6 h-6" />
+                    </button>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>

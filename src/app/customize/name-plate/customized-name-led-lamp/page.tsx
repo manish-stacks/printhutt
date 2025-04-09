@@ -224,7 +224,8 @@ export default function Page() {
                                             {selectedDesign === 'cutout' && (
                                                 <div id="cutoutDesign">
                                                     <Image
-                                                        fill
+                                                        width={200}
+                                                        height={100}
                                                         src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743665002/510341279_20240810_152907_nioxer_bm8dwt.jpg"
                                                         alt="cutout"
                                                         className="h-[96px] w-[170px] object-cover rounded-xl"
@@ -234,7 +235,8 @@ export default function Page() {
                                             {selectedDesign === 'rectangle' && (
                                                 <div id="rectangleDesign">
                                                     <Image
-                                                        fill
+                                                        width={200}
+                                                        height={100}
                                                         src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743665006/rect_n4e399_ets0sv.jpg"
                                                         alt="rectangle"
                                                         className="h-[96px] w-[170px] object-cover rounded-xl"

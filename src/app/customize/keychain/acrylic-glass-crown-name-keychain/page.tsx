@@ -224,7 +224,8 @@ export default function App() {
                                             {selectedDesign === 'cutout' && (
                                                 <div id="cutoutDesign">
                                                     <Image
-                                                        fill
+                                                        width={200}
+                                                        height={100}
                                                         src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743668859/terhe6du3so1lcywmyta_z41hpd.jpg"
                                                         alt="cutout"
                                                         className="h-[96px] w-[170px] object-cover rounded-xl"
@@ -234,7 +235,8 @@ export default function App() {
                                             {selectedDesign === 'rectangle' && (
                                                 <div id="rectangleDesign">
                                                     <Image
-                                                        fill
+                                                        width={200}
+                                                        height={100}
                                                         src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743668754/bnfkujppjyq4cvnne82d_qo5bux.jpg"
                                                         alt="rectangle"
                                                         className="h-[96px] w-[170px] object-cover rounded-xl"

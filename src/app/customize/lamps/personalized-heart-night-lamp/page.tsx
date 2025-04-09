@@ -8,15 +8,16 @@ import { useCartStore } from '@/store/useCartStore';
 import html2canvas from 'html2canvas';
 import Image from 'next/image';
 import useCartSidebarStore from '@/store/useCartSidebarStore';
-import { FontPicker } from '@/components/neon/FontPicker';
+
 import { RiShoppingBag2Line } from 'react-icons/ri';
 import { BiDownload } from 'react-icons/bi';
+import { FontPicker } from '@/components/neon/FontPicker';
 
 export default function Page() {
   const [names, setNames] = useState({ name1: '', name2: '' });
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const canvasRefTwo = useRef<HTMLCanvasElement>(null);
-  const [selectedFont, setSelectedFont] = useState("orangina_demo");
+  const [selectedFont, setSelectedFont] = useState("Barbara-Calligraphy");
   const [product, setProduct] = useState<Product>();
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const addToCart = useCartStore(state => state.addToCart);
@@ -40,7 +41,7 @@ export default function Page() {
         left,
         top,
         fill: '#FEEDBF',
-        fontSize: 20,
+        fontSize: 30,
         // width: 220,
         // height: 100,
         fontFamily: selectedFont,
@@ -176,7 +177,8 @@ export default function Page() {
               <div id="preview-section" className="relative rounded-lg p-2 border border-white/10">
                 <div className="img-box relative">
                   <Image
-                    fill
+                    height={800}
+                    width={800}
                     src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743665003/998663784_love-heart-3_1_e14xx5_fg5ts9.png"
                     alt="Preview"
                     className="w-full h-full object-cover rounded-lg"

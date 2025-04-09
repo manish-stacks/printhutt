@@ -15,7 +15,7 @@ import Image from 'next/image';
 export default function Page() {
   const [names, setNames] = useState({ name1: '' });
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [selectedFont, setSelectedFont] = useState("orangina_demo");
+  const [selectedFont, setSelectedFont] = useState("Barbara-Calligraphy");
   const [product, setProduct] = useState<Product>();
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const addToCart = useCartStore(state => state.addToCart);
@@ -39,7 +39,7 @@ export default function Page() {
         left,
         top,
         fill: '#FEEDBF',
-        fontSize: 32,
+        fontSize: 25,
         width: 220,
         height: 100,
         fontFamily: selectedFont,
@@ -170,7 +170,7 @@ export default function Page() {
             <div className="relative rounded-lg">
               <div id="preview-section" className="relative rounded-lg p-2 backdrop-blur-sm border border-white/10">
                 <div className="img-box relative">
-                  <img                    src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664996/2.1_nzb4wy_fg8qcs.jpg"
+                  <img src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664996/1.1_zghalb_vllmcr.jpg"
                     alt="Preview"
                     className="w-full h-full object-cover rounded-lg"
                     crossOrigin="anonymous"

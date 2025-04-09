@@ -228,7 +228,7 @@ export default function NeonPage() {
   };
 
   return (
-    <section className="min-h-screen bg-gray-100 mt-[50px]" style={{ backgroundImage: `url(${currentPreview?.url})` }}>
+    <section className="min-h-screen bg-gray-100" style={{ backgroundImage: `url(${currentPreview?.url})` }}>
       <div className="relative flex flex-col lg:flex-row items-start justify-between p-4 lg:p-8">
         <div
           className="w-full lg:flex-1 h-[40vh] lg:h-[calc(100vh-2rem)] flex items-center justify-center bg-cover"
@@ -265,7 +265,7 @@ export default function NeonPage() {
           </div>
 
           <div className="space-y-2">
-            <h3 className="text-xl font-semibold max-[576px]:text-sm">1. ENTER YOUR TEXT</h3>
+            <h3 className="text-xl font-semibold max-[576px]:text-sm">1ENTER YOUR TEXT</h3>
             <p className="text-gray-600 text-xs max-[576px]:hidden">Create your own stunning Custom Neon sign in a few simple steps.</p>
             <textarea
               value={text}
@@ -294,7 +294,7 @@ export default function NeonPage() {
           <FontPicker selectedFont={selectedFont} onFontChange={setSelectedFont} />
 
           <div className="space-y-2">
-            <h3 className="text-xl font-semibold max-[576px]:text-sm">3. CHOOSE SIZE</h3>
+            <h3 className="text-xl font-semibold max-[576px]:text-sm">CHOOSE SIZE</h3>
             <SizePresets
               preset={preset}
               selectedSize={selectedSize}

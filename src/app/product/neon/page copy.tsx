@@ -255,7 +255,7 @@ export default function NeonPage() {
             </div>
 
             <div className="space-y-4">
-              <h3 className="text-xl font-semibold max-[576px]:text-sm">1. ENTER YOUR TEXT</h3>
+              <h3 className="text-xl font-semibold max-[576px]:text-sm">ENTER YOUR TEXT</h3>
               <p className="text-gray-600 text-xs max-[576px]:hidden">Create your own stunning Custom Neon sign in a few simple steps.</p>
               <textarea
                 value={text}

@@ -10,13 +10,13 @@ import useCartSidebarStore from '@/store/useCartSidebarStore';
 import { FontPicker } from '@/components/neon/FontPicker';
 import { RiShoppingBag2Line } from 'react-icons/ri';
 import { BiDownload } from 'react-icons/bi';
-import Image from 'next/image';
+
 
 export default function Page() {
   const [names, setNames] = useState({ name1: '', name2: '' });
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const canvasRefTwo = useRef<HTMLCanvasElement>(null);
-  const [selectedFont, setSelectedFont] = useState("orangina_demo");
+  const [selectedFont, setSelectedFont] = useState("Barbara-Calligraphy");
   const [product, setProduct] = useState<Product>();
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const addToCart = useCartStore(state => state.addToCart);
@@ -50,8 +50,8 @@ export default function Page() {
       return canvas;
     };
 
-    const canvas1 = canvasRef.current && initializeCanvas(canvasRef.current, names.name1 || 'Preview', 40, 60);
-    const canvas2 = canvasRefTwo.current && initializeCanvas(canvasRefTwo.current, names.name2 || 'Preview', 70, 30);
+    const canvas1 = canvasRef.current && initializeCanvas(canvasRef.current, names.name1 || 'Preview', 80, 60);
+    const canvas2 = canvasRefTwo.current && initializeCanvas(canvasRefTwo.current, names.name2 || 'Preview', 70, 50);
 
     return () => {
       canvas1?.dispose();

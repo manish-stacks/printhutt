@@ -283,7 +283,7 @@ export default function App() {
                                 </div>
 
 
-                                <div className="list-group-item mb-10 mt-10">
+                                <div className="list-group-item mb-10 mt-10 hidden">
 
                                     <div className="flex flex-wrap">
 

@@ -15,7 +15,7 @@ import { BiDownload } from 'react-icons/bi';
 export default function Page() {
   const [names, setNames] = useState({ name1: '' });
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [selectedFont, setSelectedFont] = useState("orangina_demo");
+  const [selectedFont, setSelectedFont] = useState("Barbara-Calligraphy");
   const [product, setProduct] = useState<Product>();
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const addToCart = useCartStore(state => state.addToCart);
