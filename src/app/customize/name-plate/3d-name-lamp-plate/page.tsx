@@ -20,7 +20,6 @@ export default function App() {
     const [selectedColor, setSelectedColor] = useState('White');
     const addToCart = useCartStore(state => state.addToCart);
     const { openCartSidebarView } = useCartSidebarStore();
-    const [isMobile, setIsMobile] = useState(false);
 
     const fetchProduct = async (id: string) => {
         try {
@@ -32,54 +31,42 @@ export default function App() {
         }
     };
 
-
-    useEffect(() => {
-        const checkMobile = () => {
-            setIsMobile(window.innerWidth < 768);
-        };
-
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-
-        return () => window.removeEventListener('resize', checkMobile);
-    }, []);
-
     useEffect(() => {
         fetchProduct('67934192624b716ca19da403');
     }, []);
 
-    console.log(isMobile)
     useEffect(() => {
-        const initializeCanvas = (canvasElement: HTMLCanvasElement, text: string, left: number, top: number) => {
-            const canvas = new Canvas(canvasElement);
-
-            // Set canvas dimensions for high-resolution rendering
-            const devicePixelRatio = window.devicePixelRatio || 1;
-            canvasElement.width = canvasElement.offsetWidth * devicePixelRatio;
-            canvasElement.height = canvasElement.offsetHeight * devicePixelRatio;
-            canvas.setWidth(canvasElement.offsetWidth);
-            canvas.setHeight(canvasElement.offsetHeight);
-            canvas.setZoom(devicePixelRatio);
+        const initializeCanvas = (canvasElement: HTMLCanvasElement, text: string) => {
+            const canvas = new Canvas(canvasElement, {
+                width: 534,
+                height: 145,
+                renderOnAddRemove: true,
+                selection: false
+            });
 
             const textObj = new IText(text, {
-                left,
-                top,
-                fill: selectedColor === 'White' ? '#fff' : '#fde68a',
-                fontSize: isMobile ? 40 : 42,
+                fontSize: 44,
                 fontFamily: selectedFont,
+                fill: selectedColor === 'White' ? '#fff' : '#fde68a',
+                textAlign: 'center',
+                left: canvas.width / 2,
+                top: canvas.height / 2,
+                originX: 'center',
+                originY: 'center',
+                selectable: false
             });
+
             canvas.add(textObj);
             canvas.renderAll();
             return canvas;
         };
 
-        const canvas1 = canvasRef.current && initializeCanvas(canvasRef.current, names.name1 || 'Preview', 10, 10);
+        const canvas1 = canvasRef.current && initializeCanvas(canvasRef.current, names.name1 || 'Preview');
 
         return () => {
             canvas1?.dispose();
         };
-    }, [names, selectedFont, selectedColor, isMobile]);
-
+    }, [names, selectedFont, selectedColor]);
 
     const handleFontChange = (font: string) => {
         setSelectedFont(font);
@@ -132,11 +119,8 @@ export default function App() {
                     custom_data,
                 };
 
-                //setProduct(updatedProduct);
-
                 addToCart(updatedProduct, 1);
                 openCartSidebarView();
-                // console.log("Product added to cart:", updatedProduct);
                 return;
             }
         } catch (error) {
@@ -150,7 +134,6 @@ export default function App() {
         <div
             className="min-h-screen bg-cover bg-center bg-no-repeat"
             style={{
-
                 backgroundImage: 'url("https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664964/photo-15_gyd3jd_ffbqvb.avif")',
             }}
         >
@@ -162,22 +145,15 @@ export default function App() {
 
                     <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
                         {/* Preview Section */}
-
                         <div className="relative">
-                            {/* <div className="absolute inset-0 bg-gradient-to-b from-amber-100/20 to-amber-500/20 rounded-lg blur-xl"></div> */}
-                            <div id="preview-section" className=" relative md:sticky top-0 bg-black/80 rounded-lg p-8 backdrop-blur-sm border  border-[#fde68a6b]">
+                            <div id="preview-section" className="relative md:sticky top-0 bg-black rounded-lg p-8 border border-[#fde68a6b]">
                                 <div className="aspect-[16/9] rounded-lg overflow-hidden flex items-center justify-center">
                                     <div className="relative w-full h-full flex items-center justify-center">
-                                        <div className="absolute inset-0 flex items-center justify-center">
-                                            <canvas ref={canvasRef} width="534" height="145" className="w-full h-full flex justify-center items-center"></canvas>
-                                        </div>
+                                        <canvas ref={canvasRef} width="534" height="145" className="w-full h-full" />
                                     </div>
                                 </div>
                             </div>
-
                         </div>
-
-
 
                         {/* Customization Section */}
                         <div className="bg-white/95 backdrop-blur-sm rounded-lg p-8 shadow-xl">
@@ -195,17 +171,13 @@ export default function App() {
                                             maxLength={20}
                                         />
                                     </div>
-
                                 </div>
                                 <div className="max-w-lg mx-auto mt-10">
                                     <FontPicker selectedFont={selectedFont} onFontChange={handleFontChange} />
                                 </div>
 
                                 <div className="list-group-item mb-10 mt-10">
-
                                     <div className="flex flex-wrap">
-
-
                                         <div className="w-full md:w-1/2 mb-4 md:mb-0">
                                             <label className="text-gray-800 text-lg font-semibold">Light Colour</label>
                                             <div className="radio-itens mr-[20px]" onClick={() => changeColor('White')}>
@@ -239,14 +211,11 @@ export default function App() {
                                                     Warm White
                                                 </label>
                                             </div>
-
-
                                         </div>
-
                                     </div>
                                 </div>
                                 <div className="space-y-2">
-                                    <div className="flex gap-2" >
+                                    <div className="flex gap-2">
                                         <button
                                             onClick={() => handleAddToCart()}
                                             disabled={isAddingToCart}
@@ -258,8 +227,6 @@ export default function App() {
                                         </button>
                                     </div>
                                 </div>
-
-
                             </div>
                         </div>
                     </div>

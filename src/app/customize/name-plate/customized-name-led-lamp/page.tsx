@@ -236,7 +236,7 @@ export default function Page() {
                                                 <div id="rectangleDesign">
                                                     <Image
                                                         width={200}
-                                                        height={100}
+                                                        height={100}    
                                                         src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743665006/rect_n4e399_ets0sv.jpg"
                                                         alt="rectangle"
                                                         className="h-[96px] w-[170px] object-cover rounded-xl"

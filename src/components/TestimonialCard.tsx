@@ -132,7 +132,7 @@ const Testimonial = ({ imgSrc, name, date, rating, review, hasVideo, imgHeight }
 );
 
 export const TestimonialCard = () => (
-    <div className="min-h-screen bg-white py-15 px-4 sm:px-6 lg:px-8 hidden md:block">
+    <div className="min-h-screen bg-white py-15 px-4 sm:px-6 lg:px-8 hidden md:block mb-5">
         <div className="relative mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px] py-10 max-[576px]:py-0">
             <div className="absolute inset-0" />
             <div className="relative container mx-auto px-4">
