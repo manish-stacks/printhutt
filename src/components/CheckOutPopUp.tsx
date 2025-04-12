@@ -48,9 +48,8 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
         const price = getTotalPrice();
         setTotalPrice(price);
         setOriginalPrice(price.discountPrice);
+        
     }, [items, getTotalPrice, paymentMethod]);
-
-
 
     useEffect(() => {
         const fetchCoupons = async () => {
@@ -59,12 +58,39 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
                 const query = "";
                 const data = await getAllCouponsPagination(page, query);
                 setAvailableCoupons(data.coupons || []);
+                
+                // Auto apply best coupon
+                if (data.coupons?.length > 0) {
+                    const validCoupons = data.coupons.filter(coupon => 
+                        totalPrice.totalPrice >= coupon.minimumPurchaseAmount
+                    );
+                    
+                    if (validCoupons.length > 0) {
+                        // Find coupon with maximum discount
+                        const bestCoupon = validCoupons.reduce((best, current) => {
+                            const currentDiscount = current.discountType === "percentage" 
+                                ? Math.min((current.discountValue / 100) * totalPrice.totalPrice, current.maxDiscountAmount)
+                                : current.discountValue;
+                            
+                            const bestDiscount = best.discountType === "percentage"
+                                ? Math.min((best.discountValue / 100) * totalPrice.totalPrice, best.maxDiscountAmount)
+                                : best.discountValue;
+                            
+                            return currentDiscount > bestDiscount ? current : best;
+                        });
+                        
+                        applyCouponDiscount(bestCoupon);
+                    }
+                }
+
+
             } catch (error) {
                 console.error("Failed to fetch coupons:", error);
             }
         };
         fetchCoupons();
-    }, []);
+        
+    }, [totalPrice.totalPrice]);
 
     const handleClose = () => {
         onClose()
@@ -258,12 +284,11 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
                                 {
                                     availableCoupons.length > 0 && (
                                         <div className="mb-4 border rounded p-3">
-                                            <div className="flex items-center justify-between mb-3">
+                                            <div className="flex items-center justify-between mb-3 cursor-pointer" onClick={() => setIsCoupon(!isCoupon)}>
                                                 <h3 className="text-lg text-orange-800">Available Coupons</h3>
 
                                                 <button
                                                     type="button"
-                                                    onClick={() => setIsCoupon(!isCoupon)}
                                                     className="text-gray-600 hover:text-black transition-all"
                                                 >
                                                     {isCoupon ? <RiArrowUpSLine size={22} /> : <RiArrowDownSLine size={22} />}
@@ -321,7 +346,7 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
 
                                             <button
                                                 onClick={sendOtp}
-                                                className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
+                                                className="w-full bg-yellow-400 text-slate-700 mt-6 py-3 px-6 max-[567px]:px-1 rounded-md font-medium hover:bg-yellow-500 flex items-center justify-center gap-2"
                                             >
                                                 {loading ? 'Sending OTP...' : 'Send OTP'}
                                             </button>

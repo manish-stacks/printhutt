@@ -30,7 +30,7 @@ export const CheckoutAddressForm = ({ onChangeAddress, isCheckout, placeOrder, p
         try {
             setIsLoading(true);
             const response: AddressFormData[] = await getAddress();
-            console.log(response)
+            // console.log(response);
             if (response.addresses.length > 0) {
                 setSelectedAddress(true);
                 setAddresslist(response.addresses);
@@ -64,6 +64,7 @@ export const CheckoutAddressForm = ({ onChangeAddress, isCheckout, placeOrder, p
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [formData, setFormData] = useState<Partial<AddressFormData>>({
         addressType: 'home',
+        //isDefault: false,
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -83,7 +84,6 @@ export const CheckoutAddressForm = ({ onChangeAddress, isCheckout, placeOrder, p
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
         try {
             setIsSubmitting(true);
             const validatedData = addressSchema.parse(formData);
@@ -274,13 +274,10 @@ export const CheckoutAddressForm = ({ onChangeAddress, isCheckout, placeOrder, p
                             <div className="flex flex-wrap mx-[-12px]">
                                 <div className="min-[992px]:w-[50%] w-full px-[12px]">
                                     <div className="input-item mb-[24px]">
-                                        {/* <label className="inline-block font-Poppins leading-[26px] tracking-[0.02rem] mb-[8px] text-[14px] font-medium text-[#3d4750]">
-                                            Name *
-                                        </label> */}
                                         <input
                                             type="text"
                                             name="fullName"
-                                            placeholder="Name"
+                                            placeholder="Name *"
                                             className="w-full p-[10px] text-[14px] font-normal text-[#686e7d] border-[1px] border-solid border-[#eee] leading-[26px] outline-[0] rounded-[10px]"
                                             value={formData.fullName || ''}
                                             onChange={handleChange}
@@ -292,13 +289,10 @@ export const CheckoutAddressForm = ({ onChangeAddress, isCheckout, placeOrder, p
                                 </div>
                                 <div className="min-[992px]:w-[50%] w-full px-[12px]">
                                     <div className="input-item mb-[24px]">
-                                        {/* <label className="inline-block font-Poppins leading-[26px] tracking-[0.02rem] mb-[8px] text-[14px] font-medium text-[#3d4750]">
-                                            Mobile Number *
-                                        </label> */}
                                         <input
                                             type="text"
                                             name="mobileNumber"
-                                            placeholder="Mobile Number"
+                                            placeholder="Mobile Number *"
                                             className="w-full p-[10px] text-[14px] font-normal text-[#686e7d] border-[1px] border-solid border-[#eee] leading-[26px] outline-[0] rounded-[10px]"
                                             value={formData.mobileNumber || ''}
                                             onChange={handleChange}
@@ -310,13 +304,26 @@ export const CheckoutAddressForm = ({ onChangeAddress, isCheckout, placeOrder, p
                                 </div>
                                 <div className="w-full px-[12px]">
                                     <div className="input-item mb-[24px]">
-                                        {/* <label className="inline-block font-Poppins leading-[26px] tracking-[0.02rem] mb-[8px] text-[14px] font-medium text-[#3d4750]">
-                                            Address *
-                                        </label> */}
+                                        <input
+                                            type="text"
+                                            name="email"
+                                            placeholder="Email *"
+                                            className="w-full p-[10px] text-[14px] font-normal text-[#686e7d] border-[1px] border-solid border-[#eee] leading-[26px] outline-[0] rounded-[10px]"
+                                            value={formData.email || ''}
+                                            onChange={handleChange}
+                                        />
+                                        {errors.email && (
+                                            <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className="w-full px-[12px]">
+                                    <div className="input-item mb-[24px]">
                                         <input
                                             type="text"
                                             name="addressLine"
-                                            placeholder="Address (Area and Street)"
+                                            placeholder="Address (Area and Street) *"
                                             className="w-full p-[10px] text-[14px] font-normal text-[#686e7d] border-[1px] border-solid border-[#eee] leading-[26px] outline-[0] rounded-[10px]"
                                             value={formData.addressLine || ''}
                                             onChange={handleChange}
@@ -326,16 +333,13 @@ export const CheckoutAddressForm = ({ onChangeAddress, isCheckout, placeOrder, p
                                         )}
                                     </div>
                                 </div>
+
                                 <div className="min-[992px]:w-[50%] w-full px-[12px]">
                                     <div className="input-item mb-[24px]">
-
-                                        {/* <label className="inline-block font-Poppins leading-[26px] tracking-[0.02rem] mb-[8px] text-[14px] font-medium text-[#3d4750]">
-                                            City/District/Town *
-                                        </label> */}
                                         <input
                                             type="text"
                                             name="city"
-                                            placeholder="City/District/Town"
+                                            placeholder="City/District/Town *"
                                             className="w-full p-[10px] text-[14px] font-normal text-[#686e7d] border-[1px] border-solid border-[#eee] leading-[26px] outline-[0] rounded-[10px]"
                                             value={formData.city || ''}
                                             onChange={handleChange}
@@ -347,13 +351,10 @@ export const CheckoutAddressForm = ({ onChangeAddress, isCheckout, placeOrder, p
                                 </div>
                                 <div className="min-[992px]:w-[50%] w-full px-[12px]">
                                     <div className="input-item mb-[24px]">
-                                        {/* <label className="inline-block font-Poppins leading-[26px] tracking-[0.02rem] mb-[8px] text-[14px] font-medium text-[#3d4750]">
-                                            Post Code *
-                                        </label> */}
                                         <input
                                             type="text"
                                             name="postCode"
-                                            placeholder="Post Code"
+                                            placeholder="Post Code *"
                                             className="w-full p-[10px] text-[14px] font-normal text-[#686e7d] border-[1px] border-solid border-[#eee] leading-[26px] outline-[0] rounded-[10px]"
                                             value={formData.postCode || ''}
                                             onChange={handleChange}
@@ -366,13 +367,10 @@ export const CheckoutAddressForm = ({ onChangeAddress, isCheckout, placeOrder, p
 
                                 <div className="min-[992px]:w-[50%] w-full px-[12px]">
                                     <div className="input-item mb-[24px]">
-                                        {/* <label className="inline-block font-Poppins leading-[26px] tracking-[0.02rem] mb-[8px] text-[14px] font-medium text-[#3d4750]">
-                                            Region State *
-                                        </label> */}
                                         <input
                                             type="text"
                                             name="state"
-                                            placeholder="State"
+                                            placeholder="State *"
                                             className="w-full p-[10px] text-[14px] font-normal text-[#686e7d] border-[1px] border-solid border-[#eee] leading-[26px] outline-[0] rounded-[10px]"
                                             value={formData.state || ''}
                                             onChange={handleChange}
@@ -386,9 +384,6 @@ export const CheckoutAddressForm = ({ onChangeAddress, isCheckout, placeOrder, p
 
                                 <div className="min-[992px]:w-[50%] w-full px-[12px]">
                                     <div className="input-item mb-[24px]">
-                                        {/* <label className="inline-block font-Poppins leading-[26px] tracking-[0.02rem] mb-[8px] text-[14px] font-medium text-[#3d4750]">
-                                            Alternate Phone (Optional) *
-                                        </label> */}
                                         <input
                                             type="text"
                                             name="alternatePhone"

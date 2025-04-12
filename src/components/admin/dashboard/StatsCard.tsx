@@ -21,7 +21,7 @@ export function StatsCard({ title, value, trend, Icon, color }: StatsCardProps) 
           <i className={`${Icon} h-6 w-6 text-white`} ></i>
         </div>
       </div>
-      <div className="mt-4">
+      <div className="mt-4 hidden">
         <span className={`text-sm ${trend >= 0 ? 'text-green-600' : 'text-red-600'}`}>
           {trend >= 0 ? '+' : ''}{trend}
         </span>

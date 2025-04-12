@@ -4,10 +4,11 @@ import { addressSchema } from '@/lib/types/address';
 import { ZodError } from 'zod';
 import { Address } from '@/models/addressModel';
 import { getDataFromToken } from '@/helpers/getDataFromToken';
+import User from '@/models/userModel';
 
 export async function GET(request: NextRequest) {
     try {
-        await dbConnect(); 
+        await dbConnect();
 
         const { id } = await getDataFromToken(request);
         if (!id) {
@@ -18,7 +19,7 @@ export async function GET(request: NextRequest) {
 
         return NextResponse.json({ success: true, addresses: address }, { status: 200 });
     } catch (error) {
-        console.error("Error in GET /address:", error); 
+        console.error("Error in GET /address:", error);
         return NextResponse.json({ message: 'Error fetching addresses' }, { status: 500 });
     }
 }
@@ -33,11 +34,24 @@ export async function POST(request: NextRequest) {
         }
 
         const body = await request.json();
-
+     
         const validatedData = addressSchema.parse(body);
 
+        const user = await User.findById(id);
+        if (!user) {
+            return NextResponse.json({ success: false, message: 'User not found' }, { status: 404 });
+        }
+        if (user.username !== '') {
+            user.username = validatedData.fullName;
+        }
+        if (user.email !== '') {
+            user.email = validatedData.email;
+        }
+        await user.save();
+
+
         const addressCount = await Address.countDocuments({ userId: id });
-        const isDefault = addressCount === 0; 
+        const isDefault = addressCount === 0;
 
         const address = new Address({
             userId: id,
@@ -49,7 +63,8 @@ export async function POST(request: NextRequest) {
             postCode: validatedData.postCode,
             addressType: validatedData.addressType,
             alternatePhone: validatedData.alternatePhone,
-            isDefault: isDefault
+            isDefault: isDefault,
+            email: validatedData.email
         });
 
         await address.save();
@@ -68,7 +83,7 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        console.error("Error in POST /address:", error); 
+        console.error("Error in POST /address:", error);
         return NextResponse.json(
             { success: false, message: 'Internal server error' },
             { status: 500 }

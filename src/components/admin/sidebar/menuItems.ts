@@ -24,12 +24,12 @@ export const menuItems = {
     { id: 'coupons', label: 'Coupons', path: '/admin/coupons' },
   ],
   orders: [
+    { id: 'confirmed-orders', label: 'Confirmed', path: '/admin/orders?status=confirmed' },
+    { id: 'pending-orders', label: 'Pending', path: '/admin/orders?status=pending' },
     { id: 'all-orders', label: 'All Orders', path: '/admin/orders' },
-    { id: 'confirmed-orders', label: 'Confirmed Orders', path: '/admin/orders?status=confirmed' },
-    { id: 'pending-orders', label: 'Pending Orders', path: '/admin/orders?status=pending' },
-    { id: 'progress-orders', label: 'Progress Orders', path: '/admin/orders?status=progress' },
-    { id: 'delivered-orders', label: 'Delivered Orders', path: '/admin/orders?status=delivered' },
-    { id: 'cancelled-orders', label: 'cancelled Orders', path: '/admin/orders?status=cancelled' },
+    { id: 'progress-orders', label: 'Progress', path: '/admin/orders?status=progress' },
+    { id: 'delivered-orders', label: 'Delivered', path: '/admin/orders?status=delivered' },
+    { id: 'cancelled-orders', label: 'Cancelled', path: '/admin/orders?status=cancelled' },
   ],
   blog: [
     { id: 'blog-categories', label: 'Categories', path: '/admin/blog-categories' },

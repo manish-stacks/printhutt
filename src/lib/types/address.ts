@@ -4,6 +4,7 @@ export interface IAddress extends Document {
   userId: mongoose.Types.ObjectId;
   fullName: string;
   mobileNumber: string;
+  email?: string;
   alternatePhone?: string;
   addressLine: string;
   city: string;
@@ -27,6 +28,8 @@ export const addressSchema = z.object({
   state: z.string().min(1, "State is required"),
   alternatePhone: z.string().optional(),
   addressType: z.enum(['home', 'work']),
+  //isDefault: z.boolean(),
+  email: z.string().email().optional(),
   // newAddress?: boolean
 });
 

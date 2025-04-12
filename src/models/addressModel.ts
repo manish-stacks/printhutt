@@ -19,6 +19,10 @@ const AddressSchema = new Schema<IAddress>({
     required: true,
     trim: true
   },
+  email: {
+    type: String,
+    trim: true
+  },
   alternatePhone: {
     type: String,
     trim: true
@@ -67,5 +71,4 @@ AddressSchema.pre('save', async function (next) {
 });
 
 AddressSchema.index({ userId: 1, isDefault: 1 });
-
 export const Address = mongoose.models.Address || mongoose.model<IAddress>('Address', AddressSchema);

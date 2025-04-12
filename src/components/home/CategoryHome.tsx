@@ -104,15 +104,12 @@ const CategoryHome = () => {
               <div className="bb-category-contact max-[991px]:mt-[-24px]">
                 <div
                   className="mb-[30px] max-[991px]:hidden"
-                // data-aos="fade-up"
-                // data-aos-duration={1000}
-                // data-aos-delay={600}
                 >
                   <h2 className="font-quicksand text-[124px] text-fuchsia-900 drop-shadow-[0_1px_1px_rgba(0,0,0,0.25)] font-bold leading-[1.2] tracking-[0.03rem] max-[1399px]:text-[95px] max-[1199px]:text-[70px] max-[767px]:text-[42px] ">
                     Personalised Gifts
                   </h2>
                 </div>
-                <div className="bb-category-block ml-[-150px] w-[calc(100%+150px)] pt-[30px] pl-[30px] bg-[#fff] rounded-tl-[30px] relative max-[991px]:ml-[0] max-[991px]:w-full max-[991px]:p-[0]">
+                <div className="bb-category-block  w-[calc(100%+150px)] pt-[30px] pl-[30px] bg-[#fff] rounded-tl-[30px] relative max-[991px]:ml-[0] max-[991px]:w-full max-[991px]:p-[0]">
 
                   <Slider {...settings} className="category-slider">
                     {
