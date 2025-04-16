@@ -75,8 +75,8 @@ const CategoryHome = () => {
                   Personalised Gifts
                 </h2>
               </div> */}
-              <div className="text-start mb-12">
-                <h1 className="text-[110px] font-bold text-rose-900 my-4" style={{ fontFamily: "Buttervill" }}>Featured Categories</h1>
+              <div className="text-start mb-12 max-[991px]:hidden">
+                <h1 className="text-[110px] font-bold text-rose-900 my-4 max-[1399px]:text-[95px] max-[1199px]:text-[70px] max-[767px]:text-[42px]" style={{ fontFamily: "Buttervill" }}>Featured Categories</h1>
                 <p className="text-lg text-gray-600 max-w-2xl mx-auto mt-8">
                   Transform your photos into beautiful personalized products,Light up your memories with our exclusive illuminated products
                 </p>
@@ -124,14 +124,14 @@ const CategoryHome = () => {
                       <SwiperSlide key={category._id}>
                         <Link
                           href={`/category/${category.slug}`} >
-                          <div className={`bb-category-box p-[30px] max-[567px]:p-[5px] rounded-lg flex flex-col items-center text-center max-[1399px]:p-[20px] category-items-${index + 1} ${index % 2 === 0 ? 'bg-[#f4f1fe]' : 'bg-[#fef1f1]'}`}>
+                          <div className={`bb-category-box p-[30px] max-[567px]:p-[5px] rounded-lg flex flex-col items-center text-center max-[1399px]:p-[20px]  category-items-${index + 1} ${index % 2 === 0 ? 'bg-[#f4f1fe]' : 'bg-[#fef1f1]'}`}>
                             <div className="category-image mb-[12px] flex items-center justify-center">
                               <Image
                                 height={50}
                                 width={50}
                                 src={category.image.url}
                                 alt={category.name}
-                                className="w-[50px] h-[50px] max-[1399px]:h-[65px] max-[1399px]:w-[65px] max-[1199px]:h-[50px] max-[1199px]:w-[50px] rounded-md"
+                                className="w-[50px] h-[50px] max-[1399px]:h-[65px] max-[1399px]:w-[65px] max-[1199px]:h-[50px] max-[1199px]:w-[50px] rounded-md max-[991px]:rounded-full"
                               />
                             </div>
                             <div className="category-sub-contact">
