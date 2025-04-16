@@ -1,6 +1,5 @@
 import { styleOptions } from '@/app/product/neon/_data/styles';
 import { StyleOption } from '@/lib/types/neon';
-import Image from 'next/image';
 import React from 'react';
 
 

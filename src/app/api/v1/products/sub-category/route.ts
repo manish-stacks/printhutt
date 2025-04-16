@@ -14,7 +14,7 @@ export async function GET(request: Request) {
 
     // Validate and parse pagination values
     const page = pageParam ? Math.max(1, parseInt(pageParam, 10)) : 1;
-    const limit = limitParam === 'all' || !limitParam ? 10 : Math.max(1, parseInt(limitParam, 10));
+    const limit = limitParam === 'all' || !limitParam ? 40 : Math.max(1, parseInt(limitParam, 10));
 
     // Ensure subCategorySlug is provided
     if (!subCategorySlug) {

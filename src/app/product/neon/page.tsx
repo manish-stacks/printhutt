@@ -236,7 +236,7 @@ export default function NeonPage() {
         >
           <div
             id="preview-section"
-            className="relative w-[80%] h-[80%] rounded-lg flex items-center justify-center overflow-hidden mt-[-25%] max-[567px]:mt-0"
+            className="relative w-[80%] h-[80%] rounded-lg flex items-center justify-center overflow-hidden  max-[567px]:mt-0"
           >
             <NeonText
               text={text}
@@ -265,7 +265,7 @@ export default function NeonPage() {
           </div>
 
           <div className="space-y-2">
-            <h3 className="text-xl font-semibold max-[576px]:text-sm">1ENTER YOUR TEXT</h3>
+            <h3 className="text-xl font-semibold max-[576px]:text-sm">ENTER YOUR TEXT</h3>
             <p className="text-gray-600 text-xs max-[576px]:hidden">Create your own stunning Custom Neon sign in a few simple steps.</p>
             <textarea
               value={text}
@@ -288,7 +288,7 @@ export default function NeonPage() {
                 <RiMenu3Line className="text-xl" />
               </button>
             </div>
-            <SizeControls width={width} height={height} fontSize={fontSize} onWidthChange={setWidth} onHeightChange={setHeight} onFontSizeChange={setFontSize} />
+            {/* <SizeControls width={width} height={height} fontSize={fontSize} onWidthChange={setWidth} onHeightChange={setHeight} onFontSizeChange={setFontSize} /> */}
           </div>
 
           <FontPicker selectedFont={selectedFont} onFontChange={setSelectedFont} />

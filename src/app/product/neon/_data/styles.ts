@@ -5,19 +5,13 @@ export const styleOptions: StyleOption[] = [
   {
     id: 'style1',
     name: 'Cut Around',
-    preview: 'https://customneon.com/create-neon-sign/images/backboards/backboardaround.png',
+    preview: 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1744790504/backboardaround_yyxuct.png',
     price: 0
   },
   {
     id: 'style2',
     name: 'Rectangle',
-    preview: 'https://customneon.com/create-neon-sign/images/backboards/backboardrectangle.png',
+    preview: 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1744790512/backboardrectangle_kkgjjf.png',
     price: 0
-  },
-  {
-    id: 'style3',
-    name: 'Cut-To-Letter',
-    preview: 'https://customneon.com/create-neon-sign/images/backboards/backboardletter.png',
-    price: 0
-  },
+  }
 ];
