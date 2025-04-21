@@ -94,14 +94,6 @@ export const sizePresets: customSizeType[] = [
     height: 24,
     price: 6500
   },{
-    _id: '12',
-    name: 'Custom',
-    maxTextLengthPerLine: 15,
-    maxLineLength: 3,
-    width: 36,
-    height: 24,
-    price: 6500 
-  },{
     _id: '13',
     name: 'Custom',
     maxTextLengthPerLine: 18,
@@ -116,7 +108,7 @@ export const sizePresets: customSizeType[] = [
     maxLineLength: 2,
     width: 48,
     height: 48,
-    price: 7000
+    price: 17000 
   },{
     _id: '15',
     name: 'Custom',

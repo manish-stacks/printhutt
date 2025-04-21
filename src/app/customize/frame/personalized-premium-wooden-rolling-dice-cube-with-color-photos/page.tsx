@@ -156,7 +156,8 @@ export default function App() {
                                             {previews.map((preview) => (
                                                 <div key={preview.id} className="relative group">
                                                     <Image
-                                                        fill
+                                                        width={300}
+                                                        height={300}
                                                         src={preview.url}
                                                         alt="Preview"
                                                         className="h-30 w-30 object-cover rounded-lg"

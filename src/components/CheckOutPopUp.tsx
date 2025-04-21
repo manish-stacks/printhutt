@@ -12,6 +12,8 @@ import MailModal from './MailModal';
 import { getAllCouponsPagination } from '@/_services/admin/coupon';
 import confetti from 'canvas-confetti';
 import siteLogo from '/public/print-hutt-logo.webp';
+import { commonApi } from '@/_services/common/common';
+import { toast } from 'react-toastify';
 
 interface ModalProps {
     isOpen?: boolean
@@ -30,6 +32,9 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
     const [originalPrice, setOriginalPrice] = useState(0);
     const [paymentMethod, setPaymentMethod] = useState<'online' | 'offline'>('online');
     const [isCoupon, setIsCoupon] = useState(true);
+    const [showSummary, setShowSummary] = useState(false);
+    const [coupon_mark, setCoupon_mark] = useState('');
+
     const {
         emailOrMobile,
         otp,
@@ -48,37 +53,35 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
         const price = getTotalPrice();
         setTotalPrice(price);
         setOriginalPrice(price.discountPrice);
-        
+
     }, [items, getTotalPrice, paymentMethod]);
 
     useEffect(() => {
         const fetchCoupons = async () => {
             try {
-                const page = 1;
-                const query = "";
-                const data = await getAllCouponsPagination(page, query);
+                const data = await commonApi.getCouponsCode();
                 setAvailableCoupons(data.coupons || []);
-                
+
                 // Auto apply best coupon
                 if (data.coupons?.length > 0) {
-                    const validCoupons = data.coupons.filter(coupon => 
+                    const validCoupons = data.coupons.filter(coupon =>
                         totalPrice.totalPrice >= coupon.minimumPurchaseAmount
                     );
-                    
+
                     if (validCoupons.length > 0) {
                         // Find coupon with maximum discount
                         const bestCoupon = validCoupons.reduce((best, current) => {
-                            const currentDiscount = current.discountType === "percentage" 
+                            const currentDiscount = current.discountType === "percentage"
                                 ? Math.min((current.discountValue / 100) * totalPrice.totalPrice, current.maxDiscountAmount)
                                 : current.discountValue;
-                            
+
                             const bestDiscount = best.discountType === "percentage"
                                 ? Math.min((best.discountValue / 100) * totalPrice.totalPrice, best.maxDiscountAmount)
                                 : best.discountValue;
-                            
+
                             return currentDiscount > bestDiscount ? current : best;
                         });
-                        
+
                         applyCouponDiscount(bestCoupon);
                     }
                 }
@@ -89,7 +92,7 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
             }
         };
         fetchCoupons();
-        
+
     }, [totalPrice.totalPrice]);
 
     const handleClose = () => {
@@ -131,6 +134,55 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
             return;
         }
 
+
+        applyCouponDiscount(coupon);
+    };
+
+    const handleMarkChange = (e) => {
+        const { value } = e.target;
+        setCoupon_mark(value);
+        setErrorMsg('');
+    };
+    const handle_apply_code = async () => {
+        if (!coupon_mark.trim()) {
+            setErrorMsg('Please enter a coupon code');
+            return;
+        }
+
+        if (selectedCoupon?.code === coupon_mark) {
+            setErrorMsg('This coupon has already been applied');
+            return;
+        }
+
+        try {
+            const page = 1;
+            const query = "";
+            const data = await getAllCouponsPagination(page, query);
+            const coupon = data.coupons.find((c) => c.code === coupon_mark);
+            console.log(data)
+            if (coupon) {
+                handle_select(coupon);
+                setErrorMsg(''); // Clear the error message
+                toast.success('Coupon applied successfully');
+            } else {
+                setErrorMsg('Invalid coupon code. Please try again.');
+            }
+        } catch (error) {
+            console.error(error);
+            setErrorMsg('Failed to apply coupon. Please try again.');
+            // console.error(error);
+        }
+    };
+    const handle_select = (coupon) => {
+        if (selectedCoupon?.code === coupon.code) {
+            setErrorMsg('This coupon has already been applied');
+            return;
+        }
+
+        if (originalPrice < coupon.minimumPurchaseAmount) {
+            setErrorMsg(`Minimum purchase amount of ${formatCurrency(coupon.minimumPurchaseAmount)} required`);
+            return;
+        }
 
         applyCouponDiscount(coupon);
     };
@@ -224,12 +276,12 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
             payAmt: Math.floor(totalPrice.discountPrice)
         };
 
-        console.log('order checkout', order);
-
+        
         try {
             setIsSubmitting(true);
             const response: { order: { _id: string } } = await create_a_new_order(order);
-            console.log(response)
+            // console.log(response)
+            // return
             if (response.success) {
                 await paymentintInitiation(response.order);
             } else {
@@ -266,58 +318,147 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
                             </div>
 
                             {/* Discount Banner */}
-                            <div className="bg-black text-white text-center py-2 mb-6 rounded-md">
-                                <div className="flex justify-between items-center px-2">
-                                    <h2 className="text-lg font-semibold">Order summary ({items.length} Item)</h2>
-                                    <span className="text-lg">{formatCurrency(totalPrice.discountPrice)}</span>
-                                </div>
-                            </div>
+
                             {/* Order Summary */}
                             <div className="mb-6 bb-cart-box item h-[80%] overflow-auto main-box-checkout">
-
-
-                                {/* Coupon Section */}
                                 {errorMsg && <div className="text-red-600 text-sm mt-1 bg-rose-100 py-2 px-4 rounded-sm mb-2">{errorMsg}</div>}
+                                
+                                <div className="bg-white border rounded-lg shadow-sm mb-6">
+                                    <div 
+                                        onClick={() => setShowSummary(!showSummary)} 
+                                        className="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-50"
+                                    >
+                                        <div className="flex items-center gap-2">
+                                            <div className="p-2 bg-orange-100 rounded-full">
+                                                <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <h2 className="text-lg font-semibold text-gray-800">Order Summary</h2>
+                                                <p className="text-sm text-gray-500">{items.length} {items.length === 1 ? 'Item' : 'Items'}</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center gap-3">
+                                            <span className="text-lg font-medium text-gray-900">{formatCurrency(totalPrice.discountPrice)}</span>
+                                            {showSummary ? 
+                                                <RiArrowUpSLine className="text-gray-400 w-6 h-6" /> : 
+                                                <RiArrowDownSLine className="text-gray-400 w-6 h-6" />
+                                            }
+                                        </div>
+                                    </div>
 
+                                    {showSummary && (
+                                        <div className="border-t px-4 py-3 space-y-3">
+                                            <div className="space-y-2">
+                                                <div className="flex justify-between text-gray-600">
+                                                    <span>Subtotal</span>
+                                                    <span>{formatCurrency(totalPrice.totalPrice)}</span>
+                                                </div>
+                                                <div className="flex justify-between text-gray-600">
+                                                    <span>Delivery Charges</span>
+                                                    <span className="text-green-600">{totalPrice.shippingTotal > 0 ? formatCurrency(totalPrice.shippingTotal) : 'Free'}</span>
+                                                </div>
+                                                {selectedCoupon && (
+                                                    <div className="flex justify-between items-center">
+                                                        <div className="flex items-center gap-2">
+                                                            <span className="text-gray-600">Coupon Discount</span>
+                                                            <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">{selectedCoupon.code}</span>
+                                                        </div>
+                                                        <span className="text-green-600">-{formatCurrency(totalPrice?.coupon_discount)}</span>
+                                                    </div>
+                                                )}
+                                                <div className="flex justify-between text-gray-600">
+                                                    <span>Extra Discount</span>
+                                                    <span className="text-green-600">
+                                                        -{formatCurrency((totalPrice?.totalPrice || 0) - (totalPrice?.discountPrice || 0) - (totalPrice?.coupon_discount || 0))}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            
+                                            <div className="border-t pt-3">
+                                                <div className="flex justify-between">
+                                                    <span className="font-medium text-gray-900">Total Amount</span>
+                                                    <span className="font-medium text-gray-900">{formatCurrency(totalPrice.discountPrice + totalPrice.shippingTotal)}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
 
                                 {/* Available Coupons */}
                                 {
                                     availableCoupons.length > 0 && (
-                                        <div className="mb-4 border rounded p-3">
-                                            <div className="flex items-center justify-between mb-3 cursor-pointer" onClick={() => setIsCoupon(!isCoupon)}>
-                                                <h3 className="text-lg text-orange-800">Available Coupons</h3>
-
-                                                <button
-                                                    type="button"
-                                                    className="text-gray-600 hover:text-black transition-all"
-                                                >
-                                                    {isCoupon ? <RiArrowUpSLine size={22} /> : <RiArrowDownSLine size={22} />}
-                                                </button>
+                                        <div className="mb-4">
+                                            <div className="flex items-center justify-between cursor-pointer bg-gray-100 p-3 rounded-t-lg" 
+                                                 onClick={() => setIsCoupon(!isCoupon)}>
+                                                <div className="flex items-center gap-2">
+                                                    <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                                                    </svg>
+                                                    <h3 className="text-lg font-medium text-gray-800">Available Coupons</h3>
+                                                </div>
+                                                {isCoupon ? <RiArrowUpSLine size={22} /> : <RiArrowDownSLine size={22} />}
                                             </div>
 
-                                            {isCoupon && availableCoupons.map((coupon) => (
-                                                <div className="border rounded p-3 mb-4" key={coupon.code}>
-                                                    <div className="flex justify-between items-center">
-                                                        <div className="flex items-center gap-2">
-                                                            <span className="text-green-600">●</span>
-                                                            <span>{coupon.code}</span>
+                                            {isCoupon && (
+                                                <div className="border-x border-b rounded-b-lg p-3 space-y-3">
+                                                    {availableCoupons.map((coupon) => (
+                                                        <div key={coupon.code} 
+                                                             className="relative border border-dashed border-gray-300 rounded-lg p-4 bg-white hover:border-orange-300 transition-colors">
+                                                            <div className="flex justify-between items-center">
+                                                                <div className="space-y-1">
+                                                                    <div className="flex items-center gap-2">
+                                                                        <span className="bg-orange-100 text-orange-800 font-medium px-2 py-0.5 rounded text-sm">
+                                                                            {coupon.code}
+                                                                        </span>
+                                                                        {selectedCoupon === coupon && (
+                                                                            <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full">
+                                                                                Applied
+                                                                            </span>
+                                                                        )}
+                                                                    </div>
+                                                                    <p className="text-green-700 text-sm font-medium">
+                                                                        {coupon.discountType === "percentage" 
+                                                                            ? `${coupon.discountValue}% off` 
+                                                                            : `₹${coupon.discountValue} off`}
+                                                                    </p>
+                                                                    <p className="text-gray-500 text-xs">
+                                                                        Min. order: ₹{coupon.minimumPurchaseAmount}
+                                                                    </p>
+                                                                </div>
+                                                                {selectedCoupon !== coupon && (
+                                                                    <button 
+                                                                        onClick={() => handleSelect(coupon)}
+                                                                        className="px-4 py-1.5 text-sm font-medium text-orange-600 border border-orange-600 rounded-full hover:bg-orange-50 transition-colors"
+                                                                    >
+                                                                        Apply
+                                                                    </button>
+                                                                )}
+                                                            </div>
                                                         </div>
-                                                        {selectedCoupon === coupon ? (
-                                                            <div className='bg-green-600 text-green-100 px-2 rounded-lg'>Applied</div>
-                                                        ) : (
-                                                            <button className={`text-blue-600`} onClick={() => handleSelect(coupon)}>
+                                                    ))}
+
+                                                    <div className="mt-4">
+                                                        <div className="relative">
+                                                            <input
+                                                                type="text"
+                                                                placeholder="Enter coupon code"
+                                                                name="coupon_mark"
+                                                                value={coupon_mark}
+                                                                onChange={handleMarkChange}
+                                                                className="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-orange-200 focus:border-orange-400 transition-colors"
+                                                            />
+                                                            <button
+                                                                onClick={handle_apply_code}
+                                                                className="absolute right-2 top-1/2 transform -translate-y-1/2 px-4 py-1.5 bg-orange-600 text-white rounded-md hover:bg-orange-700 transition-colors text-sm font-medium"
+                                                            >
                                                                 Apply
                                                             </button>
-
-                                                        )}
-                                                    </div>
-                                                    <div className="text-green-600 text-sm mt-1">
-                                                        Apply coupon and save {coupon.discountType === "percentage"
-                                                            ? `${coupon.discountValue}% off`
-                                                            : `₹${coupon.discountValue} off`}
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            ))}
+                                            )}
                                         </div>
                                     )
                                 }

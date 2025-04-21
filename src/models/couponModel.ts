@@ -55,7 +55,8 @@ const couponSchema = new Schema<CouponDocument>({
     type: Schema.Types.ObjectId,
     ref: 'Category',
   }],
-  isActive: { type: Boolean, required: true, default: false },
+  isActive: { type: Boolean, required: true, default: true },
+  isShow: { type: Boolean, required: true, default: true },
 }, { 
   timestamps: true 
 });

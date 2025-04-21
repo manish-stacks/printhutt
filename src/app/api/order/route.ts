@@ -9,7 +9,7 @@ import { uploadImageOrder } from "@/lib/cloudinary";
 
 export async function GET(request: NextRequest) {
   try {
-    await dbConnect(); 
+    await dbConnect();
 
     const { id, role } = await getDataFromToken(request);
     if (!id) {
@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    await dbConnect(); 
+    await dbConnect();
 
     const tokenData = await getDataFromToken(request);
     if (!tokenData.id) {
@@ -113,7 +113,7 @@ export async function POST(request: NextRequest) {
             slug: item.slug,
             quantity: item.quantity,
             sku: item.sku,
-            product_image: updatedProductData.previewCanvas.url,
+            product_image: customData?.previewCanvas ? updatedProductData.previewCanvas.url : item.product_image,
             isCustomized: true,
             custom_data: updatedProductData,
             price: item.price,

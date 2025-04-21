@@ -53,8 +53,8 @@ export const NeonText: React.FC<NeonTextProps> = ({ text, color, font, width, he
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    lineHeight: '120px',
-    padding: '30px 60px',
+    //lineHeight: '120px',
+    padding: '2px 5px',
     textAlignLast: textAlignment,
   };
 
