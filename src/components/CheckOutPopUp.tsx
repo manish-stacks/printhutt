@@ -63,7 +63,7 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
                 setAvailableCoupons(data.coupons || []);
 
                 // Auto apply best coupon
-                if (data.coupons?.length > 0) {
+                /*if (data.coupons?.length > 0) {
                     const validCoupons = data.coupons.filter(coupon =>
                         totalPrice.totalPrice >= coupon.minimumPurchaseAmount
                     );
@@ -84,7 +84,7 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
 
                         applyCouponDiscount(bestCoupon);
                     }
-                }
+                }*/
 
 
             } catch (error) {

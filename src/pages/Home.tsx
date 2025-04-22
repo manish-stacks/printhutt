@@ -13,6 +13,7 @@ import PersonalizedGifts from "@/components/home/PersonalisedGifts";
 import PersonalizedGiftsTwo from "@/components/home/PersonalisedGiftsTwo";
 import DayoftheWeek from "@/components/home/DayoftheDeal";
 import { TestimonialCard } from "@/components/TestimonialCard";
+import AcrylicPhotoVideoSlider from "@/components/home/AcrylicPhotoVideoSlider";
 
 const HomeComponent = () => {
   useEffect(() => {
@@ -39,7 +40,8 @@ const HomeComponent = () => {
     <>
       <HeroSlider />
       <CategoryHome />
-      <AcrylicPhotoVideo />
+      <AcrylicPhotoVideoSlider />
+      {/* <AcrylicPhotoVideo /> */}
       <PersonalizedGifts />
       <PersonalizedGiftsTwo />
       <DayoftheWeek />
