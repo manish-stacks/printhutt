@@ -25,6 +25,14 @@ interface PaymentOption {
 const PaymentMethod = ({ value, onChange, totalPrice }: TypeSelectorProps) => {
     const paymentOptions: PaymentOption[] = [
         {
+            id: 'cod',
+            title: 'Cash on delivery',
+            icon: <FaTruck className="w-6 h-6" />,
+            additionalFee: 49,
+            basePrice: 3600,
+            finalPrice: formatCurrency((totalPrice * 0.20)),
+        },
+        {
             id: 'upi',
             title: 'Pay using UPI',
             icon: <BsQrCode className="w-6 h-6" />,
@@ -47,21 +55,13 @@ const PaymentMethod = ({ value, onChange, totalPrice }: TypeSelectorProps) => {
             discount: '',
             basePrice: 3600,
             finalPrice: formatCurrency(totalPrice)
-        },
-        {
-            id: 'cod',
-            title: 'Cash on delivery',
-            icon: <FaTruck className="w-6 h-6" />,
-            additionalFee: 49,
-            basePrice: 3600,
-            finalPrice: formatCurrency((totalPrice * 0.20)),
         }
     ];
     const [selectedOption, setSelectedOption] = React.useState<string>('upi');
 
     return (
         <div className="bg-white ">
-        
+
             <div className="flex items-center justify-between cursor-pointer bg-gray-100 p-3 rounded-t-lg">
                 <div className="flex items-center gap-2">
                     <RiBankLine size={24} className='text-orange-600' />

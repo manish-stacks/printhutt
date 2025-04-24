@@ -6,6 +6,7 @@ import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
+import Link from "next/link";
 
 const AcrylicPhotoVideoSlider = () => {
     const [activeIndex, setActiveIndex] = useState(1); // Start with index 1
@@ -13,12 +14,12 @@ const AcrylicPhotoVideoSlider = () => {
     const swiperRef = useRef<SwiperType | null>(null);
 
     const videos = [
-        "https://cloudify.printhutt.com/video/WhatsApp%20Video%202025-03-22%20at%206.10.05%20PM.mp4",
-        "https://cloudify.printhutt.com/video/WhatsApp_Video_2025-03-01_at_11.58.10_AM_iyvpqf.mp4",
-        "https://cloudify.printhutt.com/video/cube.mp4",
-        "https://cloudify.printhutt.com/video/WhatsApp_Video_2025-03-01_at_11.51.09_AM_kc8lja.mp4",
-        "https://cloudify.printhutt.com/video/WhatsApp_Video_2025-03-01_at_11.41.08_AM_aeu7jl.mp4",
-        "https://cloudify.printhutt.com/video/WhatsApp_Video_2025-03-01_at_6.03.50_PM_l0wwwy.mp4",
+        { url: "/product-details/led-photo-rolling-dice", video: "https://cloudify.printhutt.com/video/WhatsApp_Video_2025-03-01_at_9.11.26_PM_online-video-cutter.com_1_yq8a8p.mp4" },
+        { url: "/product-details/customize-acrylic-full-photo-frame-a4-size", video: "https://cloudify.printhutt.com/video/WhatsApp_Video_2025-03-01_at_11.58.10_AM_iyvpqf.mp4" },
+        { url: "/product-details/led-photo-rolling-dice", video: "https://cloudify.printhutt.com/video/WhatsApp%20Video%202025-03-22%20at%206.10.05%20PM.mp4" },
+        { url: "/category/lamps/couple-lamp", video: "https://cloudify.printhutt.com/video/WhatsApp_Video_2025-03-01_at_11.51.09_AM_kc8lja.mp4" },
+        { url: "/product-details/customized-name-led-lamp", video: "https://cloudify.printhutt.com/video/WhatsApp_Video_2025-03-01_at_11.41.08_AM_aeu7jl.mp4" },
+        { url: "/product-details/personalized-acrylic-cutout-photo-led-lamp", video: "https://cloudify.printhutt.com/video/WhatsApp_Video_2025-03-01_at_6.03.50_PM_l0wwwy.mp4" },
     ];
 
     const handleSlideChange = (swiper: SwiperType) => {
@@ -68,7 +69,7 @@ const AcrylicPhotoVideoSlider = () => {
     }, []);
 
     return (
-        <div className="to-gray-900 bg-violet-100 py-20">
+        <div className="to-gray-900 bg-violet-100 py-10">
             <div className="max-w-7xl  mx-auto px-4">
 
 
@@ -117,28 +118,29 @@ const AcrylicPhotoVideoSlider = () => {
                                     group
                                 `}
                             >
-                                <video
-                                    //ref={(el) => (videoRefs.current[index] = el)}
-                                    ref={(el) => {
-                                        videoRefs.current[index] = el;
-                                        if (el) {
-                                            el.onended = () => {
-                                                el.currentTime = 0;
-                                                el.play();
-                                            };
-                                        }
-                                    }}
-                                    className="w-full h-full object-contain rounded-pill relative z-10"
-                                    playsInline
-                                    muted
-                                    loop
-                                    autoPlay
-                                    preload="auto"
-                                >
-                                    <source src={video} type="video/mp4" />
-                                    Your browser does not support the video tag.
-                                </video>
-
+                                <Link href={video.url}>
+                                    <video
+                                        //ref={(el) => (videoRefs.current[index] = el)}
+                                        ref={(el) => {
+                                            videoRefs.current[index] = el;
+                                            if (el) {
+                                                el.onended = () => {
+                                                    el.currentTime = 0;
+                                                    el.play();
+                                                };
+                                            }
+                                        }}
+                                        className="w-full h-full object-contain rounded-pill relative z-10"
+                                        playsInline
+                                        muted
+                                        loop
+                                        autoPlay
+                                        preload="auto"
+                                    >
+                                        <source src={video.video} type="video/mp4" />
+                                        Your browser does not support the video tag.
+                                    </video>
+                                </Link>
 
                             </div>
                         </SwiperSlide>
