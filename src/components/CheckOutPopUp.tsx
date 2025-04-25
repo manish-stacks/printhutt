@@ -110,27 +110,27 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
                 const redirectUrl = paymentResponse?.instrumentResponse?.redirectInfo?.url;
                 return window.location.href = redirectUrl;
             } else {
-                setErrorMsg("Payment initiation failed!");
+                toast.error("Payment initiation failed!");
             }
         } catch (error) {
             console.error(error);
-            setErrorMsg(error.message || 'Something Went Wrong');
+            toast.error(error.message || 'Something Went Wrong');
         }
     }
 
     const handleSelect = (coupon) => {
 
         if (paymentMethod === 'offline') {
-            setErrorMsg('COD Not Applied for Coupons');
+            toast.error('COD Not Applied for Coupons');
             return;
         }
         if (selectedCoupon?.code === coupon.code) {
-            setErrorMsg('This coupon has already been applied');
+            toast.error('This coupon has already been applied');
             return;
         }
 
         if (totalPrice.totalPrice < coupon.minimumPurchaseAmount) {
-            setErrorMsg(`Minimum purchase amount of ${formatCurrency(coupon.minimumPurchaseAmount)} required`);
+            toast.error(`Minimum purchase amount of ${formatCurrency(coupon.minimumPurchaseAmount)} required`);
             return;
         }
 
@@ -145,12 +145,12 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
     };
     const handle_apply_code = async () => {
         if (!coupon_mark.trim()) {
-            setErrorMsg('Please enter a coupon code');
+            toast.error('Please enter a coupon code');
             return;
         }
 
         if (selectedCoupon?.code === coupon_mark) {
-            setErrorMsg('This coupon has already been applied');
+            toast.error('This coupon has already been applied');
             return;
         }
 
@@ -165,22 +165,22 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
                 setErrorMsg(''); // Clear the error message
                 toast.success('Coupon applied successfully');
             } else {
-                setErrorMsg('Invalid coupon code. Please try again.');
+                toast.error('Invalid coupon code. Please try again.');
             }
         } catch (error) {
             console.error(error);
-            setErrorMsg('Failed to apply coupon. Please try again.');
+            toast.error('Failed to apply coupon. Please try again.');
             // console.error(error);
         }
     };
     const handle_select = (coupon) => {
         if (selectedCoupon?.code === coupon.code) {
-            setErrorMsg('This coupon has already been applied');
+            toast.error('This coupon has already been applied');
             return;
         }
 
         if (originalPrice < coupon.minimumPurchaseAmount) {
-            setErrorMsg(`Minimum purchase amount of ${formatCurrency(coupon.minimumPurchaseAmount)} required`);
+            toast.error(`Minimum purchase amount of ${formatCurrency(coupon.minimumPurchaseAmount)} required`);
             return;
         }
 
@@ -218,7 +218,7 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
 
             setSelectedCoupon(coupon);
         } else {
-            setErrorMsg(`Minimum purchase amount of ${formatCurrency(coupon.minimumPurchaseAmount)} required`);
+            toast.error(`Minimum purchase amount of ${formatCurrency(coupon.minimumPurchaseAmount)} required`);
         }
     };
 
@@ -227,7 +227,7 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
 
         if (value === 'offline') {
             if (selectedCoupon) {
-                setErrorMsg('COD Not Applied for Coupons');
+                toast.error('COD Not Applied for Coupons');
             }
             setSelectedCoupon(null);
             setTotalPrice(prev => ({
@@ -275,8 +275,8 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
             address: selectAddress,
             payAmt: Math.floor(totalPrice.discountPrice)
         };
-
-        
+        console.log(order)
+        return 
         try {
             setIsSubmitting(true);
             const response: { order: { _id: string } } = await create_a_new_order(order);
