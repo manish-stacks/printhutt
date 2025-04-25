@@ -49,6 +49,42 @@ const HomeComponent = () => {
       <OurServices />
       <BannerOne />
       <Testimonials />
+      <section className="section-contact py-[50px] max-[1199px]:py-[35px]">
+        <div className="flex flex-wrap justify-between relative items-center mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">
+          <div className="flex flex-wrap w-full mb-[-24px]">
+            <div className="w-full px-[12px] hidden">
+              <div
+                className="section-title mb-[20px] pb-[20px] relative flex flex-col items-start text-start max-[991px]:pb-[0]"
+                data-aos="fade-up"
+                data-aos-duration={1000}
+                data-aos-delay={200}
+              >
+                <div className="section-detail max-[991px]:mb-[12px]">
+                  <h2 className="bb-title font-quicksand mb-[0] p-[0] text-[25px] font-bold text-[#3d4750] relative inline capitalize leading-[1] tracking-[0.03rem] max-[767px]:text-[23px]">
+                    Get In <span className="text-[#6c7fd8]">Touch</span>
+                  </h2> 
+                </div>
+              </div>
+            </div>
+           
+            <div
+              className="min-[992px]:w-[100%] w-full px-[12px] mb-[24px]"
+              data-aos="fade-up"
+              data-aos-duration={1000}
+              data-aos-delay={600}
+            >
+              <div className="bb-contact-maps sticky top-[0]">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3499.7120988320553!2d77.1312131!3d28.698257599999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d0151f063e0a1%3A0xf5c829e933be081d!2sPrint%20Hutt!5e0!3m2!1sen!2sin!4v1735904725123!5m2!1sen!2sin"
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="w-full h-[320px] mb-[-10px] rounded-[20px] border-[0]"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
       <TestimonialCard />
     </>
   );

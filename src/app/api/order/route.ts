@@ -23,12 +23,20 @@ export async function GET(request: NextRequest) {
     const status = url.searchParams.get("status") || "";
 
     const query: {
-      status?: string;
+      status?: string | { $in: string[] };
       userId?: string;
       orderId?: { $regex: string; $options: string };
     } = {};
+    
+    if (status !== "pending") {
+      query.status = { $in: ['confirmed', 'shipped', 'delivered', 'cancelled', 'returned', 'progress'] };
+    } else if (status) {
+      query.status = status;
+    }
+    
+ 
 
-    if (status) query.status = status;
+
     if (role !== "admin") query.userId = String(id);
     if (search) query.orderId = { $regex: search, $options: "i" };
 

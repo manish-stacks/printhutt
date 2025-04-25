@@ -29,7 +29,7 @@ const testimonials = [
         name: "Ravi",
         rating: 5,
         review: "I purchased the Couple Heart Night Lamp, and it's simply beautiful! The soft glow creates a warm, romantic atmosphere. The design is elegant, and it's perfect for any bedroom. A lovely addition to my home!",
-        hasVideo: true,
+        hasVideo: false,
         imgHeight: "300px",
         date: ""
     },

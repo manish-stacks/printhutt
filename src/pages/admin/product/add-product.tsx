@@ -439,7 +439,7 @@ export default function AddProduct() {
                 <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
                   <div className="text-center">
                     {image ? (
-                      <Image fill src={image} alt="Thumbnail Preview" className="mx-auto max-w-full rounded-md w-40 h-40" />
+                      <Image width={800} height={800} src={image} alt="Thumbnail Preview" className="mx-auto max-w-full rounded-md w-40 h-40" />
                     ) : (
                       <svg
                         className="mx-auto size-12 text-gray-300"
