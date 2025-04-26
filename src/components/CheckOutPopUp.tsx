@@ -275,8 +275,8 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
             address: selectAddress,
             payAmt: Math.floor(totalPrice.discountPrice)
         };
-        console.log(order)
-        return 
+        // console.log(order)
+        // return 
         try {
             setIsSubmitting(true);
             const response: { order: { _id: string } } = await create_a_new_order(order);
