@@ -1,4 +1,4 @@
-import { styleOptions } from '@/app/product/neon/_data/styles';
+import { styleOptions } from '@/app/product/customize-neon-sign/_data/styles';
 import { StyleOption } from '@/lib/types/neon';
 import React from 'react';
 

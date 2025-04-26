@@ -236,8 +236,8 @@ export default function HeroBanner() {
                                                 <td className="py-3 px-4">
                                                     {slider.imageUrl?.url && (
                                                         <Image
-                                                            width={20}
-                                                            height={20}
+                                                            width={200}
+                                                            height={200}
                                                             src={slider.imageUrl.url}
                                                             alt={slider.title}
                                                             className="w-20 h-20 object-cover rounded"

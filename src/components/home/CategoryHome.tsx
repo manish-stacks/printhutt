@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Navigation } from 'swiper/modules';
+import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { categoryService } from "@/_services/common/categoryService";
@@ -37,115 +37,89 @@ const CategoryHome = () => {
     fetchData();
   }, []);
 
-  const neonImage = [
-    "https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664963/lamp-product-banner_locrte_peorfc.jpg",
-    "https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664964/pre-product-banner_ndont2_xa92yn.jpg"
-  ];
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % neonImage.length);
-    }, 2000);
-    return () => clearInterval(interval);
-  }, [neonImage.length]);
 
   return (
-    <section className="section-category overflow-hidden py-[50px] max-[1199px]:py-[35px]">
-      <div className="flex flex-wrap justify-between relative items-center mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">
-        <div className="flex flex-wrap w-full mb-[-24px]">
-          <div className="min-[992px]:w-[41.66%] w-full px-[12px] mb-[24px]">
-            <div className="bb-category-img relative max-[991px]:hidden">
-              <Image
-                width={525}
-                height={525}
-                src={neonImage[currentImageIndex]}
-                alt="category"
-                className="w-full rounded-[30px]"
-              />
-              <div className="bb-offers py-[5px] px-[15px] absolute top-[20px] right-[20px] bg-[#000] opacity-[0.8] rounded-[15px]">
-                <span className="text-[14px] font-normal text-[#fff]">30% Off</span>
+    <section className="py-8 md:py-12 lg:py-16">
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* Left Column - Image */}
+          <div className="lg:col-span-5">
+            <Link href="/product/customize-neon-sign">
+              <div className="relative rounded-2xl overflow-hidden">
+                <Image
+                  width={525}
+                  height={525}
+                  src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1745656055/customize-neon-sign_kbykjt.jpg"
+                  alt="category"
+                  className="w-full h-auto object-cover"
+                />
+                <div className="absolute top-4 right-4 bg-black/80 py-1 px-4 rounded-full">
+                  <span className="text-sm text-white">30% Off</span>
+                </div>
               </div>
-            </div>
+            </Link>
           </div>
-          <div className="min-[992px]:w-[58.33%] w-full px-[12px] mb-[24px]">
-            <div className="bb-category-contact max-[991px]:mt-[-24px]">
-              {/* <div className="mb-[30px] max-[991px]:hidden">
-                <h2 className="font-quicksand text-[124px] text-fuchsia-900 drop-shadow-[0_1px_1px_rgba(0,0,0,0.25)] font-bold leading-[1.2] tracking-[0.03rem] max-[1399px]:text-[95px] max-[1199px]:text-[70px] max-[767px]:text-[42px]">
-                  Personalised Gifts
-                </h2>
-              </div> */}
-              <div className="text-start mb-12 max-[991px]:hidden">
-                <h1 className="text-[110px] font-bold text-rose-900 my-4 max-[1399px]:text-[95px] max-[1199px]:text-[70px] max-[767px]:text-[42px]" style={{ fontFamily: "Buttervill" }}>Featured Categories</h1>
-                <p className="text-lg text-gray-600 max-w-2xl mx-auto mt-8">
-                  Transform your photos into beautiful personalized products,Light up your memories with our exclusive illuminated products
+
+          {/* Right Column - Content */}
+          <div className="lg:col-span-7">
+            <div className="space-y-8">
+              <div className="text-center lg:text-left my-12">
+                <h1 className="font-['Buttervill'] text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-rose-900 ">
+                  Featured Categories
+                </h1>
+                <p className="text-gray-600 text-lg max-w-2xl mx-auto lg:mx-0 mt-10 ">
+                  Transform your photos into beautiful personalized products, Light up your memories with our exclusive illuminated products
                 </p>
               </div>
-              <div className="bb-category-block w-[calc(100%+150px)] pt-[30px] pl-[30px] bg-[#fff] rounded-tl-[30px] relative max-[991px]:ml-[0] max-[991px]:w-full max-[991px]:p-[0]">
+
+              <div className="relative">
                 <Swiper
                   modules={[Autoplay]}
-                  spaceBetween={20}
-                  slidesPerView={4}
+                  spaceBetween={16}
+                  slidesPerView="auto"
                   autoplay={{
                     delay: 2500,
                     disableOnInteraction: false,
                   }}
                   breakpoints={{
-                    320: {
-                      slidesPerView: 2,
-                    },
-                    768: {
-                      slidesPerView: 2,
-                    },
-                    1024: {
-                      slidesPerView: 3,
-                    },
-                    1400: {
-                      slidesPerView: 4,
-                    },
+                    320: { slidesPerView: 2, spaceBetween: 12 },
+                    640: { slidesPerView: 3, spaceBetween: 16 },
+                    1024: { slidesPerView: 3 },
+                    1280: { slidesPerView: 4 }
                   }}
+                  className="!p-2"
                 >
                   {loading ? (
                     Array.from({ length: 6 }).map((_, index) => (
-                      <SwiperSlide key={index}>
-                        <div className="bb-category-box p-[30px] rounded-[20px] flex flex-col items-center text-center max-[1399px]:p-[20px] bg-[#fef1f1]">
-                          <div className="category-image mb-[12px]">
-                            <div className="skeleton w-[50px] h-[50px] max-[1399px]:h-[65px] max-[1399px]:w-[65px] max-[1199px]:h-[50px] max-[1199px]:w-[50px] rounded-md bg-gray-200" />
-                          </div>
-                          <div className="category-sub-contact w-full">
-                            <div className="skeleton w-[70%] h-[16px] bg-gray-200 mx-auto mb-[8px]" />
-                            <div className="skeleton w-[50%] h-[14px] bg-gray-200 mx-auto" />
-                          </div>
+                      <SwiperSlide key={index} className="!w-[calc(50%-6px)] sm:!w-[calc(33.333%-8px)] lg:!w-[calc(25%-12px)]">
+                        <div className="bg-gray-100 p-4 rounded-xl animate-pulse">
+                          <div className="w-16 h-16 bg-gray-200 rounded-lg mx-auto mb-3"></div>
+                          <div className="h-4 bg-gray-200 rounded w-3/4 mx-auto mb-2"></div>
+                          <div className="h-3 bg-gray-200 rounded w-1/2 mx-auto"></div>
                         </div>
                       </SwiperSlide>
                     ))
                   ) : (
                     categoriesData.map((category, index) => (
-                      <SwiperSlide key={category._id}>
-                        <Link
-                          href={`/category/${category.slug}`} >
-                          <div className={`bb-category-box p-[30px] max-[567px]:p-[5px] rounded-lg flex flex-col items-center text-center max-[1399px]:p-[20px]  category-items-${index + 1} ${index % 2 === 0 ? 'bg-[#f4f1fe]' : 'bg-[#fef1f1]'}`}>
-                            <div className="category-image mb-[12px] flex items-center justify-center">
-                              <Image
-                                height={50}
-                                width={50}
-                                src={category.image.url}
-                                alt={category.name}
-                                className="w-[50px] h-[50px] max-[1399px]:h-[65px] max-[1399px]:w-[65px] max-[1199px]:h-[50px] max-[1199px]:w-[50px] rounded-md max-[991px]:rounded-full"
-                              />
-                            </div>
-                            <div className="category-sub-contact">
-                              <h5 className="mb-[2px] text-[16px] font-quicksand text-[#3d4750] font-semibold tracking-[0.03rem] leading-[1.2]">
-                                <span
-                                  className="font-Poppins text-[16px] font-medium leading-[1.2] tracking-[0.03rem] text-[#3d4750] capitalize"
-                                >
-                                  {category.name}
-                                </span>
-                              </h5>
-                              <p className="font-Poppins text-[13px] text-[#686e7d] leading-[25px] font-light tracking-[0.03rem]">
-                                {category.totalProducts} items
-                              </p>
-                            </div>
+                      <SwiperSlide key={category._id} className="!w-[calc(50%-6px)] sm:!w-[calc(33.333%-8px)] lg:!w-[calc(25%-12px)]">
+                        <Link href={`/category/${category.slug}`}>
+                          <div className={`p-4 rounded-xl transition-transform hover:scale-105 ${
+                            index % 2 === 0 ? 'bg-[#f4f1fe]' : 'bg-[#fef1f1]'
+                          }`}>
+                            <Image
+                              height={50}
+                              width={50}
+                              src={category.image.url}
+                              alt={category.name}
+                              className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 rounded-lg object-cover"
+                            />
+                            <h5 className="text-gray-800 font-semibold text-sm md:text-base mb-1 capitalize text-center">
+                              {category.name}
+                            </h5>
+                            <p className="text-gray-500 text-xs md:text-sm text-center">
+                              {category.totalProducts} items
+                            </p>
                           </div>
                         </Link>
                       </SwiperSlide>
@@ -157,7 +131,7 @@ const CategoryHome = () => {
           </div>
         </div>
       </div>
-    </section >
+    </section>
   );
 };
 

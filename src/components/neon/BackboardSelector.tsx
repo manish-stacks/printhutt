@@ -1,5 +1,5 @@
 import React from 'react';
-import { backboardOptions } from '@/app/product/neon/_data/backboards';
+import { backboardOptions } from '@/app/product/customize-neon-sign/_data/backboards';
 import { BackboardOption } from '@/lib/types/neon';
 
 

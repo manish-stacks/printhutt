@@ -3,19 +3,22 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { FaDownload, FaEdit, FaSearch } from 'react-icons/fa';
-import { RiLoader2Line } from 'react-icons/ri';
+import { RiLoader2Line, RiMessageFill } from 'react-icons/ri';
 import Link from 'next/link';
 import { Pagination } from '@/components/admin/Pagination';
 import { IOrder } from '@/lib/types/order';
 import { get_all_orders_of_user } from '@/_services/common/order';
 import { toast } from 'react-toastify';
 import { formatCurrency } from '@/helpers/helpers';
+import axios from 'axios';
+
 
 export default function OrderPage() {
     const searchParams = useSearchParams();
     const [orders, setOrders] = useState<IOrder[]>([]);
     const [pagination, setPagination] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [isSubmitting, setIsSubmitting] = useState(false);  // Add this line
     const router = useRouter();
     const page = searchParams?.get('page') || '1';
     const search = searchParams?.get('search') || '';
@@ -25,7 +28,6 @@ export default function OrderPage() {
         try {
             setIsLoading(true);
             const data = await get_all_orders_of_user(page, search, status);
-
             setOrders(data.orders);
             setPagination(data.pagination);
         } catch (error) {
@@ -59,7 +61,7 @@ export default function OrderPage() {
 
 
 
-    const OrderStatus = ({ order }) => {
+    const OrderStatus = ({ order }: { order: IOrder }) => {
         if (!order) return null;
 
         switch (order.status) {
@@ -74,7 +76,48 @@ export default function OrderPage() {
         }
     };
 
+    const [sendMessageModal, setIsSendMessageModal] = useState(false);
+    const [orderId, setOrderId] = useState<string | null>(null);
+    const [message, setMessage] = useState('');
 
+    const sendMessageHandler = async () => {
+        try {
+            if (isSubmitting) return; // Prevent double submission
+            if (!message.trim()) {
+                toast.error('Please enter a message');
+                return;
+            }
+
+            setIsSubmitting(true);
+            const response = await axios.post('/api/order/send-message', {
+                orderId,
+                message: message.trim()
+            });
+
+            if (response.status !== 200) {
+                throw new Error('Failed to send message');
+            }
+
+            toast.success('Message sent successfully');
+            setMessage('');
+            setIsSendMessageModal(false);
+        } catch (error) {
+            console.error('Error sending message:', error);
+            toast.error('Failed to send message');
+        } finally {
+            setIsSubmitting(false);
+        }
+    }
+
+    const sendMessage = async (orderID: string) => {
+        if (!orderID) {
+            toast.error('Order ID is required');
+            return;
+        }
+        setOrderId(orderID);
+        setMessage(''); // Clear any previous message
+        setIsSendMessageModal(true);
+    }
 
     return (
         <>
@@ -136,7 +179,7 @@ export default function OrderPage() {
                                                     </Link>
                                                 </td>
                                                 <td className="py-3 px-4">
-                                                    {new Date(order.createdAt).toLocaleDateString( 'en-US', {
+                                                    {new Date(order.createdAt).toLocaleDateString('en-US', {
                                                         year: 'numeric',
                                                         month: 'long',
                                                         day: 'numeric',
@@ -174,6 +217,16 @@ export default function OrderPage() {
                                                     >
                                                         <FaDownload />
                                                     </Link>
+                                                    {
+                                                        order.status == 'pending' && (
+                                                            <button
+                                                                onClick={() => sendMessage(order._id)}
+                                                                className="text-red-800 bg-red-300 p-2 rounded-full"
+                                                            >
+                                                                <RiMessageFill />
+                                                            </button>
+                                                        )
+                                                    }
                                                 </td>
                                             </tr>
                                         ))
@@ -188,6 +241,61 @@ export default function OrderPage() {
                     )}
                 </div>
             </div>
+
+            {
+                sendMessageModal && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                        <div className="bg-white p-6 rounded-lg shadow-lg w-11/12 md:w-1/3 lg:w-1/3">
+                            <h2 className="text-xl font-bold mb-4">Send Message</h2>
+
+                            <div className="flex justify-center mt-4 w-full p-4">
+                                <form className="space-y-4 w-full" onSubmit={(e) => {
+                                    e.preventDefault();
+                                    sendMessageHandler();
+                                }}>
+                                    <textarea
+                                        className="border border-gray-300 rounded-lg p-2 w-full"
+                                        placeholder="Type your message here..."
+                                        rows={4}
+                                        value={message}
+                                        onChange={(e) => setMessage(e.target.value)}
+                                        maxLength={200}
+                                    ></textarea>
+                                    <div className="flex justify-between items-center mb-4">
+                                        <span className="text-gray-500 text-sm">Max 200 characters</span>
+
+                                    </div>
+                                    <input type="hidden" name="orderId" value={orderId} />
+                                    <div className='flex justify-end'>
+                                        <button
+                                            onClick={() => setIsSendMessageModal(false)}
+                                            className="bg-gray-300 text-gray-800 px-4 py-2 rounded mr-2"
+                                            disabled={isSubmitting}
+                                        >
+                                            Cancel
+                                        </button>
+                                        <button
+                                            onClick={() => sendMessageHandler()}
+                                            className="bg-blue-500 text-white px-4 py-2 rounded flex items-center"
+                                            disabled={isSubmitting}
+                                        >
+                                            {isSubmitting ? (
+                                                <>
+                                                    <RiLoader2Line className="animate-spin mr-2" />
+                                                    Sending...
+                                                </>
+                                            ) : (
+                                                'Send'
+                                            )}
+                                        </button>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
         </>
     );
 }

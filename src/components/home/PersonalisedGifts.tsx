@@ -67,7 +67,7 @@ function PersonalizedGifts() {
             <div className="text-center">
 
               <h1 className="text-4xl max-[576px]:text-2xl md:text-5xl font-bold text-slate-600 mb-4 font-serif ">
-              <span className="text-rose-900" style={{ fontFamily: "DancingScript-VariableFont" }}>Personalised </span><span className='text-pink-600' style={{ fontFamily: "Buttervill" }}>Couple</span> <span className="text-rose-900" style={{ fontFamily: "DancingScript-VariableFont" }}>Gifts</span>
+              <span className="text-rose-900 font-[DancingScript-VariableFont]" >Personalised </span><span className='text-pink-600' style={{ fontFamily: "Buttervill" }}>Couple</span> <span className="text-rose-900" style={{ fontFamily: "DancingScript-VariableFont" }}>Gifts</span>
               </h1>
               <p className="text-lg text-slate-600/90 max-w-2xl mx-auto max-[576px]:text-sm" >
                 Create lasting memories with our unique collection of personalized lighting gifts

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { colors, multiColors } from '@/app/product/neon/_data/colors';
+import { colors, multiColors } from '@/app/product/customize-neon-sign/_data/colors';
 import { NeonColor } from '@/lib/types/neon';
 import Link from 'next/link';
 

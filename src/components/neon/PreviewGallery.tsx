@@ -1,4 +1,4 @@
-import { previewImages } from '@/app/product/neon/_data/preview-images';
+import { previewImages } from '@/app/product/customize-neon-sign/_data/preview-images';
 import Image from 'next/image';
 import React from 'react';
 // import { previewImages } from '../data/preview-images';
