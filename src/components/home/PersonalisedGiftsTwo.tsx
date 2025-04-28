@@ -46,7 +46,7 @@ const products = [
   {
     name: 'Acrylic Cutout Fream',
     image: 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1743672639/wa3ajoqy8npjtha8k0qz_cirzlw.png',
-    url: '/product-details/personalized-color-acrylic-cutout-photo-frame',
+    url: '/product-details/photo-cutout-frame',
 
   }
 ];
