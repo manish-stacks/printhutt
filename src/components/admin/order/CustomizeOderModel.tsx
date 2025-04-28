@@ -76,6 +76,15 @@ const CustomizeOderModel = ({ item }) => {
                         )
                     }
                     {
+                        item?.orientation && (
+                            <div className="flex items-center justify-between  border-b last:border-0">
+                                <p className="font-semibold">Shape Orientation</p>
+                                <p>{item?.orientation}</p>
+                            </div>
+                        )
+                    }
+
+                    {
                         item?.variant && (
                             <div className="flex items-center justify-between  border-b last:border-0">
                                 <p className="font-semibold">Variant</p>

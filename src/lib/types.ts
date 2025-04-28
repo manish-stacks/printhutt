@@ -140,6 +140,7 @@ export interface CheckoutData {
     sizeThickness: string;
     price: number;
     frameDesign: string;
+    orientation: string;
 }
 
 export interface ReviewData {

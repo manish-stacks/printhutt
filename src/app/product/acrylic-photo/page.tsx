@@ -19,7 +19,7 @@ export default function AcrylicPhoto() {
   const [selectedThickness, setSelectedThickness] = useState(BUTTON_VALUES_AND_PRICES[0].thickness[0]);
   const [radiusValue, setRadiusValue] = useState<string>('normal-canvas');
   const [imageUrl, setImageUrl] = useState<string>(DEFAULT_IMAGE_URL);
-  const [orientation, setOrientation] = useState<'landscape' | 'portrait'>('landscape');
+  const [orientation, setOrientation] = useState<'portrait' | 'landscape'>('portrait');
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [product, setProduct] = useState<Product>();
   const addToCart = useCartStore(state => state.addToCart);
@@ -277,8 +277,11 @@ export default function AcrylicPhoto() {
           sizeThickness: selectedThickness.value,
           price: selectedThickness.price,
           frameDesign: design,
+          orientation: orientation === 'landscape' ? 'portrait' : 'landscape',
         };
 
+        console.log(custom_data)
+        return
         const updatedProduct = {
           ...product,
           thumbnail: { ...product.thumbnail, url: previewCanvas },
@@ -484,21 +487,20 @@ export default function AcrylicPhoto() {
                       <div className="text-center mb-4">
                         <p className="mb-2 text-lg font-medium">Select Orientation</p>
                         <div className="flex justify-center gap-2">
-
-                          <button
-                            onClick={() => handleOrientationChange('landscape')}
-                            className={`px-4 py-2 rounded-lg text-sm sm:text-base font-semibold transition 
-                    duration-300 ease-in-out 
-                    ${orientation === 'landscape' ? 'bg-green-500 text-white shadow-md' : 'bg-white text-green-500 border border-green-500'}
-                    hover:bg-green-600 hover:text-white active:scale-95`}
-                          >
-                            Landscape
-                          </button>
                           <button
                             onClick={() => handleOrientationChange('portrait')}
                             className={`px-4 py-2 rounded-lg text-sm sm:text-base font-semibold transition 
                     duration-300 ease-in-out 
                     ${orientation === 'portrait' ? 'bg-green-500 text-white shadow-md' : 'bg-white text-green-500 border border-green-500'}
+                    hover:bg-green-600 hover:text-white active:scale-95`}
+                          >
+                            Landscape
+                          </button>
+                          <button
+                            onClick={() => handleOrientationChange('landscape')}
+                            className={`px-4 py-2 rounded-lg text-sm sm:text-base font-semibold transition 
+                    duration-300 ease-in-out 
+                    ${orientation === 'landscape' ? 'bg-green-500 text-white shadow-md' : 'bg-white text-green-500 border border-green-500'}
                     hover:bg-green-600 hover:text-white active:scale-95`}
                           >
                             Portrait
