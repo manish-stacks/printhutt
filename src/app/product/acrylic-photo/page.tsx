@@ -273,15 +273,14 @@ export default function AcrylicPhoto() {
           previewImage: imageUrl,
           radiusValue: radiusValue,
           shapeName: radiusValue.split('-')[0],
-          variant: selectedSize,
+          variant: orientation === 'landscape' ? selectedSize.split('x').reverse().join('x') : selectedSize,
           sizeThickness: selectedThickness.value,
           price: selectedThickness.price,
           frameDesign: design,
           orientation: orientation === 'landscape' ? 'portrait' : 'landscape',
         };
 
-        console.log(custom_data)
-        return
+       
         const updatedProduct = {
           ...product,
           thumbnail: { ...product.thumbnail, url: previewCanvas },
