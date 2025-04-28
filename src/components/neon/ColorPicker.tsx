@@ -72,7 +72,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ selectedColor, onColor
           />
         ))}
       </div>
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-4 hidden">
         {/* Circular Color Indicator */}
         <button
           onClick={() => onColorChangeHandle(multiColors[currentColorIndex], 'multi')}
