@@ -10,7 +10,7 @@ export const sizePresets: customSizeType[] = [
     height: 6,
     price: 1200,
     isPopular: true
-  },{
+  }, {
     _id: '2',
     name: 'Custom',
     maxTextLengthPerLine: 9,
@@ -18,7 +18,7 @@ export const sizePresets: customSizeType[] = [
     width: 18,
     height: 12,
     price: 2100
-  },{
+  }, {
     _id: '3',
     name: 'Custom',
     maxTextLengthPerLine: 9,
@@ -26,7 +26,7 @@ export const sizePresets: customSizeType[] = [
     width: 18,
     height: 6,
     price: 1600,
-  },{
+  }, {
     _id: '4',
     name: 'Custom',
     maxTextLengthPerLine: 10,
@@ -35,41 +35,41 @@ export const sizePresets: customSizeType[] = [
     height: 18,
     price: 2500,
     isPopular: true
-  },{
+  }, {
     _id: '5',
     name: 'Custom',
-    maxTextLengthPerLine: 18,
+    maxTextLengthPerLine: 15,
     maxLineLength: 1,
     width: 24,
     height: 6,
     price: 2100
-  },{
+  }, {
     _id: '6',
     name: 'Custom',
-    maxTextLengthPerLine: 10,
+    maxTextLengthPerLine: 15,
     maxLineLength: 2,
     width: 24,
     height: 18,
     price: 3500,
     isPopular: true
-  },{
+  }, {
     _id: '7',
     name: 'Custom',
-    maxTextLengthPerLine: 10,
+    maxTextLengthPerLine: 15,
     maxLineLength: 1,
     width: 24,
     height: 12,
     price: 2500
-  },{
+  }, {
     _id: '8',
     name: 'Custom',
-    maxTextLengthPerLine: 10,
+    maxTextLengthPerLine: 15,
     maxLineLength: 3,
     width: 24,
     height: 24,
     price: 4500,
     isPopular: true
-  },{
+  }, {
     _id: '9',
     name: 'Custom',
     maxTextLengthPerLine: 15,
@@ -77,7 +77,7 @@ export const sizePresets: customSizeType[] = [
     width: 36,
     height: 12,
     price: 3500
-  },{
+  }, {
     _id: '10',
     name: 'Custom',
     maxTextLengthPerLine: 15,
@@ -85,7 +85,7 @@ export const sizePresets: customSizeType[] = [
     width: 36,
     height: 18,
     price: 5000
-  },{
+  }, {
     _id: '11',
     name: 'Custom',
     maxTextLengthPerLine: 15,
@@ -93,7 +93,7 @@ export const sizePresets: customSizeType[] = [
     width: 36,
     height: 24,
     price: 6500
-  },{
+  }, {
     _id: '13',
     name: 'Custom',
     maxTextLengthPerLine: 18,
@@ -101,15 +101,7 @@ export const sizePresets: customSizeType[] = [
     width: 48,
     height: 12,
     price: 4500
-  },{
-    _id: '14',
-    name: 'Custom',
-    maxTextLengthPerLine: 18,
-    maxLineLength: 2,
-    width: 48,
-    height: 48,
-    price: 17000 
-  },{
+  }, {
     _id: '15',
     name: 'Custom',
     maxTextLengthPerLine: 18,
@@ -117,7 +109,7 @@ export const sizePresets: customSizeType[] = [
     width: 48,
     height: 24,
     price: 8500
-  },{
+  }, {
     _id: '16',
     name: 'Custom',
     maxTextLengthPerLine: 18,
@@ -125,5 +117,13 @@ export const sizePresets: customSizeType[] = [
     width: 48,
     height: 36,
     price: 12000
+  }, {
+    _id: '14',
+    name: 'Custom',
+    maxTextLengthPerLine: 18,
+    maxLineLength: 2,
+    width: 48,
+    height: 48,
+    price: 17000
   }
 ]
