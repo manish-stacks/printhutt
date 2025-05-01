@@ -33,6 +33,7 @@ export default function CouponPage() {
         validUntil: '',
         usageLimit: '',
         isActive: true,
+        isShow: true,
     });
 
     const searchParams = useSearchParams();
@@ -46,7 +47,7 @@ export default function CouponPage() {
         try {
             setIsLoading(true);
             const response = await getAllCouponsPagination(page, search);
-            
+
             const data = response?.coupons as unknown as { coupons: CouponAttributes[], pagination: number };
             setCoupons(data);
             setPagination(response?.pagination);
@@ -91,20 +92,20 @@ export default function CouponPage() {
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
-    
+
         try {
             if (!formData) {
                 throw new Error("Form data is empty or invalid.");
             }
-    
-            console.log("Submitting Form Data:", formData);
-    
+
+            // console.log("Submitting Form Data:", formData);
+
             const success = editingId
                 ? await updateCoupon(editingId, formData)
                 : await addNewCoupon(formData);
-    
+
             if (success) {
-                console.log("Coupon added/updated successfully.");
+                // console.log("Coupon added/updated successfully.");
                 try {
                     await fetchCoupons();
                 } catch (fetchError) {
@@ -120,10 +121,11 @@ export default function CouponPage() {
             setIsSubmitting(false);
         }
     };
-    
+
 
     const handleEdit = (id: string) => {
         const couponToEdit = coupons.find(coupon => coupon._id === id);
+     
         if (couponToEdit) {
             setFormData({
                 code: couponToEdit.code,
@@ -136,6 +138,7 @@ export default function CouponPage() {
                 validUntil: new Date(couponToEdit.validUntil).toISOString().slice(0, 16),
                 usageLimit: couponToEdit.usageLimit?.toString() || '',
                 isActive: couponToEdit.isActive,
+                isShow: couponToEdit.isShow,
             });
             setEditingId(id);
             setIsOpen(true);
@@ -196,6 +199,7 @@ export default function CouponPage() {
             validUntil: '',
             usageLimit: '',
             isActive: true,
+            isShow: false,
         });
     };
 

@@ -27,6 +27,7 @@ export async function POST(req: NextRequest) {
       validUntil,
       usageLimit,
       isActive,
+      isShow
     } = requestBody;
 
     // Check required fields
@@ -37,8 +38,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Validate 'isActive' as a boolean (true/false)
+
     const activeStatus = typeof isActive === 'boolean' ? isActive : Boolean(isActive);
+    const activeisShow = typeof isShow === 'boolean' ? isShow : Boolean(isShow);
 
     const newCoupon = new Coupon({
       code,
@@ -51,6 +53,7 @@ export async function POST(req: NextRequest) {
       validUntil,
       usageLimit,
       isActive: activeStatus,
+      isShow: activeisShow,
     });
 
     // Save the coupon to the database

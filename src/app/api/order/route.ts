@@ -27,14 +27,14 @@ export async function GET(request: NextRequest) {
       userId?: string;
       orderId?: { $regex: string; $options: string };
     } = {};
-    
+
     if (status !== "pending") {
       query.status = { $in: ['confirmed', 'shipped', 'delivered', 'cancelled', 'returned', 'progress'] };
     } else if (status) {
       query.status = status;
     }
-    
- 
+
+
 
 
     if (role !== "admin") query.userId = String(id);
@@ -70,8 +70,10 @@ export async function POST(request: NextRequest) {
   try {
     await dbConnect();
 
+    const body = await request.json();
     const tokenData = await getDataFromToken(request);
-    if (!tokenData.id) {
+
+    if (!tokenData?.id) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
@@ -82,8 +84,21 @@ export async function POST(request: NextRequest) {
         { status: 200 }
       );
     }
+    if (!body.items || body.items.length === 0) {
+      return NextResponse.json(
+        { success: false, message: "No items in the order." },
+        { status: 200 }
+      );
+    }
+ 
+    if (userData.couponCollection.includes(body.coupon.id)) {
+      return NextResponse.json(
+        { success: false, message: "Coupon already used." },
+        { status: 200 }
+      );
+    }
+    
 
-    const body = await request.json();
     let addressData = await Address.findById(body.address);
     if (!addressData) {
       addressData = await Address.findOne({ userId: tokenData.id });
@@ -176,6 +191,15 @@ export async function POST(request: NextRequest) {
     };
     const order = new Order(orderData);
     await order.save();
+
+
+    userData.couponCollection = userData.couponCollection || [];
+    if (body.coupon?.code && !userData.couponCollection.includes(body.coupon.id)) {
+      userData.couponCollection.push(body.coupon.id);
+      await userData.save();
+    }
+
+    //console.log("userData.couponCollection", userData.couponCollection);
 
     return NextResponse.json({
       success: true,

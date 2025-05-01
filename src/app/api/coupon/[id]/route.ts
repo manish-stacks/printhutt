@@ -63,6 +63,7 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
             validUntil,
             usageLimit,
             isActive,
+            isShow,
         } = await request.json();
 
         const existingCoupon = await Coupon.findById(id);
@@ -81,6 +82,7 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
         existingCoupon.validUntil = validUntil || existingCoupon.validUntil;
         existingCoupon.usageLimit = usageLimit || existingCoupon.usageLimit;
         existingCoupon.isActive = isActive !== undefined ? isActive : existingCoupon.isActive;
+        existingCoupon.isShow = isShow !== undefined ? isShow : existingCoupon.isShow;
 
         await existingCoupon.save();
 

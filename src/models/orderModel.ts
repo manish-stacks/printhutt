@@ -80,6 +80,10 @@ const orderSchema: Schema<IOrder> = new Schema({
         enum: ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled', 'returned', 'progress'],
         default: 'pending'
     },
+    reminderSent: {
+        type: Boolean,
+        default: false
+    }
 }, { timestamps: true });
 
 const Order: Model<IOrder> = mongoose.models.Order || mongoose.model<IOrder>("Order", orderSchema);

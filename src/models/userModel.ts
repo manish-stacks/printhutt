@@ -17,6 +17,7 @@ interface IUser extends Document {
   verifyTokenExpiry?: Date;
   createdAt: Date;
   updatedAt: Date;
+  couponCollection: string[];
 }
 
 interface IUserMethods {
@@ -36,7 +37,7 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>(
     },
     email: {
       type: String,
-      unique: true, 
+      unique: true,
     },
     password: {
       type: String,
@@ -54,6 +55,7 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>(
       enum: ["user", "admin"],
       default: "user",
     },
+    couponCollection: [String],
     otpVerification: Number,
     otpVerificationExpiry: Date,
     forgotPasswordToken: String,

@@ -109,6 +109,7 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
             varient: JSON.parse(formData.get('varient')?.toString() || JSON.stringify(product.varient)),
         };
 
+        
         const thumbnail = formData.get('thumbnail');
         if (thumbnail && typeof thumbnail === 'object' && 'arrayBuffer' in thumbnail) {
             if (product.thumbnail?.public_id) {

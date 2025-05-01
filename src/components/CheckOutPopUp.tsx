@@ -14,6 +14,7 @@ import confetti from 'canvas-confetti';
 import siteLogo from '/public/print-hutt-logo.webp';
 import { commonApi } from '@/_services/common/common';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
 interface ModalProps {
     isOpen?: boolean
@@ -187,7 +188,18 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
         applyCouponDiscount(coupon);
     };
 
-    const applyCouponDiscount = (coupon) => {
+    const applyCouponDiscount = async (coupon) => {
+        console.log(coupon)
+        try {
+            const response = await axios.post('/api/coupon/apply', { couponId: coupon._id });
+            if (response.data.success) {
+                toast.error(response.data.message || 'Failed to apply coupon. Please try again.');
+                return;
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error('Failed to apply coupon. Please try again.');
+        }
         // console.log(coupon)
         let discount = 0;
 
@@ -266,6 +278,7 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
                 coupon_discount: Math.floor(totalPrice?.coupon_discount?.toFixed(2) || 0)
             },
             coupon: {
+                id: selectedCoupon?._id || null,
                 code: selectedCoupon?.code || '',
                 discountAmount: Math.floor(selectedCoupon?.discountValue) || 0,
                 discountType: selectedCoupon?.discountType || "",
@@ -287,6 +300,9 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
             } else {
                 if (response.message == "Email address is required.") {
                     setShowMailModal(true);
+                }
+                else {
+                    toast.error(response.message);
                 }
             }
 
@@ -322,10 +338,10 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
                             {/* Order Summary */}
                             <div className="mb-6 bb-cart-box item h-[80%] overflow-auto main-box-checkout">
                                 {errorMsg && <div className="text-red-600 text-sm mt-1 bg-rose-100 py-2 px-4 rounded-sm mb-2">{errorMsg}</div>}
-                                
+
                                 <div className="bg-white border rounded-lg shadow-sm mb-6">
-                                    <div 
-                                        onClick={() => setShowSummary(!showSummary)} 
+                                    <div
+                                        onClick={() => setShowSummary(!showSummary)}
                                         className="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-50"
                                     >
                                         <div className="flex items-center gap-2">
@@ -341,14 +357,14 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
                                         </div>
                                         <div className="flex items-center gap-3">
                                             <span className="text-lg font-medium text-gray-900">{formatCurrency(totalPrice.discountPrice)}</span>
-                                            {showSummary ? 
-                                                <RiArrowUpSLine className="text-gray-400 w-6 h-6" /> : 
+                                            {showSummary ?
+                                                <RiArrowUpSLine className="text-gray-400 w-6 h-6" /> :
                                                 <RiArrowDownSLine className="text-gray-400 w-6 h-6" />
                                             }
                                         </div>
                                     </div>
 
-                                    {showSummary && (
+                                    {(!isLoggedIn || showSummary) && (
                                         <div className="border-t px-4 py-3 space-y-3">
                                             <div className="space-y-2">
                                                 <div className="flex justify-between text-gray-600">
@@ -375,7 +391,7 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
                                                     </span>
                                                 </div>
                                             </div>
-                                            
+
                                             <div className="border-t pt-3">
                                                 <div className="flex justify-between">
                                                     <span className="font-medium text-gray-900">Total Amount</span>
@@ -388,10 +404,10 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
 
                                 {/* Available Coupons */}
                                 {
-                                    availableCoupons.length > 0 && (
+                                    (isLoggedIn && (availableCoupons.length > 0)) && (
                                         <div className="mb-4">
-                                            <div className="flex items-center justify-between cursor-pointer bg-gray-100 p-3 rounded-t-lg" 
-                                                 onClick={() => setIsCoupon(!isCoupon)}>
+                                            <div className="flex items-center justify-between cursor-pointer bg-gray-100 p-3 rounded-t-lg"
+                                                onClick={() => setIsCoupon(!isCoupon)}>
                                                 <div className="flex items-center gap-2">
                                                     <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
@@ -404,8 +420,8 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
                                             {isCoupon && (
                                                 <div className="border-x border-b rounded-b-lg p-3 space-y-3">
                                                     {availableCoupons.map((coupon) => (
-                                                        <div key={coupon.code} 
-                                                             className="relative border border-dashed border-gray-300 rounded-lg p-4 bg-white hover:border-orange-300 transition-colors">
+                                                        <div key={coupon.code}
+                                                            className="relative border border-dashed border-gray-300 rounded-lg p-4 bg-white hover:border-orange-300 transition-colors">
                                                             <div className="flex justify-between items-center">
                                                                 <div className="space-y-1">
                                                                     <div className="flex items-center gap-2">
@@ -419,8 +435,8 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
                                                                         )}
                                                                     </div>
                                                                     <p className="text-green-700 text-sm font-medium">
-                                                                        {coupon.discountType === "percentage" 
-                                                                            ? `${coupon.discountValue}% off` 
+                                                                        {coupon.discountType === "percentage"
+                                                                            ? `${coupon.discountValue}% off`
                                                                             : `₹${coupon.discountValue} off`}
                                                                     </p>
                                                                     <p className="text-gray-500 text-xs">
@@ -428,7 +444,7 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
                                                                     </p>
                                                                 </div>
                                                                 {selectedCoupon !== coupon && (
-                                                                    <button 
+                                                                    <button
                                                                         onClick={() => handleSelect(coupon)}
                                                                         className="px-4 py-1.5 text-sm font-medium text-orange-600 border border-orange-600 rounded-full hover:bg-orange-50 transition-colors"
                                                                     >

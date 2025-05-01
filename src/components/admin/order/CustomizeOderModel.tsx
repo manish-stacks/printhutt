@@ -1,16 +1,114 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 
-const CustomizeOderModel = ({ item }) => {
-    // const downloadPreviewImage = (url: string) => {
-    //     // Implement download functionality here
-    //     const link = document.createElement('a');
-    //     link.href = url;
-    //     link.download = url.split('/').pop(); // Set the filename based on the URL
-    //     document.body.appendChild(link);
-    //     link.click();
-    //     document.body.removeChild(link);
-    // };
+interface OrderItem {
+    name0?: string;
+    name1?: string;
+    name2?: string;
+    name3?: string;
+    selectedDesign?: string;
+    radiusValue?: string;
+    shapeName?: string;
+    orientation?: string;
+    variant?: string;
+    sizeThickness?: string;
+    frameDesign?: string;
+    text?: string;
+    color?: string;
+    font?: string;
+    size?: string;
+    style?: string;
+    lineHeight?: string;
+    fontSize?: string;
+    width?: string;
+    height?: string;
+    previewCanvas?: { url: string };
+    previewImage?: { url: string };
+    previewImageTwo?: { url: string };
+    previewImageThree?: { url: string };
+    previewImageFour?: { url: string };
+}
+
+interface OrderDetailRowProps {
+    label: string;
+    value: string | undefined;
+}
+
+const OrderDetailRow: React.FC<OrderDetailRowProps> = ({ label, value }) => {
+    if (!value) return null;
+    return (
+        <div className="flex items-center justify-between border-b last:border-0 py-2">
+            <p className="font-semibold">{label}</p>
+            <p>{value}</p>
+        </div>
+    );
+};
+
+const ImageGallery: React.FC<{
+    images: Array<{ url: string | undefined; alt: string }>;
+    onImageClick: (url: string) => void;
+}> = ({ images, onImageClick }) => (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+        {images.map((img, index) => (
+            img.url && (
+                <div key={index} className="aspect-w-16 aspect-h-9">
+                    <Image
+                        onClick={() => onImageClick(img.url!)}
+                        alt={img.alt}
+                        src={img.url}
+                        width={400}
+                        height={400}
+                        className="rounded-md object-cover cursor-pointer hover:opacity-90 transition-opacity"
+                    />
+                </div>
+            )
+        ))}
+    </div>
+);
+
+interface ImageModalProps {
+    imageUrl: string;
+    onClose: () => void;
+    onDownload: (url: string) => void;
+}
+
+const ImageModal: React.FC<ImageModalProps> = ({ imageUrl, onClose, onDownload }) => {
+    return (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-4 rounded-lg max-w-4xl w-full mx-4">
+                <div className="flex justify-end mb-2">
+                    <button
+                        onClick={onClose}
+                        className="p-1 hover:bg-gray-100 rounded-full"
+                    >
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div className="relative h-[70vh]">
+                    <Image
+                        src={imageUrl}
+                        alt="Preview"
+                        fill
+                        className="object-contain"
+                    />
+                </div>
+                <div className="mt-4 flex justify-center">
+                    <button
+                        onClick={() => onDownload(imageUrl)}
+                        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                    >
+                        Download Image
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const CustomizeOderModel: React.FC<{ item: OrderItem }> = ({ item }) => {
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
     const downloadPreviewImage = async (url: string) => {
         try {
@@ -32,216 +130,59 @@ const CustomizeOderModel = ({ item }) => {
         }
     };
 
+    const images = [
+        { url: item?.previewCanvas?.url, alt: "Preview Canvas" },
+        { url: item?.previewImage?.url, alt: "Preview Image" },
+        { url: item?.previewImageTwo?.url, alt: "Preview Image Two" },
+        { url: item?.previewImageThree?.url, alt: "Preview Image Three" },
+        { url: item?.previewImageFour?.url, alt: "Preview Image Four" }
+    ];
 
     return (
-        <div className='p-4 rounded-md bg-slate-200'>
-            {item && (
-                <>
-                    {Array.from({ length: 4 }, (_, index) => {
-                        const key = `name${index}`;
-                        return (
-                            item[key] && (
-                                <div key={index} className="flex items-center justify-between  border-b last:border-0">
-                                    <p className="font-semibold">{`Name-${index}`}</p>
-                                    <p>{item[key]}</p>
-                                </div>
-                            )
-                        );
-                    })}
-                    {
-                        item?.selectedDesign && (
-                            <div className="flex items-center justify-between  border-b last:border-0">
-                                <p className="font-semibold">Selected Design</p>
-                                <p>{item?.selectedDesign}</p>
-                            </div>
-                        )
-                    }
+        <div className="space-y-4">
+            <div className="p-6 rounded-lg bg-white shadow-sm">
+                {item && (
+                    <>
+                        <div className="space-y-2">
+                            {Array.from({ length: 4 }, (_, i) => (
+                                <OrderDetailRow
+                                    key={`name${i}`}
+                                    label={`Name-${i}`}
+                                    value={item[`name${i}` as keyof OrderItem]}
+                                />
+                            ))}
+                            <OrderDetailRow label="Selected Design" value={item.selectedDesign} />
+                            <OrderDetailRow label="Radius Value" value={item.radiusValue} />
+                            <OrderDetailRow label="Shape Name" value={item.shapeName} />
+                            <OrderDetailRow label="Shape Orientation" value={item.orientation} />
+                            <OrderDetailRow label="Variant" value={item.variant} />
+                            <OrderDetailRow label="Thickness" value={item.sizeThickness} />
+                            <OrderDetailRow label="Frame Design" value={item.frameDesign} />
+                            <OrderDetailRow label="Text" value={item.text} />
+                            <OrderDetailRow label="Color" value={item.color} />
+                            <OrderDetailRow label="Font" value={item.font} />
+                            <OrderDetailRow label="Size" value={item.size} />
+                            <OrderDetailRow label="Style" value={item.style} />
+                            <OrderDetailRow label="Line Height" value={item.lineHeight} />
+                            <OrderDetailRow label="Font Size" value={item.fontSize} />
+                            {item.width && item.height && (
+                                <OrderDetailRow
+                                    label="Box Size"
+                                    value={`${item.width}" x ${item.height}"`}
+                                />
+                            )}
+                        </div>
+                        <ImageGallery images={images} onImageClick={setSelectedImage} />
+                    </>
+                )}
+            </div>
 
-
-                    {/* customize Acrylic  design start    */}
-                    {
-                        item?.radiusValue && (
-                            <div className="flex items-center justify-between  border-b last:border-0">
-                                <p className="font-semibold">Radius Value</p>
-                                <p>{item?.radiusValue}</p>
-                            </div>
-                        )
-                    }
-                    {
-                        item?.shapeName && (
-                            <div className="flex items-center justify-between  border-b last:border-0">
-                                <p className="font-semibold">Shape Name</p>
-                                <p>{item?.shapeName}</p>
-                            </div>
-                        )
-                    }
-                    {
-                        item?.orientation && (
-                            <div className="flex items-center justify-between  border-b last:border-0">
-                                <p className="font-semibold">Shape Orientation</p>
-                                <p>{item?.orientation}</p>
-                            </div>
-                        )
-                    }
-
-                    {
-                        item?.variant && (
-                            <div className="flex items-center justify-between  border-b last:border-0">
-                                <p className="font-semibold">Variant</p>
-                                <p>{item?.variant}</p>
-                            </div>
-                        )
-                    }
-
-                    {
-                        item?.sizeThickness && (
-                            <div className="flex items-center justify-between  border-b last:border-0">
-                                <p className="font-semibold">Thickness</p>
-                                <p>{item?.sizeThickness}</p>
-                            </div>
-                        )
-                    }
-
-                    {
-
-                        item?.frameDesign && (
-                            <div className="flex items-center justify-between  border-b last:border-0">
-                                <p className="font-semibold">Frame Design</p>
-                                <p>{item?.frameDesign}</p>
-                            </div>
-                        )
-                    }
-
-                    {
-                        item?.text && (
-                            <div className="flex items-center justify-between  border-b last:border-0">
-                                <p className="font-semibold">Text</p>
-                                <p>{item?.text}</p>
-                            </div>
-                        )
-                    }
-
-                    {
-                        item?.color && (
-                            <div className="flex items-center justify-between  border-b last:border-0">
-                                <p className="font-semibold">Color</p>
-                                <p>{item?.color}</p>
-                            </div>
-                        )
-                    }
-                    {
-                        item?.font && (
-                            <div className="flex items-center justify-between  border-b last:border-0">
-                                <p className="font-semibold">Font</p>
-                                <p>{item?.font}</p>
-                            </div>
-                        )
-                    }
-                    {
-                        item?.size && (
-                            <div className="flex items-center justify-between  border-b last:border-0">
-                                <p className="font-semibold">Size</p>
-                                <p>{item?.size}</p>
-                            </div>
-                        )
-                    }
-                    {
-                        item?.style && (
-                            <div className="flex items-center justify-between  border-b last:border-0">
-                                <p className="font-semibold">Style</p>
-                                <p>{item?.style}</p>
-                            </div>
-                        )
-                    }
-                    {
-                        item?.lineHeight && (
-                            <div className="flex items-center justify-between  border-b last:border-0">
-                                <p className="font-semibold">lineHeight</p>
-                                <p>{item?.lineHeight}</p>
-                            </div>
-                        )
-                    }
-
-                    {
-                        item?.fontSize && (
-                            <div className="flex items-center justify-between  border-b last:border-0">
-                                <p className="font-semibold">fontSize</p>
-                                <p>{item?.fontSize}</p>
-                            </div>
-                        )
-                    }
-
-                    {
-                        item?.width && (
-                            <div className="flex items-center justify-between  border-b last:border-0">
-                                <p className="font-semibold">Box Size</p>
-                                <p>{item?.width}&quot; x {item?.height}&quot;</p>
-                            </div>
-                        )
-                    }
-
-                    {/* customize Acrylic  design end    */}
-                    <div className='flex space-x-3'>
-
-                        {item?.previewCanvas && (
-                            <Image
-                                onClick={() => downloadPreviewImage(item?.previewCanvas.url)}
-                                alt="img"
-                                src={item?.previewCanvas?.url || 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664958/elementor-placeholder-image_wps86z_qulbgy.webp'}
-                                width={400}
-                                height={400}
-                                className="rounded-md w-[50%] h-[200px] object-cover"
-                            />
-                        )}
-
-                        {item?.previewImage && (
-                            <Image
-                                onClick={() => downloadPreviewImage(item?.previewImage.url)}
-                                alt="img"
-                                src={item?.previewImage?.url || 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664958/elementor-placeholder-image_wps86z_qulbgy.webp'}
-                                width={400}
-                                height={400}
-                                className="rounded-md w-[50%] h-[200px] object-cover"
-                            />
-                        )}
-
-                    </div>
-                    <div className='flex space-x-3 my-4'>
-                        {item?.previewImageTwo && (
-                            <Image
-                                onClick={() => downloadPreviewImage(item?.previewImageTwo.url)}
-                                alt="img"
-                                src={item?.previewImageTwo?.url || 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664958/elementor-placeholder-image_wps86z_qulbgy.webp'}
-                                width={400}
-                                height={400}
-                                className="rounded-md w-[50%] h-[200px] object-cover"
-                            />
-                        )}
-                        {item?.previewImageThree && (
-                            <Image
-                                onClick={() => downloadPreviewImage(item?.previewImageThree.url)}
-                                alt="img"
-                                src={item?.previewImageThree?.url || 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664958/elementor-placeholder-image_wps86z_qulbgy.webp'}
-                                width={400}
-                                height={400}
-                                className="rounded-md w-[50%] h-[200px] object-cover"
-                            />
-                        )}
-                    </div>
-                    <div className='flex space-x-3'>
-
-                        {item?.previewImageFour && (
-                            <Image
-                                onClick={() => downloadPreviewImage(item?.previewImageFour.url)}
-                                alt="img"
-                                src={item?.previewImageFour?.url || 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664958/elementor-placeholder-image_wps86z_qulbgy.webp'}
-                                width={400}
-                                height={400}
-                                className="rounded-md w-[50%] h-[200px] object-cover"
-                            />
-                        )}
-                    </div>
-                </>
+            {selectedImage && (
+                <ImageModal
+                    imageUrl={selectedImage}
+                    onClose={() => setSelectedImage(null)}
+                    onDownload={downloadPreviewImage}
+                />
             )}
         </div>
     );

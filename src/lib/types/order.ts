@@ -58,4 +58,5 @@ export interface IOrder extends Document {
     status: 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
     createdAt: Date;
     updatedAt: Date;
+    reminderSent: boolean;
 }

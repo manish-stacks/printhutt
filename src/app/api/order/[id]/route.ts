@@ -5,9 +5,10 @@ import mongoose from 'mongoose';
 import Order from '@/models/orderModel';
 import Product from '@/models/productModel';
 
+
 export async function GET(request: NextRequest, context: { params: { id: string } }) {
     try {
-        await dbConnect(); 
+        await dbConnect();
         const { id } = await context.params;
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return NextResponse.json({ success: false, message: "Invalid Order ID" }, { status: 400 });
@@ -15,8 +16,8 @@ export async function GET(request: NextRequest, context: { params: { id: string 
 
         const tokenData = await getDataFromToken(request);
 
-        if (!tokenData.id) {
-            return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+        if (!tokenData?.id) {
+            return NextResponse.json({ success: false, message: 'Unauthorized user' }, { status: 401 });
         }
 
         const order = await Order.findById(id)
@@ -27,7 +28,33 @@ export async function GET(request: NextRequest, context: { params: { id: string 
             return NextResponse.json({ success: false, message: "Order not found" }, { status: 404 });
         }
 
-        return NextResponse.json({ success: true, data: order }, { status: 200 });
+
+        const [prevOrder, nextOrder] = await Promise.all([
+            Order.findOne({
+                createdAt: { $lt: order.createdAt },
+                status: { $in: ['confirmed', 'shipped', 'delivered', 'cancelled', 'returned', 'progress'] }
+            })
+                .sort({ createdAt: -1 })
+                .select('_id')
+                .lean(),
+
+            Order.findOne({
+                createdAt: { $gt: order.createdAt },
+                status: { $in: ['confirmed', 'shipped', 'delivered', 'cancelled', 'returned', 'progress'] }
+            })
+                .sort({ createdAt: 1 })
+                .select('_id')
+                .lean()
+        ]);
+
+        return NextResponse.json({
+            success: true,
+            data: {
+                ...order,
+                prevOrderId: prevOrder?._id || null,
+                nextOrderId: nextOrder?._id || null
+            }
+        }, { status: 200 });
 
     } catch (error: unknown) {
         console.error('Error fetching order:', error);

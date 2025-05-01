@@ -21,6 +21,7 @@ export function CouponForm({
   onClose,
   mode
 }: CouponFormProps) {
+  
   return (
     <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
       <div className="relative p-4 w-full max-w-4xl max-h-full">
@@ -74,20 +75,36 @@ export function CouponForm({
                 </div>
 
                 <div>
-                <label className="block mb-2 text-sm font-medium text-gray-900">
-                  Status Of Coupons
-                </label>
-                <select
-                  name="isActive"
-                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  value={formData.isActive || ''}
-                  onChange={onChange}
-                >
-                  <option value="">Select status</option>
-                  <option value="true">Active</option>
-                  <option value="false">Inactive</option>
-                </select>
-              </div>
+                  <label className="block mb-2 text-sm font-medium text-gray-900">
+                    Status Of Coupons
+                  </label>
+                  <select
+                    name="isActive"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    value={formData.isActive ? 'true' : 'false'}
+                    onChange={onChange}
+                  >
+                    <option value="">Select status</option>
+                    <option value="true">Active</option>
+                    <option value="false">Inactive</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block mb-2 text-sm font-medium text-gray-900">
+                    isShowInCart
+                  </label>
+                  <select
+                    name="isShow"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    value={formData?.isShow ? 'true' : 'false'}
+                    onChange={onChange}
+                  >
+                    <option value="">Select status</option>
+                    <option value="true">Active</option>
+                    <option value="false">Inactive</option>
+                  </select>
+                </div>
+
               </div>
 
               <div>
@@ -104,7 +121,7 @@ export function CouponForm({
                   required
                 />
               </div>
-             
+
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <label className="block mb-2 text-sm font-medium text-gray-900">

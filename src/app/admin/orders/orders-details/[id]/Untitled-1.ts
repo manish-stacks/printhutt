@@ -98,7 +98,7 @@ export default function OrderDetailsPage() {
             });
             if (result.isConfirmed) {
                 try {
-                    const response = await axios.patch(`/api/orders/${id}/status`, {
+                    const response = await axios.patch(`/api/order/${id}/status`, {
                         status: selectedOption.value,
                     });
                     if (response.status !== 200) {
@@ -113,7 +113,7 @@ export default function OrderDetailsPage() {
         } else {
             setShowShipmentForm(false);
             try {
-                const response = await axios.patch(`/api/orders/${id}/status`, {
+                const response = await axios.patch(`/api/order/${id}/status`, {
                     status: selectedOption.value,
                 });
                 if (response.status !== 200) {
@@ -132,7 +132,6 @@ export default function OrderDetailsPage() {
 
         try {
             setLoading(true);
-
             const response = await axios.post(`/api/shiprocket/create-order`, {
                 orderId: id,
                 shipmentDetails,
@@ -152,7 +151,7 @@ export default function OrderDetailsPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-200 mt-10">
+        <div className="min-h-screen bg-gray-50">
             {/* Sticky Header */}
             <div className="sticky top-0 z-10 bg-white border-b">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -221,14 +220,13 @@ export default function OrderDetailsPage() {
                                                             {formatCurrency(item.price)}
                                                         </span>
                                                     </div>
-
+                                                    {item?.custom_data && (
+                                                        <div className="mt-2">
+                                                            <CustomizeOderModel item={item?.custom_data} />
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
-                                            {item?.custom_data && (
-                                                <div className="mt-2">
-                                                    <CustomizeOderModel item={item?.custom_data} />
-                                                </div>
-                                            )}
                                         </div>
                                     ))}
                                 </div>
@@ -350,8 +348,8 @@ export default function OrderDetailsPage() {
                                         -{' '}
                                         {formatCurrency(
                                             order.totalAmount.totalPrice +
-                                            order.totalAmount.shippingTotal -
-                                            (order.totalAmount.discountPrice + order.totalAmount.shippingTotal)
+                                                order.totalAmount.shippingTotal -
+                                                (order.totalAmount.discountPrice + order.totalAmount.shippingTotal)
                                         )}
                                     </span>
                                 </div>
@@ -360,8 +358,8 @@ export default function OrderDetailsPage() {
                                     <span>
                                         {formatCurrency(
                                             order.totalAmount.discountPrice +
-                                            order.totalAmount.shippingTotal -
-                                            order.totalAmount.coupon_discount
+                                                order.totalAmount.shippingTotal -
+                                                order.totalAmount.coupon_discount
                                         )}
                                     </span>
                                 </div>
@@ -376,9 +374,9 @@ export default function OrderDetailsPage() {
                                             <span>
                                                 {formatCurrency(
                                                     order.totalAmount.discountPrice +
-                                                    order.totalAmount.shippingTotal -
-                                                    order.totalAmount.coupon_discount -
-                                                    order.payAmt
+                                                        order.totalAmount.shippingTotal -
+                                                        order.totalAmount.coupon_discount -
+                                                        order.payAmt
                                                 )}
                                             </span>
                                         </div>
@@ -434,25 +432,3 @@ export default function OrderDetailsPage() {
                                 </div>
                                 {order.payment.transactionId && (
                                     <div className="flex justify-between text-gray-600">
-                                        <span>Transaction ID</span>
-                                        <span className="font-mono">{order.payment.transactionId}</span>
-                                    </div>
-                                )}
-                                {order.payment.paidAt && (
-                                    <div className="flex justify-between text-gray-600">
-                                        <span>Paid At</span>
-                                        <span>{formatDate(order.payment.paidAt)}</span>
-                                    </div>
-                                )}
-                                <div className="flex justify-between text-gray-900 font-semibold">
-                                    <span>Pay Amount</span>
-                                    <span>{formatCurrency(order.payAmt)}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-}
