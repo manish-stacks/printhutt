@@ -121,6 +121,8 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
 
     const handleSelect = (coupon) => {
 
+        checkCoupon(coupon);
+
         if (paymentMethod === 'offline') {
             toast.error('COD Not Applied for Coupons');
             return;
@@ -160,8 +162,16 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
             const query = "";
             const data = await getAllCouponsPagination(page, query);
             const coupon = data.coupons.find((c) => c.code === coupon_mark);
-            console.log(data)
+            if (!coupon) {
+                toast.error('Invalid coupon code. Please try again.');
+                return;
+            }
+            if (coupon.isActive === false) {
+                toast.error('Invalid coupon code. Please try again.');
+                return;
+            }
             if (coupon) {
+                checkCoupon(coupon);
                 handle_select(coupon);
                 setErrorMsg(''); // Clear the error message
                 toast.success('Coupon applied successfully');
@@ -188,8 +198,7 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
         applyCouponDiscount(coupon);
     };
 
-    const applyCouponDiscount = async (coupon) => {
-        console.log(coupon)
+    const checkCoupon = async (coupon) => {
         try {
             const response = await axios.post('/api/coupon/apply', { couponId: coupon._id });
             if (response.data.success) {
@@ -199,7 +208,12 @@ function CheckOutPopUp({ isOpen, onClose }: ModalProps) {
         } catch (error) {
             console.error(error);
             toast.error('Failed to apply coupon. Please try again.');
+            return;
         }
+    };
+    const applyCouponDiscount = async (coupon) => {
+        
+        
         // console.log(coupon)
         let discount = 0;
 
