@@ -5,9 +5,10 @@ import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { RiArrowRightSLine } from "react-icons/ri";
 import { toast } from "react-toastify";
-import CheckOutPopUp from "./CheckOutPopUp";
+// import CheckOutPopUp from "./CheckOutPopUp";
+import CheckOutPopUpV2 from "./CheckOutPopUpV2";
 
-const CartSidebar = ({ onClose }) => {
+const CartSidebar = ({ onClose }: { onClose: () => void }) => {
   const popupRef = useRef(null);
   const [totalPrice, setTotalPrice] = useState({ totalPrice: 0, discountPrice: 0, shippingTotal: 0 });
   const { items, updateQuantity, removeFromCart, getTotalPrice } = useCartStore();
@@ -237,7 +238,8 @@ const CartSidebar = ({ onClose }) => {
 
       {
         showMailModal && (
-          <CheckOutPopUp isOpen={showMailModal} onClose={() => setShowMailModal(false)} />
+          // <CheckOutPopUp isOpen={showMailModal} onClose={() => setShowMailModal(false)} />
+          <CheckOutPopUpV2 isOpen={showMailModal} onClose={() => setShowMailModal(false)} />
         )
       }
 

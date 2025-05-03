@@ -20,7 +20,6 @@ interface TypeSelectorProps {
         totalPrice: number;
     };
 }
-
 export const CheckoutAddressForm = ({ onChangeAddress, isCheckout, placeOrder, paymentMethod, setPaymentFunction, totalPrice }: TypeSelectorProps) => {
     const [selectedAddress, setSelectedAddress] = useState<boolean>(true);
     const [addresslist, setAddresslist] = useState<AddressFormData[]>([]);
