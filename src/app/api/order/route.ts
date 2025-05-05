@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
     }
     await userData.save();
 
-    
+
     if (!body.items || body.items.length === 0) {
       return NextResponse.json(
         { success: false, message: "No items in the order." },
@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    
+
     const addressData = new Address({
       userId: tokenData.id,
       fullName: body.address.name,
@@ -111,7 +111,7 @@ export async function POST(request: NextRequest) {
       addressType: body.address.addressType,
     });
 
-
+  
     const itemData = await Promise.all(
       body.items.map(async (item) => {
         if (!item.custom_data) {
