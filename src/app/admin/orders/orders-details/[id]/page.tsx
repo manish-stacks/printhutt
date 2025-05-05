@@ -94,13 +94,15 @@ export default function OrderDetailsPage() {
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, cancel it!',
+                confirmButtonText: 'Yes, cancel it!'
             });
             if (result.isConfirmed) {
                 try {
-                    const response = await axios.patch(`/api/orders/${id}/status`, {
+                    const response = await axios.patch(`/api/order/${id}/status`, {
                         status: selectedOption.value,
                     });
+
+                    
                     if (response.status !== 200) {
                         throw new Error('Failed to update order status');
                     }
@@ -113,7 +115,7 @@ export default function OrderDetailsPage() {
         } else {
             setShowShipmentForm(false);
             try {
-                const response = await axios.patch(`/api/orders/${id}/status`, {
+                const response = await axios.patch(`/api/order/${id}/status`, {
                     status: selectedOption.value,
                 });
                 if (response.status !== 200) {
@@ -132,7 +134,6 @@ export default function OrderDetailsPage() {
 
         try {
             setLoading(true);
-
             const response = await axios.post(`/api/shiprocket/create-order`, {
                 orderId: id,
                 shipmentDetails,

@@ -349,7 +349,7 @@ const CheckOutPopUpV2: React.FC<ModalProps> = ({ isOpen, onClose }) => {
             },
             paymentMethod: paymentMethod,
             address: selectAddress,
-            payAmt: Math.floor(totalPrice.discountPrice)
+            payAmt: Math.floor(totalPrice.discountPrice).toFixed(2)
         };
          
         try {
