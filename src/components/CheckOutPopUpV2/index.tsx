@@ -355,8 +355,8 @@ const CheckOutPopUpV2: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         try {
             setIsSubmitting(true);
             const response: { order: { _id: string } } = await create_a_new_order(order);
-            console.log(response)
-            return
+            // console.log(response)
+            // return
             if (response.success) {
                 await paymentintInitiation(response.order);
             } else {
