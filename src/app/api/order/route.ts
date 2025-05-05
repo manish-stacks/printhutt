@@ -82,9 +82,12 @@ export async function POST(request: NextRequest) {
     if (!userData) {
       return NextResponse.json({ success: false, message: 'User not found' }, { status: 404 });
     }
-    if (userData.username !== '') {
+    
+    const invalidUsernames = ['', 'user', 'guest'];
+    if (!invalidUsernames.includes(userData.username)) {
       userData.username = body.address.fullName;
     }
+
     if (userData.email !== '') {
       userData.email = body.address.email;
     }
@@ -111,7 +114,7 @@ export async function POST(request: NextRequest) {
       addressType: body.address.addressType,
     });
 
-  
+
     const itemData = await Promise.all(
       body.items.map(async (item) => {
         if (!item.custom_data) {

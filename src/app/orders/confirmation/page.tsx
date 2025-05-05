@@ -23,7 +23,7 @@ function OrderConfirmationContent() {
 
     useEffect(() => {
         removeAllItems();
-        if (success && orderId) {
+        if (success) {
             // confetti({
             //     particleCount: 100,
             //     spread: 70,
@@ -55,9 +55,9 @@ function OrderConfirmationContent() {
             }());
 
         }
-    }, [orderId]);
+    }, [success]);
 
-    if (!success || !orderId) {
+    if (!success) {
         return (
             <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
                 <div className="w-full max-w-2xl bg-white rounded-lg shadow-lg p-8 text-center">
@@ -99,9 +99,9 @@ function OrderConfirmationContent() {
                         <p className="text-gray-600 mt-2">
                             Thank you for your purchase. Your order has been received.
                         </p>
-                        <p className="text-gray-600 mt-2">
+                        {/* <p className="text-gray-600 mt-2">
                             Your order number is {orderId}.
-                        </p>
+                        </p> */}
 
                         <p className="text-gray-600 mt-2">
                             {`We'll email you an order confirmation with details and tracking info.`}

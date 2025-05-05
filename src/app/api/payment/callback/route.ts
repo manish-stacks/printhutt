@@ -55,7 +55,8 @@ export async function POST(request: NextRequest) {
         await order.save();
         await sendOrderConfirmationEmail(order);
         
-        return NextResponse.redirect(`${baseUrl}/orders/confirmation?id=${merchantTransactionId}&success=true`, { status: 301, });
+        // return NextResponse.redirect(`${baseUrl}/orders/confirmation?id=${merchantTransactionId}&success=true`, { status: 301, });
+        return NextResponse.redirect(`${baseUrl}/orders/confirmation?success=true`, { status: 301, });
 
     } catch (error) {
         console.error('Payment status check error:', error);
