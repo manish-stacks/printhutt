@@ -151,7 +151,7 @@ export async function sendOrderConfirmationEmail(orderData: {
     const itemsList = items.map((item, i) => `${i + 1}. ${item.name} x ${item.quantity}`).join('\n');
 
     const wappMsg = `
-Hello ${shipping.userName},
+Hi ${shipping.userName},
 
 Thank you for your order!
 
@@ -206,7 +206,7 @@ export async function sendOrderStatus(order: OrderDetails) {
     }).join('\n');
 
     const wappMsg = `
-Hello ${order.shipping.userName},
+Hi ${order.shipping.userName},
 
 Your order with ID: ${order.orderId} is currently *${order.status}*.
 

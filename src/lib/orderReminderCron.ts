@@ -5,50 +5,54 @@ import axios from "axios";
 import cron from 'node-cron';
 
 
-cron.schedule('*/15 * * * *', async () => {
-    console.log('Running every-second order reminder check...');
-    try {
-        await dbConnect();
+// startOrderReminderCron();
 
-        const todayStart = new Date();
-        todayStart.setHours(0, 0, 0, 0);
+export function startOrderReminderCron() {
+    cron.schedule('*/15 * * * *', async () => {
+        console.log('Running every-second order reminder check...');
+        try {
+            await dbConnect();
 
-        const todayEnd = new Date();
-        todayEnd.setHours(23, 59, 59, 999);
+            const todayStart = new Date();
+            todayStart.setHours(0, 0, 0, 0);
 
-        const pendingOrders = await Order.find({
-            status: 'pending',
-            createdAt: {
-                $gte: todayStart,
-                $lte: todayEnd
-            },
-            reminderSent: { $ne: true }
-        }).populate<{ userId: { username: string, number: string, _id: string } }>({
-            path: 'userId',
-            model: User
-        });
+            const todayEnd = new Date();
+            todayEnd.setHours(23, 59, 59, 999);
+
+            const pendingOrders = await Order.find({
+                status: 'pending',
+                createdAt: {
+                    $gte: todayStart,
+                    $lte: todayEnd
+                },
+                reminderSent: { $ne: true }
+            }).populate<{ userId: { username: string, number: string, _id: string } }>({
+                path: 'userId',
+                model: User
+            });
 
 
 
-        const usersReminded = new Set<string>();
+            const usersReminded = new Set<string>();
 
-        for (const order of pendingOrders) {
-            if (!usersReminded.has(order.userId._id.toString())) {
-                // Send WhatsApp message
-                const wappUrl = `${process.env.WAPP_URL}send?apikey=${process.env.WAPP_KEY}&mobile=${order.userId.number}&msg=${encodeURIComponent(wappMsg(order.userId.username))}`;
-                await axios.post(wappUrl);
+            for (const order of pendingOrders) {
+                if (!usersReminded.has(order.userId._id.toString())) {
+                    // Send WhatsApp message
+                    const wappUrl = `${process.env.WAPP_URL}send?apikey=${process.env.WAPP_KEY}&mobile=${order.userId.number}&msg=${encodeURIComponent(wappMsg(order.userId.username))}`;
+                    await axios.post(wappUrl);
 
-                usersReminded.add(order.userId._id.toString());
+                    usersReminded.add(order.userId._id.toString());
+                }
+                await Order.findByIdAndUpdate(order._id, { reminderSent: true });
             }
-            await Order.findByIdAndUpdate(order._id, { reminderSent: true });
+
+            console.log(`Check finished. Processed ${pendingOrders.length} orders.`);
+
+        } catch (error) {
+            console.error('Error in every-second order reminder check:', error);
         }
-
-        console.log(`Check finished. Processed ${pendingOrders.length} orders.`);
-
-    } catch (error) {
-        console.error('Error in every-second order reminder check:', error);
-    }
-});
+    });
+}
 
 function wappMsg(name: string) {
     return `Hi ${name},

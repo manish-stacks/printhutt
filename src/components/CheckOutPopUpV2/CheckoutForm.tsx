@@ -177,7 +177,8 @@ export const CheckoutForm = memo(({ error, showSummary, setShowSummary, items, t
 
             {/* Payment Options */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                <div className="relative bg-white rounded-lg shadow-sm " onClick={() => setPaymentFunction('online')}>
+                <div className="relative bg-white rounded-lg shadow-sm " onClick={() => 
+                    setPaymentFunction('online')}>
                     {selectedCoupon && (
                         <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 w-max">
                             <span className="px-3 py-1 bg-emerald-500 text-white text-xs rounded-full whitespace-nowrap">
@@ -197,7 +198,7 @@ export const CheckoutForm = memo(({ error, showSummary, setShowSummary, items, t
                 <div className="relative bg-white rounded-lg shadow-sm " onClick={() => setPaymentFunction('offline')}>
                     <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 w-max">
                         <span className="px-3 py-1 bg-emerald-500 text-white text-xs rounded-full whitespace-nowrap">
-                            {formatCurrency((totalPrice.totalPrice * 0.20))} Advance Pay
+                            {formatCurrency(((totalPrice.discountPrice + Number(totalPrice?.coupon_discount || 0)) * 0.20))}Advance Pay
                         </span>
                     </div>
                     <label className={`flex items-center justify-center p-4 border rounded-lg cursor-pointer ${paymentMethod === 'offline' ? 'border-blue-500 bg-slate-100' : ''} hover:border-blue-900 transition-colors`}>

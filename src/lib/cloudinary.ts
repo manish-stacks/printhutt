@@ -79,3 +79,16 @@ export const deleteImage = async (public_id: string): Promise<void> => {
 };
 
 
+export const sign_url = async (publicId: string) => {
+  const signedUrl = cloudinary.url(publicId, {
+    secure: true,
+    sign_url: true,
+    expires_at: Math.floor(Date.now() / 1000) + 60 * 5, // 5 min valid
+  });
+
+  return signedUrl
+}
+
+
+
+

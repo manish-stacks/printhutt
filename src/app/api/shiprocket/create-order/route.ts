@@ -42,7 +42,7 @@ export async function POST(request: Request) {
                 tax: 0,
                 hsn: 441122,
             })),
-            payment_method: order.paymentType == 'online' ? 'online' : 'cash on delivery',
+            payment_method: order.paymentType == 'online' ? 'Prepaid' : 'COD',
             shipping_charges: 0,
             giftwrap_charges: 0,
             transaction_charges: 0,
@@ -54,9 +54,9 @@ export async function POST(request: Request) {
             weight: shipmentDetails.weight,
         });
 
-        // console.log(order);
+        // console.log('payload',payload);
 
-
+        // return NextResponse.json(payload);
         const config = {
             method: 'post',
             maxBodyLength: Infinity,

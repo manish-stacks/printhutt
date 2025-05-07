@@ -1,6 +1,7 @@
 "use client"
 import { wishlistService } from '@/_services/common/wishlist';
 import { formatCurrency } from '@/helpers/helpers';
+import { fetchSignedUrl } from '@/lib/cloudinary';
 import { Product } from '@/lib/types/product';
 import { useCartStore } from '@/store/useCartStore';
 import useQuickStore from '@/store/useQuickStore';
@@ -9,7 +10,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 
 interface PopupProps {
@@ -18,6 +19,29 @@ interface PopupProps {
 
 
 const ProductCardTwo = ({ product }: PopupProps) => {
+    // const [signedUrlOne, setSignedUrlOne] = useState('');
+    // const [signedUrlTwo, setSignedUrlTwo] = useState('');
+
+    // useEffect(() => {
+    //     const fetchUrls = async () => {
+    //         const urls = await Promise.all([
+    //             product?.thumbnail?.public_id
+    //                 ? fetch(`/api/get-signed-url?public_id=${product.thumbnail.public_id}`).then(res => res.json())
+    //                 : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHZqj-XReJ2R76nji51cZl4ETk6-eHRmZBRw&s",
+    //             product?.images?.[0]?.public_id
+    //                 ? fetch(`/api/get-signed-url?public_id=${product.images[0].public_id}`).then(res => res.json())
+    //                 : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHZqj-XReJ2R76nji51cZl4ETk6-eHRmZBRw&s",
+    //         ]);
+
+    //         if (urls[0]) setSignedUrlOne(urls[0].url);
+    //         if (urls[1]) setSignedUrlTwo(urls[1].url);
+    //     };
+
+    //     fetchUrls();
+    // }, [product]);
+
+
+
 
     const addToCart = useCartStore(state => state.addToCart);
     const isLoggedIn = useUserStore((state) => state.isLoggedIn);
@@ -42,6 +66,8 @@ const ProductCardTwo = ({ product }: PopupProps) => {
 
         toast(response.message);
     }
+
+
 
     return (
         <>
@@ -78,6 +104,7 @@ const ProductCardTwo = ({ product }: PopupProps) => {
                                 <Image
                                     className="main-img transition-all duration-[0.3s] ease-in-out w-full"
                                     src={product?.thumbnail?.url}
+
                                     alt={product.title}
                                     width={800}
                                     height={800}
@@ -85,7 +112,7 @@ const ProductCardTwo = ({ product }: PopupProps) => {
                                 />
                                 <Image
                                     className="hover-img transition-all duration-[0.3s] ease-in-out absolute z-[2] top-[0] left-[0] opacity-[0] w-full"
-                                    src={product?.images[0]?.url}
+                                    src={product.images[0]?.url}
                                     alt={product.title}
                                     width={800}
                                     height={800}

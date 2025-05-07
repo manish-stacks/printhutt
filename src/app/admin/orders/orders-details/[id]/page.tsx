@@ -142,7 +142,7 @@ export default function OrderDetailsPage() {
             if (response.status !== 200) {
                 throw new Error('Failed to create shipment');
             }
-            console.log(shipmentDetails);
+            // console.log(response);
             toast.success('Shipment created successfully');
             setShowShipmentForm(false);
         } catch (error) {
