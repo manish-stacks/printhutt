@@ -6,6 +6,8 @@ import Order from "@/models/orderModel";
 import User from "@/models/userModel";
 import { uploadImageOrder } from "@/lib/cloudinary";
 // import { sendOrderConfirmationEmail } from "@/lib/mail/mailer";
+import {  decompress } from 'lz-string';
+
 
 export async function GET(request: NextRequest) {
   try {

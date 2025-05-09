@@ -40,7 +40,7 @@ export default function App() {
             const reader = new FileReader();
             reader.onload = (e) => {
                 setPreviews(prev => [...prev, {
-                    id: crypto.randomUUID(),
+                    id: generateUUID(),
                     url: e.target?.result as string
                 }]);
             };
@@ -51,7 +51,11 @@ export default function App() {
             fileInputRef.current.value = '';
         }
     };
-
+    const generateUUID = () => {
+        return (crypto?.randomUUID?.() || ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+            (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+        ));
+    };
     const removeImage = (id: string) => {
         setPreviews(prev => prev.filter(preview => preview.id !== id));
     };
@@ -82,7 +86,7 @@ export default function App() {
 
                 addToCart(updatedProduct, 1);
                 openCartSidebarView();
-                console.log("Product added to cart:", updatedProduct);
+                
                 return;
             }
 

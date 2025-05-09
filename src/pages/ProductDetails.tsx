@@ -412,7 +412,6 @@ export default function ProductDetails({ product, relatedProduct }: ProductProps
                   <BiBell className="text-gray-600 text-xl" />
                 </motion.div>
 
-
               </div>
               <div className="space-y-2">
                 <div className="flex gap-2" >

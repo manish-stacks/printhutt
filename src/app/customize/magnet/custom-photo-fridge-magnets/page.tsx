@@ -178,7 +178,7 @@ export default function App() {
 
                 addToCart(updatedProduct, 1);
                 openCartSidebarView();
-                console.log("Product added to cart:", updatedProduct);
+                
                 return;
             }
         } catch (error) {

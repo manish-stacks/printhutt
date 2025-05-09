@@ -209,7 +209,7 @@ export default function NeonPage() {
 
         addToCart(updatedProduct, 1);
         router.push('/cart');
-        console.log("Product added to cart:", updatedProduct);
+        
         return;
       }
     } catch (error) {

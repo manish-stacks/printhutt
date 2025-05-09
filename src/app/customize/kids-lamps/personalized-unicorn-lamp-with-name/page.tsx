@@ -144,7 +144,7 @@ export default function Page() {
 
                 addToCart(updatedProduct, 1);
                 openCartSidebarView();
-                console.log("Product added to cart:", updatedProduct);
+                
                 return;
             }
         } catch (error) {
