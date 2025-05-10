@@ -73,10 +73,10 @@ export default function App() {
             // Simulate API call
             if (product) {
                 const custom_data = {
-                    previewImage: compress(previews[0].url),
-                    previewImageTwo: compress(previews[1].url),
-                    previewImageThree: compress(previews[2].url),
-                    previewImageFour: compress(previews[3].url),
+                    previewImage: previews[0].url,
+                    previewImageTwo: previews[1].url,
+                    previewImageThree: previews[2].url,
+                    previewImageFour: previews[3].url,
                 };
 
                 const updatedProduct = {
@@ -88,7 +88,7 @@ export default function App() {
 
                 addToCart(updatedProduct, 1);
                 openCartSidebarView();
-                console.log('custom_data',custom_data)
+                // console.log('custom_data',custom_data)
                 return;
             }
 

@@ -56,6 +56,9 @@ const CheckOutPopUpV2: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         number: ''
     });
 
+    // console.log(items);
+    // console.log(getTotalPrice())
+
     useEffect(() => {
         const price = getTotalPrice();
         setTotalPrice(price);
@@ -70,7 +73,8 @@ const CheckOutPopUpV2: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                 setAvailableCoupons(data?.coupons || []);
 
                 // Auto apply best coupon
-                if (data.coupons?.length > 0) {
+
+                if (data.coupons?.length > 0 && paymentMethod === 'online') {
                     const validCoupons = data.coupons.filter(coupon =>
                         totalPrice.totalPrice >= coupon.minimumPurchaseAmount
                     );
@@ -100,7 +104,7 @@ const CheckOutPopUpV2: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         };
         fetchCoupons();
 
-    }, [totalPrice.totalPrice]);
+    }, [totalPrice.totalPrice, paymentMethod]);
 
     const handleMarkChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { value } = e.target;
@@ -312,9 +316,9 @@ const CheckOutPopUpV2: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         const { name, value } = e.target;
         let newValue = value;
         if (name === "postCode" || name === "number") {
-            newValue = value.replace(/\D/g, ""); 
+            newValue = value.replace(/\D/g, "");
         }
-    
+
         setSelectAddress({ ...selectAddress, [name]: newValue });
     };
     const placeOrder = async () => {
@@ -351,11 +355,12 @@ const CheckOutPopUpV2: React.FC<ModalProps> = ({ isOpen, onClose }) => {
             address: selectAddress,
             payAmt: Math.floor(totalPrice.discountPrice).toFixed(2)
         };
-         
+
         try {
             setIsSubmitting(true);
+
             const response: { order: { _id: string } } = await create_a_new_order(order);
-            // console.log(response)
+            // console.log(order)
             // return
             if (response.success) {
                 await paymentintInitiation(response.order);

@@ -226,7 +226,7 @@ const CartSidebar = ({ onClose }: { onClose: () => void }) => {
                     onClick={checkoutPage}
                     className="w-full flex items-center justify-center bb-btn-2 transition-all duration-[0.3s] ease-in-out font-Poppins leading-[28px] tracking-[0.03rem] py-[10px] px-[20px] text-[18px] font-normal text-[#fff] bg-[#000000] rounded-[5px] border-[1px] border-solid border-[#000000] hover:bg-transparent hover:border-[#3d4750] hover:text-[#3d4750]"
                   >
-                    BUY NOW &nbsp;&nbsp;<Image src={"/img/shape/upi_options.svg"} alt="arrow" width={40} height={40} /> <RiArrowRightSLine className="text-[20px] ml-[5px]" />
+                    CHECKOUT &nbsp;&nbsp;<Image src={"/img/shape/upi_options.svg"} alt="arrow" width={40} height={40} /> <RiArrowRightSLine className="text-[20px] ml-[5px]" />
                   </button>
                 </div>
               </div>
