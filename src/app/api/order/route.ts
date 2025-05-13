@@ -6,7 +6,7 @@ import Order from "@/models/orderModel";
 import User from "@/models/userModel";
 import { uploadImageOrder } from "@/lib/cloudinary";
 // import { sendOrderConfirmationEmail } from "@/lib/mail/mailer";
-import {  decompress } from 'lz-string';
+import { decompress } from 'lz-string';
 
 
 export async function GET(request: NextRequest) {
@@ -84,13 +84,13 @@ export async function POST(request: NextRequest) {
     if (!userData) {
       return NextResponse.json({ success: false, message: 'User not found' }, { status: 404 });
     }
-    
+
     const invalidUsernames = ['', 'user', 'guest'];
     if (!invalidUsernames.includes(userData.username)) {
       userData.username = body.address.fullName;
     }
 
-    if (userData.email !== '') {
+    if (!userData.email) {
       userData.email = body.address.email;
     }
     await userData.save();
@@ -116,6 +116,7 @@ export async function POST(request: NextRequest) {
       addressType: body.address.addressType,
     });
 
+    await addressData.save();
 
     const itemData = await Promise.all(
       body.items.map(async (item) => {
@@ -160,6 +161,7 @@ export async function POST(request: NextRequest) {
     );
 
     const timestamp = Date.now();
+
 
     const orderData = {
       orderId: `ORD-${timestamp}`,
