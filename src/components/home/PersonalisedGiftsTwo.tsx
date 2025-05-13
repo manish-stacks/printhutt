@@ -20,32 +20,32 @@ const products = [
   },
   {
     name: 'Raisen Name Lamps',
-    image: 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1743671843/odxhhyobm1godscsqpul_gptkgm.jpg',
+    image: 'https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/product/odxhhyobm1godscsqpul_gptkgm.jpg',
     url: '/product-details/resin-led-lamp-with-name'
   },
   {
     name: '3D Name Plate',
-    image: 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1743668695/gdszkumgmliqurujumck_ijmmki.png',
+    image: 'https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/product/gdszkumgmliqurujumck_ijmmki.png',
     url: '/product-details/3d-name-lamp-plate'
   },
   {
     name: 'Customize Kids LED Lamp',
-    image: 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1743672564/n0v6qlolpj5m1e7lh5no_f0aaog.jpg',
+    image: 'https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/product/n0v6qlolpj5m1e7lh5no_f0aaog.jpg',
     url: '/category/lamps/kids-lamp'
   },
   {
     name: 'Table Photo Frame',
-    image: 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1743672578/n0f1r1snff3ycwdtlmhr_zyk52r.jpg',
+    image: 'https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/product/n0f1r1snff3ycwdtlmhr_zyk52r.jpg',
     url: '/product-details/engraved-table-photo-frame'
   },
   {
     name: '3D Name Plate With Photo',
-    image: 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1743672613/gbcrcki3sy5efbrdu6jo_okyoaj.jpg',
+    image: 'https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/product/gbcrcki3sy5efbrdu6jo_okyoaj.jpg',
     url: '/product-details/customized-acrylic-picture-frame-with-name'
   },
   {
     name: 'Acrylic Cutout Fream',
-    image: 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1743672639/wa3ajoqy8npjtha8k0qz_cirzlw.png',
+    image: 'https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/product/wa3ajoqy8npjtha8k0qz_cirzlw.png',
     url: '/product-details/photo-cutout-frame',
 
   }

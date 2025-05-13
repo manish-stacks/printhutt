@@ -38,7 +38,7 @@ const shapes: ShapeOption[] = [
 
 export default function App() {
     const [selectedShape, setSelectedShape] = useState<string>('rectangle');
-    const [previewImage, setPreviewImage] = useState<string>('https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664960/image-preview_cvtp97_dppwiv.png');
+    const [previewImage, setPreviewImage] = useState<string>('https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/image-preview_cvtp97_dppwiv.png');
     const [isDragging, setIsDragging] = useState(false);
     const [imagePosition, setImagePosition] = useState<Position>({ x: 0, y: 0 });
     const [isDraggingImage, setIsDraggingImage] = useState(false);
@@ -195,7 +195,7 @@ export default function App() {
     return (
         <div className="min-h-screen overflow-hidden bg-cover bg-center bg-no-repeat"
             style={{
-                backgroundImage: 'url("https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664964/photo-1506744038136-46273834b3fb_hq8v7q_xgcbbw.avif")',
+                backgroundImage: 'url("https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/photo-1506744038136-46273834b3fb_hq8v7q_xgcbbw.avif")',
             }}>
             <section className="bg-white shadow-sm">
                 <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">

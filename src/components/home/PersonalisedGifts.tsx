@@ -9,7 +9,7 @@ import React from 'react';
 const products = [
   {
     name: 'Acrylic Night Lamp',
-    image: 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1743672449/ay3jgwsmmqyqomsck0yx_lpfqlh.jpg',
+    image: 'https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/product/ay3jgwsmmqyqomsck0yx_lpfqlh.jpg',
     url: '/product-details/couple-led-name-lamp-with-photo-wedding-gifts-for-couples'
   },
   {
@@ -20,12 +20,12 @@ const products = [
   },
   {
     name: 'Couple LED Lamp',
-    image: 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1743672498/h3lbzoharsjhnhruoyij_twmise_o3yjwi.webp',
+    image: 'https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/product/h3lbzoharsjhnhruoyij_twmise_o3yjwi.webp',
     url: '/product-details/couple-name-lamp-rectangle-shape',
   },
   {
     name: 'Couple LED Lamp',
-    image: 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1743672514/puoeblwgabofqoep5zjl_kq3mck.png',
+    image: 'https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/product/puoeblwgabofqoep5zjl_kq3mck.png',
     url: '/product-details/couple-name-lamp-diamond-shape'
   },
   {
@@ -36,7 +36,7 @@ const products = [
   },
   {
     name: 'Fridge Magnets',
-    image: 'https://res.cloudinary.com/dxhs6vjab/image/upload/v1743672530/v0adkqf07z4uqzkakqxy_ccvj5i.jpg',
+    image: 'https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/product/v0adkqf07z4uqzkakqxy_ccvj5i.jpg',
     url: '/customize/magnet/custom-photo-fridge-magnets',
   },
   {

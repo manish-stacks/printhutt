@@ -202,7 +202,7 @@ export default function OrderDetailsPage() {
                                                     alt={item.name}
                                                     src={
                                                         item.product_image ||
-                                                        'https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664958/elementor-placeholder-image_wps86z_qulbgy.webp'
+                                                        'https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/placeholder-image_wps86z_qulbgy.webp'
                                                     }
                                                     width={80}
                                                     height={80}

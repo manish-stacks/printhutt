@@ -314,7 +314,7 @@ export default function RatingsReviews() {
                                 <Image
                                     width={200}
                                     height={200}
-                                    src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664958/flat-never-leave-your-pet_23-2148521875_tc1gmz_sfres8.avif"
+                                    src="https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/flat-never-leave-your-pet_23-2148521875_tc1gmz_sfres8.avif"
                                     alt="Review illustration"
                                     className="mx-auto mb-6 rounded-lg h-52 w-52 object-cover"
                                 />

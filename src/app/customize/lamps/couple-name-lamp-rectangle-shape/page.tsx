@@ -187,7 +187,7 @@ export default function Page() {
     <div
       className="min-h-screen bg-cover bg-center bg-no-repeat overflow-hidden"
       style={{
-        backgroundImage: 'url("https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664964/photo-1506744038136-46273834b3fb_hq8v7q_xgcbbw.avif")',
+        backgroundImage: 'url("https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/photo-1506744038136-46273834b3fb_hq8v7q_xgcbbw.avif")',
       }}
     >
       <div className="min-h-screen bg-black/40 py-8 lamp-rectangle-shape">
@@ -200,7 +200,7 @@ export default function Page() {
             <div className="relative rounded-lg">
               <div id="preview-section" className="relative rounded-lg p-2 border border-white/10">
                 <div className="img-box relative">
-                  <img                    src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743665004/love-forever_sutsha_c_fill_w_600_h_600_lcjqut_n6xol2.png"
+                  <img src="https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/product/love-forever_sutsha_c_fill_w_600_h_600_lcjqut_n6xol2.png"
                     alt="Preview"
                     className="w-full h-full object-cover rounded-lg"
                     crossOrigin="anonymous"
@@ -209,7 +209,7 @@ export default function Page() {
                     {previewImage ? (
                       <div className="w-[33%] h-[33%] relative rotate-[352deg]">
                         <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent rounded-sm "></div>
-                        <img                          src={previewImage}
+                        <img src={previewImage}
                           alt="Preview"
                           className="w-full h-full object-cover rounded-sm"
                         />

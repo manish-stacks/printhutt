@@ -12,7 +12,10 @@ const nextConfig: NextConfig = withPWA({
       {
         protocol: "https",
         hostname: "res.cloudinary.com",
-      },
+      },{
+        protocol: "https",
+        hostname: "s3.ap-south-1.amazonaws.com",
+      }
     ],
   },
   typescript: {

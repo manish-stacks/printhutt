@@ -58,7 +58,7 @@ const CartSidebar = ({ onClose }: { onClose: () => void }) => {
 
               <div className="bb-cart-banner mb-[24px]">
                 <div className="banner rounded-[20px] relative overflow-hidden">
-                  <img src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743668000/loi5p36j7ezhhgk32ply_dek6kp.png"
+                  <img src="https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/loi5p36j7ezhhgk32ply_dek6kp.png"
                     alt="cart-banner"
                     className="w-full transition-all duration-[0.3s] ease-in-out"
                   />
@@ -80,7 +80,7 @@ const CartSidebar = ({ onClose }: { onClose: () => void }) => {
               </div>
               <div className="bb-cart-banner mb-[24px]">
                 <div className="banner rounded-[20px] relative overflow-hidden">
-                  <img src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743668022/aaabwgrbbmfnd6km1ksq_vpndun.jpg"
+                  <img src="https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/aaabwgrbbmfnd6km1ksq_vpndun.jpg"
                     alt="cart-banner"
                     className="w-full transition-all duration-[0.3s] ease-in-out"
                   />

@@ -17,7 +17,7 @@ export default function OrderConfirmationPage() {
   // const router = useRouter();
   const [order, setOrder] = useState<IOrder | null>(null);
   const [loading, setLoading] = useState(true);
-  const { removeAllItems } = useCartStore();
+  const { clearCart } = useCartStore();
 
   useEffect(() => {
     const fetchOrder = async () => {
@@ -42,7 +42,7 @@ export default function OrderConfirmationPage() {
 
     if (params?.id) {
       toast.success('Order placed successfully');
-      removeAllItems();
+      clearCart();
       fetchOrder();
       showConfetti();
     }

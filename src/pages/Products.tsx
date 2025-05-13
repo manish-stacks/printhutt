@@ -84,6 +84,8 @@ function Products() {
 
   const skeletonItems = Array(6).fill(null);
 
+
+  console.log(products)
   return (
     <>
 

@@ -12,7 +12,7 @@ export default function PaymentFailure() {
                     <div className="bg-white rounded-lg shadow-lg p-8">
                         <div className="text-center mb-8">
                             <Image
-                                src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664958/error_gjjbgx_zm8hkz.gif"
+                                src="https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/error_gjjbgx_zm8hkz.gif"
                                 width={180}
                                 height={180}
                                 alt="Check Circle"

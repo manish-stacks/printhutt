@@ -130,7 +130,7 @@ export default function Page() {
             className="min-h-screen bg-cover bg-center bg-no-repeat"
             style={{
 
-                backgroundImage: 'url("https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664964/photo-15_gyd3jd_ffbqvb.avif")',
+                backgroundImage: 'url("https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/photo-15_gyd3jd_ffbqvb.avif")',
             }}
         >
             <div className="min-h-screen bg-black/40 backdrop-blur-sm py-8">
@@ -226,7 +226,7 @@ export default function Page() {
                                                     <Image
                                                         width={200}
                                                         height={100}
-                                                        src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743665002/510341279_20240810_152907_nioxer_bm8dwt.jpg"
+                                                        src="https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/product/510341279_20240810_152907_nioxer_bm8dwt.jpg"
                                                         alt="cutout"
                                                         className="h-[96px] w-[170px] object-cover rounded-xl"
                                                     />
@@ -237,7 +237,7 @@ export default function Page() {
                                                     <Image
                                                         width={200}
                                                         height={100}    
-                                                        src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743665006/rect_n4e399_ets0sv.jpg"
+                                                        src="https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/product/rect_n4e399_ets0sv.jpg"
                                                         alt="rectangle"
                                                         className="h-[96px] w-[170px] object-cover rounded-xl"
                                                     />

@@ -162,7 +162,7 @@ export default function Page() {
     <div
       className="min-h-screen overflow-hidden bg-cover bg-center bg-no-repeat"
       style={{
-        backgroundImage: 'url("https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664964/photo-1506744038136-46273834b3fb_hq8v7q_xgcbbw.avif")',
+        backgroundImage: 'url("https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/photo-1506744038136-46273834b3fb_hq8v7q_xgcbbw.avif")',
       }}
     >
       <div className="min-h-screen bg-black/40 py-8">
@@ -175,10 +175,9 @@ export default function Page() {
             <div className="relative rounded-lg">
               <div id="preview-section" className="relative rounded-lg p-2 border border-white/10">
                 <div className="img-box relative">
-                  <img                    src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743665003/420304068_drzvza_zbkzen.png"
+                  <img src="https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/product/420304068_drzvza_zbkzen.png"
                     alt="Preview"
                     className="w-full h-full object-cover rounded-lg"
-                    crossOrigin="anonymous"
                   />
                   <div className="text-box absolute top-[30%] left-[15%] w-[40%] h-[19%] ">
                     <canvas ref={canvasRef} width="250" height="120" className="w-full h-full"></canvas>

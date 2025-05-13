@@ -52,7 +52,7 @@ const FAQ = () => {
                 <Image
                   height={500}
                   width={500}
-                  src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743668695/gdszkumgmliqurujumck_ijmmki.png"
+                  src="https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/product/gdszkumgmliqurujumck_ijmmki.png"
                   alt="faq-img"
                   className="w-full rounded-[20px]"
                 />

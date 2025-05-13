@@ -21,7 +21,7 @@ import Image from "next/image";
                 <Image
                   height={500}
                   width={500}
-                  src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664958/about_l1sq5j_kfd2uc.png"
+                  src="https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/about_l1sq5j_kfd2uc.png"
                   alt="about-one"
                   className="w-full"
                 />

@@ -130,7 +130,7 @@ export default function App() {
             className="min-h-screen bg-cover bg-center bg-no-repeat"
             style={{
 
-                backgroundImage: 'url("https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664964/photo-1506744038136-46273834b3fb_hq8v7q_xgcbbw.avif")',
+                backgroundImage: 'url("https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/photo-1506744038136-46273834b3fb_hq8v7q_xgcbbw.avif")',
             }}
         >
             <div className="min-h-screen bg-black/40 backdrop-blur-sm py-8">
@@ -226,7 +226,7 @@ export default function App() {
                                                     <Image
                                                         width={200}
                                                         height={100}
-                                                        src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743668859/terhe6du3so1lcywmyta_z41hpd.jpg"
+                                                        src="https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/product/terhe6du3so1lcywmyta_z41hpd.jpg"
                                                         alt="cutout"
                                                         className="h-[96px] w-[170px] object-cover rounded-xl"
                                                     />
@@ -237,7 +237,7 @@ export default function App() {
                                                     <Image
                                                         width={200}
                                                         height={100}
-                                                        src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743668754/bnfkujppjyq4cvnne82d_qo5bux.jpg"
+                                                        src="https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/product/bnfkujppjyq4cvnne82d_qo5bux.jpg"
                                                         alt="rectangle"
                                                         className="h-[96px] w-[170px] object-cover rounded-xl"
                                                     />

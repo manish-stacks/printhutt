@@ -158,7 +158,7 @@ export default function Page() {
     <div
       className="min-h-screen bg-cover bg-center bg-no-repeat"
       style={{
-        backgroundImage: 'url("https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664964/photo-1506744038136-46273834b3fb_hq8v7q_xgcbbw.avif")',
+        backgroundImage: 'url("https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/photo-1506744038136-46273834b3fb_hq8v7q_xgcbbw.avif")',
       }}
     >
       <div className="min-h-screen bg-black/40 backdrop-blur-sm py-8">
@@ -171,7 +171,7 @@ export default function Page() {
             <div className="relative rounded-lg">
               <div id="preview-section" className="relative rounded-lg p-2 backdrop-blur-sm border border-white/10">
                 <div className="img-box relative">
-                  <img                    src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743665000/9.1_rx9off_cbsjto.jpg"
+                  <img src="https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/product/9.1_rx9off_cbsjto.jpg"
                     alt="Preview"
                     className="w-full h-full object-cover rounded-lg"
                     crossOrigin="anonymous"

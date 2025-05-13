@@ -163,7 +163,7 @@ export default function Page() {
     <div
       className="min-h-screen overflow-hidden bg-cover bg-center bg-no-repeat"
       style={{
-        backgroundImage: 'url("https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664964/photo-1506744038136-46273834b3fb_hq8v7q_xgcbbw.avif")',
+        backgroundImage: 'url("https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/photo-1506744038136-46273834b3fb_hq8v7q_xgcbbw.avif")',
       }}
     >
       <div className="min-h-screen bg-black/40 py-8">
@@ -179,7 +179,7 @@ export default function Page() {
                   <Image
                     height={800}
                     width={800}
-                    src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743665003/998663784_love-heart-3_1_e14xx5_fg5ts9.png"
+                    src="https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/product/998663784_love-heart-3_1_e14xx5_fg5ts9.png"
                     alt="Preview"
                     className="w-full h-full object-cover rounded-lg"
                     crossOrigin="anonymous"
@@ -189,7 +189,7 @@ export default function Page() {
                   </div>
                   <div className="absolute top-[40%] left-[43%] h-12 flex items-center justify-center">
                     <Image
-                      src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664959/heart-2_kvhmjm_updrxw.png"
+                      src="https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/heart-2_kvhmjm_updrxw.png"
                       alt="heart"
                       width={48}
                       height={48}

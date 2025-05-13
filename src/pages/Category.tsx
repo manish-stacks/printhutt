@@ -7,11 +7,12 @@ import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Breadcrumb from '@/components/Breadcrumb';
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
+
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface PropsInterface {
     slug: string;
@@ -75,73 +76,89 @@ const Category = ({ slug }: PropsInterface) => {
         <>
             <Breadcrumb title={slug?.toUpperCase()} />
             {/* Category section */}
-            <section className="section-category pt-[50px] max-[1199px]:pt-[35px] mb-[24px]">
+            <section className="section-category pt-[50px] max-[1199px]:pt-[35px] mb-[24px] ">
                 <div className="flex flex-wrap justify-between relative items-center mx-auto min-[1400px]:max-w-[1320px] min-[1200px]:max-w-[1140px] min-[992px]:max-w-[960px] min-[768px]:max-w-[720px] min-[576px]:max-w-[540px]">
                     <div className="flex flex-wrap w-full">
-                        <div className="w-full px-[12px]">
-                            <div className="bb-category-6-colum">
-                                {
-                                    loading ? (
-                                        <div className='flex'>
-                                            {Array.from({ length: 6 }).map((_, index) => (
-                                                <div key={index} className="min-[1200px]:w-[16.66%] min-[768px]:w-[33.33%] min-[576px]:w-[50%] w-full px-[12px] mb-[24px]">
-                                                    <div className="bb-category-box p-[30px] rounded-[20px] flex flex-col items-center text-center max-[1399px]:p-[20px] bg-[#fef1f1]">
-                                                        {/* Skeleton for Category Image */}
-                                                        <div className="category-image mb-[12px]">
-                                                            <div className="skeleton w-[50px] h-[50px] max-[1399px]:h-[65px] max-[1399px]:w-[65px] max-[1199px]:h-[50px] max-[1199px]:w-[50px] rounded-md bg-gray-200" />
-                                                        </div>
-                                                        {/* Skeleton for Text */}
-                                                        <div className="category-sub-contact w-full">
-                                                            <div className="skeleton w-[70%] h-[16px] bg-gray-200 mx-auto mb-[8px]" />
-                                                            <div className="skeleton w-[50%] h-[14px] bg-gray-200 mx-auto" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    ) : 
-                                        categories.length >= 2 && (
-                                        <Swiper {...settings} className="category-slider">
+                        {
+                            slug === "neon" ? (
+                                <div className="w-full px-[12px]">
+                                    <Link href={`/product/customize-neon-sign`} >
+                                        <Image
+                                            className='w-full object-cover rounded-[20px] h-[300px]'
+                                            alt="category-banner"
+                                            width={1294}
+                                            height={150}
+                                            src={"https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/neon.png"}
+                                        />
+                                    </Link>
+                                </div>
+                            ) : (
+                                <div className="w-full px-[12px]">
+                                    <div className="bb-category-6-colum">
                                         {
-                                            categories.map((category, index) => (
-                                                    <SwiperSlide key={index}>
-                                                        <div className="pr-2 pl-2">
-                                                            <div
-                                                                className={`bb-category-box p-[30px] rounded-[20px] flex flex-col items-center text-center max-[1399px]:p-[20px] category-items-${index + 1} ${(index % 2 === 0 ? 'bg-[#f4f1fe]' : 'bg-[#fef1f1]')}`}
-                                                                data-aos-duration={1000}
-                                                                data-aos-delay={(index + 1) * 200}
-                                                            >
-                                                                <div className="category-image mb-[12px] flex items-center justify-center">
-                                                                    <Image
-                                                                        width={50}
-                                                                        height={50}
-                                                                        src={category?.image?.url}
-                                                                        alt={category?.name}
-                                                                        className="w-[50px] h-[50px] max-[1399px]:h-[65px] max-[1399px]:w-[65px] max-[1199px]:h-[50px] max-[1199px]:w-[50px] rounded-full"
-                                                                    />
+                                            loading ? (
+                                                <div className='flex'>
+                                                    {Array.from({ length: 6 }).map((_, index) => (
+                                                        <div key={index} className="min-[1200px]:w-[16.66%] min-[768px]:w-[33.33%] min-[576px]:w-[50%] w-full px-[12px] mb-[24px]">
+                                                            <div className="bb-category-box p-[30px] rounded-[20px] flex flex-col items-center text-center max-[1399px]:p-[20px] bg-[#fef1f1]">
+                                                                {/* Skeleton for Category Image */}
+                                                                <div className="category-image mb-[12px]">
+                                                                    <div className="skeleton w-[50px] h-[50px] max-[1399px]:h-[65px] max-[1399px]:w-[65px] max-[1199px]:h-[50px] max-[1199px]:w-[50px] rounded-md bg-gray-200" />
                                                                 </div>
-                                                                <div className="category-sub-contact">
-                                                                    <h5 className="mb-[2px] text-[16px] font-quicksand text-[#3d4750] font-semibold tracking-[0.03rem] leading-[1.2]">
-                                                                        <Link
-                                                                            href={`/category/${slug}/${category?.slug}`}
-                                                                            className="font-Poppins text-[16px] font-medium leading-[1.2] tracking-[0.03rem] text-[#3d4750] capitalize"
-                                                                        >
-                                                                            {category?.name}
-                                                                        </Link>
-                                                                    </h5>
-                                                                    <p className="font-Poppins text-[13px] text-[#686e7d] leading-[25px] font-light tracking-[0.03rem]">
-                                                                        {category?.productCount} items
-                                                                    </p>
+                                                                {/* Skeleton for Text */}
+                                                                <div className="category-sub-contact w-full">
+                                                                    <div className="skeleton w-[70%] h-[16px] bg-gray-200 mx-auto mb-[8px]" />
+                                                                    <div className="skeleton w-[50%] h-[14px] bg-gray-200 mx-auto" />
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </SwiperSlide>
-                                            ))
-                                        }
-                                         </Swiper>
-                                    )}
-                            </div>
-                        </div>
+                                                    ))}
+                                                </div>
+                                            ) :
+                                                categories.length >= 2 && (
+                                                    <Swiper {...settings} className="category-slider">
+                                                        {
+                                                            categories.map((category, index) => (
+                                                                <SwiperSlide key={index}>
+                                                                    <div className="pr-2 pl-2">
+                                                                        <div
+                                                                            className={`bb-category-box p-[30px] rounded-[20px] flex flex-col items-center text-center max-[1399px]:p-[20px] category-items-${index + 1} ${(index % 2 === 0 ? 'bg-[#f4f1fe]' : 'bg-[#fef1f1]')}`}
+                                                                            data-aos-duration={1000}
+                                                                            data-aos-delay={(index + 1) * 200}
+                                                                        >
+                                                                            <div className="category-image mb-[12px] flex items-center justify-center">
+                                                                                <Image
+                                                                                    width={50}
+                                                                                    height={50}
+                                                                                    src={category?.image?.url}
+                                                                                    alt={category?.name}
+                                                                                    className="w-[50px] h-[50px] max-[1399px]:h-[65px] max-[1399px]:w-[65px] max-[1199px]:h-[50px] max-[1199px]:w-[50px] rounded-full"
+                                                                                />
+                                                                            </div>
+                                                                            <div className="category-sub-contact">
+                                                                                <h5 className="mb-[2px] text-[16px] font-quicksand text-[#3d4750] font-semibold tracking-[0.03rem] leading-[1.2]">
+                                                                                    <Link
+                                                                                        href={`/category/${slug}/${category?.slug}`}
+                                                                                        className="font-Poppins text-[16px] font-medium leading-[1.2] tracking-[0.03rem] text-[#3d4750] capitalize"
+                                                                                    >
+                                                                                        {category?.name}
+                                                                                    </Link>
+                                                                                </h5>
+                                                                                <p className="font-Poppins text-[13px] text-[#686e7d] leading-[25px] font-light tracking-[0.03rem]">
+                                                                                    {category?.productCount} items
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </SwiperSlide>
+                                                            ))
+                                                        }
+                                                    </Swiper>
+                                                )}
+                                    </div>
+                                </div>
+                            )
+                        }
                     </div>
                 </div>
             </section>

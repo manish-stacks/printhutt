@@ -8,7 +8,7 @@ import Image from 'next/image';
 import React, { useState, useEffect, useRef } from 'react';
 import { BsUpload } from 'react-icons/bs';
 import { RiCloseLargeFill } from 'react-icons/ri';
-import { compress, decompress } from 'lz-string';
+// import { compress, decompress } from 'lz-string';
 
 interface ImagePreview {
     id: string;
@@ -104,7 +104,7 @@ export default function App() {
         <div
             className="min-h-screen bg-cover bg-center bg-no-repeat"
             style={{
-                backgroundImage: 'url("https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664964/photo-1506744038136-46273834b3fb_hq8v7q_xgcbbw.avif")',
+                backgroundImage: 'url("https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/photo-1506744038136-46273834b3fb_hq8v7q_xgcbbw.avif")',
             }}
         >
             <div className="min-h-screen bg-black/40 backdrop-blur-sm py-8">

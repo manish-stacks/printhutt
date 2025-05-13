@@ -134,7 +134,7 @@ export default function App() {
         <div
             className="min-h-screen bg-cover bg-center bg-no-repeat"
             style={{
-                backgroundImage: 'url("https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664964/photo-15_gyd3jd_ffbqvb.avif")',
+                backgroundImage: 'url("https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/photo-15_gyd3jd_ffbqvb.avif")',
             }}
         >
             <div className="min-h-screen bg-black/40 backdrop-blur-sm py-8">

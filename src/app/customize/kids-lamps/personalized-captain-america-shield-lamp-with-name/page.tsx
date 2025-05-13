@@ -157,7 +157,7 @@ export default function Page() {
     <div
       className="min-h-screen bg-cover bg-center bg-no-repeat"
       style={{
-        backgroundImage: 'url("https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664964/photo-1506744038136-46273834b3fb_hq8v7q_xgcbbw.avif")',
+        backgroundImage: 'url("https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/photo-1506744038136-46273834b3fb_hq8v7q_xgcbbw.avif")',
       }}
     >
       <div className="min-h-screen bg-black/40 backdrop-blur-sm py-8">
@@ -173,7 +173,7 @@ export default function Page() {
                   <Image
                     width={800}
                     height={800}
-                    src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664999/7.1_rlmzy3_de6xfd.jpg"
+                    src="https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/product/7.1_rlmzy3_de6xfd.jpg"
                     alt="Preview"
                     className="w-full h-full object-cover rounded-lg"
                     crossOrigin="anonymous"

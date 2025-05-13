@@ -39,27 +39,27 @@ const Testimonials = () => {
                 data-aos-duration={1000}
                 data-aos-delay={400}
               >
-                <img                  src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664959/img-1_c8z1ur_ykaprj.png"
+                <img src="https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/img-1_c8z1ur_ykaprj.png"
                   alt="testimonials-1"
                   className="testimonials-img-1 z-[-1] h-[70px] w-[70px] absolute top-[0] left-[25px] rounded-[20px] rotate-[-10deg] max-[1399px]:h-[60px] max-[1399px]:w-[60px] max-[1399px]:left-[10px] max-[1199px]:hidden"
                 />
-                <img                  src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664959/img-2_pp7g1w_xifigy.png"
+                <img src="https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/img-2_pp7g1w_xifigy.png"
                   alt="testimonials-2"
                   className="testimonials-img-2 z-[-1] h-[50px] w-[50px] absolute bottom-[0] left-[0] rounded-[15px] rotate-[15deg] blur-[3px] max-[1199px]:hidden"
                 />
-                <img                  src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664961/img-3_axzdc6_bpvq4j.png"
+                <img src="https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/img-3_axzdc6_bpvq4j.png"
                   alt="testimonials-3"
                   className="testimonials-img-3 z-[-1] h-[60px] w-[60px] absolute top-[-50px] right-[500px] rounded-[20px] rotate-[-30deg] blur-[3px] max-[991px]:hidden"
                 />
-                <img                  src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664961/img-4_uhbtpn_drhqak.png"
+                <img src="https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/img-4_uhbtpn_drhqak.png"
                   alt="testimonials-4"
                   className="testimonials-img-4 z-[-1] h-[60px] w-[60px] absolute top-[50px] right-[250px] rounded-[20px] rotate-[15deg] max-[1399px]:top-[20px] max-[991px]:hidden"
                 />
-                <img                  src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664962/img-5_xjtxus_wlisdl.png"
+                <img src="https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/img-5_xjtxus_wlisdl.png"
                   alt="testimonials-5"
                   className="testimonials-img-5 z-[-1] h-[70px] w-[70px] absolute top-[0] right-[20px] rounded-[20px] blur-[3px] max-[991px]:hidden"
                 />
-                <img                  src="https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664962/img-6_feznf0_dmmu7z.png"
+                <img src="https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/img-6_feznf0_dmmu7z.png"
                   alt="testimonials-6"
                   className="testimonials-img-6 z-[-1] h-[60px] w-[60px] absolute bottom-[30px] right-[100px] rounded-[20px] rotate-[-25deg] max-[1399px]:h-[50px] max-[1399px]:w-[50px] max-[1399px]:right-[50px] max-[1199px]:right-[0] max-[991px]:hidden"
                 />

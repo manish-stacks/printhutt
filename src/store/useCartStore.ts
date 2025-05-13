@@ -4,6 +4,22 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage, StateStorage } from 'zustand/middleware';
 import { Product } from '@/lib/types/product';
+import axios from 'axios';
+
+
+const add_product = async (product_id: string) => {
+  try {
+    if (!product_id) {
+      throw new Error("Product ID is required");
+    }
+    const response = await axios.post(`/api/session-cart`, {
+      product_id,
+    });
+    console.log(response.data);
+  } catch (error) {
+    return error;
+  }
+};
 
 // Define custom storage for handling large items with chunking
 const createChunkedStorage = (): StateStorage => {
@@ -177,6 +193,9 @@ export const useCartStore = create<CartState>()(
               ),
             };
           } else {
+            add_product(product._id).catch((err) =>
+              console.error("Failed to add product:", err)
+            );
             // Add new item
             return {
               items: [...state.items, { ...product, quantity }],

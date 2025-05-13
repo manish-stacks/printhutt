@@ -22,12 +22,11 @@ export default function Page() {
   const addToCart = useCartStore(state => state.addToCart);
   const { openCartSidebarView } = useCartSidebarStore();
 
-
   const neonImage = [
-    "https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664996/1_usrzsh_c_fill_w_600_h_600_ox8s83_fjwnsu.jpg",
-    "https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664998/4_eiws2h_c_fill_w_600_h_600_ihtbzv_woilvc.jpg",
-    "https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664996/2_djgyqt_c_fill_w_600_h_600_jhia2g_n1thrs.jpg",
-    "https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664998/3_mnftyd_c_fill_w_600_h_600_veplrt_e47znw.jpg",
+    "https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/product/1_usrzsh_c_fill_w_600_h_600_ox8s83_fjwnsu.jpg",
+    "https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/product/4_eiws2h_c_fill_w_600_h_600_ihtbzv_woilvc.jpg",
+    "https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/product/2_djgyqt_c_fill_w_600_h_600_jhia2g_n1thrs.jpg",
+    "https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/product/3_mnftyd_c_fill_w_600_h_600_veplrt_e47znw.jpg",
   ];
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -179,7 +178,7 @@ export default function Page() {
     <div
       className="min-h-screen overflow-hidden bg-cover bg-center bg-no-repeat"
       style={{
-        backgroundImage: 'url("https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664964/photo-1506744038136-46273834b3fb_hq8v7q_xgcbbw.avif")',
+        backgroundImage: 'url("https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/photo-1506744038136-46273834b3fb_hq8v7q_xgcbbw.avif")',
       }}
     >
       <div className="min-h-screen bg-black/40 py-8">

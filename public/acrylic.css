@@ -4,7 +4,7 @@
   display: flex;
   justify-content: center;
   margin: auto;
-  background: linear-gradient(rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.02)), url('https://res.cloudinary.com/dxhs6vjab/image/upload/v1743664968/white-brick-wall-texture-seamless_177006-173_wwjy5o_dcq1sg.avif');
+  background: linear-gradient(rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.02)), url('https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/white-brick-wall-texture-seamless_177006-173_wwjy5o_dcq1sg.avif');
   padding: 40px 20px;
   background-size: contain;
   background-repeat: repeat;

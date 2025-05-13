@@ -8,7 +8,7 @@ import HeroSlider from "@/components/home/HeroSlider";
 import BannerOne from "@/components/home/BannerOne";
 // import confetti from "canvas-confetti";
 import { v4 as uuidv4 } from "uuid";
-import AcrylicPhotoVideo from "@/components/home/AcrylicPhotoVideo";
+// import AcrylicPhotoVideo from "@/components/home/AcrylicPhotoVideo";
 import PersonalizedGifts from "@/components/home/PersonalisedGifts";
 import PersonalizedGiftsTwo from "@/components/home/PersonalisedGiftsTwo";
 import DayoftheWeek from "@/components/home/DayoftheDeal";
@@ -33,6 +33,19 @@ const HomeComponent = () => {
       console.log("New session created:", newSessionId);
     } else {
       console.log("Existing session found:", storedSessionId);
+    }
+  }, []);
+
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const hasVisited = localStorage.getItem("hasVisitedBefore");
+      if (!hasVisited) {
+        localStorage.clear();
+        sessionStorage.clear();
+        localStorage.setItem("hasVisitedBefore", "true");
+        console.log("First time visit — reset done.");
+      }
     }
   }, []);
 
