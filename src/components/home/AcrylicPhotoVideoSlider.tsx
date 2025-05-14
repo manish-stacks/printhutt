@@ -29,7 +29,7 @@ const InstagramStyleVideoGrid = () => {
             video: "https://cloudify.printhutt.com/video/WhatsApp_Video_2025-03-01_at_11.41.08_AM_aeu7jl.mp4"
         },
         {
-            url: "/product-details/personalized-acrylic-cutout-photo-led-lamp",
+            url: "/product-details/photo-rolling-dice-with-photos",
             video: "https://cloudify.printhutt.com/video/WhatsApp_Video_2025-03-01_at_6.03.50_PM_l0wwwy.mp4"
         },
     ];

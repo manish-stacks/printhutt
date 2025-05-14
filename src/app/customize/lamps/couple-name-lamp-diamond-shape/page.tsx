@@ -186,7 +186,7 @@ export default function Page() {
                   <img src="https://s3.ap-south-1.amazonaws.com/printhutt.dev.bucket/others/product/love-circle_bg5tnw_c_fill_w_600_h_600_okomoi_ccx5xb.png"
                     alt="Preview"
                     className="w-full h-full object-cover rounded-lg"
-                    crossOrigin="anonymous"
+                    
                   />
                   <div className='absolute top-[13%] left-[25%] w-full h-full '>
                     {previewImage ? (
