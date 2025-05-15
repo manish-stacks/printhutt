@@ -277,7 +277,7 @@ const BlogEdit = () => {
                                     <div className="flex-1">
                                         {previewUrl ? (
                                             <div className="relative aspect-video w-40 h-40 rounded-lg overflow-hidden">
-                                                <img                                                    src={previewUrl}
+                                                <img src={previewUrl}
                                                     alt="Preview"
                                                     className="h-full object-cover"
                                                 />
@@ -286,7 +286,8 @@ const BlogEdit = () => {
                                             <div className="flex items-center justify-center w-40 h-40 bg-gray-100 rounded-lg">
                                                 {formData.imageUrl ? (
                                                     <Image
-                                                        fill
+                                                        width={800}
+                                                        height={500}
                                                         src={typeof formData.imageUrl === 'string' ? formData.imageUrl : URL.createObjectURL(formData.imageUrl)}
                                                         alt="Preview"
                                                         className="w-full h-full object-cover rounded-lg"
