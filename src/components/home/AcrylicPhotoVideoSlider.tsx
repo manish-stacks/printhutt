@@ -9,7 +9,7 @@ import Link from "next/link";
 const InstagramStyleVideoGrid = () => {
     const videos = [
         {
-            url: "/product-details/customized-wall-photo-frame-acrylic--acrylic-photo-frame",
+            url: "/product-details/customized-wall-photo-frame-acrylic-acrylic-photo-frame",
             video: "https://cloudify.printhutt.com/video/WhatsApp_Video_2025-03-01_at_9.11.26_PM_online-video-cutter.com_1_yq8a8p.mp4"
         },
         {
@@ -29,7 +29,7 @@ const InstagramStyleVideoGrid = () => {
             video: "https://cloudify.printhutt.com/video/WhatsApp_Video_2025-03-01_at_11.41.08_AM_aeu7jl.mp4"
         },
         {
-            url: "/product-details/photo-rolling-dice-with-photos",
+            url: "/product-details/personalized-acrylic-cutout-photo-led-lamp",
             video: "https://cloudify.printhutt.com/video/WhatsApp_Video_2025-03-01_at_6.03.50_PM_l0wwwy.mp4"
         },
     ];
