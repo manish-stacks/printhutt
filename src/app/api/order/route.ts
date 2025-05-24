@@ -11,6 +11,7 @@ import { decompress } from 'lz-string';
 
 export async function GET(request: NextRequest) {
   try {
+    console.log('GET /api/order');
     await dbConnect();
 
     const { id, role } = await getDataFromToken(request);
@@ -30,12 +31,13 @@ export async function GET(request: NextRequest) {
       orderId?: { $regex: string; $options: string };
     } = {};
 
-    if (status !== "pending") {
-      query.status = { $in: ['confirmed', 'shipped', 'delivered', 'cancelled', 'returned', 'progress'] };
-    } else if (status) {
-      query.status = status;
+    if (role === "admin") {
+      if (status !== "pending") {
+        query.status = { $in: ['confirmed', 'shipped', 'delivered', 'cancelled', 'returned', 'progress'] };
+      } else if (status) {
+        query.status = status;
+      }
     }
-
 
 
 
@@ -49,6 +51,7 @@ export async function GET(request: NextRequest) {
       Order.countDocuments(query),
     ]);
 
+    // console.log(orders.length);
     return NextResponse.json({
       success: true,
       orders,
@@ -174,8 +177,8 @@ export async function POST(request: NextRequest) {
       },
       payAmt:
         body.paymentMethod === "online"
-          ? Number(body.payAmt)
-          : Number(body.payAmt * 0.2),
+          ? Number(body.payAmt).toFixed(2)
+          : Number(body.payAmt * 0.2).toFixed(2),
       paymentType: body.paymentMethod,
       payment: {
         method: body.paymentMethod,

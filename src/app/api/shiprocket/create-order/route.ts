@@ -60,8 +60,8 @@ export async function POST(request: Request) {
             shipping_charges: 0,
             giftwrap_charges: 0,
             transaction_charges: 0,
-            total_discount: 0,
-            sub_total: order.paymentType == 'online' ? order.payAmt : order.totalAmount.discountPrice - order.payAmt,
+            total_discount: order.paymentType == 'online' ? (order.coupon.discountAmount || 0) : order.payAmt,
+            sub_total: order.paymentType == 'online' ? order.payAmt + (order.coupon.discountAmount || 0) : order.totalAmount.discountPrice,
             length: shipmentDetails.length,
             breadth: shipmentDetails.width,
             height: shipmentDetails.height,
@@ -73,7 +73,7 @@ export async function POST(request: Request) {
             // note: "20% paid in advance, remaining on delivery"
         });
 
-
+       
         const config = {
             method: 'post',
             maxBodyLength: Infinity,

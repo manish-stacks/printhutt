@@ -125,12 +125,13 @@ export async function sendOrderConfirmationEmail(orderData: {
   payment: string;
   shipping: ShippingInformation;
   coupon?: string;
+  paymentType: string;
   payAmt: number;
   status: string;
 }) {
-  const { orderId, items, totalAmount, payment, shipping, coupon, payAmt, userId, status } = orderData;
+  const { orderId, items, totalAmount, payment, shipping, coupon, paymentType, payAmt, userId, status } = orderData;
 
-  const commonData = { orderId, items, totalAmount, payment, shipping, coupon, paymentType: payment, payAmt, formatCurrency };
+  const commonData = { orderId, items, totalAmount, payment, shipping, coupon, paymentType, payAmt, formatCurrency };
 
   const emails = [
     {
@@ -163,7 +164,7 @@ ${itemsList}
 
 💰 Total: ${formatCurrency(totalAmount.discountPrice)}
 💵 Paid: ${formatCurrency(payAmt)}
-💳 Payment: ${payment === 'offline' ? 'COD' : 'Prepaid'}
+💳 Payment: ${paymentType === 'online' ? 'Prepaid' : 'COD'}
 🚚 Address: ${shipping.addressLine}, ${shipping.city}, ${shipping.state} ${shipping.postCode}
 
 We are processing your order. You'll be notified when it's shipped.
